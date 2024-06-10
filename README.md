@@ -5,6 +5,9 @@
 # 🚧DISCLAIMER🚧
 We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework, which you can find by following the [original repository](https://github.com/Alzar/mythic-framework) 
 
+# Support Discord
+https://discord.gg/N2JARAe8Rp
+
 ## DO NOT FORGET TO CHANGE THE LICENSE KEYS in `environment.cfg`
 Rename `example.environment.cfg` to `environment.cfg`
 ```cfg
