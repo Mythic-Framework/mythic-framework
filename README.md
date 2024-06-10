@@ -5,6 +5,13 @@
 # 🚧DISCLAIMER🚧
 We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework, which you can find by following the [original repository](https://github.com/Alzar/mythic-framework) 
 
+## DO NOT FORGET TO CHANGE THE LICENSE KEYS in `environment.cfg`
+```cfg
+# License Key
+sv_licenseKey setme
+set steam_webApiKey "setme"
+```
+
 # Requirements 
 | Packages          | Link                                                                |
 | ----------------- | ------------------------------------------------------------------ |
