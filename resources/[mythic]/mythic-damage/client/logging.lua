@@ -147,19 +147,17 @@ AddEventHandler('Ped:Client:Died', function()
         end
     end
 
-    local deathReason = deathHashTable[causeHash] or string.format('unknown: %s', causeHash)
+    local deathReason = deathHashTable[causeHash] or string.format('Unknown: %s', causeHash)
 
     if not killer then
         if deathReason ~= "unknown" then
-            deathReason = "suicide (" .. deathReason .. ")"
+            deathReason = "Suicide (" .. deathReason .. ")"
         else
-            deathReason = "suicide"
+            deathReason = "Suicide"
         end
     else
         killer = GetPlayerServerId(killer)
     end
-
-    print('killer', deathReason)
 
     TriggerServerEvent("Damage:Server:LogDeath", killer, deathReason)
 end)

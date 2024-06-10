@@ -1,6 +1,9 @@
 _curBed = nil
 _done = false
 
+_healEnd = nil
+_leavingBed = false
+
 AddEventHandler("Hospital:Shared:DependencyUpdate", HospitalComponents)
 function HospitalComponents()
 	Callbacks = exports["mythic-base"]:FetchComponent("Callbacks")
@@ -127,10 +130,16 @@ HOSPITAL = {
 		if bed ~= nil and fuck then
 			SetBedCam(bed)
 			if isRp then
-				StartRPThread()
+				_healEnd = GetCloudTimeAsInt()
+				Hud.DeathTexts:Show("hospital_rp", GetCloudTimeAsInt(), _healEnd, "primary_action")
 			else
-				_countdown = Config.HealTimer
-				StartHealThread()
+				_healEnd = GetCloudTimeAsInt() + (60 * 1)
+				Hud.DeathTexts:Show("hospital", GetCloudTimeAsInt(), _healEnd, "primary_action")
+				Citizen.SetTimeout(((_healEnd - GetCloudTimeAsInt()) - 10) * 1000, function()
+					if LocalPlayer.state.loggedIn and LocalPlayer.state.isHospitalized then
+						Damage:Revive()
+					end
+				end)
 			end
 		else
 			Notification:Error('Invalid Bed or Bed Occupied')
@@ -186,6 +195,12 @@ AddEventHandler('Keybinds:Client:KeyUp:primary_action', function()
     if _inCheckInZone then
 		if not LocalPlayer.state.doingAction and not LocalPlayer.state.isEscorted and (GlobalState["ems:pmc:doctor"] == nil or GlobalState["ems:pmc:doctor"] == 0) then
 			TriggerEvent('Hospital:Client:CheckIn')
+		end
+	else
+		if _curBed ~= nil and LocalPlayer.state.isHospitalized and GetCloudTimeAsInt() > _healEnd and not _leavingBed then
+			_leavingBed = true
+			Hud.DeathTexts:Release()
+			LeaveBed()
 		end
 	end
 end)

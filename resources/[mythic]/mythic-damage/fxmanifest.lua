@@ -8,11 +8,11 @@ client_script "@mythic-pwnzor/client/check.lua"
 version '2.0.0'
 
 client_scripts {
-	'sh_*.lua',
+	'shared/**/*.lua',
 	'client/**/*.lua',
 }
 
 server_scripts {
-	'sh_*.lua',
+	'shared/**/*.lua',
 	'server/**/*.lua',
 }
