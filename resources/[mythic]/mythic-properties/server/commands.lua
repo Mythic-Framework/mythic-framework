@@ -9,7 +9,7 @@ function RegisterChatCommands()
             h = GetEntityHeading(ped)
         }
 
-        Properties.Manage:Add(source, args[1], tonumber(args[2]), tonumber(args[3]), args[4], pos)
+        Properties.Manage:Add(source, args[1], args[2], tonumber(args[3]), args[4], pos)
     end, {
         help = 'Add New Property To Database (Enter Is Where You\'re At)',
         params = {
@@ -19,7 +19,7 @@ function RegisterChatCommands()
             },
             {
                 name = 'Interior ID',
-                help = 'ID of Which Interior This Will Spawn'
+                help = 'ID of Which Interior This Will Spawn e.g. house_apartment1 or office1'
             },
             {
                 name = 'Property Price',
@@ -128,13 +128,13 @@ function RegisterChatCommands()
     }, 1)
 
     Chat:RegisterAdminCommand('setint', function(source, args, rawCommand)
-        local tier = tonumber(args[2])
-        if tier and tier >= 0 then
-            if Properties.Manage:SetInterior(args[1], tier) then
-                Chat.Send.Server:Single(source, "Interior Set For Property: " .. args[1])
-            else
-                Chat.Send.Server:Single(source, "No Existing Property")
-            end
+        if Properties.Upgrades:SetInterior(args[1], args[2]) then
+            Chat.Send.Server:Single(source, "Interior Set For Property: " .. args[1])
+
+            DeletePropertyFurniture(args[1])
+			Properties:ForceEveryoneLeave(args[1])
+        else
+            Chat.Send.Server:Single(source, "No Existing Property")
         end
     end, {
         help = 'Set The Interior Of A Property',
@@ -149,6 +149,33 @@ function RegisterChatCommands()
             }
         }
     }, 2)
+
+    Chat:RegisterAdminCommand('setupgrade', function(source, args, rawCommand)
+        local level = tonumber(args[3])
+        if level and level > 0 then
+            if Properties.Upgrades:Set(args[1], args[2], level) then
+                Chat.Send.Server:Single(source, "Upgrade Set For Property: " .. args[1])
+            else
+                Chat.Send.Server:Single(source, "No Existing Property")
+            end
+        end
+    end, {
+        help = 'Set The Interior Of A Property',
+        params = {
+            {
+                name = 'Property ID',
+                help = 'Unique ID of The Property'
+            },
+            {
+                name = 'Upgrade',
+                help = 'Upgrade ID (storage, garage)'
+            },
+            {
+                name = 'Level',
+                help = '1-4 (or whatever it is for that upgrade)'
+            }
+        }
+    }, 3)
 
     Chat:RegisterAdminCommand('setlabel', function(source, args, rawCommand)
         if Properties.Manage:SetLabel(args[1], args[2]) then
@@ -224,7 +251,7 @@ function RegisterChatCommands()
             if target then
                 local char = target:GetData('Character')
                 if char then
-                    if GlobalState[string.format("Property:%s", args[2])] then
+                    if _properties[args[2]] then
                         if Properties.Commerce:Buy(args[2], {
                             Char = char:GetData("ID"),
                             SID = char:GetData("SID"),
@@ -261,7 +288,7 @@ function RegisterChatCommands()
     Chat:RegisterAdminCommand('unownproperty', function(source, args, rawCommand)
         local player = Fetch:Source(source)
         if player.Permissions:GetLevel() >= 100 then
-            if GlobalState[string.format("Property:%s", args[1])] then
+            if _properties[args[1]] then
                 if Properties.Commerce:Sell(args[1]) then
                     Chat.Send.System:Single(source, "Removed property owner")
                 else
@@ -273,6 +300,50 @@ function RegisterChatCommands()
         end
     end, {
         help = 'Remove Owner of a Property',
+        params = {
+            {
+                name = 'Property ID',
+                help = 'Unique ID of The Property'
+            },
+        }
+    }, 1)
+
+    Chat:RegisterAdminCommand('refreshfurniture', function(source, args, rawCommand)
+        local pId = args[1]
+        if _properties[pId] then
+            if _loadedFurniture[pId] then
+                _loadedFurniture[pId] = nil
+
+                Chat.Send.System:Single(source, "Furniture Refreshed")
+            else
+                Chat.Send.System:Single(source, "Furniture Wasn't Loaded Anyway")
+            end
+        else
+            Chat.Send.System:Single(source, "No Property With That ID")
+        end
+    end, {
+        help = 'Force the Furniture to be Loaded from DB Again',
+        params = {
+            {
+                name = 'Property ID',
+                help = 'Unique ID of The Property'
+            },
+        }
+    }, 1)
+
+    Chat:RegisterAdminCommand('resetfurniture', function(source, args, rawCommand)
+        local pId = args[1]
+        if _properties[pId] then
+            if DeletePropertyFurniture(pId) then
+                Chat.Send.System:Single(source, "Furniture Reset")
+            else
+                Chat.Send.System:Single(source, "Failed to Reset Furniture")
+            end
+        else
+            Chat.Send.System:Single(source, "No Property With That ID")
+        end
+    end, {
+        help = 'Reset the Property Furniture to Default',
         params = {
             {
                 name = 'Property ID',

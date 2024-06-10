@@ -1,38 +1,36 @@
 local _moving = false
-_stashModel = `hei_heist_bed_chestdrawer_04`
-_logoutModel = `v_res_msonbed`
-_closetModel = `prop_wardrobe_door_01`
-
-Citizen.CreateThread(function()
-	RequestModel(_stashModel)
-	RequestModel(_logoutModel)
-	RequestModel(_closetModel)
-end)
 
 function EnterProperty(data, backdoor)
-	Callbacks:ServerCallback("Properties:EnterProperty", data.propertyId, function(state)
+	Callbacks:ServerCallback("Properties:EnterProperty", data.propertyId, function(state, pId, int)
 		if state then
-			local prop = GlobalState[string.format("Property:%s", data.propertyId)]
 			Interaction:Hide()
+
 			DoScreenFadeOut(1000)
 			while not IsScreenFadedOut() do
 				Citizen.Wait(10)
 			end
+
+			while not _propertiesLoaded do
+				Citizen.Wait(100)
+			end
+
+			local property = _properties[pId]
+
 			Sounds.Play:One("door_open.ogg", 0.3)
 			Citizen.Wait(200)
-
-			local f = GlobalState[string.format("Properties:Interior:%s", prop.interior)]
 			FreezeEntityPosition(PlayerPedId(), true)
 			Citizen.Wait(50)
 
-			if backdoor and f.backdoor then
-				SetEntityCoords(PlayerPedId(), f.backdoor.x, f.backdoor.y, f.backdoor.z, 0, 0, 0, false)
+			local interior = PropertyInteriors[int]
+
+			if backdoor and interior.locations.back then
+				SetEntityCoords(PlayerPedId(), interior.locations.back.coords.x, interior.locations.back.coords.y, interior.locations.back.coords.z, 0, 0, 0, false)
 				Citizen.Wait(100)
-				SetEntityHeading(PlayerPedId(), f.backdoor.h)
+				SetEntityHeading(PlayerPedId(), interior.locations.back.heading)
 			else
-				SetEntityCoords(PlayerPedId(), f.x, f.y, f.z, 0, 0, 0, false)
+				SetEntityCoords(PlayerPedId(), interior.locations.front.coords.x, interior.locations.front.coords.y, interior.locations.front.coords.z, 0, 0, 0, false)
 				Citizen.Wait(100)
-				SetEntityHeading(PlayerPedId(), f.h)
+				SetEntityHeading(PlayerPedId(), interior.locations.front.heading)
 			end
 
 			local time = GetGameTimer()
@@ -51,14 +49,31 @@ function EnterProperty(data, backdoor)
 end
 
 function ExitProperty(data, backdoor)
-	Callbacks:ServerCallback("Properties:ExitProperty", {}, function(property)
-		local property = GlobalState[string.format("Property:%s", property)]
-
-		if not property then return; end
+	Callbacks:ServerCallback("Properties:ExitProperty", {}, function(pId)
+		_insideProperty = false
+		_insideInterior = false
 
 		DoScreenFadeOut(500)
 		while not IsScreenFadedOut() do
 			Citizen.Wait(10)
+		end
+
+		while not _propertiesLoaded do
+			Citizen.Wait(100)
+		end
+
+		local property = _properties[pId]
+
+		if not property then return; end
+
+		DestroyFurniture(true)
+		SetFurnitureEditMode(false)
+		if _placingFurniture then
+			ObjectPlacer:Cancel(true, true)
+			Phone:ResetRoute()
+			_placingFurniture = false
+			LocalPlayer.state.placingFurniture = false
+			LocalPlayer.state.furnitureEdit = false
 		end
 
 		TriggerEvent('Interiors:Exit')
@@ -70,12 +85,12 @@ function ExitProperty(data, backdoor)
 		FreezeEntityPosition(PlayerPedId(), true)
 		Citizen.Wait(50)
 
-		Targeting.Zones:RemoveZone(string.format("property-%s-logout", property.id))
-		Targeting.Zones:RemoveZone(string.format("property-%s-closet", property.id))
-		Targeting.Zones:RemoveZone(string.format("property-%s-stash", property.id))
-		Targeting.Zones:RemoveZone(string.format("property-%s-exit", property.id))
-		Targeting.Zones:RemoveZone(string.format("property-%s-exit-back", property.id))
-		Polyzone:Remove("property-int-zone")
+		-- Targeting.Zones:RemoveZone(string.format("property-%s-logout", pId))
+		-- Targeting.Zones:RemoveZone(string.format("property-%s-closet", pId))
+		-- Targeting.Zones:RemoveZone(string.format("property-%s-stash", pId))
+		Targeting.Zones:RemoveZone(string.format("property-%s-exit", pId))
+		Targeting.Zones:RemoveZone(string.format("property-%s-exit-back", pId))
+		--Polyzone:Remove("property-int-zone")
 
 		if backdoor and property.location.backdoor then
 			SetEntityCoords(
@@ -115,4 +130,14 @@ function ExitProperty(data, backdoor)
 			Citizen.Wait(10)
 		end
 	end)
+
+	Notification.Persistent:Remove("furniture")
+
+	if _previewingInterior then
+        EndPreview()
+	end
 end
+
+RegisterNetEvent("Properties:Client:ForceExitProperty", function()
+	ExitProperty()
+end)
