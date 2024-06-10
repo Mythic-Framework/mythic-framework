@@ -8,10 +8,11 @@
 - Custom written framework that was used for Mythic RP
 
 ## Official Discord
-- [Discord Link](https://discord.gg/xxxxxxxx) - Offical Discord for community-driven support forum!
+- [Discord Link](https://discord.gg/N2JARAe8Rp) - Offical Discord for community-driven support forum!
 
 ## Project Maintainers
 - Treyyyy - Maintainer & Community Owner
+- Jay - Maintainer &
 - Nex - Maintainer
 - TheCasual420Gamer - Maintainer
 - Tyh - Maintainer
