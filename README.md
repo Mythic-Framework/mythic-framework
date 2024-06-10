@@ -14,7 +14,7 @@ We do not own this framework, and we am simply trying to give it the support it 
 | HeidiSQL | [Download Here](https://www.heidisql.com/download.php) (*can be installed via MariaDB)
   
 # SQL Instaliation
-Run the SQL provided in xaamp, the mongo will build itself as the server starts
+Run the SQL provided in HeidiSQL, the mongo will build itself as the server starts
 
 # NOTE:
 This will not work out of the box, you will need to make modifications to the base to replace the WebAPI calls with whatever authentication source you're wanting to do. 
