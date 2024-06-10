@@ -247,8 +247,8 @@ _entityTypes = {
 	},
 	{
 		id = 31,
-		slots = 96,
-		capacity = 1500,
+		slots = 160,
+		capacity = 3500,
 		name = "Last Train Cold Storage",
 		restriction = {
 			job = {
@@ -513,8 +513,8 @@ _entityTypes = {
 
 	{
 		id = 57,
-		slots = 96,
-		capacity = 1500,
+		slots = 108,
+		capacity = 2000,
 		name = "UwU Cafe Freezer",
 		restriction = {
 			job = {
@@ -660,8 +660,8 @@ _entityTypes = {
 
 	{
 		id = 69,
-		slots = 96,
-		capacity = 2000,
+		slots = 140,
+		capacity = 3000,
 		name = "UwU Cafe Storage",
 		restriction = {
 			job = {
@@ -1169,7 +1169,7 @@ _entityTypes = {
 		id = 113,
 		slots = 80,
 		capacity = 3000,
-		name = "SecuroServ Storage",
+		name = "Gruppe 6 Storage",
 		restriction = {
 			job = {
 				id = "securoserv",
@@ -1180,7 +1180,7 @@ _entityTypes = {
 		id = 114,
 		slots = 52,
 		capacity = 300,
-		name = "SecuroServ Safe",
+		name = "Gruppe 6 Safe",
 		restriction = {
 			job = {
 				id = "securoserv",
@@ -1396,6 +1396,83 @@ _entityTypes = {
 	},
 
 	{
+		id = 132,
+		slots = 1,
+		capacity = 25,
+		name = "Gallery Gem Table",
+		restriction = {
+			job = {
+				id = "sagma",
+				permissionKey = "JOB_USE_GEM_TABLE",
+			},
+		},
+		action = {
+			icon = "gem",
+			text = "Inspect",
+			event = "Businesses:Server:SAGMA:ViewGem",
+		}
+	},
+
+	{
+		id = 133,
+		slots = 116,
+		capacity = 300,
+		name = "SAGMA Safe",
+		restriction = {
+			job = {
+				id = "sagma",
+				permissionKey = "JOB_ACCESS_SAFE",
+			},
+		},
+	},
+	{
+		id = 134,
+		slots = 140,
+		capacity = 4000,
+		name = "Gallery Office Storage",
+		restriction = {
+			job = {
+				id = "sagma",
+			},
+		},
+	},
+	{
+		id = 135,
+		slots = 1000,
+		capacity = 8000,
+		name = "Gallery Supplies",
+		restriction = {
+			job = {
+				id = "sagma",
+			},
+		},
+	},
+
+	{
+		id = 136,
+		slots = 16,
+		capacity = 1200,
+		name = "Large Order Pick Up",
+	},
+	{
+		id = 137,
+		slots = 100,
+		capacity = 1000,
+		name = "Fightclub Storage",
+		restriction = {
+			job = {
+				id = "triad_boxing",
+			},
+		},
+	},
+	{
+		id = 138,
+		slots = 100,
+		capacity = 1000,
+		name = "Placed Object",
+	},
+
+	{
 		id = 1000,
 		slots = 64,
 		capacity = 800,
@@ -1495,5 +1572,24 @@ _entityTypes = {
 				id = "ottos",
 			},
 		},
+	},
+
+	{
+		id = 3000,
+		slots = 64,
+		capacity = 1000,
+		name = "Storage Unit Tier 1",
+	},
+	{
+		id = 3001,
+		slots = 128,
+		capacity = 2000,
+		name = "Storage Unit Tier 2",
+	},
+	{
+		id = 3002,
+		slots = 192,
+		capacity = 3000,
+		name = "Storage Unit Tier 3",
 	},
 }

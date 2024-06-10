@@ -1,25 +1,27 @@
 export const initialState = {
 	player: {
-		size: 4,
+		loaded: false,
+		size: 0,
 		invType: 1,
-		name: null,
+		name: 'Player',
 		inventory: [],
 		disabled: {},
 		owner: 0,
-		capacity: 0,
+		capacity: 100,
 		isWeaponEligble: false,
 	},
 	equipment: {
 		inventory: [],
 	},
 	secondary: {
-		size: 4,
-		name: null,
+		loaded: false,
+		size: 0,
+		name: 'Dropzone',
 		invType: 2,
 		inventory: [],
 		disabled: {},
 		owner: 0,
-		capacity: 0,
+		capacity: 100,
 	},
 	showSecondary: false,
 	hover: false,
@@ -29,6 +31,7 @@ export const initialState = {
 	inUse: false,
 	items: {},
 	itemsLoaded: false,
+	staticTooltip: false,
 
 	// player: {
 	// 	size: 40,
@@ -36,86 +39,106 @@ export const initialState = {
 	// 	name: 'Player Storage',
 	// 	isWeaponEligble: true,
 	// 	capacity: 100,
-	// 	disabled: Object(),
-	// 	inventory: {
-	// 		1: {
+	// 	disabled: Object({
+	// 		2: true,
+	// 	}),
+	// 	loaded: true,
+	// 	inventory: [
+	// 		{
 	// 			Name: 'WEAPON_ADVANCEDRIFLE',
 	// 			Slot: 1,
 	// 			Count: 1,
+	// 			CreateDate: Date.now() / 1000,
 	// 			MetaData: {
-	// 				CreateDate: Date.now() / 1000,
+	// 				SerialNumber: '123-456',
 	// 			},
 	// 		},
-	// 		2: {
+	// 		{
 	// 			Name: 'WEAPON_ADVANCEDRIFLE',
 	// 			Slot: 2,
 	// 			Count: 1,
+	// 			CreateDate: 1625461797,
 	// 			MetaData: {
-	// 				CreateDate: 1625461797,
+	// 				SerialNumber: '123-456',
 	// 			},
 	// 		},
-	// 		3: {
+	// 		{
 	// 			Name: 'WEAPON_ADVANCEDRIFLE',
 	// 			Slot: 3,
 	// 			Count: 1,
+	// 			CreateDate: Date.now() / 1000 - 80000,
 	// 			MetaData: {
-	// 				CreateDate: Date.now() / 1000 - 80000,
+	// 				SerialNumber: '123-456',
 	// 			},
 	// 		},
-	// 		4: {
+	// 		{
 	// 			Name: 'WEAPON_ADVANCEDRIFLE',
 	// 			Slot: 4,
 	// 			Count: 1,
+	// 			CreateDate: 1225441797,
 	// 			MetaData: {
-	// 				CreateDate: 1225441797,
+	// 				SerialNumber: '123-456',
 	// 			},
 	// 		},
-	// 		5: {
+	// 		{
 	// 			Name: 'bread',
 	// 			Slot: 5,
 	// 			Count: 10,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 		6: {
+	// 		{
 	// 			Name: 'water',
 	// 			Slot: 6,
 	// 			Count: 10,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 	},
+	// 	],
 	// 	owner: '12214124',
 	// },
 	// equipment: {
 	// 	inventory: [],
 	// },
 	// secondary: {
-	// 	size: 40,
-	// 	name: 'Second Storage',
+	// 	size: 1,
+	// 	name: 'Gallery Gem Table',
 	// 	invType: 11,
 	// 	capacity: 100,
 	// 	disabled: Object(),
-	// 	inventory: {
-	// 		1: {
+	// 	shop: true,
+	// 	loaded: true,
+	// 	action: {
+	// 		icon: 'gem',
+	// 		text: 'Appraise',
+	// 		event: 'Test:Event:Thing',
+	// 	},
+	// 	inventory: [
+	// 		{
 	// 			Name: 'water',
 	// 			Slot: 1,
 	// 			Count: 10,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 		2: {
+	// 		{
 	// 			Name: 'water',
 	// 			Slot: 2,
 	// 			Count: 10,
 	// 			Price: 25,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 		3: {
+	// 		{
 	// 			Name: 'bread',
 	// 			Slot: 3,
 	// 			Count: 10,
 	// 			Price: 25,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 		4: {
+	// 		{
 	// 			Name: 'WEAPON_ADVANCEDRIFLE',
 	// 			Slot: 4,
 	// 			Count: 1,
+	// 			CreateDate: 1225441797,
 	// 		},
-	// 	},
+	// 	],
 	// 	owner: '346346346',
 	// },
 	// showSecondary: true,
@@ -126,6 +149,7 @@ export const initialState = {
 	// inUse: false,
 	// items: {
 	// 	bread: {
+	// 		name: 'bread',
 	// 		label: 'Bread',
 	// 		price: 0,
 	// 		isUsable: true,
@@ -137,6 +161,7 @@ export const initialState = {
 	// 		weight: 1,
 	// 	},
 	// 	water: {
+	// 		name: 'water',
 	// 		label: 'Water',
 	// 		price: 0,
 	// 		isUsable: true,
@@ -148,6 +173,7 @@ export const initialState = {
 	// 		weight: 1,
 	// 	},
 	// 	WEAPON_ADVANCEDRIFLE: {
+	// 		name: 'WEAPON_ADVANCEDRIFLE',
 	// 		label: 'Advanced Rifle',
 	// 		requiresLicense: true,
 	// 		price: 15000,
@@ -162,6 +188,16 @@ export const initialState = {
 	// 	},
 	// },
 	// itemsLoaded: true,
+
+	// staticTooltip: {
+	// 	Name: 'WEAPON_ADVANCEDRIFLE',
+	// 	Slot: 1,
+	// 	Count: 1,
+	// 	CreateDate: Date.now() / 1000,
+	// 	MetaData: {
+	// 		SerialNumber: '123-456',
+	// 	},
+	// },
 };
 
 const appReducer = (state = initialState, action) => {
@@ -195,6 +231,29 @@ const appReducer = (state = initialState, action) => {
 			return {
 				...state,
 				itemsLoaded: false,
+			};
+		case 'OPEN_STATIC_TOOLTIP':
+			return {
+				...state,
+				staticTooltip: action.payload.item,
+			};
+
+		case 'CLOSE_STATIC_TOOLTIP':
+			return {
+				...state,
+				staticTooltip: false,
+			};
+		case 'RESET_INVENTORY':
+			return {
+				...state,
+				player: {
+					...initialState.player,
+					disabled: { ...state.player.disabled },
+				},
+				secondary: {
+					...initialState.secondary,
+					disabled: { ...state.secondary.disabled },
+				},
 			};
 		case 'SET_PLAYER_INVENTORY': {
 			return {
@@ -269,16 +328,21 @@ const appReducer = (state = initialState, action) => {
 			};
 		}
 		case 'SET_PLAYER_SLOT': {
-			const playerInventory = state.player.inventory;
-			const disabled = state.player.disabled;
-			playerInventory[action.payload.slot] = action.payload.slotData;
-			disabled[action.payload.slot] = false;
 			return {
 				...state,
 				player: {
 					...state.player,
-					disabled,
-					inventory: playerInventory,
+					disabled: {
+						...state.player.disabled,
+						[action.payload.slot]: false,
+					},
+					// inventory: [
+					// 	...state.player.inventory.map((slot) => {
+					// 		if (slot?.Slot == action.payload.slot)
+					// 			return { ...action.payload.data };
+					// 		else return slot;
+					// 	}),
+					// ],
 				},
 			};
 		}
@@ -294,16 +358,21 @@ const appReducer = (state = initialState, action) => {
 			};
 		}
 		case 'SET_SECONDARY_SLOT': {
-			const secondaryInventory = state.secondary.inventory;
-			const disabled = state.secondary.disabled;
-			secondaryInventory[action.payload.slot] = action.payload.slotData;
-			disabled[action.payload.slot] = false;
 			return {
 				...state,
 				secondary: {
 					...state.secondary,
-					disabled,
-					inventory: secondaryInventory,
+					disabled: {
+						...state.secondary.disabled,
+						[action.payload.slot]: false,
+					},
+					// inventory: [
+					// 	...state.secondary.inventory.map((slot) => {
+					// 		if (slot?.Slot == action.payload.slot)
+					// 			return { ...action.payload.data };
+					// 		else return slot;
+					// 	}),
+					// ],
 				},
 			};
 		}
@@ -313,120 +382,707 @@ const appReducer = (state = initialState, action) => {
 				splitItem: action.payload,
 			};
 		}
-		case 'MOVE_ITEM_PLAYER_SAME': {
-			const playerInventory = state.player.inventory;
-			const playerDisabled = state.player.disabled;
-			moveItem(
-				action.payload,
-				playerInventory,
-				playerDisabled,
-				playerInventory,
-				playerDisabled,
-				state.items,
-			);
+		case 'MERGE_ITEM_PLAYER_SAME': {
+			let pInv = [
+				...state.player.inventory
+					.filter((slot) => slot?.Slot != action.payload.originSlot)
+					.map((slot) => {
+						if (slot?.Slot == action.payload.destSlot) {
+							let originItem = state.player.inventory.filter(
+								(slot) =>
+									slot?.Slot == action.payload.originSlot,
+							)[0];
+							return {
+								...slot,
+								Count: slot.Count + originItem.Count,
+							};
+						} else return slot;
+					}),
+			];
+
 			return {
 				...state,
 				player: {
 					...state.player,
-					disabled: playerDisabled,
-					inventory: playerInventory,
+					disabled: {
+						...state.player.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: pInv,
+				},
+			};
+		}
+		case 'SPLIT_ITEM_PLAYER_SAME': {
+			let pInv =
+				state.player.inventory.filter(
+					(s) => s?.Slot == action.payload.destSlot,
+				).length > 0
+					? [
+							...state.player.inventory.map((slot) => {
+								if (slot?.Slot == action.payload.originSlot) {
+									return {
+										...slot,
+										Count:
+											slot.Count -
+											action.payload.origin.Count,
+									};
+								} else if (
+									slot?.Slot == action.payload.destSlot
+								) {
+									return {
+										...slot,
+										Count:
+											slot.Count +
+											action.payload.origin.Count,
+									};
+								}
+								return slot;
+							}),
+					  ]
+					: [
+							...state.player.inventory.map((slot) => {
+								if (slot?.Slot == action.payload.originSlot) {
+									return {
+										...slot,
+										Count:
+											slot.Count -
+											action.payload.origin.Count,
+									};
+								}
+								return slot;
+							}),
+							{
+								...action.payload.origin,
+								Slot: action.payload.destSlot,
+							},
+					  ];
+
+			return {
+				...state,
+				player: {
+					...state.player,
+					disabled: {
+						...state.player.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: pInv,
+				},
+			};
+		}
+		case 'SWAP_ITEM_PLAYER_SAME': {
+			let pInv = [
+				...state.player.inventory.map((slot) => {
+					if (slot?.Slot == action.payload.originSlot) {
+						return {
+							...slot,
+							Slot: action.payload.destSlot,
+						};
+					} else if (slot?.Slot == action.payload.destSlot) {
+						return {
+							...slot,
+							Slot: action.payload.originSlot,
+						};
+					} else return slot;
+				}),
+			];
+
+			return {
+				...state,
+				player: {
+					...state.player,
+					disabled: {
+						...state.player.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: pInv,
+				},
+			};
+		}
+		case 'MOVE_ITEM_PLAYER_SAME': {
+			let pInv = [
+				...state.player.inventory.map((slot) => {
+					if (slot?.Slot == action.payload.originSlot) {
+						return {
+							...slot,
+							Slot: action.payload.destSlot,
+						};
+					} else return slot;
+				}),
+			];
+
+			return {
+				...state,
+				player: {
+					...state.player,
+					disabled: {
+						...state.player.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: pInv,
+				},
+			};
+		}
+		case 'MERGE_ITEM_SECONDARY_SAME': {
+			let sInv = [
+				...state.secondary.inventory
+					.filter((slot) => slot?.Slot != action.payload.originSlot)
+					.map((slot) => {
+						if (slot?.Slot == action.payload.destSlot) {
+							let originItem = state.secondary.inventory.filter(
+								(slot) =>
+									slot?.Slot == action.payload.originSlot,
+							)[0];
+							return {
+								...slot,
+								Count: slot.Count + originItem.Count,
+							};
+						} else return slot;
+					}),
+			];
+
+			return {
+				...state,
+				secondary: {
+					...state.secondary,
+					disabled: {
+						...state.secondary.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: sInv,
+				},
+			};
+		}
+		case 'SPLIT_ITEM_SECONDARY_SAME': {
+			let sInv =
+				state.secondary.inventory.filter(
+					(s) => s?.Slot == action.payload.destSlot,
+				).length > 0
+					? [
+							...state.secondary.inventory.map((slot) => {
+								if (slot?.Slot == action.payload.originSlot) {
+									return {
+										...slot,
+										Count:
+											slot.Count -
+											action.payload.origin.Count,
+									};
+								} else if (
+									slot?.Slot == action.payload.destSlot
+								) {
+									return {
+										...slot,
+										Count:
+											slot.Count +
+											action.payload.origin.Count,
+									};
+								}
+								return slot;
+							}),
+					  ]
+					: [
+							...state.secondary.inventory.map((slot) => {
+								if (slot?.Slot == action.payload.originSlot) {
+									return {
+										...slot,
+										Count:
+											slot.Count -
+											action.payload.origin.Count,
+									};
+								}
+								return slot;
+							}),
+							{
+								...action.payload.origin,
+								Slot: action.payload.destSlot,
+							},
+					  ];
+
+			return {
+				...state,
+				secondary: {
+					...state.secondary,
+					disabled: {
+						...state.secondary.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: sInv,
+				},
+			};
+		}
+		case 'SWAP_ITEM_SECONDARY_SAME': {
+			let sInv = [
+				...state.secondary.inventory.map((slot) => {
+					if (slot?.Slot == action.payload.originSlot) {
+						return {
+							...slot,
+							Slot: action.payload.destSlot,
+						};
+					} else if (slot?.Slot == action.payload.destSlot) {
+						return {
+							...slot,
+							Slot: action.payload.originSlot,
+						};
+					} else return slot;
+				}),
+			];
+
+			return {
+				...state,
+				secondary: {
+					...state.secondary,
+					disabled: {
+						...state.secondary.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: sInv,
 				},
 			};
 		}
 		case 'MOVE_ITEM_SECONDARY_SAME': {
-			if (state.secondary.shop) {
-				return state;
-			}
+			let sInv = [
+				...state.secondary.inventory.map((slot) => {
+					if (slot?.Slot == action.payload.originSlot) {
+						return {
+							...slot,
+							Slot: action.payload.destSlot,
+						};
+					} else return slot;
+				}),
+			];
 
-			const secondary = state.secondary.inventory;
-			const secondaryDisabled = state.secondary.disabled;
-			moveItem(
-				action.payload,
-				secondary,
-				secondaryDisabled,
-				secondary,
-				secondaryDisabled,
-				state.items,
-			);
 			return {
 				...state,
 				secondary: {
 					...state.secondary,
-					disabled: secondaryDisabled,
-					inventory: secondary,
+					disabled: {
+						...state.secondary.disabled,
+						[action.payload.originSlot]: true,
+						[action.payload.destSlot]: true,
+					},
+					inventory: sInv,
 				},
 			};
+		}
+		case 'MERGE_ITEM_PLAYER_TO_SECONDARY': {
+			let pInv = [
+				...state.player.inventory.filter(
+					(slot) => slot?.Slot != action.payload.originSlot,
+				),
+			];
+			let sInv = [
+				...state.secondary.inventory.map((s) => {
+					if (s?.Slot == action.payload.destSlot)
+						return {
+							...s,
+							Count: s.Count + action.payload.origin.Count,
+						};
+					else return s;
+				}),
+			];
+
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				calcWeight(sInv, state.items) <= state.secondary.capacity
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
+		}
+		case 'SPLIT_ITEM_PLAYER_TO_SECONDARY': {
+			let pInv = [
+				...state.player.inventory.map((slot) => {
+					if (slot?.Slot == action.payload.originSlot) {
+						return {
+							...slot,
+							Count: slot.Count - action.payload.origin.Count,
+						};
+					} else return slot;
+				}),
+			];
+			let sInv =
+				state.secondary.inventory.filter(
+					(s) => s?.Slot == action.payload.destSlot,
+				).length > 0
+					? [
+							...state.secondary.inventory.map((s) => {
+								if (s?.Slot == action.payload.destSlot)
+									return {
+										...s,
+										Count:
+											s.Count +
+											action.payload.origin.Count,
+									};
+								else return s;
+							}),
+					  ]
+					: [
+							...state.secondary.inventory,
+							{
+								...action.payload.origin,
+								Slot: action.payload.destSlot,
+							},
+					  ];
+
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				calcWeight(sInv, state.items) <= state.secondary.capacity
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
+		}
+		case 'SWAP_ITEM_PLAYER_TO_SECONDARY': {
+			let pInv = [
+				...state.player.inventory.filter(
+					(slot) => slot?.Slot != action.payload.originSlot,
+				),
+				...state.secondary.inventory
+					.filter((s) => s?.Slot == action.payload.destSlot)
+					.map((s) => ({
+						...s,
+						Slot: action.payload.originSlot,
+					})),
+			];
+			let sInv = [
+				...state.secondary.inventory.filter(
+					(slot) => slot?.Slot != action.payload.destSlot,
+				),
+				...state.player.inventory
+					.filter((s) => s?.Slot == action.payload.originSlot)
+					.map((s) => ({
+						...s,
+						Slot: action.payload.destSlot,
+					})),
+			];
+
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				calcWeight(sInv, state.items) <= state.secondary.capacity
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
 		}
 		case 'MOVE_ITEM_PLAYER_TO_SECONDARY': {
+			let pInv = [
+				...state.player.inventory.filter(
+					(s) => Boolean(s) && s?.Slot != action.payload.originSlot,
+				),
+			];
+			let sInv = [
+				...state.secondary.inventory,
+				...state.player.inventory
+					.filter(
+						(s) =>
+							Boolean(s) && s?.Slot == action.payload.originSlot,
+					)
+					.map((s) => {
+						return { ...s, Slot: action.payload.destSlot };
+					}),
+				,
+			];
+
 			if (
-				state.secondary.shop ||
-				calcWeight(state.secondary.inventory, state.items) +
-					action.payload.itemData.weight *
-						action.payload.origin.Count >
-					state.secondary.capacity
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				calcWeight(sInv, state.items) <= state.secondary.capacity
 			) {
-				return state;
-			}
-			const secondary = state.secondary.inventory;
-			const secondaryDisabled = state.secondary.disabled;
-			const player = state.player.inventory;
-			const playerDisabled = state.player.disabled;
-			moveItem(
-				action.payload,
-				player,
-				playerDisabled,
-				secondary,
-				secondaryDisabled,
-				state.items,
-			);
-			return {
-				...state,
-				player: {
-					...state.player,
-					disabled: playerDisabled,
-					inventory: player,
-				},
-				secondary: {
-					...state.secondary,
-					disabled: secondaryDisabled,
-					inventory: secondary,
-				},
-			};
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
+		}
+		case 'MERGE_ITEM_SECONDARY_TO_PLAYER': {
+			let pInv = [
+				...state.player.inventory.map((s) => {
+					if (s?.Slot == action.payload.destSlot)
+						return {
+							...s,
+							Count: s.Count + action.payload.origin.Count,
+						};
+					else return s;
+				}),
+			];
+			let sInv = !Boolean(action.payload.origin.shop)
+				? [
+						...state.secondary.inventory.filter(
+							(slot) =>
+								Boolean(slot) &&
+								slot?.Slot != action.payload.originSlot,
+						),
+				  ]
+				: state.secondary.inventory;
+
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				(calcWeight(sInv, state.items) <= state.secondary.capacity ||
+					action.payload.origin.shop)
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
+		}
+		case 'SPLIT_ITEM_SECONDARY_TO_PLAYER': {
+			let pInv =
+				state.player.inventory.filter(
+					(s) => s?.Slot == action.payload.destSlot,
+				).length > 0
+					? [
+							...state.player.inventory.map((s) => {
+								if (s?.Slot == action.payload.destSlot)
+									return {
+										...s,
+										Count:
+											s.Count +
+											action.payload.origin.Count,
+									};
+								else return s;
+							}),
+					  ]
+					: [
+							...state.player.inventory,
+							{
+								...action.payload.origin,
+								Slot: action.payload.destSlot,
+							},
+					  ];
+			let sInv = !Boolean(action.payload.origin.shop)
+				? [
+						...state.secondary.inventory.map((slot) => {
+							if (slot?.Slot == action.payload.originSlot) {
+								return {
+									...slot,
+									Count:
+										slot.Count -
+										action.payload.origin.Count,
+								};
+							} else return slot;
+						}),
+				  ]
+				: state.secondary.inventory;
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				(calcWeight(sInv, state.items) <= state.secondary.capacity ||
+					action.payload.origin.shop)
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
+		}
+		case 'SWAP_ITEM_SECONDARY_TO_PLAYER': {
+			let pInv = !Boolean(action.payload.origin.shop)
+				? [
+						...state.player.inventory.filter(
+							(slot) => slot?.Slot != action.payload.destSlot,
+						),
+						...state.secondary.inventory
+							.filter((s) => s?.Slot == action.payload.originSlot)
+							.map((s) => ({
+								...s,
+								Slot: action.payload.destSlot,
+							})),
+				  ]
+				: state.player.inventory;
+			let sInv = !Boolean(action.payload.origin.shop)
+				? [
+						...state.secondary.inventory.filter(
+							(slot) => slot?.Slot != action.payload.originSlot,
+						),
+						...state.player.inventory
+							.filter((s) => s?.Slot == action.payload.destSlot)
+							.map((s) => ({
+								...s,
+								Slot: action.payload.originSlot,
+							})),
+				  ]
+				: state.secondary.inventory;
+
+			if (
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				(calcWeight(sInv, state.items) <= state.secondary.capacity ||
+					action.payload.origin.shop)
+			) {
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
 		}
 		case 'MOVE_ITEM_SECONDARY_TO_PLAYER': {
+			let pInv = [
+				...state.player.inventory,
+				...state.secondary.inventory
+					.filter(
+						(s) =>
+							Boolean(s) && s?.Slot == action.payload.originSlot,
+					)
+					.map((s) => {
+						return {
+							...s,
+							Slot: action.payload.destSlot,
+							CreateDate: action.payload.origin.shop
+								? Date.now() / 1000
+								: s.CreateDate,
+						};
+					}),
+			];
+			let sInv = !action.payload.origin.shop
+				? [
+						...state.secondary.inventory.filter(
+							(s) =>
+								Boolean(s) &&
+								s?.Slot != action.payload.originSlot,
+						),
+				  ]
+				: state.secondary.inventory;
+
 			if (
-				calcWeight(state.player.inventory, state.items) +
-					action.payload.itemData.weight *
-						action.payload.origin.Count >
-				state.player.capacity
+				calcWeight(pInv, state.items) <= state.player.capacity &&
+				(calcWeight(sInv, state.items) <= state.secondary.capacity ||
+					action.payload.origin.shop)
 			) {
-				return state;
-			}
-			const secondary = state.secondary.inventory;
-			const secondaryDisabled = state.secondary.disabled;
-			const player = state.player.inventory;
-			const playerDisabled = state.player.disabled;
-			moveItem(
-				action.payload,
-				secondary,
-				secondaryDisabled,
-				player,
-				playerDisabled,
-				state.items,
-			);
-			return {
-				...state,
-				player: {
-					...state.player,
-					disabled: playerDisabled,
-					inventory: player,
-				},
-				secondary: {
-					...state.secondary,
-					disabled: secondaryDisabled,
-					inventory: secondary,
-				},
-			};
+				return {
+					...state,
+					player: {
+						...state.player,
+						disabled: {
+							...state.player.disabled,
+							[action.payload.destSlot]: true,
+						},
+						inventory: pInv,
+					},
+					secondary: {
+						...state.secondary,
+						disabled: {
+							...state.secondary.disabled,
+							[action.payload.originSlot]: true,
+						},
+						inventory: sInv,
+					},
+				};
+			} else return state;
 		}
 		case 'USE_ITEM_PLAYER':
 			const player = state.player.inventory;
@@ -453,10 +1109,10 @@ const appReducer = (state = initialState, action) => {
 
 // Actually what the fuck is this reducer code at this point
 const calcWeight = (inv, items) => {
-	return Object.keys(inv)
-		.filter((a) => Boolean(inv[a]))
+	return inv
+		.filter((a) => Boolean(a))
 		.reduce((a, b) => {
-			return a + (items[inv[b].Name]?.weight || 0) * inv[b].Count;
+			return a + (items[b.Name]?.weight || 0) * b.Count;
 		}, 0);
 };
 
@@ -467,75 +1123,6 @@ const useItem = (payload, origin, disabled) => {
 	// } else {
 	// 	delete origin[payload.originSlot];
 	// }
-};
-
-const moveItem = (
-	payload,
-	origin,
-	originDisabled,
-	dest,
-	destDisabled,
-	items,
-) => {
-	if (!dest[payload.destSlot]) {
-		dest[payload.destSlot] = payload.origin;
-		destDisabled[payload.destSlot] = true;
-		origin[payload.originSlot].Count = payload.origin.shop
-			? origin[payload.originSlot].Count
-			: origin[payload.originSlot].Count - payload.origin.Count;
-
-		if (!payload.origin.shop) {
-			originDisabled[payload.originSlot] = true;
-		}
-
-		if (origin[payload.originSlot].Count <= 0 && !payload.origin.shop) {
-			delete origin[payload.originSlot];
-		}
-	} else {
-		if (
-			dest[payload.destSlot].Name === origin[payload.originSlot].Name &&
-			((Boolean(payload.origin?.isStackable) &&
-				dest[payload.destSlot].Count + payload.origin.Count <=
-					items[origin[payload.originSlot].Name].isStackable) ||
-				payload.origin?.isStackable == -1)
-		) {
-			if (
-				Boolean(dest[payload.destSlot].MetaData) &&
-				Boolean(origin[payload.originSlot].MetaData)
-			) {
-				if (
-					origin[payload.originSlot].MetaData?.CreateDate <
-					dest[payload.destSlot].MetaData?.CreateDate
-				) {
-					dest[payload.destSlot].MetaData.CreateDate =
-						origin[payload.originSlot].MetaData?.CreateDate;
-				}
-			}
-
-			dest[payload.destSlot].Count =
-				dest[payload.destSlot].Count + payload.origin.Count;
-			destDisabled[payload.destSlot] = true;
-			origin[payload.originSlot].Count = payload.origin.shop
-				? origin[payload.originSlot].Count
-				: origin[payload.originSlot].Count - payload.origin.Count;
-
-			if (!payload.origin.shop) {
-				originDisabled[payload.originSlot] = true;
-			}
-			if (origin[payload.originSlot].Count <= 0 && !payload.origin.shop) {
-				delete origin[payload.originSlot];
-			}
-		} else if (!payload.origin.shop) {
-			const temp = dest[payload.destSlot];
-			dest[payload.destSlot] = origin[payload.originSlot];
-			destDisabled[payload.destSlot] = true;
-			origin[payload.originSlot] = temp;
-
-			if (!payload.origin.shop) {
-				originDisabled[payload.originSlot] = true;
-			}
-		}
-	}
 };
 
 export default appReducer;

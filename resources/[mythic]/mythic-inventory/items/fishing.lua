@@ -55,6 +55,7 @@ _itemsSource["fishing"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.1,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_bait_worm",
@@ -69,6 +70,7 @@ _itemsSource["fishing"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.1,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_rainbowtrout",
@@ -83,6 +85,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 2.0,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_chub",
@@ -97,6 +100,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 1.5,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_grasscarp",
@@ -111,6 +115,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 1.0,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_kelp",
@@ -125,6 +130,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 1.5,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_bass",
@@ -139,6 +145,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 1.5,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_rockfish",
@@ -153,6 +160,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 1.0,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_lobster",
@@ -167,6 +175,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.75,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_tuna",
@@ -180,6 +189,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 2.5,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_bluefintuna",
@@ -193,6 +203,7 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3.5,
+		durability = (60 * 60 * 24 * 60),
 	},
     {
 		name = "fishing_whale",
@@ -304,5 +315,6 @@ _itemsSource["fishing"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.01,
+		durability = (60 * 60 * 24 * 60),
 	},
 }

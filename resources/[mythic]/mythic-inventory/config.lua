@@ -52,9 +52,10 @@ Config.ShopItemSets = {
 		"cloth",
 		"pipe",
 		"nails",
+		"drill",
 	}, -- Hardware
 	[3] = { "cup", "bun", "patty", "pickle" }, -- Burger Shot Supplies
-	[4] = { "armor", "WEAPON_PISTOL", "WEAPON_FNX", "AMMO_PISTOL", "WEAPON_BAT" }, -- Ammunation
+	[4] = { "armor", "heavyarmor", "WEAPON_PISTOL", "WEAPON_FNX", "AMMO_PISTOL", "WEAPON_BAT" }, -- Ammunation
 	[5] = { -- Electronics Store
 		"phone",
 		"radio_shitty",
@@ -64,7 +65,6 @@ Config.ShopItemSets = {
 	[6] = {
 		"pdarmor",
 		"ifak",
-		"tourniquet",
 		"pdhandcuffs",
 		"spikes",
 		"WEAPON_FLASHLIGHT",
@@ -82,8 +82,10 @@ Config.ShopItemSets = {
 		"binoculars",
 		"camera",
 		"phone",
+		"WEAPON_FLASHBANG",
+		"WEAPON_SMOKEGRENADE",
 	}, -- Police Armory
-	[7] = { "traumakit", "medicalkit", "tourniquet", "firstaid", "bandage", "gauze", "morphine", "radio", "phone", "scuba_gear" },
+	[7] = { "traumakit", "medicalkit", "firstaid", "bandage", "morphine", "radio", "phone", "scuba_gear" },
 	[8] = {
 		"WEAPON_SNIPERRIFLE2",
 		"AMMO_SNIPER",
@@ -101,7 +103,6 @@ Config.ShopItemSets = {
 		"pdarmor",
 		"traumakit",
 		"ifak",
-		"tourniquet",
 		"pdhandcuffs",
 		-- "spikes",
 		"WEAPON_TASER",
@@ -166,6 +167,8 @@ Config.ShopItemSets = {
 		"raspberry",
 		"peach_juice",
 		"coconut_milk",
+		"bento_box",
+		"keg",
 	},
 	[17] = {
 		"weed_joint",
@@ -203,6 +206,5 @@ Config.ShopItemSets = {
 	},
 	[22] = {
 		"personal_plates",
-		"phone",
 	},
 }

@@ -3,6 +3,21 @@ local disabled = false
 local weaponLimit = 4
 local attachedObjects = {}
 
+local weaponOffsets = {
+	[1] = {
+		x = 0.1, y = -0.155, z = 0.21, rx = 0.0, ry = 150.0, rz = 0.0, diff = 0.1
+	},
+	[2] = {
+		x = 0.1, y = -0.155, z = 0.21, rx = 0.0, ry = 150.0, rz = 0.0, diff = 0.2
+	},
+	[3] = {
+		x = 0.1, y = -0.155, z = 0.21, rx = 180.0, ry = -150.0, rz = 0.0, diff = 0.2
+	},
+	[4] = {
+		x = 0.1, y = -0.155, z = 0.21, rx = 180.0, ry = 180.0, rz = 0.0, diff = 0.3
+	},
+}
+
 function LoadModel(model)
 	RequestModel(model)
 	local attempts = 0
@@ -50,10 +65,20 @@ RegisterNetEvent("Weapons:Client:AttachToggle", function(state)
 	end
 end)
 
+local attaching = false
 RegisterNetEvent("Weapons:Client:Attach", function(force)
-	if disabled then
+	if not LocalPlayer.state.loggedIn or disabled then
 		return
 	end
+
+	while Weapons == nil do
+		Citizen.Wait(1)
+	end
+
+	if attaching then
+		return
+	end
+	attaching = true
 
 	local curw = Weapons:GetEquippedHash()
 	DeleteAttached()
@@ -69,29 +94,59 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				if count < weaponLimit and not isEquipped then
 					local bone = GetPedBoneIndex(PlayerPedId(), 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
+
+					while not DoesEntityExist(obj) do
+						Citizen.Wait(1)
+					end
+
 					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
 						item = v.item,
 					})
-					AttachEntityToEntity(
-						obj,
-						PlayerPedId(),
-						bone,
-						v.x,
-						v.y,
-						v.z - ((count + 1) / 10),
-						v.rx,
-						v.ry,
-						v.rz,
-						0,
-						1,
-						0,
-						1,
-						0,
-						1
-					)
+
+					local offset = weaponOffsets[count+1]
+
+					if v.override then
+						AttachEntityToEntity(
+							obj,
+							PlayerPedId(),
+							bone,
+							v.x,
+							v.y,
+							v.z,
+							v.rx,
+							v.ry,
+							v.rz,
+							0,
+							1,
+							0,
+							1,
+							0,
+							1
+						)
+					else
+						AttachEntityToEntity(
+							obj,
+							PlayerPedId(),
+							bone,
+							(offset.x + v.x),
+							(offset.y + v.y),
+							(offset.z + v.z) - offset.diff,
+							(offset.rx + v.rx),
+							(offset.ry + v.ry),
+							(offset.rz + v.rz),
+							0,
+							1,
+							0,
+							1,
+							0,
+							1
+						)
+					end
+					SetEntityCollision(obj, false, true)
+					SetEntityCompletelyDisableCollision(obj, false, true)
 				elseif isEquipped and attachedObjects[hasAttchItem] ~= nil then
 					DeleteEntity(attachedObjects[hasAttchItem].object)
 					table.remove(attachedObjects, hasAttchItem)
@@ -112,6 +167,8 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 						item = v.item,
 					})
 					AttachEntityToEntity(obj, PlayerPedId(), bone, v.x, v.y, v.z, v.rx, v.ry, v.rz, 0, 1, 0, 1, 0, 1)
+					SetEntityCollision(obj, false, true)
+					SetEntityCompletelyDisableCollision(obj, false, true)
 				end
 			elseif v.type == "object" then
 				local count = CountType(v.type)
@@ -125,6 +182,8 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 						item = v.item,
 					})
 					AttachEntityToEntity(obj, PlayerPedId(), bone, v.x, v.y, v.z, v.rx, v.ry, v.rz, 0, 1, 0, 1, 0, 1)
+					SetEntityCollision(obj, false, true)
+					SetEntityCompletelyDisableCollision(obj, false, true)
 				end
 			end
 		elseif not hasItem and hasAttchItem then
@@ -139,13 +198,21 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				end
 			end
 		end
-		Citizen.Wait(1)
 	end
+
+	attaching = false
 end)
 
-AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.Wait(1500)
-	TriggerEvent("Weapons:Client:Attach")
+RegisterNetEvent("Characters:Client:Spawn", function()
+	Citizen.CreateThread(function()
+		while _cachedInventory == nil do
+			Citizen.Wait(100)
+		end
+	
+		Citizen.Wait(1000)
+		
+		TriggerEvent("Weapons:Client:Attach")
+	end)
 end)
 
 RegisterNetEvent("Characters:Client:Logout", function()

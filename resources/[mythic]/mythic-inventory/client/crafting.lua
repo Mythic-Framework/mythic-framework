@@ -40,7 +40,7 @@ CRAFTING = {
 			self:Cleanup()
 
 			for k, v in ipairs(_benches) do
-				if v.targeting then
+				if v.targeting and not v.targeting.manual then
 					if
 						v.restrictions.interior == nil
 						or v.restrictions.interior

@@ -12,6 +12,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 1,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "goldcoins",
@@ -25,6 +27,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.1,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "rolex",
@@ -38,6 +42,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.75,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "ring",
@@ -51,6 +57,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 1,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "chain",
@@ -64,6 +72,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.5,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "watch",
@@ -77,6 +87,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 1,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "earrings",
@@ -90,6 +102,8 @@ _itemsSource["loot"] = {
 		closeUi = false,
 		metalic = false,
 		weight = 0.8,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "tv",
@@ -104,6 +118,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 100.0,
 		state = "ANIM_tv",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "big_tv",
@@ -118,6 +134,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 100.0,
 		state = "ANIM_bigtv",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "boombox",
@@ -132,6 +150,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 50.0,
 		state = "ANIM_boombox",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "microwave",
@@ -146,6 +166,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 50.0,
 		state = "ANIM_microwave",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "golfclubs",
@@ -159,6 +181,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 100.0,
 		state = "ANIM_golfclubs",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "house_art",
@@ -172,6 +196,8 @@ _itemsSource["loot"] = {
 		metalic = false,
 		weight = 100.0,
 		state = "ANIM_house_art",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "pc",
@@ -185,6 +211,8 @@ _itemsSource["loot"] = {
 		metalic = true,
 		weight = 80.0,
 		state = "ANIM_pc",
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "crushedrock",
@@ -213,6 +241,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.25,
+		isDestroyed = true,
+		durability = (60 * 60 * 24 * 90),
 	},
 	{
 		name = "recycledgoods",
@@ -227,6 +257,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.25,
+		isDestroyed = true,
+		durability = (60 * 60 * 24 * 90),
 	},
 	{
 		name = "goldore",
@@ -241,6 +273,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+		isDestroyed = true,
+		durability = (60 * 60 * 24 * 90),
 	},
 	{
 		name = "silverore",
@@ -255,6 +289,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+		isDestroyed = true,
+		durability = (60 * 60 * 24 * 90),
 	},
 	{
 		name = "ironore",
@@ -269,6 +305,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+		isDestroyed = true,
+		durability = (60 * 60 * 24 * 90),
 	},
 	{
 		name = "diamond",
@@ -283,6 +321,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 2.5,
+		gemProperties = {
+			color = 67,
+		},
 	},
 	{
 		name = "emerald",
@@ -297,6 +338,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 53,
+		},
 	},
 	{
 		name = "sapphire",
@@ -311,6 +355,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 79,
+		},
 	},
 	{
 		name = "ruby",
@@ -325,6 +372,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 35,
+		},
 	},
 	{
 		name = "amethyst",
@@ -339,6 +389,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 145,
+		},
 	},
 	{
 		name = "citrine",
@@ -353,6 +406,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 38,
+		},
 	},
 	{
 		name = "opal",
@@ -367,6 +423,9 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 0.5,
+		gemProperties = {
+			color = 65,
+		},
 	},
 	{
 		name = "moneyroll",
@@ -418,6 +477,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "hide_tier2",
@@ -432,6 +493,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "hide_tier3",
@@ -446,6 +509,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "hide_tier4",
@@ -460,6 +525,8 @@ _itemsSource["loot"] = {
 		closeUi = true,
 		metalic = false,
 		weight = 3,
+        isDestroyed = true,
+        durability = (60 * 60 * 24 * 10),
 	},
 	{
 		name = "fleeca_card",

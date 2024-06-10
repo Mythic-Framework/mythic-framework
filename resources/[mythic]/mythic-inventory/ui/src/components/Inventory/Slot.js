@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { LinearProgress, Popover } from '@mui/material';
+import { CircularProgress, LinearProgress, Popover } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
-import { moveSlot } from './actions';
+import { mergeSlot, moveSlot, swapSlot } from './actions';
 import { getItemImage, getItemLabel } from './item';
 import Nui from '../../util/Nui';
 import { useSound } from '../../hooks';
@@ -13,50 +13,44 @@ import { FormatThousands } from '../../util/Parser';
 const useStyles = makeStyles((theme) => ({
 	slotWrap: {
 		display: 'inline-block',
-		margin: 5,
 		boxSizing: 'border-box',
 		flexGrow: 0,
 		width: 165,
 		flexBasis: 165,
 		zIndex: 1,
+		position: 'relative',
+		'&.mini': {
+			width: 132,
+			flexBasis: 132,
+		},
+		'&.equipped': {
+			marginLeft: 40,
+		},
 	},
 	slot: {
 		width: '100%',
 		height: 190,
-		backgroundColor: `${theme.palette.secondary.dark}61`,
-		border: `1px solid ${theme.palette.border.divider}`,
+		backgroundColor: `${theme.palette.secondary.light}61`,
 		position: 'relative',
 		zIndex: 2,
-		borderRadius: 5,
+		'&.mini': {
+			width: 132,
+			height: 152,
+		},
+		'&.solid': {
+			backgroundColor: `${theme.palette.secondary.light}c4`,
+		},
 		'&:not(.disabled):not(.empty)': {
 			transition: 'background ease-in 0.15s',
 			'&:hover': {
 				backgroundColor: `${theme.palette.secondary.dark}9e`,
 			},
 		},
-		'&.rarity-1': {
-			borderColor: `${theme.palette.rarities.rare1}40`,
-		},
-		'&.rarity-2': {
-			borderColor: `${theme.palette.rarities.rare2}80`,
-		},
-		'&.rarity-3': {
-			borderColor: `${theme.palette.rarities.rare3}80`,
-		},
-		'&.rarity-4': {
-			borderColor: `${theme.palette.rarities.rare4}80`,
-		},
-		'&.rarity-5': {
-			borderColor: `${theme.palette.rarities.rare5}80`,
-		},
-		'&.disabled': {
-			borderColor: `${theme.palette.error.main}`,
-		},
 	},
 	slotDrag: {
 		width: '100%',
 		height: 190,
-		border: `1px solid ${theme.palette.primary.main}`,
+		border: `1px solid ${theme.palette.border.divider}9e`,
 		position: 'relative',
 		zIndex: 2,
 		opacity: 0.35,
@@ -69,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
 		backgroundSize: '70%',
 		backgroundRepeat: 'no-repeat',
 		backgroundPosition: 'center center',
+		'&.mini': {
+			height: 152,
+		},
 	},
 	count: {
 		top: 0,
@@ -94,9 +91,19 @@ const useStyles = makeStyles((theme) => ({
 		whiteSpace: 'nowrap',
 		color: theme.palette.text.main,
 		background: theme.palette.secondary.light,
-		borderTop: `1px solid ${theme.palette.border.divider}`,
-		borderBottomLeftRadius: 6,
-		borderBottomRightRadius: 6,
+		borderTop: `1px solid rgb(255 255 255 / 4%)`,
+		zIndex: 4,
+	},
+	equipped: {
+		top: 0,
+		left: 0,
+		position: 'absolute',
+		padding: '0 5px',
+		color: theme.palette.primary.alt,
+		background: theme.palette.secondary.light,
+		borderRight: `1px solid rgb(255 255 255 / 4%)`,
+		borderBottom: `1px solid rgb(255 255 255 / 4%)`,
+		borderBottomRightRadius: 4,
 		zIndex: 4,
 	},
 	hotkey: {
@@ -107,10 +114,9 @@ const useStyles = makeStyles((theme) => ({
 		width: '20px',
 		color: theme.palette.primary.alt,
 		background: theme.palette.secondary.light,
-		borderRight: `1px solid ${theme.palette.border.divider}`,
-		borderBottom: `1px solid ${theme.palette.border.divider}`,
-		borderBottomRightRadius: 5,
-		borderTopLeftRadius: 5,
+		borderRight: `1px solid rgb(255 255 255 / 4%)`,
+		borderBottom: `1px solid rgb(255 255 255 / 4%)`,
+		borderBottomRightRadius: 4,
 		zIndex: 4,
 	},
 	price: {
@@ -151,33 +157,44 @@ const useStyles = makeStyles((theme) => ({
 	},
 	broken: {
 		backgroundColor: theme.palette.text.alt,
+		transition: 'none !important',
+	},
+	progressbar: {
+		transition: 'none !important',
 	},
 	popover: {
 		pointerEvents: 'none',
 	},
 	paper: {
-		padding: 10,
-		border: `1px solid ${theme.palette.primary.dark}`,
-		borderRadius: 5,
-		'&.rarity-1': {
-			borderColor: theme.palette.rarities.rare1,
-		},
-		'&.rarity-2': {
-			borderColor: theme.palette.rarities.rare2,
-		},
-		'&.rarity-3': {
-			borderColor: theme.palette.rarities.rare3,
-		},
-		'&.rarity-4': {
-			borderColor: theme.palette.rarities.rare4,
-		},
-		'&.rarity-5': {
-			borderColor: theme.palette.rarities.rare5,
-		},
+		padding: 20,
+		border: `1px solid ${theme.palette.border.divider}`,
+	},
+	loader: {
+		height: 'fit-content',
+		width: 'fit-content',
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		margin: 'auto',
 	},
 }));
 
+const lua2json = (lua) =>
+	JSON.parse(
+		lua
+			.replace(/\[([^\[\]]+)\]\s*=/g, (s, k) => `${k} :`)
+			.replace(/,(\s*)\}/gm, (s, k) => `${k}}`),
+	);
+
 export default connect()((props) => {
+	const metadata = Boolean(props.data?.MetaData)
+		? typeof props.data?.MetaData == 'string'
+			? lua2json(props.data.MetaData)
+			: props.data.MetaData
+		: Object();
+
 	const classes = useStyles();
 	const hidden = useSelector((state) => state.app.hidden);
 	const hover = useSelector((state) => state.inventory.hover);
@@ -199,15 +216,11 @@ export default connect()((props) => {
 	const soundEffect = useSound();
 
 	const calcDurability = () => {
-		if (
-			!Boolean(props?.data?.MetaData?.CreateDate) ||
-			!Boolean(itemData?.durability)
-		)
+		if (!Boolean(props?.data?.CreateDate) || !Boolean(itemData?.durability))
 			null;
 		return Math.ceil(
 			100 -
-				((Math.floor(Date.now() / 1000) -
-					props?.data?.MetaData?.CreateDate) /
+				((Math.floor(Date.now() / 1000) - props?.data?.CreateDate) /
 					itemData?.durability) *
 					100,
 		);
@@ -230,8 +243,7 @@ export default connect()((props) => {
 	const isOpenContainer =
 		Boolean(props.data) &&
 		itemData?.type == 10 &&
-		secondaryInventory.owner ==
-			`container:${props.data.MetaData.Container}`;
+		secondaryInventory.owner == `container:${metadata?.Container}`;
 
 	const durability = calcDurability();
 
@@ -251,8 +263,7 @@ export default connect()((props) => {
 			props.owner == playerInventory.owner &&
 			items[props.data.Name].isUsable &&
 			(!Boolean(items[props.data.Name].durability) ||
-				props.data.MetaData?.CreateDate +
-					items[props.data.Name].durability >
+				props.data?.CreateDate + items[props.data.Name].durability >
 					Date.now() / 1000)
 		);
 	};
@@ -260,20 +271,27 @@ export default connect()((props) => {
 	const moveItem = () => {
 		if (
 			hoverOrigin.slot !== props.slot ||
-			hoverOrigin.owner !== props.owner
+			hoverOrigin.owner !== props.owner ||
+			hoverOrigin.invType !== props.invType
 		) {
 			if (isQualiDisabled || isWeaponDisabled || isOpenContainer) {
 				return;
 			}
 
 			let origin;
-			if (playerInventory.owner === hoverOrigin.owner) {
+			if (
+				playerInventory.owner === hoverOrigin.owner &&
+				playerInventory.invType == hoverOrigin.invType
+			) {
 				origin = 'player';
 			} else {
 				origin = 'secondary';
 			}
 			let destination;
-			if (playerInventory.owner === props.owner) {
+			if (
+				playerInventory.owner === props.owner &&
+				playerInventory.invType == props.invType
+			) {
 				destination = 'player';
 			} else {
 				destination = 'secondary';
@@ -306,45 +324,488 @@ export default connect()((props) => {
 				destSlot: props.slot,
 				itemData: hoverData,
 			};
-			moveSlot(
-				hoverOrigin.owner,
-				props.owner,
-				hoverOrigin.slot,
-				props.slot,
-				hoverOrigin.invType,
-				props.invType,
-				hoverOrigin.Name,
-				hoverOrigin.Count,
-				hover.Count,
-				hoverOrigin.class,
-				props.vehClass,
-				hoverOrigin.model,
-				props.vehModel,
-			);
+
 			setAnchorEl(null);
+			let isSplit = hoverOrigin.Count != hover.Count;
 			if (origin === destination) {
 				if (origin === 'player') {
-					dispatch({
-						type: 'MOVE_ITEM_PLAYER_SAME',
-						payload,
-					});
+					let destSlot = playerInventory.inventory.filter(
+						(s) => Boolean(s) && s.Slot == props.slot,
+					)[0];
+
+					if (Boolean(destSlot)) {
+						if (
+							destSlot.Name == hover.Name &&
+							destSlot.Count + hover.Count <=
+								items[destSlot.Name].isStackable
+						) {
+							if (isSplit) {
+								moveSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+									isSplit,
+								);
+								dispatch({
+									type: 'SPLIT_ITEM_PLAYER_SAME',
+									payload,
+								});
+							} else {
+								mergeSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_PLAYER_SAME',
+									payload,
+								});
+							}
+						} else {
+							swapSlot(
+								hoverOrigin.owner,
+								props.owner,
+								hoverOrigin.slot,
+								props.slot,
+								hoverOrigin.invType,
+								props.invType,
+								hoverOrigin.Name,
+								hoverOrigin.Count,
+								hover.Count,
+								hoverOrigin.class,
+								props.vehClass,
+								hoverOrigin.model,
+								props.vehModel,
+								hoverOrigin.slotOverride,
+								props.slotOverride,
+								hoverOrigin.capacityOverride,
+								props.capacityOverride,
+							);
+							dispatch({
+								type: 'SWAP_ITEM_PLAYER_SAME',
+								payload,
+							});
+						}
+					} else {
+						moveSlot(
+							hoverOrigin.owner,
+							props.owner,
+							hoverOrigin.slot,
+							props.slot,
+							hoverOrigin.invType,
+							props.invType,
+							hoverOrigin.Name,
+							hoverOrigin.Count,
+							hover.Count,
+							hoverOrigin.class,
+							props.vehClass,
+							hoverOrigin.model,
+							props.vehModel,
+							hoverOrigin.slotOverride,
+							props.slotOverride,
+							hoverOrigin.capacityOverride,
+							props.capacityOverride,
+							isSplit,
+						);
+						if (isSplit) {
+							dispatch({
+								type: 'SPLIT_ITEM_PLAYER_SAME',
+								payload,
+							});
+						} else {
+							dispatch({
+								type: 'MOVE_ITEM_PLAYER_SAME',
+								payload,
+							});
+						}
+					}
 				} else {
-					dispatch({
-						type: 'MOVE_ITEM_SECONDARY_SAME',
-						payload,
-					});
+					let destSlot = secondaryInventory.inventory.filter(
+						(s) => Boolean(s) && s.Slot == props.slot,
+					)[0];
+
+					if (Boolean(destSlot)) {
+						if (
+							destSlot.Name == hover.Name &&
+							destSlot.Count + hover.Count <=
+								items[destSlot.Name].isStackable
+						) {
+							if (isSplit) {
+								moveSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+									isSplit,
+								);
+								dispatch({
+									type: 'SPLIT_ITEM_SECONDARY_SAME',
+									payload,
+								});
+							} else {
+								mergeSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_SECONDARY_SAME',
+									payload,
+								});
+							}
+						} else {
+							swapSlot(
+								hoverOrigin.owner,
+								props.owner,
+								hoverOrigin.slot,
+								props.slot,
+								hoverOrigin.invType,
+								props.invType,
+								hoverOrigin.Name,
+								hoverOrigin.Count,
+								hover.Count,
+								hoverOrigin.class,
+								props.vehClass,
+								hoverOrigin.model,
+								props.vehModel,
+								hoverOrigin.slotOverride,
+								props.slotOverride,
+								hoverOrigin.capacityOverride,
+								props.capacityOverride,
+							);
+							dispatch({
+								type: 'SWAP_ITEM_SECONDARY_SAME',
+								payload,
+							});
+						}
+					} else {
+						moveSlot(
+							hoverOrigin.owner,
+							props.owner,
+							hoverOrigin.slot,
+							props.slot,
+							hoverOrigin.invType,
+							props.invType,
+							hoverOrigin.Name,
+							hoverOrigin.Count,
+							hover.Count,
+							hoverOrigin.class,
+							props.vehClass,
+							hoverOrigin.model,
+							props.vehModel,
+							hoverOrigin.slotOverride,
+							props.slotOverride,
+							hoverOrigin.capacityOverride,
+							props.capacityOverride,
+							isSplit,
+						);
+						if (isSplit) {
+							dispatch({
+								type: 'SPLIT_ITEM_SECONDARY_SAME',
+								payload,
+							});
+						} else {
+							dispatch({
+								type: 'MOVE_ITEM_SECONDARY_SAME',
+								payload,
+							});
+						}
+					}
 				}
 			} else {
 				if (origin === 'player') {
-					dispatch({
-						type: 'MOVE_ITEM_PLAYER_TO_SECONDARY',
-						payload,
-					});
+					let destSlot = secondaryInventory.inventory.filter(
+						(s) => Boolean(s) && s.Slot == props.slot,
+					)[0];
+
+					if (Boolean(destSlot)) {
+						if (
+							destSlot.Name == hover.Name &&
+							destSlot.Count + hover.Count <=
+								items[destSlot.Name].isStackable
+						) {
+							if (isSplit) {
+								moveSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+									isSplit,
+								);
+								dispatch({
+									type: 'SPLIT_ITEM_PLAYER_TO_SECONDARY',
+									payload,
+								});
+							} else {
+								mergeSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_PLAYER_TO_SECONDARY',
+									payload,
+								});
+							}
+						} else if (!secondaryInventory.shop) {
+							swapSlot(
+								hoverOrigin.owner,
+								props.owner,
+								hoverOrigin.slot,
+								props.slot,
+								hoverOrigin.invType,
+								props.invType,
+								hoverOrigin.Name,
+								hoverOrigin.Count,
+								hover.Count,
+								hoverOrigin.class,
+								props.vehClass,
+								hoverOrigin.model,
+								props.vehModel,
+								hoverOrigin.slotOverride,
+								props.slotOverride,
+								hoverOrigin.capacityOverride,
+								props.capacityOverride,
+							);
+							dispatch({
+								type: 'SWAP_ITEM_PLAYER_TO_SECONDARY',
+								payload,
+							});
+						}
+					} else {
+						moveSlot(
+							hoverOrigin.owner,
+							props.owner,
+							hoverOrigin.slot,
+							props.slot,
+							hoverOrigin.invType,
+							props.invType,
+							hoverOrigin.Name,
+							hoverOrigin.Count,
+							hover.Count,
+							hoverOrigin.class,
+							props.vehClass,
+							hoverOrigin.model,
+							props.vehModel,
+							hoverOrigin.slotOverride,
+							props.slotOverride,
+							hoverOrigin.capacityOverride,
+							props.capacityOverride,
+							isSplit,
+						);
+						if (isSplit) {
+							dispatch({
+								type: 'SPLIT_ITEM_PLAYER_TO_SECONDARY',
+								payload,
+							});
+						} else {
+							dispatch({
+								type: 'MOVE_ITEM_PLAYER_TO_SECONDARY',
+								payload,
+							});
+						}
+					}
 				} else {
-					dispatch({
-						type: 'MOVE_ITEM_SECONDARY_TO_PLAYER',
-						payload,
-					});
+					let destSlot = playerInventory.inventory.filter(
+						(s) => Boolean(s) && s.Slot == props.slot,
+					)[0];
+
+					if (Boolean(destSlot)) {
+						if (
+							destSlot.Name == hover.Name &&
+							destSlot.Count + hover.Count <=
+								items[destSlot.Name].isStackable
+						) {
+							if (isSplit) {
+								moveSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+									isSplit,
+								);
+								dispatch({
+									type: 'SPLIT_ITEM_SECONDARY_TO_PLAYER',
+									payload,
+								});
+							} else {
+								mergeSlot(
+									hoverOrigin.owner,
+									props.owner,
+									hoverOrigin.slot,
+									props.slot,
+									hoverOrigin.invType,
+									props.invType,
+									hoverOrigin.Name,
+									hoverOrigin.Count,
+									hover.Count,
+									hoverOrigin.class,
+									props.vehClass,
+									hoverOrigin.model,
+									props.vehModel,
+									hoverOrigin.slotOverride,
+									props.slotOverride,
+									hoverOrigin.capacityOverride,
+									props.capacityOverride,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_SECONDARY_TO_PLAYER',
+									payload,
+								});
+							}
+						} else if (!secondaryInventory.shop) {
+							swapSlot(
+								hoverOrigin.owner,
+								props.owner,
+								hoverOrigin.slot,
+								props.slot,
+								hoverOrigin.invType,
+								props.invType,
+								hoverOrigin.Name,
+								hoverOrigin.Count,
+								hover.Count,
+								hoverOrigin.class,
+								props.vehClass,
+								hoverOrigin.model,
+								props.vehModel,
+								hoverOrigin.slotOverride,
+								props.slotOverride,
+								hoverOrigin.capacityOverride,
+								props.capacityOverride,
+							);
+							dispatch({
+								type: 'SWAP_ITEM_SECONDARY_TO_PLAYER',
+								payload,
+							});
+						}
+					} else {
+						moveSlot(
+							hoverOrigin.owner,
+							props.owner,
+							hoverOrigin.slot,
+							props.slot,
+							hoverOrigin.invType,
+							props.invType,
+							hoverOrigin.Name,
+							hoverOrigin.Count,
+							hover.Count,
+							hoverOrigin.class,
+							props.vehClass,
+							hoverOrigin.model,
+							props.vehModel,
+							hoverOrigin.slotOverride,
+							props.slotOverride,
+							hoverOrigin.capacityOverride,
+							props.capacityOverride,
+							isSplit,
+						);
+						if (isSplit) {
+							dispatch({
+								type: 'SPLIT_ITEM_SECONDARY_TO_PLAYER',
+								payload,
+							});
+						} else {
+							dispatch({
+								type: 'MOVE_ITEM_SECONDARY_TO_PLAYER',
+								payload,
+							});
+						}
+					}
 				}
 			}
 			setAnchorEl(null);
@@ -401,28 +862,31 @@ export default connect()((props) => {
 						itemData: itemData,
 					};
 
-					if (playerInventory.owner === props.owner) {
+					if (
+						playerInventory.owner === props.owner &&
+						playerInventory.invType === props.invType
+					) {
 						if (secondaryInventory.shop) {
 							Nui.send('FrontEndSound', 'DISABLED');
 							return;
 						}
 
-						Object.keys(secondaryInventory.inventory)
-							.filter((sId) =>
-								Boolean(secondaryInventory.inventory[sId]),
-							)
-							.sort(
-								(a, b) =>
-									secondaryInventory.inventory[a].Slot -
-									secondaryInventory.inventory[b].Slot,
-							)
-							.every((sId) => {
-								let slot = secondaryInventory.inventory[sId];
-
+						secondaryInventory.inventory
+							.filter((s) => Boolean(s))
+							.sort((a, b) => a.Slot - b.Slot)
+							.every((slot) => {
 								if (
 									slot.Name == props.data.Name &&
-									(itemData.isStackable == -1 || (Boolean(itemData.isStackable) && props.data.Count + slot.Count <= itemData.isStackable)) &&
-									(itemData.durability == null || (Math.abs((props.data?.MetaData?.CreateDate || Date.now() / 1000) - (slot?.MetaData?.CreateDate || Date.now() / 1000)) <= 3600))
+									Boolean(itemData.isStackable) &&
+									props.data.Count + slot.Count <=
+										itemData.isStackable &&
+									(itemData.durability == null ||
+										Math.abs(
+											(props.data?.CreateDate ||
+												Date.now() / 1000) -
+												(slot?.CreateDate ||
+													Date.now() / 1000),
+										) <= 3600)
 								) {
 									payload.destination = slot;
 									payload.destSlot = slot.Slot;
@@ -434,9 +898,9 @@ export default connect()((props) => {
 						if (!Boolean(payload.destSlot)) {
 							for (let i = 1; i <= secondaryInventory.size; i++) {
 								if (
-									!Boolean(
-										secondaryInventory.inventory[`${i}`],
-									)
+									secondaryInventory.inventory.filter(
+										(s) => Boolean(s) && s.Slot == i,
+									).length == 0
 								) {
 									payload.destSlot = i;
 									break;
@@ -446,46 +910,83 @@ export default connect()((props) => {
 
 						if (Boolean(payload.destSlot)) {
 							soundEffect('drag');
-							moveSlot(
-								playerInventory.owner,
-								secondaryInventory.owner,
-								props.slot,
-								payload.destSlot,
-								props.invType,
-								secondaryInventory.invType,
-								props.data.Name,
-								props.data.Count,
-								props.data.Count,
-								false,
-								secondaryInventory.class,
-								false,
-								secondaryInventory.model,
-							);
-							dispatch({
-								type: 'MOVE_ITEM_PLAYER_TO_SECONDARY',
-								payload,
-							});
+
+							if (
+								secondaryInventory.inventory.filter(
+									(s) =>
+										Boolean(s) &&
+										s.Slot == payload.destSlot,
+								).length > 0
+							) {
+								mergeSlot(
+									playerInventory.owner,
+									secondaryInventory.owner,
+									props.slot,
+									payload.destSlot,
+									props.invType,
+									secondaryInventory.invType,
+									props.data.Name,
+									props.data.Count,
+									props.data.Count,
+									false,
+									secondaryInventory.class,
+									false,
+									secondaryInventory.model,
+									false,
+									secondaryInventory.slotOverride,
+									false,
+									secondaryInventory.capacityOverride,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_PLAYER_TO_SECONDARY',
+									payload,
+								});
+							} else {
+								moveSlot(
+									playerInventory.owner,
+									secondaryInventory.owner,
+									props.slot,
+									payload.destSlot,
+									props.invType,
+									secondaryInventory.invType,
+									props.data.Name,
+									props.data.Count,
+									props.data.Count,
+									false,
+									secondaryInventory.class,
+									false,
+									secondaryInventory.model,
+									false,
+									secondaryInventory.slotOverride,
+									false,
+									secondaryInventory.capacityOverride,
+								);
+								dispatch({
+									type: 'MOVE_ITEM_PLAYER_TO_SECONDARY',
+									payload,
+								});
+							}
 							setAnchorEl(null);
 						} else {
 							Nui.send('FrontEndSound', 'DISABLED');
 						}
 					} else {
-						Object.keys(playerInventory.inventory)
-							.filter((sId) =>
-								Boolean(playerInventory.inventory[sId]),
-							)
-							.sort(
-								(a, b) =>
-									playerInventory.inventory[a].Slot -
-									playerInventory.inventory[b].Slot,
-							)
-							.every((sId) => {
-								let slot = playerInventory.inventory[sId];
-
+						playerInventory.inventory
+							.filter((s) => Boolean(s))
+							.sort((a, b) => a.Slot - b.Slot)
+							.every((slot) => {
 								if (
 									slot.Name == props.data.Name &&
-									(itemData.isStackable == -1 || (Boolean(itemData.isStackable) && props.data.Count + slot.Count <= itemData.isStackable)) &&
-									(itemData.durability == null || (Math.abs((props.data?.MetaData?.CreateDate || Date.now() / 1000) - (slot?.MetaData?.CreateDate || Date.now() / 1000)) <= 3600))
+									Boolean(itemData.isStackable) &&
+									props.data.Count + slot.Count <=
+										itemData.isStackable &&
+									(itemData.durability == null ||
+										Math.abs(
+											(props.data?.CreateDate ||
+												Date.now() / 1000) -
+												(slot?.CreateDate ||
+													Date.now() / 1000),
+										) <= 3600)
 								) {
 									payload.destination = slot;
 									payload.destSlot = slot.Slot;
@@ -497,7 +998,9 @@ export default connect()((props) => {
 						if (!Boolean(payload.destSlot)) {
 							for (let i = 1; i <= playerInventory.size; i++) {
 								if (
-									!Boolean(playerInventory.inventory[`${i}`])
+									playerInventory.inventory.filter(
+										(s) => Boolean(s) && s.Slot == i,
+									).length == 0
 								) {
 									payload.destSlot = i;
 									break;
@@ -507,25 +1010,62 @@ export default connect()((props) => {
 
 						if (Boolean(payload.destSlot)) {
 							soundEffect('drag');
-							moveSlot(
-								secondaryInventory.owner,
-								playerInventory.owner,
-								props.slot,
-								payload.destSlot,
-								props.invType,
-								1,
-								props.data.Name,
-								props.data.Count,
-								props.data.Count,
-								secondaryInventory.class,
-								false,
-								secondaryInventory.model,
-								false,
-							);
-							dispatch({
-								type: 'MOVE_ITEM_SECONDARY_TO_PLAYER',
-								payload,
-							});
+
+							if (
+								playerInventory.inventory.filter(
+									(s) =>
+										Boolean(s) &&
+										s.Slot == payload.destSlot,
+								).length > 0
+							) {
+								mergeSlot(
+									secondaryInventory.owner,
+									playerInventory.owner,
+									props.slot,
+									payload.destSlot,
+									props.invType,
+									1,
+									props.data.Name,
+									props.data.Count,
+									props.data.Count,
+									secondaryInventory.class,
+									false,
+									secondaryInventory.model,
+									false,
+									secondaryInventory.slotOverride,
+									false,
+									secondaryInventory.capacityOverride,
+									false,
+								);
+								dispatch({
+									type: 'MERGE_ITEM_SECONDARY_TO_PLAYER',
+									payload,
+								});
+							} else {
+								moveSlot(
+									secondaryInventory.owner,
+									playerInventory.owner,
+									props.slot,
+									payload.destSlot,
+									props.invType,
+									1,
+									props.data.Name,
+									props.data.Count,
+									props.data.Count,
+									secondaryInventory.class,
+									false,
+									secondaryInventory.model,
+									false,
+									secondaryInventory.slotOverride,
+									false,
+									secondaryInventory.capacityOverride,
+									false,
+								);
+								dispatch({
+									type: 'MOVE_ITEM_SECONDARY_TO_PLAYER',
+									payload,
+								});
+							}
 							setAnchorEl(null);
 						} else {
 							Nui.send('FrontEndSound', 'DISABLED');
@@ -602,7 +1142,9 @@ export default connect()((props) => {
 
 	return (
 		<div
-			className={classes.slotWrap}
+			className={`${classes.slotWrap}${
+				Boolean(props.equipped) ? ' equipped' : ''
+			}${props.mini ? ' mini' : ''}`}
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
 			onContextMenu={Boolean(itemData) ? props.onContextMenu : null}
@@ -610,14 +1152,17 @@ export default connect()((props) => {
 			onMouseLeave={Boolean(itemData) ? tooltipClose : null}
 		>
 			<div
-				className={`${classes.slot} ${
-					!Boolean(props.data.Name)
+				className={`${classes.slot}${props.mini ? ' mini' : ''}${
+					props.solid ? ' solid' : ''
+				} ${
+					!Boolean(props.data?.Name)
 						? ` empty`
 						: ` rarity-${itemData.rarity}`
 				}${
 					hoverOrigin != null &&
 					hoverOrigin.slot === props.slot &&
-					hoverOrigin.owner === props.owner
+					hoverOrigin.owner === props.owner &&
+					hoverOrigin.invType === props.invType
 						? ` ${classes.slotDrag}`
 						: ''
 				}${
@@ -628,7 +1173,7 @@ export default connect()((props) => {
 			>
 				{Boolean(itemData) && (
 					<div
-						className={classes.img}
+						className={`${classes.img}${props.mini ? ' mini' : ''}`}
 						style={{
 							backgroundImage: `url(${getItemImage(
 								props.data,
@@ -640,9 +1185,13 @@ export default connect()((props) => {
 				{Boolean(itemData) && props.data.Count > 0 && (
 					<div className={classes.count}>{props.data.Count}</div>
 				)}
-				{props.hotkeys && props.slot <= 4 && (
-					<div className={classes.hotkey}>{props.slot}</div>
-				)}
+				{Boolean(props.equipped) ? (
+					<div className={classes.equipped}>Equipped</div>
+				) : props.hotkeys && props.slot <= 4 ? (
+					<div className={classes.hotkey}>
+						{Boolean(props.equipped) ? 'Equipped' : props.slot}
+					</div>
+				) : null}
 				{props.shop &&
 					Boolean(itemData) &&
 					(props.free ? (
@@ -656,7 +1205,7 @@ export default connect()((props) => {
 						</div>
 					))}
 				{Boolean(itemData?.durability) &&
-					Boolean(props?.data?.MetaData?.CreateDate) &&
+					Boolean(props?.data?.CreateDate) &&
 					(durability > 0 ? (
 						<LinearProgress
 							className={classes.durability}
@@ -667,6 +1216,11 @@ export default connect()((props) => {
 									? 'warning'
 									: 'error'
 							}
+							classes={{
+								determinate: classes.progressbar,
+								bar: classes.progressbar,
+								bar1: classes.progressbar,
+							}}
 							variant="determinate"
 							value={durability}
 						/>
@@ -674,7 +1228,9 @@ export default connect()((props) => {
 						<LinearProgress
 							className={classes.durability}
 							classes={{
+								determinate: classes.broken,
 								bar: classes.broken,
+								bar1: classes.broken,
 							}}
 							variant="determinate"
 							value={100}
@@ -683,6 +1239,11 @@ export default connect()((props) => {
 				{Boolean(itemData) && (
 					<div className={classes.label}>
 						{getItemLabel(props.data, itemData)}
+					</div>
+				)}
+				{Boolean(props.locked) && (
+					<div className={classes.loader}>
+						<CircularProgress color="inherit" size={30} />
 					</div>
 				)}
 			</div>

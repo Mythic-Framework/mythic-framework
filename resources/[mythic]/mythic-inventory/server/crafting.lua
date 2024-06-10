@@ -31,6 +31,71 @@ function deepcopy(orig)
 	return copy
 end
 
+function RemoveCraftingCooldown(source, bench, id)
+	local plyr = Fetch:Source(source)
+	if plyr ~= nil then
+		if plyr.Permissions:IsAdmin() then
+			local char = plyr:GetData("Character")
+			if char ~= nil then
+				if _cooldowns[bench] ~= nil then
+					Logger:Info("Crafting", string.format("%s %s (%s) Reset Cooldown %s on bench %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), id, bench))
+					Chat.Send.Server:Single(source, "Cooldown Removed From Bench")
+					_cooldowns[bench][id] = nil
+					MySQL.query('DELETE FROM crafting_cooldowns WHERE bench = ? AND id = ?', { bench, id })
+				else
+					Logger:Info("Crafting", string.format("%s %s (%s) Attempted To Remove Cooldown %s From Non-Existent Bench %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), id, bench))
+					Chat.Send.Server:Single(source, "Not A Valid Bench")
+				end
+			end
+		else
+			Logger:Info("Crafting", string.format("%s %s (%s) Attempted To Remove Cooldown %s From Bench %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), id, bench))
+		end
+	end
+end
+
+function LoadCraftingCooldowns()
+	Citizen.CreateThread(function()
+		local cds = MySQL.query.await('SELECT * FROM crafting_cooldowns WHERE expires > ?', { os.time() })
+
+		for k, v in ipairs(cds or {}) do
+			_cooldowns[v.bench] = _cooldowns[v.bench] or {}
+			_cooldowns[v.bench][v.id] = v.expires
+		end
+	end)
+end
+
+local _cdThreading = false
+function CleanupExpiredCooldowns()
+	if _cdThreading then return end
+	_cdThreading = true
+
+	Citizen.CreateThread(function()
+		while _cdThreading do
+			for k, v in pairs(_cooldowns) do
+				for k2, v2 in pairs(v) do
+					if v2 < os.time() then
+						_cooldowns[k][k2] = nil
+					end
+				end
+			end
+
+			MySQL.query('DELETE FROM crafting_cooldowns WHERE expires < ?', { os.time() }, function(d)
+				if d.affectedRows > 0 then
+					Logger:Info("Inventory", string.format("Remove ^2%s^7 Expired Crafting Cooldowns", d.affectedRows))
+				end
+			end)
+			Citizen.Wait(60000)
+		end
+	end)
+end
+
+function InsertCooldown(bench, key, expires)
+	_cooldowns[bench] = _cooldowns[bench] or {}
+
+	MySQL.insert('INSERT INTO crafting_cooldowns (bench, id, expires) VALUES(?, ?, ?)', { bench, key, expires })
+	_cooldowns[bench][key] = expires
+end
+
 CRAFTING = {
 	RegisterBench = function(self, id, label, targeting, location, restrictions, recipes, canUseSchematics)
 		while not itemsLoaded do
@@ -66,7 +131,6 @@ CRAFTING = {
 	end,
 	AddRecipeToBench = function(self, bench, id, recipe)
 		if _types[bench] == nil then
-			print('invalid table')
 			return
 		end
 		recipe.id = id
@@ -144,7 +208,7 @@ CRAFTING = {
 			end
 
 			for k, v in pairs(reagents) do
-				if not Inventory.Items:Remove(crafter, 1, k, v) then
+				if not Inventory.Items:Remove(crafter, 1, k, v, true) then
 					return false
 				end
 			end
@@ -157,7 +221,7 @@ CRAFTING = {
 			end
 
 			if recipe.cooldown then
-				_cooldowns[_inProg[crafter].bench][recipe.id] = (os.time() * 1000) + recipe.cooldown
+				InsertCooldown(_inProg[crafter].bench, recipe.id, (os.time() * 1000) + recipe.cooldown)
 			end
 
 			if Inventory:AddItem(crafter, recipe.result.name, recipe.result.count * _inProg[crafter].qty, meta, 1) then
@@ -240,17 +304,10 @@ function RegisterCraftingCallbacks()
 				)
 			)
 		then
-			-- local slots = GlobalState[("inventory:%s:%s:slots"):format(char:GetData("ID"), 1)] or {}
-			-- local items = {}
-			-- -- for k, v in ipairs(slots) do
-			-- --     local key = ("inventory:%s:1:%s"):format(char:GetData("ID"), v)
-			-- --     table.insert(save, GlobalState[key])
-			-- --     GlobalState[key] = nil
-			-- -- end
 			cb({
 				recipes = bench.recipes,
 				cooldowns = _cooldowns[data],
-				myCounts = Inventory.Items:GetCounts(char:GetData("ID"), 1),
+				myCounts = Inventory.Items:GetCounts(char:GetData("SID"), 1),
 				string = bench.targeting?.actionString or "Crafting",
 				canUseSchematics = bench.canUseSchematics,
 			})
@@ -261,17 +318,17 @@ function RegisterCraftingCallbacks()
 
 	Callbacks:RegisterServerCallback("Crafting:Craft", function(source, data, cb)
 		local char = Fetch:Source(source):GetData("Character")
-		cb(Crafting.Craft:Start(char:GetData("ID"), data.bench, data.result, data.qty))
+		cb(Crafting.Craft:Start(char:GetData("SID"), data.bench, data.result, data.qty))
 	end)
 
 	Callbacks:RegisterServerCallback("Crafting:End", function(source, data, cb)
 		local char = Fetch:Source(source):GetData("Character")
-		cb(Crafting.Craft:End(char:GetData("ID")))
+		cb(Crafting.Craft:End(char:GetData("SID")))
 	end)
 
 	Callbacks:RegisterServerCallback("Crafting:Cancel", function(source, data, cb)
 		local char = Fetch:Source(source):GetData("Character")
-		cb(Crafting.Craft:Cancel(char:GetData("ID")))
+		cb(Crafting.Craft:Cancel(char:GetData("SID")))
 	end)
 
 	Callbacks:RegisterServerCallback("Crafting:GetSchematics", function(source, data, cb)
@@ -279,14 +336,13 @@ function RegisterCraftingCallbacks()
 		if plyr ~= nil then
 			local char = plyr:GetData("Character")
 			if char ~= nil then
-				local schems = Inventory.Items:GetAllOfType(char:GetData("ID"), 1, 17)
+				local schems = Inventory.Items:GetAllOfType(char:GetData("SID"), 1, 17)
 
 				local list = {}
 				for k, v in ipairs(schems) do
-					local itemData = Inventory.Items:GetData(v)
-					if itemData?.schematic ~= nil and not Crafting.Schematics:Has(data.id, v) then
+					local itemData = Inventory.Items:GetData(v.Name)
+					if itemData?.schematic ~= nil and not Crafting.Schematics:Has(data.id, v.Name) then
 						local result = Inventory.Items:GetData(itemData.schematic.result.name)
-
 						table.insert(list, {
 							label = itemData.label,
 							description = string.format("Makes: x%s %s", itemData.schematic.result.count, result.label),
@@ -310,7 +366,7 @@ function RegisterCraftingCallbacks()
 		if plyr ~= nil then
 			local char = plyr:GetData("Character")
 			if char ~= nil then
-				if Inventory.Items:Has(char:GetData("ID"), 1, data.schematic, 1) then
+				if Inventory.Items:HasId(char:GetData("SID"), 1, data.schematic.id) then
 					local bench = _types[data.bench]
 					if bench ~= nil then
 						if
@@ -339,8 +395,8 @@ function RegisterCraftingCallbacks()
 								)
 							)
 						then
-							if Inventory.Items:Remove(char:GetData("ID"), 1, data.schematic, 1) then
-								if Crafting.Schematics:Add(data.bench, data.schematic) then
+							if Inventory.Items:RemoveId(char:GetData("SID"), 1, data.schematic) then
+								if Crafting.Schematics:Add(data.bench, data.schematic.Name) then
 									TriggerClientEvent("Crafting:Client:ForceBenchRefresh", source)
 									cb(true)
 								else

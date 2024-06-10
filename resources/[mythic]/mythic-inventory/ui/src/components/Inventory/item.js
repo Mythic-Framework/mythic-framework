@@ -1,6 +1,19 @@
+const lua2json = (lua) =>
+	JSON.parse(
+		lua
+			.replace(/\[([^\[\]]+)\]\s*=/g, (s, k) => `${k} :`)
+			.replace(/,(\s*)\}/gm, (s, k) => `${k}}`),
+	);
+
 const getItemImage = (item, itemData) => {
-	if (item?.MetaData?.CustomItemImage) {
-		return item?.MetaData?.CustomItemImage;
+	const metadata = Boolean(item?.MetaData)
+		? typeof item?.MetaData == 'string'
+			? lua2json(item.MetaData)
+			: item.MetaData
+		: Object();
+
+	if (metadata?.CustomItemImage) {
+		return metadata?.CustomItemImage;
 	} else if (Boolean(itemData) && Boolean(itemData.iconOverride)) {
 		return `../images/items/${itemData.iconOverride}.webp`;
 	} else {
@@ -9,8 +22,14 @@ const getItemImage = (item, itemData) => {
 };
 
 const getItemLabel = (item, itemData) => {
-	if (item?.MetaData?.CustomItemLabel) {
-		return item?.MetaData?.CustomItemLabel;
+	const metadata = Boolean(item?.MetaData)
+		? typeof item?.MetaData == 'string'
+			? lua2json(item.MetaData)
+			: item.MetaData
+		: Object();
+
+	if (metadata?.CustomItemLabel) {
+		return metadata?.CustomItemLabel;
 	} else {
 		return itemData?.label ?? 'Unknown';
 	}

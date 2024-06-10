@@ -1,56 +1,4 @@
 _weaponModels = {}
-local weaponAttachments = {
-	flashlight = {},
-	muzzle = {
-		["WEAPON_PISTOL"] = {
-			"COMPONENT_AT_PI_SUPP",
-		},
-		["WEAPON_PISTOL_MK2"] = {
-			"COMPONENT_AT_PI_SUPP_02",
-		},
-		["WEAPON_COMBATPISTOL"] = {
-			"COMPONENT_AT_PI_SUPP",
-		},
-		["WEAPON_APPISTOL"] = {
-			"COMPONENT_AT_PI_SUPP",
-		},
-		["WEAPON_PISTOL50"] = {
-			"COMPONENT_AT_AR_SUPP_02",
-		},
-		["WEAPON_HEAVYPISTOL"] = {
-			"COMPONENT_AT_PI_SUPP",
-		},
-		["WEAPON_SNSPISTOL_MK2"] = {
-			"COMPONENT_AT_PI_COMP_02",
-		},
-		["WEAPON_MICROSMG"] = {
-			"COMPONENT_AT_AR_SUPP_02",
-		},
-		["WEAPON_SMG"] = {
-			"COMPONENT_AT_PI_SUPP",
-		},
-		["WEAPON_ASSAULTSMG"] = {
-			"COMPONENT_AT_AR_SUPP_02",
-		},
-		["WEAPON_SMG_MK2"] = {
-			"COMPONENT_AT_PI_SUPP",
-			"COMPONENT_AT_MUZZLE_01",
-			"COMPONENT_AT_MUZZLE_02",
-			"COMPONENT_AT_MUZZLE_03",
-			"COMPONENT_AT_MUZZLE_04",
-			"COMPONENT_AT_MUZZLE_05",
-			"COMPONENT_AT_MUZZLE_06",
-			"COMPONENT_AT_MUZZLE_07",
-		},
-	},
-	barrel = {
-		["WEAPON_SMG_MK2"] = {
-			"COMPONENT_AT_SB_BARREL_01",
-			"COMPONENT_AT_SB_BARREL_02",
-		},
-	},
-	magazine = {},
-}
 
 function tableContains(tbl, value)
 	for k, v in ipairs(tbl or {}) do
@@ -100,14 +48,13 @@ AddEventHandler("Core:Shared:Ready", function()
 			if plyr ~= nil then
 				local char = plyr:GetData("Character")
 				if char ~= nil then
-					if Inventory.Items:Remove(char:GetData("ID"), 1, data.Name, 1) then
-						Inventory:GetSlot(char:GetData("ID"), data.Slot, 1, function(slotUsed)
-							if slotUsed == nil then
-								TriggerClientEvent("Weapons:Client:ForceUnequip", source)
-							end
+					if Inventory.Items:Remove(char:GetData("SID"), 1, data.Name, 1) then
+						local slotUsed = Inventory:GetSlot(char:GetData("SID"), data.Slot, 1)
+						if slotUsed == nil then
+							TriggerClientEvent("Weapons:Client:ForceUnequip", source)
+						end
 
-							cb()
-						end)
+						cb()
 					end
 				else
 					cb()
@@ -129,16 +76,18 @@ WEAPONS = {
 			return false
 		end
 	end,
-	Save = function(self, source, slot, ammo, clip)
+	Save = function(self, source, id, ammo, clip)
 		local char = Fetch:Source(source):GetData("Character")
-		Inventory:SetMetaDataKey(char:GetData("ID"), 1, slot, "ammo", ammo)
-		Inventory:SetMetaDataKey(char:GetData("ID"), 1, slot, "clip", clip)
+		Inventory:UpdateMetaData(id, {
+			ammo = ammo,
+			clip = clip,
+		})
 	end,
-	Purchase = function(self, cId, item, isScratched, isCompanyOwned)
+	Purchase = function(self, sid, item, isScratched, isCompanyOwned)
 		local p = promise.new()
 
 		if not isCompanyOwned then
-			local plyr = Fetch:CharacterData("ID", cId)
+			local plyr = Fetch:SID(sid)
 			if plyr ~= nil then
 				local char = plyr:GetData("Character")
 				if char ~= nil then
@@ -239,17 +188,22 @@ WEAPONS = {
 						p:resolve(false)
 					else
 						local itemData = Inventory.Items:GetData(item.Name)
+						local weaponData = Inventory.Items:GetData(data.item)
 						if itemData ~= nil and itemData.component ~= nil then
-							if itemData.component.strings[data.item] ~= nil then
+							if itemData.component.strings[weaponData.weapon or weaponData.name] ~= nil then
 								Callbacks:ClientCallback(
 									source,
 									"Weapons:EquipAttachment",
 									itemData.label,
 									function(notCancelled)
 										if notCancelled then
-											Inventory:GetSlot(char:GetData("ID"), data.slot, 1, function(slotData)
-												print(json.encode(slotData, { indent = true }))
+											local slotData = Inventory:GetItem(data.id)
+
+											if slotData ~= nil then
+												slotData.MetaData = json.decode(slotData.MetaData or "{}")
+
 												local unequipItem = nil
+												local unequipCreated = nil
 												if
 													slotData.MetaData.WeaponComponents ~= nil
 													and slotData.MetaData.WeaponComponents[itemData.component.type]
@@ -269,51 +223,53 @@ WEAPONS = {
 													end
 													unequipItem =
 														slotData.MetaData.WeaponComponents[itemData.component.type].item
+													unequipCreated =
+														slotData.MetaData.WeaponComponents[itemData.component.type].created
 												end
-
+	
 												local comps = table.copy(slotData.MetaData.WeaponComponents or {})
 												comps[itemData.component.type] = {
 													type = itemData.component.type,
 													item = item.Name,
-													attachment = itemData.component.strings[data.item],
+													created = item.CreateDate,
+													attachment = itemData.component.strings[weaponData.weapon or weaponData.name],
 												}
-
-												Inventory:RemoveItem(item.Owner, item.Name, 1, item.Slot, 1)
+	
+												Inventory.Items:RemoveSlot(item.Owner, item.Name, 1, item.Slot, 1)
 												if unequipItem ~= nil then
 													local returnData = Inventory.Items:GetData(unequipItem)
 													if returnData?.component?.returnItem then
-														Inventory:AddItem(item.Owner, unequipItem, 1, {}, 1)
+														Inventory:AddItem(item.Owner, unequipItem, 1, {}, 1, false, false, false, false, false, unequipCreated or os.time())
 													end
 												end
-
-												print(json.encode(comps, { indent = true }))
-
+	
 												Inventory:SetMetaDataKey(
-													char:GetData("ID"),
-													1,
-													slotData.Slot,
+													slotData.id,
 													"WeaponComponents",
 													comps
 												)
-
+	
 												Citizen.Wait(400)
-
+	
 												TriggerClientEvent("Weapons:Client:UpdateAttachments", source, comps)
-
-												p:resolve(true)
-											end)
+	
+												return p:resolve(true)
+											else
+												return p:resolve(false)
+											end
+											
 										else
-											p:resolve(false)
+											return p:resolve(false)
 										end
 									end
 								)
 							else
 								Execute:Client(source, "Notification", "Error", "This Does Not Fit On This Weapon")
-								p:resolve(false)
+								return p:resolve(false)
 							end
 						else
 							Execute:Client(source, "Notification", "Error", "Something Was Not Defined")
-							p:resolve(false)
+							return p:resolve(false)
 						end
 					end
 				end)
@@ -324,6 +280,30 @@ WEAPONS = {
 			end
 		else
 			return false
+		end
+	end,
+	RemoveAttachment = function(self, source, slotId, attachment)
+		local plyr = Fetch:Source(source)
+		if plyr ~= nil then
+			local char = plyr:GetData("Character")
+			if char ~= nil then
+				local slot = Inventory:GetSlot(char:GetData("SID"), slotId, 1)
+				if slot ~= nil then
+					if slot.MetaData.WeaponComponents ~= nil and slot.MetaData.WeaponComponents[attachment] ~= nil then
+						local itemData = Inventory.Items:GetData(slot.MetaData.WeaponComponents[attachment].item)
+						if itemData ~= nil then
+							Inventory:AddItem(char:GetData("SID"), itemData.name, 1, {}, 1, false, false, false, false, false, slot.MetaData.WeaponComponents[attachment].created or os.time())
+							slot.MetaData.WeaponComponents[attachment] = nil	
+							Inventory:SetMetaDataKey(
+								slot.id,
+								"WeaponComponents",
+								slot.MetaData.WeaponComponents
+							)
+							TriggerClientEvent("Weapons:Client:UpdateAttachments", source, slot.MetaData.WeaponComponents)
+						end
+					end
+				end
+			end
 		end
 	end,
 }
@@ -338,6 +318,17 @@ end)
 
 RegisterNetEvent("Weapon:Server:UpdateAmmoDiff", function(diff, ammo, clip)
 	local _src = source
-	Inventory:SetMetaDataKey(diff.owner, diff.type, diff.slot, "ammo", ammo)
-	Inventory:SetMetaDataKey(diff.owner, diff.type, diff.slot, "clip", clip)
+	Inventory:UpdateMetaData(diff.id, {
+		ammo = ammo,
+		clip = clip,
+	})
+end)
+
+RegisterNetEvent("Weapons:Server:RemoveAttachment", function(slotId, attachment)
+	Weapons:RemoveAttachment(source, slotId, attachment)
+end)
+
+RegisterNetEvent("Weapons:Server:DoFlashFx", function(coords, netId)
+	TriggerEvent("Particles:Server:DoFx", coords, "flash")
+	TriggerClientEvent("Weapons:Client:DoFlashFx", -1, coords.x, coords.y, coords.z, 10000, 8, 20.0, netId, 25, 1.6)
 end)

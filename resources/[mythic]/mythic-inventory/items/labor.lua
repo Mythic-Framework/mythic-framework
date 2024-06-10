@@ -38,6 +38,7 @@ _itemsSource["labor"] = {
 	{
 		name = "deer_bait",
 		label = "Deer Bait",
+		iconOverride = "hunting_bait",
 		price = 20,
 		isUsable = true,
 		isStackable = 20,
@@ -50,6 +51,7 @@ _itemsSource["labor"] = {
 	{
 		name = "boar_bait",
 		label = "Boar Bait",
+		iconOverride = "hunting_bait",
 		price = 20,
 		isUsable = true,
 		isStackable = 20,
@@ -62,6 +64,7 @@ _itemsSource["labor"] = {
 	{
 		name = "pig_bait",
 		label = "Pig Bait",
+		iconOverride = "hunting_bait",
 		price = 20,
 		isUsable = true,
 		isStackable = 20,
@@ -74,6 +77,7 @@ _itemsSource["labor"] = {
 	{
 		name = "chicken_bait",
 		label = "Chicken Bait",
+		iconOverride = "hunting_bait",
 		price = 20,
 		isUsable = true,
 		isStackable = 20,
@@ -86,6 +90,7 @@ _itemsSource["labor"] = {
 	{
 		name = "rabbit_bait",
 		label = "Rabbit Bait",
+		iconOverride = "hunting_bait",
 		price = 20,
 		isUsable = true,
 		isStackable = 20,
@@ -98,6 +103,7 @@ _itemsSource["labor"] = {
 	{
 		name = "exotic_bait",
 		label = "Exotic Bait",
+		iconOverride = "hunting_bait",
 		price = 1000,
 		isUsable = true,
 		isStackable = 20,

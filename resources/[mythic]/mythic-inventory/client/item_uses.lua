@@ -1,8 +1,6 @@
 local _energyCd = false
 
-function RegisterRandomItems()
-
-end
+function RegisterRandomItems() end
 
 function RunSpeed(modifier, duration, cd, ss)
 	Citizen.CreateThread(function()
@@ -10,7 +8,7 @@ function RunSpeed(modifier, duration, cd, ss)
 		if not ss then
 			AnimpostfxPlay("DrugsTrevorClownsFight", 0, true)
 		end
-		while LocalPlayer.state.loggedIn and c < duration do
+		while LocalPlayer.state.loggedIn and c < duration and not LocalPlayer.state.drugsRunSpeed do
 			c += 1
 			SetPedMoveRateOverride(PlayerPedId(), modifier)
 			Citizen.Wait(1)
@@ -22,14 +20,14 @@ function RunSpeed(modifier, duration, cd, ss)
 	end)
 end
 
-RegisterNetEvent('Inventory:Client:SpeedyBoi', function(modifier, duration, cd, skipScreenEffects)
+RegisterNetEvent("Inventory:Client:SpeedyBoi", function(modifier, duration, cd, skipScreenEffects)
 	if not _energyCd then
 		_energyCd = true
 		RunSpeed(modifier, duration, cd, skipScreenEffects)
 	end
 end)
 
-RegisterNetEvent('Inventory:Client:HealthModifier', function(healthMod)
+RegisterNetEvent("Inventory:Client:HealthModifier", function(healthMod)
 	local currentHealth = GetEntityHealth(LocalPlayer.state.ped)
 	local newHealth = math.min(180, currentHealth + healthMod)
 
@@ -38,7 +36,7 @@ RegisterNetEvent('Inventory:Client:HealthModifier', function(healthMod)
 	end
 end)
 
-RegisterNetEvent('Inventory:Client:ArmourModifier', function(mod)
+RegisterNetEvent("Inventory:Client:ArmourModifier", function(mod)
 	if not LocalPlayer.state.armourModCooldown or LocalPlayer.state.armourModCooldown <= GetGameTimer() then
 		local currentArmour = GetPedArmour(LocalPlayer.state.ped)
 		local newArmour = math.min(60, currentArmour + mod)
@@ -51,6 +49,6 @@ RegisterNetEvent('Inventory:Client:ArmourModifier', function(mod)
 	end
 end)
 
-RegisterNetEvent('Inventory:Client:RandomItems:BirthdayCake', function()
-	Sounds.Play:Distance(20.0, 'birthday.ogg', 0.2)
+RegisterNetEvent("Inventory:Client:RandomItems:BirthdayCake", function()
+	Sounds.Play:Distance(20.0, "birthday.ogg", 0.2)
 end)

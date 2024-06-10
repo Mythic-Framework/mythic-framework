@@ -27,21 +27,8 @@ const useStyles = makeStyles((theme) => ({
 		pointerEvents: 'none',
 	},
 	paper: {
-		padding: 10,
-		border: `1px solid ${theme.palette.primary.dark}`,
-		borderRadius: 5,
-		'&.rarity-1': {
-			borderColor: theme.palette.rarities.rare1,
-		},
-		'&.rarity-2': {
-			borderColor: theme.palette.rarities.rare2,
-		},
-		'&.rarity-3': {
-			borderColor: theme.palette.rarities.rare3,
-		},
-		'&.rarity-4': {
-			borderColor: theme.palette.rarities.rare4,
-		},
+		padding: 20,
+		border: `1px solid ${theme.palette.border.divider}`,
 	},
 }));
 
@@ -101,7 +88,7 @@ export default ({ item, qty }) => {
 			<Popover
 				className={classes.popover}
 				classes={{
-					paper: `${classes.paper} rarity-${itemData.rarity}`,
+					paper: classes.paper,
 				}}
 				open={open && !hidden}
 				anchorEl={anchorEl}

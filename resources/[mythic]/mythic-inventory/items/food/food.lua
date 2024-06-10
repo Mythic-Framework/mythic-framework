@@ -5,7 +5,7 @@ _itemsSource["food_misc"] = {
 		price = 3,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 15,
+		isStackable = 25,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -37,6 +37,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "onion_rings",
@@ -44,7 +45,7 @@ _itemsSource["food_misc"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 3,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -73,6 +74,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "chocolate_bar",
@@ -108,6 +110,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "donut",
@@ -115,7 +118,7 @@ _itemsSource["food_misc"] = {
 		price = 105,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 14,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -144,6 +147,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		energyModifier = {
 			modifier = 1.1,
 			duration = 3, -- not seconds?
@@ -156,7 +160,7 @@ _itemsSource["food_misc"] = {
 		price = 105,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 14,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -185,6 +189,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "chocy_muff",
@@ -192,7 +197,7 @@ _itemsSource["food_misc"] = {
 		price = 105,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 14,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -221,6 +226,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "crisp",
@@ -229,7 +235,7 @@ _itemsSource["food_misc"] = {
 		price = 25,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 8,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -257,6 +263,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "energy_pepe",
@@ -264,13 +271,14 @@ _itemsSource["food_misc"] = {
 		price = 110,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 8,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		animConfig = {
 			anim = "energydrink",
 			time = 6000,
@@ -293,7 +301,7 @@ _itemsSource["food_misc"] = {
 			},
 		},
 		energyModifier = {
-			modifier = 1.2,
+			modifier = 1.15,
 			duration = 4, -- not seconds?
 			cooldown = 60 -- seconds
 		}
@@ -304,13 +312,14 @@ _itemsSource["food_misc"] = {
 		price = 295,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 8,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		animConfig = {
 			anim = "coffee",
 			time = 10000,
@@ -344,7 +353,7 @@ _itemsSource["food_misc"] = {
 		price = 150,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -373,6 +382,7 @@ _itemsSource["food_misc"] = {
 		healthModifier = 7,
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 
 	{
@@ -381,7 +391,7 @@ _itemsSource["food_misc"] = {
 		price = 240,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 4,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -409,13 +419,14 @@ _itemsSource["food_misc"] = {
 			},
 		},
 		energyModifier = {
-			modifier = 1.2,
+			modifier = 1.1,
 			duration = 6, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 
 	{
@@ -424,7 +435,7 @@ _itemsSource["food_misc"] = {
 		price = 240,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -459,6 +470,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "glass_cock",
@@ -467,7 +479,7 @@ _itemsSource["food_misc"] = {
 		price = 240,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -495,13 +507,14 @@ _itemsSource["food_misc"] = {
 			},
 		},
 		energyModifier = {
-			modifier = 1.2,
+			modifier = 1.1,
 			duration = 5, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "soda",
@@ -509,7 +522,7 @@ _itemsSource["food_misc"] = {
 		price = 25,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -540,6 +553,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 
 	{
@@ -548,7 +562,7 @@ _itemsSource["food_misc"] = {
 		price = 30,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -576,6 +590,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "fishandchips",
@@ -583,7 +598,7 @@ _itemsSource["food_misc"] = {
 		price = 50,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 1,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -611,6 +626,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sausageroll",
@@ -618,7 +634,7 @@ _itemsSource["food_misc"] = {
 		price = 15,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 10,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -646,6 +662,7 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "hotdog",
@@ -654,7 +671,7 @@ _itemsSource["food_misc"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 1,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -682,5 +699,6 @@ _itemsSource["food_misc"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 }

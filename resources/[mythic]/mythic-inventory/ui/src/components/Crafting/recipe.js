@@ -12,6 +12,7 @@ import { makeStyles } from '@mui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NumberFormat from 'react-number-format';
+import ReactMomentCountDown from 'react-moment-countdown';
 
 import Nui from '../../util/Nui';
 import Reagent from './Reagent';
@@ -124,21 +125,8 @@ const useStyles = makeStyles((theme) => ({
 		pointerEvents: 'none',
 	},
 	paper: {
-		padding: 10,
-		border: `1px solid ${theme.palette.primary.dark}`,
-		borderRadius: 5,
-		'&.rarity-1': {
-			borderColor: theme.palette.rarities.rare1,
-		},
-		'&.rarity-2': {
-			borderColor: theme.palette.rarities.rare2,
-		},
-		'&.rarity-3': {
-			borderColor: theme.palette.rarities.rare3,
-		},
-		'&.rarity-4': {
-			borderColor: theme.palette.rarities.rare4,
-		},
+		padding: 20,
+		border: `1px solid ${theme.palette.border.divider}`,
 	},
 	craftTime: {
 		marginLeft: 15,
@@ -162,6 +150,14 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
+
+const getCraftingItemImage = (item, itemData) => {
+	if (Boolean(itemData) && Boolean(itemData.iconOverride)) {
+		return `../images/items/${itemData.iconOverride}.webp`;
+	} else {
+		return `../images/items/${item.name}.webp`;
+	}
+};
 
 const Recipe = ({ index, recipe, cooldown }) => {
 	const classes = useStyles();
@@ -288,7 +284,10 @@ const Recipe = ({ index, recipe, cooldown }) => {
 					<Grid item xs={3} style={{ position: 'relative' }}>
 						<img
 							className={classes.img}
-							src={`../images/items/${recipe.result.name}.webp`}
+							src={getCraftingItemImage(
+								recipe.result,
+								items[recipe.result.name],
+							)}
 							onMouseEnter={resultTPOpen}
 							onMouseLeave={resultTPClose}
 						/>
@@ -433,9 +432,7 @@ const Recipe = ({ index, recipe, cooldown }) => {
 			<Popover
 				className={classes.popover}
 				classes={{
-					paper: `${classes.paper} rarity-${
-						items[recipe.result.name]?.rarity
-					}`,
+					paper: classes.paper,
 				}}
 				open={resultOpen && !hidden}
 				anchorEl={resultEl}

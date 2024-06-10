@@ -38,32 +38,17 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.main,
 		background: theme.palette.secondary.light,
 		borderTop: `1px solid ${theme.palette.border.divider}`,
-		borderBottomLeftRadius: 6,
-		borderBottomRightRadius: 6,
 		zIndex: 4,
 	},
 	slot: {
 		width: 165,
 		height: 190,
-		backgroundColor: `${theme.palette.secondary.dark}61`,
-		border: `1px solid ${theme.palette.border.divider}`,
+		backgroundColor: `${theme.palette.secondary.light}61`,
 		position: 'relative',
 		zIndex: 2,
-		borderRadius: 5,
-		'&.rarity-1': {
-			borderColor: `${theme.palette.rarities.rare1}40`,
-		},
-		'&.rarity-2': {
-			borderColor: `${theme.palette.rarities.rare2}80`,
-		},
-		'&.rarity-3': {
-			borderColor: `${theme.palette.rarities.rare3}80`,
-		},
-		'&.rarity-4': {
-			borderColor: `${theme.palette.rarities.rare4}80`,
-		},
-		'&.rarity-5': {
-			borderColor: `${theme.palette.rarities.rare5}80`,
+		'&.mini': {
+			width: 132,
+			height: 152,
 		},
 	},
 	count: {
@@ -100,9 +85,13 @@ const useStyles = makeStyles((theme) => ({
 		height: 7,
 		background: 'transparent',
 		zIndex: 4,
-		'&.broken': {
-			background: theme.palette.text.alt,
-		},
+	},
+	broken: {
+		backgroundColor: theme.palette.text.alt,
+		transition: 'none !important',
+	},
+	progressbar: {
+		transition: 'none !important',
 	},
 	price: {
 		top: 0,
@@ -127,10 +116,10 @@ export default (props) => {
 	const [state, setState] = React.useState(initialState);
 
 	const calcDurability = () => {
-		if (!Boolean(hover?.MetaData) || !Boolean(itemData?.durability)) null;
+		if (!Boolean(hover) || !Boolean(itemData?.durability)) null;
 		return Math.ceil(
 			100 -
-				((Math.floor(Date.now() / 1000) - hover?.MetaData?.CreateDate) /
+				((Math.floor(Date.now() / 1000) - hover?.CreateDate) /
 					itemData?.durability) *
 					100,
 		);
@@ -169,7 +158,10 @@ export default (props) => {
 						<div
 							className={classes.img}
 							style={{
-								backgroundImage: `url(${getItemImage(hover, itemData)})`,
+								backgroundImage: `url(${getItemImage(
+									hover,
+									itemData,
+								)})`,
 							}}
 						></div>
 					)}
@@ -182,7 +174,7 @@ export default (props) => {
 						<div className={classes.count}>{hover.Count}</div>
 					)}
 					{Boolean(itemData?.durability) &&
-						Boolean(hover?.MetaData?.CreateDate) &&
+						Boolean(hover?.CreateDate) &&
 						(durability > 0 ? (
 							<LinearProgress
 								className={classes.durability}
@@ -193,12 +185,22 @@ export default (props) => {
 										? 'warning'
 										: 'error'
 								}
+								classes={{
+									determinate: classes.progressbar,
+									bar: classes.progressbar,
+									bar1: classes.progressbar,
+								}}
 								variant="determinate"
 								value={durability}
 							/>
 						) : (
 							<LinearProgress
-								className={`${classes.durability} broken`}
+								className={classes.durability}
+								classes={{
+									determinate: classes.broken,
+									bar: classes.broken,
+									bar1: classes.broken,
+								}}
 								color="secondary"
 								variant="determinate"
 								value={100}
