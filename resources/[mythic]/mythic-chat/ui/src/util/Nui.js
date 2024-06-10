@@ -5,7 +5,7 @@ export default {
         /// #endif
 
         /* eslint-disable no-unreachable */
-        return fetch(`https://mythic-chat3/${event}`, {
+        return fetch(`https://mythic-chat/${event}`, {
             method: 'post',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
