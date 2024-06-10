@@ -1,0 +1,23 @@
+_bankStates = {
+	fleeca_hawick_east = {},
+	fleeca_hawick_west = {},
+	fleeca_delperro = {},
+	fleeca_great_ocean = {},
+	fleeca_route68 = {},
+	fleeca_vespucci = {},
+	mazebank = {},
+	lombank = {},
+	paleto = {
+		fookinLasers = false,
+		workstation = false,
+		vaultTerminal = false,
+		officeSafe = false,
+		exploits = {},
+		securityPower = {},
+		electricalBoxes = {},
+		substations = {},
+		officeHacks = {},
+		drillPoints = {},
+		officeSearch = {},
+	},
+}

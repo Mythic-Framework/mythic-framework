@@ -1,0 +1,73 @@
+{
+    "manifestSetup": {
+		"prefix": "manifestSetup",
+		"body": [
+			"fx_version 'cerulean'",
+			"games {'gta5'} -- 'gta5' for GTAv / 'rdr3' for Red Dead 2, 'gta5','rdr3' for both",
+			"lua54 'yes'",
+			"",
+			"description 'AuthenticRP ${1:[Script Full Name]}'",
+			"name 'AuthenticRP: ${2:[resource folder name]}'",
+			"author '[${3:Author}]'",
+			"version 'v1.0.0'",
+			"url 'https://www.mythicrp.com'",
+			"",
+			"server_scripts {",
+				"\t'server/**/*.lua',",
+			"}",
+			"",
+			"client_scripts {",
+				"\t'client/**/*.lua',",
+			"}",
+			"",
+			"-- ui_page 'ui/index.html' -- Only Required if implementing a NUI",
+			"",
+			"-- files { -- Any NUI Files also need to be loaded here.",
+				"\t-- 'file1.gif',",
+				"\t-- 'file2.lua',",
+			"--}",
+			"",
+			"dependencies {",
+			"}"
+		]
+	},
+	"ExtendReadyClient": {
+		"prefix": "ExtendReadyClient",
+		"body": [
+			"AddEventHandler('Proxy:Shared:ExtendReady', function(component)",
+				"\tif component == 'Spawn' then",
+					"\t\texports['mythic-base']:ExtendComponent(component, SPAWN)",
+				"\tend",
+			"end)",
+		]
+	},
+	"ProxyReadyClient": {
+		"prefix": "ProxyReadyClient",
+		"body": [
+			"AddEventHandler('Proxy:Shared:Ready', function(component)",
+				"\tif component == 'base' then",
+					"\t\tLogger = exports['mythic-base']:FetchComponent('Logger')",
+					"\t\tCallbacks = exports['mythic-base']:FetchComponent('Callbacks')",
+				"\telseif component == 'Admin' then",
+					"\t\tAdmin = exports['mythic-base']:FetchComponent('Admin')",
+				"\tend",
+			"end)",
+		]
+	},
+	"RegisterServerComponent": {
+		"prefix": "RegisterServerComponent",
+		"body": [
+			"AddEventHandler('Proxy:Shared:RegisterReady', function()",
+				"\texports['mythic-base']:RegisterComponent('${1:[Component Name (Start with a Capital)]}', ${2:[Component Table]})",
+			"end)"
+		]
+	},
+	"ClientSpawn": {
+		"prefix": "ClientSpawn",
+		"body": [
+			"AddEventHandler('Characters:Client:Spawn', function()",
+				"\t",
+			"end)"
+		]
+	}
+}

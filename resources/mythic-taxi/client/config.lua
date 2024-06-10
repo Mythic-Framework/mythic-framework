@@ -1,0 +1,3 @@
+_models = {
+	[`taxi`] = true
+}

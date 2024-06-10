@@ -1,0 +1,12 @@
+RegisterNUICallback("Meth:Start", function(data, cb)
+	UISounds.Play:FrontEnd(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET")
+    TriggerEvent("Drugs:Client:Meth:ConfirmCook", data)
+	Hud.Meth:Close()
+	cb("ok")
+end)
+
+RegisterNUICallback("Meth:Cancel", function(data, cb)
+	UISounds.Play:FrontEnd(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET")
+	Hud.Meth:Close()
+	cb("ok")
+end)

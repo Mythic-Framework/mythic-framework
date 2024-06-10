@@ -1,0 +1,6 @@
+@keyframes loader {
+    0% { background: #cecece }
+    12.5% { background: #cecece }
+    12.625% { background: #3aaaf9 }
+    100% { background: #3aaaf9 }
+}

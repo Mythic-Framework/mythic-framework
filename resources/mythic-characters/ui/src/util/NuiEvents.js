@@ -1,0 +1,10 @@
+export const AppShow = 'AppShow';
+export const AppHide = 'AppHide';
+export const SetData = 'SetData';
+export const GetData = 'GetData';
+export const GetCharacters = 'GetCharacters';
+export const CreateCharacter = 'CreateCharacter';
+export const DeleteCharacter = 'DeleteCharacter';
+export const SelectCharacter = 'SelectCharacter';
+export const PlayCharacter = 'PlayCharacter';
+export const SelectSpawn = 'SelectSpawn';

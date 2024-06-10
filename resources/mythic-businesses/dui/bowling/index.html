@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Cool></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <style>
+        body, html, #app {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        #app {
+            width: 100%;
+            height: 100%;
+            background: rgb(17, 17, 17);
+            color: white;
+            text-align: center;
+            font-size: 3vh;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #currentScore {
+            top: 0;
+            left: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            height: 100%;
+        }
+
+        #scoreScreen {
+            width: 100%;
+            height: 100%;
+        }
+
+        .currentPlayer {
+            width: 100%;
+            height: 10%;
+        }
+
+        table {
+            border: 5px solid rgb(139, 0, 0);
+            border-spacing: 0;
+            border-collapse: collapse;
+            table-layout: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        th,
+        td {
+            border: 5px solid rgb(139, 0, 0);
+            width: 10%;
+            height: 25%;
+            overflow: hidden;
+        }
+
+        .roundScore {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 6vh;
+        }
+
+        .roundScore > div {
+            flex: 50%;
+        }
+
+        .currentPlayer {
+            font-size: 8vh;
+        }
+
+        .current {
+            background: rgba(255, 0, 0, 0.192);
+            color: yellow;
+        }
+
+        .playerTotal {
+            font-size: 6vh;
+        }
+
+        .roundHeader {
+            font-size: 5vh;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .bigScore {
+            font-size: 65vh;
+            width: 50%;
+            height: 80%;
+            margin: 5% 25%;
+            border: 5px solid rgb(139, 0, 0);
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+        <div id="scoreScreen" class="hidden">
+            <table id="score-table" class="scoreTable">
+                <!-- <thead>
+                    <tr style="font-size: 60px;">
+                        <td colspan="11">Hello</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>10</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Dave</td>
+                        <td>
+                            <div class="roundScore">
+                                <div>
+                                    <p>5</p>
+                                </div>
+                                <div>
+                                    <p>1</p>
+                                </div>
+                                <div>
+                                    <p>1</p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dave</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Dave</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Dave</td>
+                        <td>1</td>
+                    </tr>
+                </tbody> -->
+            </table>
+        </div>
+        <div id="currentScore">
+            <!-- <img src="./gifs/homer.gif" /> -->
+            <!-- <div class="bigScore">
+                1
+            </div> -->
+        </div>
+    </div>
+  </body>
+  <script src="./app.js"></script>
+</html>

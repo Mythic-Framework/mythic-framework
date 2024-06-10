@@ -1,0 +1,4 @@
+export const STATE_SPLASH = 'STATE_SPLASH';
+export const STATE_CHARACTERS = 'STATE_CHARACTERS';
+export const STATE_CREATE = 'STATE_CREATE';
+export const STATE_SPAWN = 'STATE_SPAWN';

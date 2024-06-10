@@ -1,0 +1,277 @@
+function defaultApps()
+	local defApps = {}
+	for k, v in pairs(LAPTOP_APPS) do
+		if not v.canUninstall then
+			table.insert(defApps, v.name)
+		end
+	end
+	return {
+		installed = defApps,
+		home = defApps,
+		dock = dock,
+	}
+end
+
+function hasValue(tbl, value)
+	for k, v in ipairs(tbl) do
+		if v == value or (type(v) == "table" and hasValue(v, value)) then
+			return true
+		end
+	end
+	return false
+end
+
+function table.copy(t)
+	local u = {}
+	for k, v in pairs(t) do
+		u[k] = v
+	end
+	return setmetatable(u, getmetatable(t))
+end
+
+local defaultSettings = {
+	wallpaper = "wallpaper",
+	ringtone = "ringtone1.ogg",
+	texttone = "text1.ogg",
+	colors = {
+		accent = "#1a7cc1",
+	},
+	zoom = 75,
+	volume = 100,
+	notifications = true,
+	appNotifications = {},
+}
+
+local defaultPermissions = {
+	redline = {
+		create = false,
+	},
+}
+
+AddEventHandler("onResourceStart", function(resource)
+	if resource == GetCurrentResourceName() then
+		TriggerClientEvent("Laptop:Client:SetApps", -1, LAPTOP_APPS)
+	end
+end)
+
+AddEventHandler("Laptop:Shared:DependencyUpdate", RetrieveComponents)
+
+function RetrieveComponents()
+	Fetch = exports["mythic-base"]:FetchComponent("Fetch")
+	Database = exports["mythic-base"]:FetchComponent("Database")
+	Callbacks = exports["mythic-base"]:FetchComponent("Callbacks")
+	Logger = exports["mythic-base"]:FetchComponent("Logger")
+	Utils = exports["mythic-base"]:FetchComponent("Utils")
+	Chat = exports["mythic-base"]:FetchComponent("Chat")
+	Middleware = exports["mythic-base"]:FetchComponent("Middleware")
+	Execute = exports["mythic-base"]:FetchComponent("Execute")
+	Config = exports["mythic-base"]:FetchComponent("Config")
+	MDT = exports["mythic-base"]:FetchComponent("MDT")
+	Jobs = exports["mythic-base"]:FetchComponent("Jobs")
+	Labor = exports["mythic-base"]:FetchComponent("Labor")
+	Crypto = exports["mythic-base"]:FetchComponent("Crypto")
+	VOIP = exports["mythic-base"]:FetchComponent("VOIP")
+	Generator = exports["mythic-base"]:FetchComponent("Generator")
+	Properties = exports["mythic-base"]:FetchComponent("Properties")
+	Vehicles = exports["mythic-base"]:FetchComponent("Vehicles")
+	Inventory = exports["mythic-base"]:FetchComponent("Inventory")
+	Loot = exports["mythic-base"]:FetchComponent("Loot")
+	Loans = exports["mythic-base"]:FetchComponent("Loans")
+	Billing = exports["mythic-base"]:FetchComponent("Billing")
+	Banking = exports["mythic-base"]:FetchComponent("Banking")
+	Reputation = exports["mythic-base"]:FetchComponent("Reputation")
+	Robbery = exports["mythic-base"]:FetchComponent("Robbery")
+	Wallet = exports["mythic-base"]:FetchComponent("Wallet")
+	Sequence = exports["mythic-base"]:FetchComponent("Sequence")
+	Laptop = exports["mythic-base"]:FetchComponent("Laptop")
+	RegisterChatCommands()
+end
+
+AddEventHandler("Core:Shared:Ready", function()
+	exports["mythic-base"]:RequestDependencies("Laptop", {
+		"Fetch",
+		"Database",
+		"Callbacks",
+		"Logger",
+		"Utils",
+		"Chat",
+		"Laptop",
+		"Middleware",
+		"Execute",
+		"Config",
+		"MDT",
+		"Jobs",
+		"Labor",
+		"Crypto",
+		"VOIP",
+		"Generator",
+		"Properties",
+		"Vehicles",
+		"Inventory",
+		"Loot",
+		"Loans",
+		"Billing",
+		"Banking",
+		"Reputation",
+		"Robbery",
+		"Wallet",
+		"Sequence",
+	}, function(error)
+		if #error > 0 then
+			return
+		end
+		-- Do something to handle if not all dependencies loaded
+		RetrieveComponents()
+		Startup()
+		TriggerEvent("Laptop:Server:RegisterMiddleware")
+		TriggerEvent("Laptop:Server:RegisterCallbacks")
+	end)
+end)
+
+AddEventHandler("Laptop:Server:RegisterMiddleware", function()
+	Middleware:Add("Characters:Spawning", function(source)
+		Laptop:UpdateJobData(source)
+		TriggerClientEvent("Laptop:Client:SetApps", source, LAPTOP_APPS)
+
+		local char = Fetch:Source(source):GetData("Character")
+		local myPerms = char:GetData("LaptopPermissions")
+		local modified = false
+		for app, perms in pairs(defaultPermissions) do
+			if myPerms[app] == nil then
+				myPerms[app] = perms
+				modified = true
+			else
+				for perm, state in pairs(perms) do
+					if myPerms[app][perm] == nil then
+						myPerms[app][perm] = state
+						modified = true
+					end
+				end
+			end
+		end
+
+		if modified then
+			char:SetData("LaptopPermissions", myPerms)
+		end
+	end, 1)
+	Middleware:Add("Laptop:UIReset", function(source)
+		Laptop:UpdateJobData(source)
+		TriggerClientEvent("Laptop:Client:SetApps", source, LAPTOP_APPS)
+	end)
+	Middleware:Add("Characters:Creating", function(source, cData)
+		local t = Middleware:TriggerEventWithData("Laptop:CharacterCreated", source, cData)
+		local aliases = {}
+
+		for k, v in ipairs(t) do
+			aliases[v.app] = v.alias
+		end
+
+		return {
+			{
+				Alias = aliases,
+				Apps = defaultApps(),
+				LaptopSettings = defaultSettings,
+				LaptopPermissions = defaultPermissions,
+			},
+		}
+	end)
+end)
+
+RegisterNetEvent("Laptop:Server:UIReset", function()
+	Middleware:TriggerEvent("Laptop:UIReset", source)
+end)
+
+AddEventHandler("Laptop:Server:RegisterCallbacks", function()
+	Callbacks:RegisterServerCallback("Laptop:UpdateAlias", function(src, data, cb)
+		local char = Fetch:Source(src):GetData("Character")
+		local alias = char:GetData("Alias") or {}
+		if data.unique then
+			local query = {
+				["Alias." .. data.app] = data.alias,
+				Phone = {
+					["$ne"] = char:GetData("Phone"),
+				},
+				Deleted = {
+					["$ne"] = true,
+				},
+			}
+
+			if data?.alias?.name ~= nil then
+				query = {
+					["Alias." .. data.app .. ".name"] = data.alias.name,
+					Phone = {
+						["$ne"] = char:GetData("Phone"),
+					},
+					Deleted = {
+						["$ne"] = true,
+					},
+				}
+			end
+			Database.Game:find({
+				collection = "characters",
+				query = query,
+			}, function(success, results)
+				if #results > 0 then
+					cb(false)
+				else
+					local upd = {
+						["Alias." .. data.app] = data.alias,
+					}
+
+					if data?.alias?.name ~= nil then
+						upd = {
+							["Alias." .. data.app .. ".name"] = data.alias.name,
+						}
+					end
+
+					Database.Game:updateOne({
+						collection = "characters",
+						query = {
+							_id = char:GetData('ID'),
+						},
+						update = {
+							["$set"] = upd,
+						},
+					}, function(success, updated)
+						if success then
+							alias[data.app] = data.alias
+							char:SetData("Alias", alias)
+							cb(true)
+		
+							TriggerEvent("Phone:Server:AliasUpdated", src)
+							TriggerEvent("Laptop:Server:AliasUpdated", src)
+						else
+							cb(false)
+						end
+					end)
+				end
+			end)
+		else
+			alias[data.app] = data.alias
+			char:SetData("Alias", alias)
+			cb(true)
+			TriggerEvent("Phone:Server:AliasUpdated", src)
+			TriggerEvent("Laptop:Server:AliasUpdated", src)
+		end
+	end)
+
+	Callbacks:RegisterServerCallback("Laptop:Permissions", function(src, data, cb)
+		local char = Fetch:Source(src):GetData("Character")
+
+		if char ~= nil then
+			local perms = char:GetData("LaptopPermissions")
+
+			for k, v in pairs(data) do
+				for k2, v2 in ipairs(v) do
+					if not perms[k][v2] then
+						cb(false)
+						return
+					end
+				end
+			end
+			cb(true)
+		else
+			cb(false)
+		end
+	end)
+end)
