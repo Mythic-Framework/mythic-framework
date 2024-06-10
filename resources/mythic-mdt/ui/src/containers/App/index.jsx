@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme, StyledEngineProvider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/pro-solid-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { HashRouter } from 'react-router-dom';
 
