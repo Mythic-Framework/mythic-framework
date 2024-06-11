@@ -1023,3 +1023,13 @@ RegisterNetEvent("Ped:Client:ChainAnim", function()
 	Citizen.Wait(4000)
 	ClearPedTasks(LocalPlayer.state.ped)
 end)
+
+RegisterNetEvent('Ped:Client:ChangedPed', function(model)
+    LocalPed = LocalPlayer.state.Character:GetData("Ped")
+    LocalPed.model = model
+    Callbacks:ServerCallback("Ped:SavePed", {
+        ped = LocalPed,
+    }, function(saved)
+        Notification:Success("Ped saved successfully!")
+    end)
+end)
