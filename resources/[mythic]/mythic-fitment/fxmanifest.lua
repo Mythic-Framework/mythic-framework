@@ -10,10 +10,6 @@ author 'Dr Nick'
 version 'v1.0.0'
 url 'https://www.mythicrp.com'
 
-server_scripts {
-    'server/**/*.lua',
-}
-
 client_scripts {
     'client/**/*.lua',
 }

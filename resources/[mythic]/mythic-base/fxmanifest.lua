@@ -8,7 +8,6 @@ client_scripts {
     'core/sh_*.lua',
     'core/cl_*.lua',
     'cl_config.lua',
-    'components/sh_*.lua',
     'components/cl_*.lua',
 }
 
@@ -21,15 +20,11 @@ server_scripts {
     'core/sv_regex.js',
     'core/sh_*.lua',
     'core/sv_*.lua',
-    'components/sh_*.lua',
     'components/sv_*.lua',
 }
 
 files {
-    'weapons.meta',
     'weaponanimations.meta',
-    'handling.meta',
-    'carcols.meta',
     'gta5.meta',
     'water.xml',
 }

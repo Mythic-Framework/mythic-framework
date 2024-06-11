@@ -68,7 +68,7 @@ RegisterNUICallback('GetData', function(data, cb)
     
                     SetEntityCoords(ped, previews[k][1], previews[k][2], previews[k][3], 0.0, 0.0, 0.0, false)
                     FreezeEntityPosition(ped, true)
-                    --Ped:Preview(ped, tonumber(v.Gender), v.Preview, false, v.GangChain)
+                    Ped:Preview(ped, tonumber(v.Gender), v.Preview, false, v.GangChain)
 
                     print(ped)
 

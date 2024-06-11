@@ -491,4 +491,8 @@ polyzone_created_zones.txt
 created_doors_data.txt
 
 start.bat
+start_8412_default.bat
 resources/mythic-pwnzor2/onlineTime.json
+artifacts/
+txData/*
+.replxx_history

@@ -6,7 +6,6 @@ client_script "@mythic-pwnzor/client/check.lua"
 
 server_scripts {
     'server/server.lua',
-    'server/main.lua',
     'server/startup.lua',
     'server/stock.lua',
     'server/management.lua',
@@ -20,7 +19,6 @@ server_scripts {
 client_scripts {
     'client/utils.lua',
     'client/client.lua',
-    'client/main.lua',
     'client/showroom.lua',
     'client/catalog.lua',
     'client/employee/*.lua',

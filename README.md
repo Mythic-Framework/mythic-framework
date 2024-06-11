@@ -59,3 +59,28 @@ In the MongoDB Compass, inside of the "auth" database under users, find yourself
 
 To use the admin tool, run `/admin` or `/staff`.
 
+## Map Dependencies
+This is a map list used by **Mythic Framework** for business, government ect.
+Most of these maps are automatically started by the server (the ones that are not, will be signed with a "*") since they are already included in the **resources.cfg** file:
+
+- [kibra-motels-map](https://github.com/kibradev/kibra-motels-map) [free] *
+- [cfx-gabz-*](https://fivem.gabzv.com/category/subscription) (all the maps are used)
+- [cfx_gn_burgershot](https://gnstud.io/products/burgershot)
+- [cfx_gn_bx_food_props](https://gnstud.io/collections/props)
+- [gn_saloon](https://gnstud.io/products/black-woods-saloon)
+- [mz_hospital](https://gnstud.io/collections/medical/products/mount-zonah-hospital)
+- [dolu_last_train](https://dolu.tebex.io/package/4465265)
+- [dolu_shells](https://dolu.tebex.io/package/5141128)
+- [cafe_prego](https://artex.tebex.io/package/6084340)
+- [noodle_exchange](https://fivem.map4all-shop.com/package/4967545)
+- [xerogasstation](https://fivem.map4all-shop.com/package/5342855)
+- [artgallery](https://www.k4mb1maps.com/package/4672250)
+- [digital_den](https://patoche-mapping.tebex.io/package/5171582)
+- [Auto Exotics](https://lb-customs.tebex.io/package/4339272) *
+- [Smoke on the Water](https://mrhunter.tebex.io/package/5198707) *
+- [Ferrari Pawnshop](https://www.k4mb1maps.com/package/4672248) *
+- [Dreamworks Mechanics](https://juniors-interiors.tebex.io/category/1930382) *
+- **rockford_records** he shut down his tebex :|
+- **nutt_sagma** he shut down his tebex :|
+- **tobii-mineshaft** he shut down his patreon :|
+- **tobii-fightclub** he shut down his patreon :|
