@@ -41,6 +41,7 @@ set steam_webApiKey "setme"
 # Requirements 
 | Packages          | Link                                                                |
 | ----------------- | ------------------------------------------------------------------ |
+| PNPM | [Download Here](https://pnpm.io/installation) |
 | NodeJS | [Download Here](https://nodejs.org/en/download?text=+) |
 | MongoDB | [Download Here](https://www.mongodb.com/try/download/community) (v6.0.5) |
 | MariaDB | [Download Here](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.12&os=windows&cpu=x86_64&pkg=msi&m=acorn) (v10.6.12)
