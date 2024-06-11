@@ -6,10 +6,10 @@ function RegisterChairTargets()
     for k, v in ipairs(_sittableChairs) do
         v.id = k
         if v.prop then
-            Targeting:AddObject(v.prop, "loveseat", {
+            Targeting:AddObject(v.prop, "chair", {
                 {
                     text = "Sit",
-                    icon = 'loveseat', 
+                    icon = 'chair', 
                     event = "Animations:Client:Chair",
                     data = v,
                     minDist = 2.0,
@@ -18,7 +18,7 @@ function RegisterChairTargets()
         elseif v.polyzone then
             Targeting.Zones:AddBox(
                 string.format("chair-%s", v.id),
-                "loveseat",
+                "chair",
                 v.polyzone.center,
                 v.polyzone.length,
                 v.polyzone.width,
@@ -26,7 +26,7 @@ function RegisterChairTargets()
                 {
                     {
                         text = "Sit",
-                        icon = 'loveseat', 
+                        icon = 'chair', 
                         event = "Animations:Client:Chair",
                         data = v,
                         minDist = 2.0,
@@ -38,7 +38,7 @@ function RegisterChairTargets()
         end
     end
 
-    Interaction:RegisterMenu('chairs-stand-up', 'Stand Up', 'loveseat', function(data)
+    Interaction:RegisterMenu('chairs-stand-up', 'Stand Up', 'chair', function(data)
         Interaction:Hide()
         StandTheFuckUp()
     end, function()
