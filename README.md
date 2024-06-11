@@ -63,7 +63,6 @@ To use the admin tool, run `/admin` or `/staff`.
 This is a map list used by **Mythic Framework** for business, government ect.
 Most of these maps are automatically started by the server (the ones that are not, will be signed with a "*") since they are already included in the **resources.cfg** file:
 
-- [kibra-motels-map](https://github.com/kibradev/kibra-motels-map) [free] *
 - [cfx-gabz-*](https://fivem.gabzv.com/category/subscription) (all the maps are used)
 - [cfx_gn_burgershot](https://gnstud.io/products/burgershot)
 - [cfx_gn_bx_food_props](https://gnstud.io/collections/props)
