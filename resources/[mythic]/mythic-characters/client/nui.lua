@@ -70,8 +70,6 @@ RegisterNUICallback('GetData', function(data, cb)
                     FreezeEntityPosition(ped, true)
                     Ped:Preview(ped, tonumber(v.Gender), v.Preview, false, v.GangChain)
 
-                    print(ped)
-
                     table.insert(peds, ped)
                 else
                     loadModel(tonumber(v.Gender) == 0 and `mp_m_freemode_01` or `mp_f_freemode_01`)
@@ -139,6 +137,9 @@ RegisterNUICallback('DeleteCharacter', function(data, cb)
                 data = { id = data.id }
             })
         end
+        for k, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
+        peds = {}
+        
         SendNUIMessage({ type = 'LOADING_HIDE' })
     end)
 end)
@@ -156,7 +157,8 @@ RegisterNUICallback('SelectCharacter', function(data, cb)
                 data = { state = 'STATE_SPAWN' }
             })
         end
-
+        for k, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
+        peds = {}
         SendNUIMessage({ type = 'LOADING_HIDE' })
     end)
 end)
