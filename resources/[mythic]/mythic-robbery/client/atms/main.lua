@@ -30,7 +30,7 @@ AddEventHandler("Robbery:Client:Setup", function()
     }, 2.0)
 
     for k, v in ipairs(atmObjects) do
-        Targeting:AddObject(v, "money-from-bracket", {
+        Targeting:AddObject(v, "credit-card", {
             {
                 text = "Run Exploit",
                 icon = 'eye-evil',
