@@ -65,7 +65,7 @@ local atmPolys = {
 
 function AddBankingATMs()
     for k, v in ipairs(atmObjects) do
-        Targeting:AddObject(v, "money-from-bracket", {
+        Targeting:AddObject(v, "credit-card", {
             {
                 text = "Use ATM",
                 icon = 'dollar-sign', 
@@ -79,7 +79,7 @@ function AddBankingATMs()
     for k,v in ipairs(atmPolys) do
         Targeting.Zones:AddBox(
             "atm-" .. k,
-            "money-from-bracket",
+            "credit-card",
             v.center,
             v.length,
             v.width,
