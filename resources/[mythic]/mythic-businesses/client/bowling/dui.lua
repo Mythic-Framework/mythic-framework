@@ -174,7 +174,7 @@ AddEventHandler('Bowling:Client:SetTV', function()
         if success then
             SendBowlingNotification('Updated Link!')
         else
-            Notification:Error('Error', 5000, 'bowling-ball-pin')
+            Notification:Error('Error', 5000, 'bowling-ball')
         end
     end)
 end)

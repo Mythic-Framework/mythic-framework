@@ -49,7 +49,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				event = "Government:Client:BuyID",
 			},
 			{
-				icon = "file-certificate",
+				icon = "certificate",
 				text = "License Services",
 				event = "Government:Client:BuyLicense",
 			},

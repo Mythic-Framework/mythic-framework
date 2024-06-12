@@ -374,7 +374,7 @@ function RegisterMiddleware()
 							z = hasLastLocation.coords.z,
 							h = 0.0,
 						},
-						icon = "location-smile",
+						icon = "location-dot",
 						event = "Characters:GlobalSpawn",
 					},
 				}

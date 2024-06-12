@@ -61,7 +61,7 @@ _businessTablets = {
 			-- },
 			{
 				name = 'pdm-stocks',
-				icon = {'fas', 'cars'},
+				icon = {'fas', 'car'},
 				label = 'Vehicle Stock',
 				path = '/business/pdm-sales',
 				exact = true,
@@ -127,7 +127,7 @@ _businessTablets = {
 			-- },
 			{
 				name = 'pdm-stocks',
-				icon = {'fas', 'cars'},
+				icon = {'fas', 'car'},
 				label = 'Vehicle Stock',
 				path = '/business/pdm-sales',
 				exact = true,
@@ -443,7 +443,7 @@ _businessTablets = {
 			},
 			{
 				name = 'casino-big-wins',
-				icon = {'fas', 'cards'},
+				icon = {'fas', 'address-card'},
 				label = 'Big Wins',
 				path = '/business/casino-big-wins',
 				exact = true,

@@ -168,7 +168,7 @@ function CreateDumbAssPed(model, coords, heading, menu, icon, scenario, anim, co
     end
 
     if menu then
-        if not icon then icon = 'person-sign' end
+        if not icon then icon = 'person-walking' end
         Targeting:AddPed(ped, icon, menu)
     end
 

@@ -5,7 +5,7 @@ local _tableModels = {
 
 AddEventHandler("Drugs:Client:Startup", function()
     for k, v in ipairs(_tableModels) do
-        Targeting:AddObject(v, "table-picnic", {
+        Targeting:AddObject(v, "minus", {
             {
                 text = "Pickup Table",
                 icon = "hand", 
@@ -18,7 +18,7 @@ AddEventHandler("Drugs:Client:Startup", function()
             },
             {
                 text = "Table Info",
-                icon = "block", 
+                icon = "table", 
                 event = "Drugs:Client:Meth:TableDetails",
                 minDist = 3.0,
                 isEnabled = function(data, entity)
@@ -27,7 +27,7 @@ AddEventHandler("Drugs:Client:Startup", function()
             },
             {
                 text = "Start Batch",
-                icon = "timer", 
+                icon = "clock", 
                 event = "Drugs:Client:Meth:StartCook",
                 minDist = 3.0,
                 isEnabled = function(data, entity)
@@ -37,7 +37,7 @@ AddEventHandler("Drugs:Client:Startup", function()
             },
             {
                 text = "Collect Batch",
-                icon = "block", 
+                icon = "table", 
                 event = "Drugs:Client:Meth:PickupCook",
                 minDist = 3.0,
                 isEnabled = function(data, entity)

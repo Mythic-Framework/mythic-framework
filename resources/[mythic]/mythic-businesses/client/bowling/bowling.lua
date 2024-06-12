@@ -47,14 +47,14 @@ AddEventHandler('Businesses:Client:Startup', function()
         if v.interactZone then
             Targeting.Zones:AddBox(
                 string.format("bowling-lane-%s", k),
-                "bowling-ball-pin",
+                "bowling-ball",
                 v.interactZone.center,
                 v.interactZone.length,
                 v.interactZone.width,
                 v.interactZone.options,
                 {
                     {
-                        icon = "bowling-ball-pin",
+                        icon = "bowling-ball",
                         text = "Start Game",
                         event = "Bowling:Client:StartGame",
                         data = k,
@@ -64,7 +64,7 @@ AddEventHandler('Businesses:Client:Startup', function()
                         end,
                     },
                     {
-                        icon = "bowling-ball-pin",
+                        icon = "bowling-ball",
                         text = "Join Game",
                         event = "Bowling:Client:JoinGame",
                         data = k,
@@ -74,7 +74,7 @@ AddEventHandler('Businesses:Client:Startup', function()
                         end,
                     },
                     {
-                        icon = "bowling-ball-pin",
+                        icon = "bowling-ball",
                         text = "End Game",
                         event = "Bowling:Client:EndGame",
                         data = k,
@@ -136,7 +136,7 @@ function CreateBowlingPins(center, skip)
 end
 
 function SendBowlingNotification(text, time)
-    Notification:Custom(text, time or 5000, 'bowling-ball-pin', {
+    Notification:Custom(text, time or 5000, 'bowling-ball', {
         alert = {
             background = "#C05097",
         },
@@ -345,11 +345,11 @@ AddEventHandler('Bowling:Client:StartGame', function(entity, alleyId)
             if success then
                 SendBowlingNotification('Starting a Game of Bowling')
             else
-                Notification:Error('Couldn\'t Start Game', 5000, 'bowling-ball-pin')
+                Notification:Error('Couldn\'t Start Game', 5000, 'bowling-ball')
             end
         end)
     else
-        Notification:Error('Please provide a name longer than 2 letters', 5000, 'bowling-ball-pin')
+        Notification:Error('Please provide a name longer than 2 letters', 5000, 'bowling-ball')
     end
 end)
 
@@ -363,11 +363,11 @@ AddEventHandler('Bowling:Client:JoinGame', function(entity, alleyId)
             if success then
                 SendBowlingNotification('Joined a Game of Bowling')
             else
-                Notification:Error('Couldn\'t Join Game', 5000, 'bowling-ball-pin')
+                Notification:Error('Couldn\'t Join Game', 5000, 'bowling-ball')
             end
         end)
     else
-        Notification:Error('Please provide a name longer than 2 letters', 5000, 'bowling-ball-pin')
+        Notification:Error('Please provide a name longer than 2 letters', 5000, 'bowling-ball')
     end
 end)
 
@@ -403,7 +403,7 @@ AddEventHandler('Keybinds:Client:KeyUp:primary_action', function()
                 end)
             end
         else
-            Notification:Error('Not Your Turn', 5000, 'bowling-ball-pin')
+            Notification:Error('Not Your Turn', 5000, 'bowling-ball')
         end
     end
 end)
@@ -415,7 +415,7 @@ AddEventHandler('Bowling:Client:EndGame', function(entity, alleyId)
         if success then
             SendBowlingNotification('Ended a Game of Bowling')
         else
-            Notification:Error('Couldn\'t End Game', 5000, 'bowling-ball-pin')
+            Notification:Error('Couldn\'t End Game', 5000, 'bowling-ball')
         end
     end)
 end)
@@ -425,7 +425,7 @@ AddEventHandler('Bowling:Client:ResetAll', function()
         if success then
             SendBowlingNotification('Reset All')
         else
-            Notification:Error('Couldn\'t Reset', 5000, 'bowling-ball-pin')
+            Notification:Error('Couldn\'t Reset', 5000, 'bowling-ball')
         end
     end)
 end)
@@ -435,7 +435,7 @@ AddEventHandler('Bowling:Client:ClearPins', function()
         if success then
             SendBowlingNotification('Cleared Pins')
         else
-            Notification:Error('Couldn\'t Clear Pins', 5000, 'bowling-ball-pin')
+            Notification:Error('Couldn\'t Clear Pins', 5000, 'bowling-ball')
         end
     end)
 end)

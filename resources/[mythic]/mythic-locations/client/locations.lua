@@ -59,9 +59,9 @@ AddEventHandler('Core:Shared:Ready', function()
         RetrieveComponents()
 
         for k, v in ipairs(_logoutLocations) do
-            Targeting.Zones:AddBox("logout-location-" .. k, "person-from-portal", v.center, v.length, v.width, v.options, {
+            Targeting.Zones:AddBox("logout-location-" .. k, "person-walking-dashed-line-arrow-right", v.center, v.length, v.width, v.options, {
                 {
-                    icon = "person-from-portal",
+                    icon = "person-walking-dashed-line-arrow-right",
                     text = "Logout",
                     event = "Locations:Client:LogoutLocation",
                 },

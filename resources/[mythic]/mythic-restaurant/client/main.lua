@@ -583,15 +583,15 @@ RegisterNetEvent("Restaurant:Client:CreatePoly", function(pickups, warmersList, 
 	for k, v in ipairs(pickups) do
 		local data = GlobalState[string.format("Restaurant:Pickup:%s", v)]
 		if data ~= nil then
-			Targeting.Zones:AddBox(data.id, "fork-knife", data.coords, data.width, data.length, data.options, {
+			Targeting.Zones:AddBox(data.id, "utensils", data.coords, data.width, data.length, data.options, {
 				{
-					icon = "fork-knife",
+					icon = "utensils",
 					text = string.format("Pickup Order (#%s)", data.num),
 					event = "Restaurant:Client:Pickup",
 					data = data.data,
 				},
 				{
-					icon = "money-check-dollar-pen",
+					icon = "credit-card",
 					text = "Set Contactless Payment",
 					event = "Businesses:Client:CreateContactlessPayment",
 					isEnabled = function(data)
@@ -606,7 +606,7 @@ RegisterNetEvent("Restaurant:Client:CreatePoly", function(pickups, warmersList, 
 					},
 				},
 				{
-					icon = "money-check-dollar-pen",
+					icon = "credit-card",
 					text = "Clear Contactless Payment",
 					event = "Businesses:Client:ClearContactlessPayment",
 					isEnabled = function(data)

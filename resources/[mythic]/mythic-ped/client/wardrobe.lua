@@ -113,7 +113,7 @@ WARDROBE = {
 						description = string.format("Outfit #%s", k),
 						actions = {
 							{
-								icon = "floppy-disks",
+								icon = "floppy-disk",
 								event = "Wardrobe:Client:SaveExisting",
 							},
 							{

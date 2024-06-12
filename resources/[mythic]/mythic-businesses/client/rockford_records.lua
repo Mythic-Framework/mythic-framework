@@ -4,7 +4,7 @@ local spawnedLaptop = false
 AddEventHandler("Businesses:Client:Startup", function()
     Targeting.Zones:AddBox(
         "rockford-stage",
-        "speakers",
+        "headphones",
         vector3(-1004.11, -249.95, 39.47),
         1.0,
         1.2,
@@ -16,7 +16,7 @@ AddEventHandler("Businesses:Client:Startup", function()
         },
         {
             {
-                icon = "speakers",
+                icon = "headphones",
                 text = "Toggle DJ Stand",
                 event = "Businesses:Client:RockfordStage",
                 jobPerms = {

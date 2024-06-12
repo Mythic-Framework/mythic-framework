@@ -258,7 +258,7 @@ function SendCasinoPhoneNotification(source, title, description, time)
 	Phone.Notification:Add(source, title, description, os.time() * 1000, time or 7500, {
 		color = "#18191e",
 		label = "Casino",
-		icon = "cards",
+		icon = "circle-dollar-to-slot",
 	}, {}, nil)
 end
 

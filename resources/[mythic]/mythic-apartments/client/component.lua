@@ -211,7 +211,7 @@ RegisterNetEvent("Apartment:Client:InnerStuff", function(aptId, unit, wakeUp)
 		p.interior.locations.logout.options,
 		{
 			{
-				icon = "bed-front",
+				icon = "bed",
 				text = "Switch Characters",
 				event = "Apartment:Client:Logout",
 				data = unit,

@@ -3,7 +3,7 @@ function CreateGovermentFleetShops()
         if v.interactionPed then
             PedInteraction:Add('gov_fleet_shop_'.. v.job, v.interactionPed.model, v.interactionPed.coords, v.interactionPed.heading, v.interactionPed.range, {
                 {
-                    icon = 'cars',
+                    icon = 'car',
                     text = 'Purchase Fleet Vehicles',
                     event = 'FleetDealers:Client:Open',
                     data = { shop = k },

@@ -14,9 +14,9 @@ local _sessionWinnings = 0
 
 AddEventHandler("Casino:Client:Startup", function()
     for k, v in ipairs(_slotMachineObjects) do
-		Targeting:AddObject(v, "slot-machine", {
+		Targeting:AddObject(v, "circle-dollar-to-slot", {
 			{
-				icon = "slot-machine",
+				icon = "circle-dollar-to-slot",
 				text = "Use Machine",
 				event = "Casino:Client:UseSlotMachine",
 				minDist = 2.0,
@@ -25,7 +25,7 @@ AddEventHandler("Casino:Client:Startup", function()
 				end,
 			},
             {
-				icon = "slot-machine",
+				icon = "circle-dollar-to-slot",
 				text = "Leave Machine",
 				event = "Casino:Client:LeaveSlotMachine",
 				minDist = 2.0,

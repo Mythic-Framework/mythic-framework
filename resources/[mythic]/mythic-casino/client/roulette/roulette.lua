@@ -32,7 +32,7 @@ AddEventHandler("Casino:Client:Startup", function()
         local maxBet = formatNumberToCurrency(math.floor(_rouletteTablesConfig[k].maxBet))
         Targeting.Zones:AddBox("casino-roulette-" .. k, "cards", v.polyzone.center, v.polyzone.length, v.polyzone.width, v.polyzone.options, {
             {
-                icon = "cards",
+                icon = "circle-dollar-to-slot",
                 text = _rouletteTablesConfig[k].isVIP and string.format("Join VIP Game ($%s Max Bet)", maxBet) or string.format("Join Game ($%s Max Bet)", maxBet),
                 event = "Casino:Client:JoinRoulette",
                 data = { table = k },
@@ -41,14 +41,14 @@ AddEventHandler("Casino:Client:Startup", function()
                 end,
             },
             {
-                icon = "cards",
+                icon = "circle-dollar-to-slot",
                 text = "Game Full",
                 isEnabled = function()
                     return not CanJoinRouletteTable(k) and not _rouletteAtTable
                 end,
             },
             {
-                icon = "cards",
+                icon = "circle-dollar-to-slot",
                 text = "Leave Game",
                 event = "Casino:Client:LeaveRoulette",
                 data = { table = k },

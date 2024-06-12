@@ -185,7 +185,7 @@ RegisterNetEvent("Hunting:Client:Polys", function(c)
 	for k, v in pairs(_localConfig.Animals) do
 		Targeting:AddPedModel(v.Model, "knife-kitchen", {
 			{
-				icon = "rabbit-running",
+				icon = "cow",
 				text = string.format("Harvest %s", v.Name),
 				event = "Hunting:Client:Harvest",
 				minDist = 2.0,
@@ -272,7 +272,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			event = "Hunting:Client:OpenShop",
 		},
 		{
-			icon = "ballot-check",
+			icon = "clipboard-list",
 			text = "Check In",
 			event = "Hunting:Client:StartJob",
 			tempjob = "Hunting",
@@ -281,7 +281,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			end,
 		},
 		{
-			icon = "ballot-check",
+			icon = "clipboard-list",
 			text = "Finish Job",
 			event = "Hunting:Client:FinishJob",
 			tempjob = "Hunting",
@@ -289,7 +289,7 @@ AddEventHandler("Labor:Client:Setup", function()
 				return _working and _state == 2
 			end,
 		},
-	}, "deer")
+	}, "cow")
 
 	Callbacks:RegisterClientCallback("Hunting:PlaceTrap", function(item, cb)
 		if _baited then

@@ -14,7 +14,7 @@ local _breached = {}
 
 local policeDutyPoint = {
 	{
-		icon = "clipboard-list",
+		icon = "clipboard-check",
 		text = "Go On Duty",
 		event = "Police:Client:OnDuty",
 		jobPerms = {
@@ -25,7 +25,7 @@ local policeDutyPoint = {
 		},
 	},
 	{
-		icon = "clipboard-list",
+		icon = "clipboard",
 		text = "Go Off Duty",
 		event = "Police:Client:OffDuty",
 		jobPerms = {
@@ -202,10 +202,10 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		_pdModels = GlobalState["PoliceCars"]
 
-		Interaction:RegisterMenu("police", false, "clipboard-list", function(data)
+		Interaction:RegisterMenu("police", "Panic", "land-mine-on", function(data)
 			Interaction:ShowMenu({
 				{
-					icon = "clipboard-list",
+					icon = "land-mine-on",
 					label = "13-A",
 					action = function()
 						Interaction:Hide()
@@ -216,7 +216,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "siren",
+					icon = "land-mine-on",
 					label = "13-B",
 					action = function()
 						Interaction:Hide()
@@ -269,7 +269,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					and LocalPlayer.state._inInvPoly?.business ~= nil
 		end)
 
-		Interaction:RegisterMenu("pd-locked-veh", "Secured Compartment", "shield-keyhole", function(data)
+		Interaction:RegisterMenu("pd-locked-veh", "Secured Compartment", "user-lock", function(data)
 			Interaction:Hide()
 			Progress:Progress({
 				name = "pd_rack_prog",
@@ -288,10 +288,10 @@ AddEventHandler("Core:Shared:Ready", function()
 			return LocalPlayer.state.onDuty == "police" and not LocalPlayer.state.isDead and v ~= 0 and _pdModels[GetEntityModel(v)] and Vehicles:HasAccess(v)
 		end)
 
-		Interaction:RegisterMenu("police-utils", "Police Utilities", "tablet-rugged", function(data)
+		Interaction:RegisterMenu("police-utils", "Police Utilities", "tablet", function(data)
 			Interaction:ShowMenu({
 				{
-					icon = "lock-keyhole-open",
+					icon = "lock-open",
 					label = "Slimjim Vehicle",
 					action = function()
 						Interaction:Hide()
@@ -318,7 +318,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "camera-security",
+					icon = "video",
 					label = "Toggle Body Cam",
 					action = function()
 						Interaction:Hide()
@@ -355,7 +355,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "window-frame-open",
+					icon = "house-chimney-window",
 					label = "Breach Apartment",
 					action = function()
 						Interaction:Hide()
@@ -614,14 +614,14 @@ AddEventHandler("Core:Shared:Ready", function()
 			end)
 		end)
 
-		Targeting.Zones:AddBox("prison-clockinoff", "clipboard-list", vector3(1838.94, 2578.14, 46.01), 2.0, 0.8, {
+		Targeting.Zones:AddBox("prison-clockinoff", "clipboard", vector3(1838.94, 2578.14, 46.01), 2.0, 0.8, {
 			heading = 305,
 			--debugPoly=true,
 			minZ = 45.81,
 			maxZ = 46.61,
 		}, {
 			{
-				icon = "clipboard-list",
+				icon = "clipboard-check",
 				text = "Go On Duty",
 				event = "Corrections:Client:OnDuty",
 				jobPerms = {
@@ -632,7 +632,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				},
 			},
 			{
-				icon = "clipboard-list",
+				icon = "clipboard",
 				text = "Go Off Duty",
 				event = "Corrections:Client:OffDuty",
 				jobPerms = {
@@ -643,7 +643,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				},
 			},
 			{
-				icon = "clipboard-list",
+				icon = "clipboard-check",
 				text = "Go On Duty (Medical)",
 				event = "EMS:Client:OnDuty",
 				jobPerms = {
@@ -655,7 +655,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				},
 			},
 			{
-				icon = "clipboard-list",
+				icon = "clipboard",
 				text = "Go Off Duty (Medical)",
 				event = "EMS:Client:OffDuty",
 				jobPerms = {
@@ -682,42 +682,42 @@ AddEventHandler("Core:Shared:Ready", function()
 			},
 		}
 
-		Targeting.Zones:AddBox("police-shitty-locker", "clipboard-list", vector3(461.59, -1000.0, 30.69), 1.0, 3.8, {
+		Targeting.Zones:AddBox("police-shitty-locker", "land-mine-on", vector3(461.59, -1000.0, 30.69), 1.0, 3.8, {
 			heading = 0,
 			--debugPoly=true,
 			minZ = 29.69,
 			maxZ = 32.69,
 		}, locker, 3.0, true)
 
-		Targeting.Zones:AddBox("police-shitty-locker-2", "clipboard-list", vector3(1841.51, 3682.08, 34.19), 2.0, 1, {
+		Targeting.Zones:AddBox("police-shitty-locker-2", "land-mine-on", vector3(1841.51, 3682.08, 34.19), 2.0, 1, {
 			heading = 30,
 			--debugPoly=true,
 			minZ = 33.19,
 			maxZ = 35.59
 		}, locker, 3.0, true)
 
-		Targeting.Zones:AddBox("police-shitty-locker-3", "clipboard-list", vector3(-436.32, 6009.79, 37.0), 0.2, 2.2, {
+		Targeting.Zones:AddBox("police-shitty-locker-3", "land-mine-on", vector3(-436.32, 6009.79, 37.0), 0.2, 2.2, {
 			heading = 45,
 			--debugPoly=true,
 			minZ = 36.3,
 			maxZ = 38.1,
 		}, locker, 3.0, true)
 
-		Targeting.Zones:AddBox("police-shitty-locker-4", "clipboard-list", vector3(360.08, -1592.9, 25.45), 0.5, 2.8, {
+		Targeting.Zones:AddBox("police-shitty-locker-4", "land-mine-on", vector3(360.08, -1592.9, 25.45), 0.5, 2.8, {
 			heading = 50,
 			--debugPoly=true,
 			minZ = 24.45,
 			maxZ = 27.45,
 		}, locker, 3.0, true)
 
-		Targeting.Zones:AddBox("police-shitty-locker-5", "clipboard-list", vector3(844.8, -1286.55, 28.24), 2.0, 1.2, {
+		Targeting.Zones:AddBox("police-shitty-locker-5", "land-mine-on", vector3(844.8, -1286.55, 28.24), 2.0, 1.2, {
 			heading = 0,
 			--debugPoly=true,
 			minZ = 27.24,
 			maxZ = 29.84,
 		}, locker, 3.0, true)
 
-		Targeting.Zones:AddBox("ems-shitty-locker-2", "clipboard-list", vector3(-439.04, -309.88, 34.91), 0.8, 0.8, {
+		Targeting.Zones:AddBox("ems-shitty-locker-2", "land-mine-on", vector3(-439.04, -309.88, 34.91), 0.8, 0.8, {
 			heading = 20,
 			--debugPoly=true,
 			minZ = 33.71,

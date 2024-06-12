@@ -108,7 +108,7 @@ AddEventHandler("Casino:Client:Startup", function()
     }
 
     for k, v in ipairs(casinoDesks) do
-        Targeting.Zones:AddBox("casino-employee-" .. k, "slot-machine", v.center, v.length, v.width, v.options, {
+        Targeting.Zones:AddBox("casino-employee-" .. k, "circle-dollar-to-slot", v.center, v.length, v.width, v.options, {
             {
                 icon = "clipboard-check",
                 text = "Clock In",
@@ -134,7 +134,7 @@ AddEventHandler("Casino:Client:Startup", function()
                 },
             },
             {
-                icon = "slot-machine",
+                icon = "circle-dollar-to-slot",
                 text = "Close Casino",
                 event = "Casino:Client:OpenClose",
                 data = { state = false },
@@ -149,7 +149,7 @@ AddEventHandler("Casino:Client:Startup", function()
                 end,
             },
             {
-                icon = "slot-machine",
+                icon = "circle-dollar-to-slot",
                 text = "Open Casino",
                 event = "Casino:Client:OpenClose",
                 data = { state = true },
@@ -220,7 +220,7 @@ AddEventHandler("Casino:Client:Startup", function()
         maxZ = 73.27
     }, {
         {
-            icon = "inbox-out",
+            icon = "inbox",
             text = "Cash Out Chips",
             event = "Casino:Client:StartChipSell",
             isEnabled = function()
@@ -228,12 +228,12 @@ AddEventHandler("Casino:Client:Startup", function()
             end
         },
         {
-            icon = "inbox-in",
+            icon = "inbox",
             text = "Purchase Chips",
             event = "Casino:Client:StartChipPurchase",
         },
         {
-            icon = "gift-card",
+            icon = "address-card",
             text = "Purchase VIP Card ($10,000, 1 Week)",
             event = "Casino:Client:PurchaseVIP",
         },

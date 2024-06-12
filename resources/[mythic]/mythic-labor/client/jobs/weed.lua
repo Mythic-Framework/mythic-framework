@@ -19,7 +19,7 @@ RegisterNetEvent("WeedRun:Client:OnDuty", function(joiner, time)
         SetNewWaypoint(location.x, location.y)
         PedInteraction:Add("WeedDelivery", pedModel, vector3(location[1], location[2], location[3]), location[4], 50.0, {
 			{
-				icon = "box-circle-check",
+				icon = "box",
 				text = "Deliver Goods",
 				event = "WeedRun:Client:Deliver",
 				tempjob = "WeedRun",
@@ -28,7 +28,7 @@ RegisterNetEvent("WeedRun:Client:OnDuty", function(joiner, time)
 					return _working and _state == 1
 				end,
 			},
-		}, 'box-circle-check')
+		}, 'box')
 	end)
 end)
 

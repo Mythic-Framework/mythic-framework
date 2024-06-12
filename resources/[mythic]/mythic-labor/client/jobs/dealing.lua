@@ -63,7 +63,7 @@ end
 function AddTargetingShit(ped)
 	Targeting:AddPed(ped, "hands-holding-dollar", {
 		{
-			icon = "list-timeline",
+			icon = "timeline",
 			text = "Sell Product",
 			event = "CornerDealing:Client:ShowMenu",
 			minDist = 2.0,
@@ -110,7 +110,7 @@ AddEventHandler("Labor:Client:Setup", function()
 	end
 	PedInteraction:Add("CornerDealing", GetHashKey("csb_grove_str_dlr"), _queueLoc.coords, _queueLoc.heading, 25.0, {
 		{
-			icon = "clock-nine",
+			icon = "clock",
 			text = "Sign Up",
 			event = "CornerDealing:Client:Enable",
 			data = {},
@@ -120,7 +120,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			end,
 		},
 		{
-			icon = "clock-nine",
+			icon = "clock",
 			text = "Sign Off",
 			event = "CornerDealing:Client:Disable",
 			data = {},
@@ -130,7 +130,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			end,
 		},
 		{
-			icon = "list-radio",
+			icon = "list",
 			text = "View Offers",
 			event = "Vendor:Client:GetItems",
 			data = {

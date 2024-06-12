@@ -96,7 +96,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "person-from-portal",
+					icon = "person-walking-arrow-right",
 					text = "Process Release",
 					event = "Jail:Client:Released",
 					isEnabled = function()

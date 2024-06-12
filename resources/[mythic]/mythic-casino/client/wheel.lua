@@ -12,7 +12,7 @@ AddEventHandler("Casino:Client:Startup", function()
         maxZ = 73.27
     }, {
         {
-            icon = "face-tongue-money",
+            icon = "face-surprise",
             text = "Spin the Wheel! ($1,500)",
             event = "Casino:Client:StartSpin",
             isEnabled = function()
@@ -20,7 +20,7 @@ AddEventHandler("Casino:Client:Startup", function()
             end,
         },
         {
-            icon = "gift-card",
+            icon = "address-card",
             text = "VIP Turbo Spin ($7,500)",
             event = "Casino:Client:StartSpin",
             data = { turbo = true },

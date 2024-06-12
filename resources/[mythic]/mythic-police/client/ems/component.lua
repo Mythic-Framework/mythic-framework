@@ -26,7 +26,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		end
 		EMSComponents()
 
-		Interaction:RegisterMenu("call-911", "Call For Help", "siren-on", function(data)
+		Interaction:RegisterMenu("call-911", "Call For Help", "land-mine-on", function(data)
 			Interaction:Hide()
 			TriggerServerEvent("EMS:Server:RequestHelp")
 		end, function()
@@ -36,10 +36,10 @@ AddEventHandler("Core:Shared:Ready", function()
 				and GetCloudTimeAsInt() > LocalPlayer.state.isDeadTime + (60 * 2)
 		end)
 
-		Interaction:RegisterMenu("ems", false, "siren-on", function(data)
+		Interaction:RegisterMenu("ems", false, "land-mine-on", function(data)
 			Interaction:ShowMenu({
 				{
-					icon = "siren-on",
+					icon = "land-mine-on",
 					label = "13-A",
 					action = function()
 						Interaction:Hide()
@@ -50,7 +50,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "siren",
+					icon = "land-mine-on",
 					label = "13-B",
 					action = function()
 						Interaction:Hide()
@@ -79,7 +79,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					end,
 				},
 				{
-					icon = "camera-security",
+					icon = "video",
 					label = "Toggle Body Cam",
 					action = function()
 						Interaction:Hide()

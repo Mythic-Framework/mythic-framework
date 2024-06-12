@@ -60,14 +60,14 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 	if intr.locations.logout then
 		Targeting.Zones:AddBox(
 			string.format("property-%s-logout", propertyId),
-			"bed-front",
+			"bed",
 			vector3(intr.locations.logout.x, intr.locations.logout.y, intr.locations.logout.z),
 			intr.locations.logout.l,
 			intr.locations.logout.w,
 			intr.locations.logout.extras,
 			{
 				{
-					icon = "bed-front",
+					icon = "bed",
 					text = "Switch Characters",
 					event = "Properties:Client:Logout",
 					data = propertyId,

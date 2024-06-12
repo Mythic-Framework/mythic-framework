@@ -102,7 +102,7 @@ AddEventHandler("Labor:Server:Startup", function()
             Labor.Offers:Task(_joiners[source], _JOB, "Locate The Target Vehicle", {
                 title = "Unknown",
                 label = "Unknown",
-                icon = "block-question",
+                icon = "question",
                 color = "transparent",
             })
             TriggerClientEvent(string.format("Coke:Client:%s:SetupHeist", _joiners[source]), -1, _active.drop)
@@ -116,7 +116,7 @@ AddEventHandler("Labor:Server:Startup", function()
             Labor.Offers:Task(_joiners[source], _JOB, "Retreive Contraband From Vehicle", {
                 title = "Unknown",
                 label = "Unknown",
-                icon = "block-question",
+                icon = "question",
                 color = "transparent",
             })
             TriggerClientEvent(string.format("Coke:Client:%s:DoShit", _joiners[source]), -1)
@@ -159,7 +159,7 @@ AddEventHandler("Inventory:Server:Opened", function(source, owner, type)
             Labor.Offers:Task(_joiners[source], _JOB, "Meet Contact Back In Los Santos", {
                 title = "Unknown",
                 label = "Unknown",
-                icon = "block-question",
+                icon = "question",
                 color = "transparent",
             })
             TriggerClientEvent(string.format("Coke:Client:%s:GoBack", _joiners[source]), -1)
@@ -177,7 +177,7 @@ AddEventHandler("Labor:Server:Coke:Queue", function(source, data)
 		Labor.Offers:Task(_joiners[source], _JOB, "Speak To The Contact At Cayo Perico", {
 			title = "Unknown",
 			label = "Unknown",
-			icon = "block-question",
+			icon = "question",
 			color = "transparent",
 		})
 	end
@@ -188,7 +188,7 @@ AddEventHandler("Coke:Server:OnDuty", function(joiner, members, isWorkgroup)
 		Phone.Notification:Add(joiner, "Unknown", "No Jobs Available", os.time() * 1000, 6000, {
 			title = "Unknown",
 			label = "Unknown",
-			icon = "block-question",
+			icon = "question",
 			color = "transparent",
 		})
 	else
@@ -207,7 +207,7 @@ AddEventHandler("Coke:Server:OnDuty", function(joiner, members, isWorkgroup)
 						{
 							title = "Unknown",
 							label = "Unknown",
-							icon = "block-question",
+							icon = "question",
 							color = "transparent",
 						}
 					)
@@ -224,7 +224,7 @@ AddEventHandler("Coke:Server:OnDuty", function(joiner, members, isWorkgroup)
 									{
 										title = "Unknown",
 										label = "Unknown",
-										icon = "block-question",
+										icon = "question",
 										color = "transparent",
 									}
 								)
@@ -269,7 +269,7 @@ AddEventHandler("Coke:Server:OnDuty", function(joiner, members, isWorkgroup)
 		Labor.Offers:Task(joiner, _JOB, "Wait For Contact", {
 			title = "Unknown",
 			label = "Unknown",
-			icon = "block-question",
+			icon = "question",
 			color = "transparent",
 		})
 

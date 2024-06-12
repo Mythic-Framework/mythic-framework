@@ -9,7 +9,7 @@ function CreateRentalSpots()
                     data = { rental = k },
                 },
                 {
-                    icon = 'car-garage',
+                    icon = 'car',
                     text = 'Rental Returns',
                     event = 'VehicleRentals:Client:ReturnRental',
                     data = { rental = k },

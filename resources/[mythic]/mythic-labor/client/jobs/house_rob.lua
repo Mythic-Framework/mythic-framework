@@ -349,9 +349,9 @@ RegisterNetEvent("HouseRobbery:Client:OnDuty", function(joiner, time)
             FreezeEntityPosition(o, true)
             SetEntityHeading(o, d.heading)
 
-            Targeting:AddEntity(o, "sensor-triangle-exclamation", {
+            Targeting:AddEntity(o, "house-circle-exclamation", {
                 {
-                    icon = "sensor-triangle-exclamation",
+                    icon = "house-circle-exclamation",
                     text = "Disable Alarm",
                     event = string.format("HouseRobbery:Client:%s:HackAlarm", joiner),
                     item = "electronics_kit",
@@ -386,7 +386,7 @@ RegisterNetEvent("HouseRobbery:Client:OnDuty", function(joiner, time)
         for k, v in ipairs(intr.robberies.locations) do
             Targeting.Zones:AddBox(
                 string.format("house-robbery-%s", k),
-                "box-open-full",
+                "box",
                 v.coords,
                 v.length,
                 v.width,

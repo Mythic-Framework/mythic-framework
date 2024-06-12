@@ -91,7 +91,7 @@ CRAFTING = {
 
 							if v.canUseSchematics then
 								table.insert(menu, {
-									icon = "memo-circle-check",
+									icon = "clipboard-list",
 									text = "Add Schematic To Bench",
 									event = "Crafting:Client:AddSchematic",
 									data = v,

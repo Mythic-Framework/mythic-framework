@@ -32,7 +32,7 @@ local hospitalCheckin = {
 		},
 	},
 	{
-		icon = "clipboard-list-check",
+		icon = "clipboard-list",
 		text = "Check In - $150",
 		event = "Hospital:Client:CheckIn",
 		isEnabled = function()
@@ -43,7 +43,7 @@ local hospitalCheckin = {
 		end,
 	},
 	{
-		icon = "clipboard-list-check",
+		icon = "clipboard-list",
 		text = "Check In - $5000",
 		event = "Hospital:Client:CheckIn",
 		isEnabled = function()
@@ -67,9 +67,9 @@ function Init()
 	PedInteraction:Add("hospital-check-in", `u_f_m_miranda_02`, vector3(-437.484, -323.269, 33.911), 162.630, 25.0, hospitalCheckin, "notes-medical", "WORLD_HUMAN_CLIPBOARD")
 
 	for k, v in ipairs(Config.BedModels) do
-		Targeting:AddObject(v, "stretcher", {
+		Targeting:AddObject(v, "bed-pulse", {
 			{
-				icon = "stretcher",
+				icon = "bed-pulse",
 				text = "Lay in Bed",
 				event = "Hospital:Client:FindBed",
 				minDist = 2.0,
@@ -82,14 +82,14 @@ function Init()
 
 	for k, v in ipairs(Config.BedPolys) do
 		Targeting.Zones:AddBox(string.format("hospitalbed-%s", k),
-			"stretcher",
+			"bed-pulse",
 			v.center,
 			v.length,
 			v.width,
 			v.options,
 			{
 				{
-					icon = "stretcher",
+					icon = "bed-pulse",
 					text = "Lay Down",
 					event = "Hospital:Client:LaydownAnimation",
 					data = v.laydown,

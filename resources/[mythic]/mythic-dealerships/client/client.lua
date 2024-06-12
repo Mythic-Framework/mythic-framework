@@ -129,7 +129,7 @@ function CreateDealerships()
             for k, v in ipairs(data.zones.employeeInteracts) do
                 Targeting.Zones:AddBox(string.format('dealership_%s_employee_%s', dealerId, k), 'car-building', v.center, v.length, v.width, v.options, {
                     { 
-                        icon = 'car-garage',
+                        icon = 'car',
                         text = 'Edit Showroom',
                         event = 'Dealerships:Client:ShowroomManagement', 
                         data = { dealerId = dealerId },
@@ -194,7 +194,7 @@ function CreateDealerships()
                     --     },
                     -- },
                     { 
-                        icon = 'briefcase-clock', 
+                        icon = 'business-time', 
                         text = 'Go On Duty', 
                         event = 'Dealerships:Client:ToggleDuty', 
                         data = { dealerId = dealerId, state = true }, 
@@ -206,7 +206,7 @@ function CreateDealerships()
                         },
                     },
                     { 
-                        icon = 'briefcase-clock', 
+                        icon = 'business-time', 
                         text = 'Go Off Duty', 
                         event = 'Dealerships:Client:ToggleDuty',
                         data = { dealerId = dealerId, state = false }, 
@@ -218,7 +218,7 @@ function CreateDealerships()
                         },
                     },
                     { 
-                        icon = 'tablet-screen', 
+                        icon = 'tablet-screen-button', 
                         text = 'Open Tablet', 
                         event = 'MDT:Client:Toggle',
                         data = {}, 

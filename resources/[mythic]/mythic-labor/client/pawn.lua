@@ -28,13 +28,13 @@ AddEventHandler('Labor:Client:Setup', function()
                 data = 'electronics',
 			},
             {
-				icon = 'microwave',
+				icon = 'kitchen-set',
 				text = 'Sell Appliance',
 				event = 'Pawn:Client:Sell',
                 data = 'appliance',
 			},
 			{
-				icon = 'golf-club',
+				icon = 'baseball-bat-ball',
 				text = 'Sell Sporting Equipment',
 				event = 'Pawn:Client:Sell',
                 data = 'golf',
@@ -52,7 +52,7 @@ AddEventHandler('Labor:Client:Setup', function()
                 data = 'raremetals',
 			},
             -- {
-			-- 	icon = 'box-open-full',
+			-- 	icon = 'box',
 			-- 	text = 'Buy Items',
 			-- 	event = 'Pawn:Client:SellJewelry',
 			-- 	rep = { id = 'Pawn', level = 3 },

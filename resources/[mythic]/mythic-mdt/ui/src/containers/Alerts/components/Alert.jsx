@@ -102,7 +102,7 @@ export default ({ alert }) => {
 	const getIcon = () => {
 		switch (alert.style) {
 			case 1:
-				return <FontAwesomeIcon icon={['fas', 'siren-on']} />;
+				return <FontAwesomeIcon icon={['fas', 'land-mine-on']} />;
 			case 2:
 				return <FontAwesomeIcon icon={['fas', 'truck-medical']} />;
 			case 3:

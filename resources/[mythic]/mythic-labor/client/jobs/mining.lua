@@ -82,7 +82,7 @@ AddEventHandler("Labor:Client:Setup", function()
 
 	PedInteraction:Add("MiningJob", `s_m_y_construct_02`, vector3(2741.874, 2791.691, 34.214), 155.045, 25.0, {
 		{
-			icon = "face-tongue-money",
+			icon = "face-surprise",
 			text = "Sell Crushed Stone ($3/per)",
 			event = "Mining:Client:SellStone",
 		},
