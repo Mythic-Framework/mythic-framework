@@ -50,7 +50,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 				end,
 			},
 			{
-				icon = "shield-keyhole",
+				icon = "shield",
 				text = "Secure Safe",
 				event = "Robbery:Client:Store:SecureSafe",
 				jobPerms = {

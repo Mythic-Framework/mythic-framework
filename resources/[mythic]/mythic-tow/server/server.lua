@@ -86,16 +86,16 @@ AddEventHandler('Core:Shared:Ready', function()
                                 Fill out the Paperwork.
                             ]],
                             10000, 
-                            'truck-tow'
+                            'truck-ramp-box'
                         )
                     else
-                        Execute:Client(source, 'Notification', 'Error', 'Failed to Go On Duty', 5000, 'truck-tow')
+                        Execute:Client(source, 'Notification', 'Error', 'Failed to Go On Duty', 5000, 'truck-ramp-box')
                     end
                 else
-                    Execute:Client(source, 'Notification', 'Error', 'Too Many Tow Employees on Duty', 5000, 'truck-tow')
+                    Execute:Client(source, 'Notification', 'Error', 'Too Many Tow Employees on Duty', 5000, 'truck-ramp-box')
                 end
             else
-                Execute:Client(source, 'Notification', 'Error', 'Failed to Go On Duty', 5000, 'truck-tow')
+                Execute:Client(source, 'Notification', 'Error', 'Failed to Go On Duty', 5000, 'truck-ramp-box')
             end
         end)
 
@@ -109,10 +109,10 @@ AddEventHandler('Core:Shared:Ready', function()
                     _activeTowers[source] = nil
                     Phone.Notification:RemoveById(source, "TOW_OBJ")
                 else
-                    Execute:Client(source, 'Notification', 'Error', 'Return the Tow Truck Before Going Off Duty', 5000, 'truck-tow')
+                    Execute:Client(source, 'Notification', 'Error', 'Return the Tow Truck Before Going Off Duty', 5000, 'truck-ramp-box')
                 end
             else
-                Execute:Client(source, 'Notification', 'Error', 'Failed to Go Off Duty', 5000, 'truck-tow')
+                Execute:Client(source, 'Notification', 'Error', 'Failed to Go Off Duty', 5000, 'truck-ramp-box')
             end
         end)
 
@@ -135,10 +135,10 @@ AddEventHandler('Core:Shared:Ready', function()
 
                             GlobalState[string.format('TowTrucks:%s', stateId)] = NetworkGetNetworkIdFromEntity(spawnedVehicle)
 
-                            Execute:Client(source, 'Notification', 'Success', 'Your Tow Truck Was Provided', 5000, 'truck-tow')
+                            Execute:Client(source, 'Notification', 'Success', 'Your Tow Truck Was Provided', 5000, 'truck-ramp-box')
                             cb(spawnedVehicle)
                         else
-                            Execute:Client(source, 'Notification', 'Error', 'Truck Spawn Failed', 5000, 'truck-tow')
+                            Execute:Client(source, 'Notification', 'Error', 'Truck Spawn Failed', 5000, 'truck-ramp-box')
                             cb(nil)
                         end
                     end, {
@@ -147,7 +147,7 @@ AddEventHandler('Core:Shared:Ready', function()
                         Value = 50000,
                     })
                 else
-                    Execute:Client(source, 'Notification', 'Error', 'We Already Gave You a Truck', 5000, 'truck-tow')
+                    Execute:Client(source, 'Notification', 'Error', 'We Already Gave You a Truck', 5000, 'truck-ramp-box')
                     cb(nil)
                 end
             end
@@ -165,16 +165,16 @@ AddEventHandler('Core:Shared:Ready', function()
                             if success then
                                 _activeTowVehicles[stateId] = nil
                                 GlobalState[string.format('TowTrucks:%s', stateId)] = false
-                                Execute:Client(source, 'Notification', 'Success', 'Thanks for Returning Your Tow Truck', 5000, 'truck-tow')
+                                Execute:Client(source, 'Notification', 'Success', 'Thanks for Returning Your Tow Truck', 5000, 'truck-ramp-box')
                             else
-                                Execute:Client(source, 'Notification', 'Error', 'Error Returning Truck', 5000, 'truck-tow')
+                                Execute:Client(source, 'Notification', 'Error', 'Error Returning Truck', 5000, 'truck-ramp-box')
                             end
                         end)
                     else
-                        Execute:Client(source, 'Notification', 'Error', 'Your Tow Truck Isn\'t Nearby', 5000, 'truck-tow')
+                        Execute:Client(source, 'Notification', 'Error', 'Your Tow Truck Isn\'t Nearby', 5000, 'truck-ramp-box')
                     end
                 else
-                    Execute:Client(source, 'Notification', 'Error', 'You Don\'t Have a Truck to Return', 5000, 'truck-tow')
+                    Execute:Client(source, 'Notification', 'Error', 'You Don\'t Have a Truck to Return', 5000, 'truck-ramp-box')
                 end
             end
         end)
@@ -195,7 +195,7 @@ TOW = {
             Phone.Notification:Add(source, "Yard Manager", "Good work, I've sent your fee to your account. I'll let you know when I got another job for you", os.time() * 1000, 10000, {
                 color = '#247919',
                 label = 'Los Santos Tow',
-                icon = 'truck-tow',
+                icon = 'truck-ramp-box',
             }, {}, nil)
 
             Tow:CleanupPickup(source)

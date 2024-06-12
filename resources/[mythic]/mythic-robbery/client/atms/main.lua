@@ -18,7 +18,7 @@ AddEventHandler("Robbery:Client:Setup", function()
     local atmRobbery = GlobalState["ATMRobberyTerminal"]
     Targeting.Zones:AddBox("atm-robbery-terminal", "bug", atmRobbery.coords, atmRobbery.length, atmRobbery.width, atmRobbery.options, {
         {
-            icon = "eye-evil",
+            icon = "computer",
             text = "Do Illegal Things",
             event = "Robbery:Client:ATM:UseTerminal",
             item = "vpn",
@@ -33,7 +33,7 @@ AddEventHandler("Robbery:Client:Setup", function()
         Targeting:AddObject(v, "credit-card", {
             {
                 text = "Run Exploit",
-                icon = 'eye-evil',
+                icon = 'computer',
                 event = "Robbery:Client:ATM:StartHack",
                 data = {},
                 minDist = 2.0,

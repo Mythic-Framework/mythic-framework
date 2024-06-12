@@ -1,9 +1,9 @@
 AddEventHandler('Tow:Client:RequestJob', function()
     Callbacks:ServerCallback('Tow:RequestJob', {}, function(success)
         if success then
-            Notification:Success('You are Now Employed at Tow Yard', 5000, 'truck-tow')
+            Notification:Success('You are Now Employed at Tow Yard', 5000, 'truck-ramp-box')
         else
-            Notification:Error('Employement Request Failed', 5000, 'truck-tow')
+            Notification:Error('Employement Request Failed', 5000, 'truck-ramp-box')
         end
     end)
 end)
@@ -11,7 +11,7 @@ end)
 AddEventHandler('Tow:Client:QuitJob', function()
     Callbacks:ServerCallback('Tow:QuitJob', {}, function(success)
         if not success then
-            Notification:Error('Request to Quit Failed', 5000, 'truck-tow')
+            Notification:Error('Request to Quit Failed', 5000, 'truck-ramp-box')
         end
     end)
 end)
@@ -33,7 +33,7 @@ AddEventHandler('Tow:Client:RequestTruck', function()
             end
         end)
     else
-        Notification:Error('Parking Space Occupied, Move Out the Way!', 7500, 'truck-tow')
+        Notification:Error('Parking Space Occupied, Move Out the Way!', 7500, 'truck-ramp-box')
     end
 end)
 

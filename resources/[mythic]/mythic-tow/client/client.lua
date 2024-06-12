@@ -40,7 +40,7 @@ AddEventHandler('Core:Shared:Ready', function()
 
         PedInteraction:Add('veh_tow_jerry', `a_m_m_eastsa_01`, vector3(-247.645, -1183.099, 22.090), 312.942, 50.0, {
             {
-                icon = "truck-tow",
+                icon = "truck-ramp-box",
                 text = "Request Tow Truck",
                 event = "Tow:Client:RequestTruck",
                 jobPerms = {
@@ -54,7 +54,7 @@ AddEventHandler('Core:Shared:Ready', function()
                 end,
             },
             {
-                icon = "truck-tow",
+                icon = "truck-ramp-box",
                 text = "Return Tow Truck",
                 event = "Tow:Client:ReturnTruck",
                 jobPerms = {
@@ -67,7 +67,7 @@ AddEventHandler('Core:Shared:Ready', function()
                     return GlobalState[string.format('TowTrucks:%s', LocalPlayer.state.Character:GetData('SID'))]
                 end,
             },
-        }, 'truck-tow', 'WORLD_HUMAN_HANG_OUT_STREET')
+        }, 'truck-ramp-box', 'WORLD_HUMAN_HANG_OUT_STREET')
 
         Polyzone.Create:Box('tow_impound_zone', vector3(-236.96, -1173.44, 23.04), 19.4, 24.4, {
             heading = 270,
@@ -123,7 +123,7 @@ AddEventHandler('Vehicles:Client:BeginTow', function(entityData)
                 local canTow, errorMessage = CanFuckingTowVehicle(truck, targetVehicle)
                 if not canTow then
                     Progress:Cancel()
-                    Notification:Error(errorMessage, 5000, 'truck-tow')
+                    Notification:Error(errorMessage, 5000, 'truck-ramp-box')
                 end
             end, function(wasCancelled)
                 _towingAction = false
@@ -131,7 +131,7 @@ AddEventHandler('Vehicles:Client:BeginTow', function(entityData)
                     local success = AttachVehicleToTow(truck, targetVehicle)
                     if success then
                         truckState:set('towingVehicle', VehToNet(success), true)
-                        Notification:Success('Vehicle Now on Tow Truck', 5000, 'truck-tow')
+                        Notification:Success('Vehicle Now on Tow Truck', 5000, 'truck-ramp-box')
 
                         if Entity(success).state.towObjective then
                             Blips:Remove("towjob-pickup")
@@ -140,12 +140,12 @@ AddEventHandler('Vehicles:Client:BeginTow', function(entityData)
 
                     else
                         truckState:set('towingVehicle', false, true)
-                        Notification:Error('Failed to Tow Vehicle', 5000, 'truck-tow')
+                        Notification:Error('Failed to Tow Vehicle', 5000, 'truck-ramp-box')
                     end
                 end
             end)
         else
-            Notification:Error(errorMessage, 5000, 'truck-tow')
+            Notification:Error(errorMessage, 5000, 'truck-ramp-box')
         end
     end
 end)
@@ -158,11 +158,11 @@ AddEventHandler('Vehicles:Client:ReleaseTow', function(entityData)
         if truckState.towingVehicle then
             local success = DetachVehicleFromTow(truck, NetToVeh(truckState.towingVehicle))
             if success then
-                Notification:Success('Vehicle Released from Truck', 5000, 'truck-tow')
+                Notification:Success('Vehicle Released from Truck', 5000, 'truck-ramp-box')
                 truckState:set('towingVehicle', false, true)
             end
         else
-            Notification:Error('No Vehicle Being Towed', 5000, 'truck-tow')
+            Notification:Error('No Vehicle Being Towed', 5000, 'truck-ramp-box')
         end
     end
 end)

@@ -101,7 +101,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				local seatAmount = GetVehicleModelNumberOfSeats(GetEntityModel(VEHICLE_INSIDE))
 				Interaction:ShowMenu({
 					{
-						icon = "person-seat",
+						icon = "car-side",
 						label = "Seats",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
@@ -118,7 +118,7 @@ AddEventHandler("Core:Shared:Ready", function()
 								local actualFuckingSeatNumber = i - 2
 								if GetPedInVehicleSeat(VEHICLE_INSIDE, actualFuckingSeatNumber) == 0 then
 									table.insert(fuckingSeats, {
-										icon = "person-seat",
+										icon = "car-side",
 										label = actualFuckingSeatNumber == -1 and "Driver's Seat" or "Seat #" .. i,
 										action = function()
 											TriggerEvent("Vehicles:Client:Actions:SwitchSeat", actualFuckingSeatNumber)
@@ -198,7 +198,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "window-frame",
+						icon = "window-maximize",
 						label = "Windows",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
@@ -211,7 +211,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						action = function()
 							local fuckingDoors = {}
 							table.insert(fuckingDoors, {
-								icon = "window-frame",
+								icon = "window-maximize",
 								label = "Driver Window",
 								action = function()
 									TriggerEvent("Vehicles:Client:Actions:ToggleWindow", 0)
@@ -219,7 +219,7 @@ AddEventHandler("Core:Shared:Ready", function()
 							})
 
 							table.insert(fuckingDoors, {
-								icon = "window-frame",
+								icon = "window-maximize",
 								label = "Passenger Window",
 								action = function()
 									TriggerEvent("Vehicles:Client:Actions:ToggleWindow", 1)
@@ -227,7 +227,7 @@ AddEventHandler("Core:Shared:Ready", function()
 							})
 
 							table.insert(fuckingDoors, {
-								icon = "window-frame",
+								icon = "window-maximize",
 								label = "Close All",
 								action = function()
 									TriggerEvent("Vehicles:Client:Actions:ToggleWindow", "shut")
@@ -235,7 +235,7 @@ AddEventHandler("Core:Shared:Ready", function()
 							})
 
 							table.insert(fuckingDoors, {
-								icon = "window-frame",
+								icon = "window-maximize",
 								label = "Open All",
 								action = function()
 									TriggerEvent("Vehicles:Client:Actions:ToggleWindow", "open")
@@ -246,7 +246,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "gauge-min",
+						icon = "gauge",
 						label = "Check Mileage",
 						action = function()
 							if VEHICLE_INSIDE then
@@ -263,7 +263,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "gauge-circle-plus",
+						icon = "gauge-simple-high",
 						label = "Check Nitrous Levels",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
@@ -286,7 +286,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "gauge-circle-minus",
+						icon = "gauge-simple",
 						label = "Remove Nitrous",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
@@ -327,7 +327,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					-- 	end,
 					-- },
 					{
-						icon = "lightbulb-on",
+						icon = "lightbulb",
 						label = "Neons",
 						shouldShow = function()
 							if VEHICLE_INSIDE and Vehicles.Sync.Neons:Has() then
