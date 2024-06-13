@@ -2,7 +2,7 @@ Config = {
 	DefaultIcons = {
 		ped = "person-walking",
 		player = "person",
-		entity = "bullseye-pointer",
+		entity = "fingerprint",
 	},
 	VehicleIcons = {
 		[0] = "car",
