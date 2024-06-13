@@ -81,7 +81,7 @@ Config.VehicleMenu = {
 		minDist = 2.0,
 	},
 	{
-		icon = "garage-open",
+		icon = "warehouse",
 		isEnabled = function(data, entityData)
 			if Vehicles ~= nil and Vehicles:CanBeStored(entityData.entity) then
 				return true
@@ -149,7 +149,7 @@ Config.VehicleMenu = {
 		minDist = 25.0,
 	},
 	{
-		icon = "truck-tow",
+		icon = "truck-pickup",
 		text = "Request Tow",
 		event = "Vehicles:Client:RequestTow",
 		data = {},
@@ -169,7 +169,7 @@ Config.VehicleMenu = {
 		end,
 	},
 	{
-		icon = "truck-tow",
+		icon = "truck-pickup",
 		text = "Request Impound",
 		event = "Vehicles:Client:RequestImpound",
 		data = {},
@@ -189,7 +189,7 @@ Config.VehicleMenu = {
 		end,
 	},
 	{
-		icon = "truck-tow",
+		icon = "truck-pickup",
 		text = "Tow - Impound",
 		event = "Tow:Client:RequestImpound",
 		data = {},
@@ -211,7 +211,7 @@ Config.VehicleMenu = {
 	},
 
 	{
-		icon = "print-magnifying-glass",
+		icon = "magnifying-glass",
 		isEnabled = function(data, entityData)
 			return Vehicles:HasAccess(entityData.entity) and Vehicles.Utils:IsCloseToFrontOfVehicle(entityData.entity) and (GetVehicleDoorAngleRatio(entityData.entity, 4) >= 0.1)
 		end,
@@ -257,7 +257,7 @@ Config.VehicleMenu = {
 		minDist = 10.0,
 	},
 	{
-		icon = "person-seat",
+		icon = "angle-right",
 		text = "Seat In Vehicle",
 		event = "Escort:Client:PutIn",
 		data = {},
@@ -277,7 +277,7 @@ Config.VehicleMenu = {
 		end,
 	},
 	{
-		icon = "person-seat",
+		icon = "angle-left",
 		text = "Unseat From Vehicle",
 		event = "Escort:Client:PullOut",
 		data = {},
@@ -361,7 +361,7 @@ Config.VehicleMenu = {
 		minDist = 10.0,
 	},
 	{
-		icon = "car-wrench",
+		icon = "car-on",
 		text = "Run Diagnostics",
 		event = "Mechanic:Client:RunDiagnostics",
 		data = {},
@@ -377,7 +377,7 @@ Config.VehicleMenu = {
 		minDist = 10.0,
 	},
 	{
-		icon = "gauge-simple-max",
+		icon = "gauge-simple-high",
 		text = "Run Performance Diagnostics",
 		event = "Mechanic:Client:RunPerformanceDiagnostics",
 		data = {},
@@ -393,7 +393,7 @@ Config.VehicleMenu = {
 		minDist = 10.0,
 	},
 	{
-        icon = 'car-tilt',
+        icon = 'car-burst',
         isEnabled = function(data, entityData)
             if DoesEntityExist(entityData.entity) and (not IsVehicleOnAllWheels(entityData.entity)) then
                 return true
@@ -407,7 +407,7 @@ Config.VehicleMenu = {
 		jobs = false
 	},
 	{
-        icon = 'truck-tow',
+        icon = 'truck-pickup',
         isEnabled = function(data, entityData)
 			local veh = entityData.entity
 			local vehEnt = Entity(veh)
@@ -427,7 +427,7 @@ Config.VehicleMenu = {
 		jobs = false
 	},
 	{
-        icon = 'truck-tow',
+        icon = 'truck-pickup',
         isEnabled = function(data, entityData)
 			local veh = entityData.entity
 			local vehEnt = Entity(veh)
@@ -447,7 +447,7 @@ Config.VehicleMenu = {
 		jobs = false
 	},
 	{
-		icon = "rectangle-barcode",
+		icon = "rectangle-xmark",
 		text = "Run Plate",
 		event = "Police:Client:RunPlate",
 		data = {},
@@ -475,7 +475,7 @@ Config.VehicleMenu = {
 		minDist = 5.0,
 	},
 	{
-		icon = "car-wrench",
+		icon = "screwdriver-wrench",
 		isEnabled = function(data, entity)
 			local entState = Entity(entity.entity).state
 			return not LocalPlayer.state.isDead and LocalPlayer.state.inChopZone ~= nil and LocalPlayer.state.chopping == nil and not entState.Owned
@@ -486,7 +486,7 @@ Config.VehicleMenu = {
 		minDist = 10.0,
 	},
 	{
-		icon = "clothes-hanger",
+		icon = "shirt",
 		isEnabled = function(data, entity)
 			local entState = Entity(entity.entity).state
 			local rvModels = { [`cararv`] = true, [`guardianrv`] = true, [`sandroamer`] = true, [`sandkingrv`] = true }
@@ -498,7 +498,7 @@ Config.VehicleMenu = {
 		minDist = 2.0,
 	},
 	{
-		icon = "clothes-hanger",
+		icon = "shirt",
 		isEnabled = function(data, entity)
 			return not LocalPlayer.state.cornering and not Entity(entity.entity).state.cornering and not Config.BlaclistedCornering[GetVehicleClass(entity.entity)]
 		end,
@@ -509,7 +509,7 @@ Config.VehicleMenu = {
 		minDist = 2.0,
 	},
 	{
-		icon = "clothes-hanger",
+		icon = "shirt",
 		isEnabled = function(data, entity)
 			return LocalPlayer.state.cornering and Entity(entity.entity).state.cornering
 		end,
@@ -550,7 +550,7 @@ Config.VehicleMenu = {
 		end
 	},
 	{
-		icon = "car-garage",
+		icon = "warehouse",
 		isEnabled = function(data, entityData)
 			local inZone = Polyzone:IsCoordsInZone(GetEntityCoords(entityData.entity), false, 'dealerBuyback')
 			if inZone then
@@ -597,7 +597,7 @@ Config.PlayerMenu = {
 		}
 	},
 	{
-		icon = "beer-mug",
+		icon = "beer-mug-empty",
 		text = "BAC Test",
 		event = "Police:Client:BAC",
 		data = {},
@@ -725,7 +725,7 @@ Config.PlayerMenu = {
 		end,
 	},
 	{
-		icon = "hockey-mask",
+		icon = "masks-theater",
 		text = "Remove Mask",
 		event = "Police:Client:RemoveMask",
 		data = {},
@@ -745,7 +745,7 @@ Config.PlayerMenu = {
 		end,
 	},
 	{
-		icon = "face-head-bandage",
+		icon = "suitcase-medical",
 		text = "Evaluate",
 		event = "EMS:Client:Evaluate",
 		minDist = 3.0,
@@ -761,7 +761,7 @@ Config.PlayerMenu = {
 		}
 	},
 	{
-		icon = "hood-cloak",
+		icon = "eye-low-vision",
 		text = "Remove Blindfold",
 		event = "HUD:Client:RemoveBlindfold",
 		minDist = 3.0,
