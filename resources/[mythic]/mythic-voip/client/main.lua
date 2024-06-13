@@ -219,7 +219,7 @@ function UpdateVOIPIndicatorStatus()
 		end
 
 		if USING_MICROPHONE then
-			indicatorIcon = "microphone-stand"
+			indicatorIcon = "microphone-lines"
 			fillPercent = 100
 		end
 	end
