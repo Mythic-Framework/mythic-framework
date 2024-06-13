@@ -470,6 +470,50 @@ _businessTablets = {
 		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/ferrari_pawn.png',
 		links = restaurantTabletLinks
     },
+	cluckinbell = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/cluckinbell.png',
+		links = restaurantTabletLinks
+    },
+	lasttrain = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/lasttrain.png',
+		links = restaurantTabletLinks
+    },
+	uwu = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/uwu.png',
+		links = restaurantTabletLinks
+    },
+	woods_saloon = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/woods_saloon.png',
+		links = restaurantTabletLinks
+    },
+	pizza_this = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/pizza_this.png',
+		links = restaurantTabletLinks
+    },
+	prego = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/prego.png',
+		links = restaurantTabletLinks
+    },
+	unicorn = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/unicorn.png',
+		links = restaurantTabletLinks
+    },
+	tequila = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/tequila.png',
+		links = restaurantTabletLinks
+    },
+	noodle = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/noodle.png',
+		links = restaurantTabletLinks
+    },
+	beanmachine = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/beanmachine.png',
+		links = restaurantTabletLinks
+    },
+	bakery = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/bakery.png',
+		links = restaurantTabletLinks
+    },
 	-- TODO : Add the rest of the restaurants !!
 }
 
