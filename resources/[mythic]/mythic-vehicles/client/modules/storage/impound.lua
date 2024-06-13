@@ -30,7 +30,7 @@ AddEventHandler('Vehicles:Client:StartUp', function()
 			},
 		},
 		{
-			icon = "clipboard-check",
+			icon = "clipboard-list",
 			text = "Tow - Go On Duty",
 			event = "Tow:Client:OnDuty",
 			jobPerms = {

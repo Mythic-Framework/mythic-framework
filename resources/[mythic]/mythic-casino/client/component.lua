@@ -110,7 +110,7 @@ AddEventHandler("Casino:Client:Startup", function()
     for k, v in ipairs(casinoDesks) do
         Targeting.Zones:AddBox("casino-employee-" .. k, "circle-dollar-to-slot", v.center, v.length, v.width, v.options, {
             {
-                icon = "clipboard-check",
+                icon = "clipboard-list",
                 text = "Clock In",
                 event = "Casino:Client:ClockIn",
                 data = { job = "casino" },

@@ -3,7 +3,7 @@ function CreateMechanicDutyPoints()
         if v.dutyPoint then
             local menu = {
                 {
-                    icon = 'clipboard-check',
+                    icon = 'clipboard-list',
                     text = 'Go On Duty',
                     event = 'Mechanic:Client:OnDuty',
                     data = v.job,

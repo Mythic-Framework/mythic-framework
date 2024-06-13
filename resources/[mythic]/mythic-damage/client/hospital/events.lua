@@ -1,6 +1,6 @@
 local hospitalCheckin = {
 	{
-		icon = "clipboard-check",
+		icon = "clipboard-list",
 		text = "Go On Duty",
 		event = "EMS:Client:OnDuty",
 		jobPerms = {

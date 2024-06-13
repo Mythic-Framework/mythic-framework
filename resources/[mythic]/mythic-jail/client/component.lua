@@ -161,7 +161,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		PedInteraction:Add("PrisonJobs", `csb_janitor`, Config.Foreman.coords, Config.Foreman.heading, 25.0, {
 			{
-				icon = "clipboard-check",
+				icon = "clipboard-list",
 				text = "Start Work",
 				event = "Jail:Client:StartWork",
 				data = {},

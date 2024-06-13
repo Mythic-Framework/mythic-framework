@@ -14,7 +14,7 @@ local _breached = {}
 
 local policeDutyPoint = {
 	{
-		icon = "clipboard-check",
+		icon = "clipboard-list",
 		text = "Go On Duty",
 		event = "Police:Client:OnDuty",
 		jobPerms = {
@@ -621,7 +621,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			maxZ = 46.61,
 		}, {
 			{
-				icon = "clipboard-check",
+				icon = "clipboard-list",
 				text = "Go On Duty",
 				event = "Corrections:Client:OnDuty",
 				jobPerms = {
@@ -643,7 +643,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				},
 			},
 			{
-				icon = "clipboard-check",
+				icon = "clipboard-list",
 				text = "Go On Duty (Medical)",
 				event = "EMS:Client:OnDuty",
 				jobPerms = {

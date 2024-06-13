@@ -59,7 +59,7 @@ AddEventHandler("Core:Shared:Ready", function()
                 event = "Government:Client:AccessPublicRecords",
             },
             {
-                icon = "clipboard-check",
+                icon = "clipboard-list",
                 text = "Go On Duty",
                 event = "Government:Client:OnDuty",
                 jobPerms = {
@@ -105,7 +105,7 @@ AddEventHandler("Core:Shared:Ready", function()
         for k, v in ipairs(govDutyPoints) do
             Targeting.Zones:AddBox("gov-info-" .. k, "gavel", v.center, v.length, v.width, v.options, {
                 {
-                    icon = "clipboard-check",
+                    icon = "clipboard-list",
                     text = "Go On Duty",
                     event = "Government:Client:OnDuty",
                     jobPerms = {

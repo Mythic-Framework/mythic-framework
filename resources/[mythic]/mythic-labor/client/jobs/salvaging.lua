@@ -48,7 +48,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			end,
 		},
 		{
-			icon = "clipboard-check",
+			icon = "clipboard-list",
 			text = "I've Finished",
 			event = "Salvaging:Client:TriggerDelivery",
 			tempjob = "Salvaging",

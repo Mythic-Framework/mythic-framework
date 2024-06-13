@@ -6,7 +6,7 @@ AddEventHandler('Businesses:Client:Startup', function()
 		maxZ = 83.75
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'realestate' },

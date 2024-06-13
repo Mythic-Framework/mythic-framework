@@ -36,7 +36,7 @@ function Startup()
 		maxZ = 15.77
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'burgershot' },
@@ -68,7 +68,7 @@ function Startup()
 		maxZ = 87.41
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'lasttrain' },
@@ -100,7 +100,7 @@ function Startup()
 		maxZ = 28.66
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'triad' },
@@ -132,7 +132,7 @@ function Startup()
 		maxZ = 23.94
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'uwu' },
@@ -164,7 +164,7 @@ function Startup()
 		maxZ = 32.07
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'pizza_this' },
@@ -197,7 +197,7 @@ function Startup()
 		maxZ = 13.36
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'avast_arcade' },
@@ -229,7 +229,7 @@ function Startup()
 		maxZ = 27.14
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'bowling' },
@@ -295,7 +295,7 @@ function Startup()
 		maxZ = 31.48
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'beanmachine' },
@@ -327,7 +327,7 @@ function Startup()
 		maxZ = 30.07
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'unicorn' },
@@ -359,7 +359,7 @@ function Startup()
 		maxZ = 30.77
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'unicorn' },
@@ -391,7 +391,7 @@ function Startup()
 		maxZ = 37.99
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'bakery' },
@@ -423,7 +423,7 @@ function Startup()
 		maxZ = 8.87
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'noodle' },
@@ -455,7 +455,7 @@ function Startup()
 		maxZ = 83.38
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'tequila' },
@@ -487,7 +487,7 @@ function Startup()
 		maxZ = 40.24
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'rockford_records' },
@@ -519,7 +519,7 @@ function Startup()
 		maxZ = 39.4
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'rockford_records' },
@@ -551,7 +551,7 @@ function Startup()
 		maxZ = 6.71
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Restaurant:Client:ClockIn",
 			data = { job = 'prego' },

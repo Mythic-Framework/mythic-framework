@@ -193,7 +193,7 @@ end)
 function GetBusinessClockInMenu(businessName)
     return {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Businesses:Client:ClockIn",
 			data = { job = businessName },
@@ -241,7 +241,7 @@ AddEventHandler("Businesses:Client:Startup", function()
         maxZ = 30.56
 	}, {
         {
-            icon = "clipboard-check",
+            icon = "clipboard-list",
             text = "Clock In",
             event = "Businesses:Client:ClockIn",
 			data = { job = "ferrari_pawn" },
