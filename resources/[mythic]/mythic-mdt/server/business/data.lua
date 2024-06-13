@@ -35,7 +35,7 @@ local restaurantTabletLinks = {
 
 _businessTablets = {
     pdm = {
-		logo = 'https://i.imgur.com/EU7HQji.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/pdm.png',
 		links = {
 			{
 				name = 'home',
@@ -101,7 +101,7 @@ _businessTablets = {
         }
     },
 	tuna = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/tuna.png',
 		links = {
 			{
 				name = 'home',
@@ -167,7 +167,7 @@ _businessTablets = {
         }
     },
 	redline = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/redline.png',
 		links = {
 			{
 				name = 'home',
@@ -202,7 +202,7 @@ _businessTablets = {
         }
     },
 	hayes = {
-		logo = 'https://i.imgur.com/tgShkKW.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/hayes.png',
 		links = {
 			{
 				name = 'home',
@@ -237,7 +237,7 @@ _businessTablets = {
         }
     },
 	realestate = {
-		logo = 'https://i.imgur.com/XbKVB4k.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/realestate.png',
 		links = {
 			{
 				name = 'home',
@@ -280,6 +280,7 @@ _businessTablets = {
         }
     },
 	autoexotics = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/autoexotics.png',
 		links = {
 			{
 				name = 'home',
@@ -314,6 +315,7 @@ _businessTablets = {
         }
     },
 	ottos = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/ottos.png',
 		links = {
 			{
 				name = 'home',
@@ -348,6 +350,7 @@ _businessTablets = {
         }
     },
 	dreamworks = {
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/dreamworks.png',
 		links = {
 			{
 				name = 'home',
@@ -382,7 +385,7 @@ _businessTablets = {
         }
     },
 	securoserv = {
-		logo = "https://i.imgur.com/ACIpaH3.png",
+		logo = "https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/securoserv.png",
 		links = {
 			{
 				name = 'home',
@@ -417,7 +420,7 @@ _businessTablets = {
         }
     },
 	casino = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/casino.png',
 		links = {
 			{
 				name = 'home',
@@ -452,21 +455,22 @@ _businessTablets = {
         }
     },
 	burgershot = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/burgershot.png',
 		links = restaurantTabletLinks
     },
 	demonetti_storage = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/demonetti_storage.png',
 		links = restaurantTabletLinks
     },
 	sagma = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/sagma.png',
 		links = restaurantTabletLinks
     },
 	ferrari_pawn = {
-		logo = 'https://i.imgur.com/aSXFH3P.png',
+		logo = 'https://raw.githubusercontent.com/Mythic-Framework/mythic-images/main/ferrari_pawn.png',
 		links = restaurantTabletLinks
     },
+	-- TODO : Add the rest of the restaurants !!
 }
 
 _businessesWithTablets = {}
