@@ -137,7 +137,7 @@ export default (props) => {
 					/>
 					<Tab label={<FontAwesomeIcon icon={['fas', 'shirt']} />} />
 					<Tab label={<FontAwesomeIcon icon={['fas', 'mitten']} />} />
-					<Tab label={<FontAwesomeIcon icon={['fas', 'atam']} />} />
+					<Tab label={<FontAwesomeIcon icon={['fas', 'atom']} />} />
 				</Tabs>
 			</div>
 			<div className={classes.panel}>

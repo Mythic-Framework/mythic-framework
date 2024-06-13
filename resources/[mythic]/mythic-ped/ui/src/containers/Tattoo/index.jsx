@@ -120,7 +120,7 @@ export default (props) => {
 					textColor="primary"
 					variant="scrollable"
 				>
-					<Tab label={<FontAwesomeIcon icon={['fas', 'atam']} />} />
+					<Tab label={<FontAwesomeIcon icon={['fas', 'atom']} />} />
 				</Tabs>
 			</div>
 			<div className={classes.panel}>
