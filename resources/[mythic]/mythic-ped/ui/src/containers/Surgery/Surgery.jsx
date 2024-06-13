@@ -102,7 +102,7 @@ export default (props) => {
 						}
 					/>
 					<Tab
-						label={<FontAwesomeIcon icon={['fas', 'head-side']} />}
+						label={<FontAwesomeIcon icon={['fas', 'head-side-mask']} />}
 					/>
 					<Tab
 						label={
@@ -133,7 +133,7 @@ export default (props) => {
 						}
 					/>
 					<Tab
-						label={<FontAwesomeIcon icon={['fas', 'user-hair']} />}
+						label={<FontAwesomeIcon icon={['fas', 'scissors']} />}
 					/>
 				</Tabs>
 			</div>
@@ -157,7 +157,7 @@ export default (props) => {
 				</Button>
 				<Button color="success" onClick={() => setSaving(true)}>
 					Save
-					<FontAwesomeIcon icon={['fas', 'save']} />
+					<FontAwesomeIcon icon={['fas', 'floppy-disk']} />
 				</Button>
 			</ButtonGroup>
 
