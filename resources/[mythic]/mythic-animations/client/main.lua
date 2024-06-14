@@ -52,7 +52,7 @@ AddEventHandler('Core:Shared:Ready', function()
 
         RegisterChairTargets()
 
-        Interaction:RegisterMenu("expressions", 'Expressions', "face-confounded", function()
+        Interaction:RegisterMenu("expressions", 'Expressions', "face-laugh-squint", function()
             Interaction:Hide()
             Animations:OpenExpressionsMenu()
         end)
