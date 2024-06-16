@@ -239,7 +239,7 @@ function GetNearbyFuckingStripper()
 
     for k, v in ipairs(GetActivePlayers()) do
         local dist = #(myCoords - GetEntityCoords(GetPlayerPed(v)))
-        if v ~= LocalPlayer.state.PlayerID and dist <= 5.0 then
+        if v ~= LocalPlayer.state.clientID and dist <= 5.0 then
             local pSrc = GetPlayerServerId(v)
             local pAnim = Player(pSrc).state.anim
             if IsDoingStripperDance(pAnim) then

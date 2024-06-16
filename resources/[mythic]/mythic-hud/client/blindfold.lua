@@ -2,7 +2,7 @@ local changeHandler = nil
 RegisterNetEvent("Characters:Client:Spawn", function()
 	changeHandler = AddStateBagChangeHandler(
 		"isBlindfolded",
-		string.format("player:%s", GetPlayerServerId(LocalPlayer.state.PlayerID)),
+		string.format("player:%s", LocalPlayer.state.serverID),
 		function(bagName, key, value, _unused, replicated)
             if value then
                 SetupBlindfold()

@@ -496,9 +496,9 @@ Citizen.CreateThread(function()
 	while true do
 		SetEntityMaxHealth(LocalPlayer.state.ped, 200)
 		if Config.RegenRate >= 0 and Config.RegenRate <= 1.0 then
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, Config.RegenRate)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, Config.RegenRate)
 		else
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, 0.0)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, 0.0)
 		end
 
 		Citizen.Wait(1000)

@@ -26,7 +26,7 @@ function StartCallTimeout()
 end
 
 function fucksound()
-	Sounds.Stop:Distance(GetPlayerServerId(LocalPlayer.state.PlayerID), _settings.ringtone or "ringtone1.ogg")
+	Sounds.Stop:Distance(LocalPlayer.state.serverID, _settings.ringtone or "ringtone1.ogg")
 	Sounds.Stop:One("ringing.ogg")
 	Sounds.Stop:One("vibrate.ogg")
 end
