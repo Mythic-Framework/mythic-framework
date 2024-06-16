@@ -1,5 +1,5 @@
 AddEventHandler('Businesses:Client:Startup', function()
-    Targeting.Zones:AddBox("realestate-clockinoff", "chess-clock", vector3(-700.38, 268.23, 83.15), 1.0, 2.2, {
+    Targeting.Zones:AddBox("realestate-clockinoff", "clock", vector3(-700.38, 268.23, 83.15), 1.0, 2.2, {
 		heading = 25,
 		--debugPoly=true,
 		minZ = 82.15,

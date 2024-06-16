@@ -28,7 +28,7 @@ function CreateMechanicDutyPoints()
                 },
             }
 
-            Targeting.Zones:AddBox('mechanic_duty_' .. k, 'chess-clock', v.dutyPoint.center, v.dutyPoint.length, v.dutyPoint.width, v.dutyPoint.options, menu, 3.0, true)
+            Targeting.Zones:AddBox('mechanic_duty_' .. k, 'clock', v.dutyPoint.center, v.dutyPoint.length, v.dutyPoint.width, v.dutyPoint.options, menu, 3.0, true)
         end
     end
 end

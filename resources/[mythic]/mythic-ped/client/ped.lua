@@ -82,7 +82,7 @@ RegisterNetEvent("Ped:Client:RemoveKevlar", function()
 end)
 
 function RegisterInteraction()
-	Interaction:RegisterMenu("ped_interact", false, "face-tired", function()
+	Interaction:RegisterMenu("ped_interact", 'Clothes', "shirt", function()
 		Interaction:ShowMenu({
 			{
 				icon = "masks-theater",
