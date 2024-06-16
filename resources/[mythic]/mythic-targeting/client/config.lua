@@ -418,7 +418,7 @@ Config.VehicleMenu = {
             if DoesEntityExist(veh) and Tow:IsTowTruck(veh) and not vehEnt.state.towingVehicle then
 				local rearWheel = GetEntityBoneIndexByName(veh, 'wheel_lr')
                 local rearWheelCoords = GetWorldPositionOfEntityBone(veh, rearWheel)
-				if #(rearWheelCoords - LocalPlayer.state.myPos) <= 3.0 then
+				if #(rearWheelCoords - LocalPlayer.state.position) <= 3.0 then
 					return true
 				end
             end
@@ -438,7 +438,7 @@ Config.VehicleMenu = {
             if DoesEntityExist(veh) and Tow:IsTowTruck(veh) and vehEnt.state.towingVehicle then
 				local rearWheel = GetEntityBoneIndexByName(veh, 'wheel_lr')
                 local rearWheelCoords = GetWorldPositionOfEntityBone(veh, rearWheel)
-				if #(rearWheelCoords - LocalPlayer.state.myPos) <= 3.0 then
+				if #(rearWheelCoords - LocalPlayer.state.position) <= 3.0 then
 					return true
 				end
             end

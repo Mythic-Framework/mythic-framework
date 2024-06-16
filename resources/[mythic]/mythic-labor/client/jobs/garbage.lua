@@ -167,7 +167,7 @@ RegisterNetEvent("Garbage:Client:OnDuty", function(joiner, time)
 		Citizen.CreateThread(function()
 			while _working do
 				if _route ~= nil then
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(_route.coords.x, _route.coords.y, _route.coords.z))
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(_route.coords.x, _route.coords.y, _route.coords.z))
 					if dist <= (_route.radius / 2) then
 						LocalPlayer.state.inGarbagbeZone = true
 					else

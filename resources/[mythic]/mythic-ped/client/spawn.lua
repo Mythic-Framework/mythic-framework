@@ -44,7 +44,7 @@ SPAWN = {
         end
         SetPlayerModel(PlayerId(), model)
         player = PlayerPedId()
-        LocalPlayer.state.ped = player
+        LocalPlayer.state:set('ped', player, true)
         SetPedDefaultComponentVariation(player)
         SetEntityAsMissionEntity(player, true, true)
         SetModelAsNoLongerNeeded(model)

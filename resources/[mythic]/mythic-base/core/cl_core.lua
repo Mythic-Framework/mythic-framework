@@ -113,8 +113,8 @@ function COMPONENTS.Core.Init(self)
 	ShutdownLoadingScreenNui()
 	ShutdownLoadingScreen()
 
-	LocalPlayer.state.ped = PlayerPedId()
-	LocalPlayer.state.myPos = GetEntityCoords(LocalPlayer.state.ped)
+	LocalPlayer.state:set('ped', PlayerPedId(), true)
+	LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
 
 	disableScenarios()
 	disableDispatch()
@@ -124,7 +124,7 @@ function COMPONENTS.Core.Init(self)
 			Citizen.Wait(1000)
 			local ped = PlayerPedId()
 			if ped ~= LocalPlayer.state.ped then
-				LocalPlayer.state.ped = ped
+				LocalPlayer.state:set('ped', ped, true)
 				SetEntityProofs(LocalPlayer.state.ped, false, false, false, false, false, true, false, false)
 				SetPedDropsWeaponsWhenDead(LocalPlayer.state.ped, false)
 				SetPedAmmoToDrop(LocalPlayer.state.ped, 0)
@@ -143,7 +143,7 @@ function COMPONENTS.Core.Init(self)
 	Citizen.CreateThread(function()
 		while _baseThreading do
 			Citizen.Wait(100)
-			LocalPlayer.state.myPos = GetEntityCoords(LocalPlayer.state.ped)
+			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
 		end
 	end)
 

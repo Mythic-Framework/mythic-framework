@@ -107,7 +107,7 @@ function StartTracking()
 				if math.floor(bleedTickTimer % (Config.BleedTickRate / 10)) == 0 then
 					local moving = #(
 							vector2(prevPos.x, prevPos.y)
-							- vector2(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y)
+							- vector2(LocalPlayer.state.position.x, LocalPlayer.state.position.y)
 						)
 					if (moving > 1 and not IsPedInAnyVehicle(LocalPlayer.state.ped)) and LocalDamage.Bleed > 2 then
 						Notification.Persistent:Custom(
@@ -117,7 +117,7 @@ function StartTracking()
 						)
 						advanceBleedTimer = advanceBleedTimer + Config.BleedMovementAdvance
 						bleedTickTimer = bleedTickTimer + Config.BleedMovementTick
-						prevPos = LocalPlayer.state.myPos
+						prevPos = LocalPlayer.state.position
 					else
 						Notification.Persistent:Remove(bleedMoveNotifId)
 						bleedTickTimer = bleedTickTimer + 1

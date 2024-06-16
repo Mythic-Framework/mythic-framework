@@ -29,7 +29,7 @@ AddEventHandler('Vehicles:Client:FlipVehicle', function(entityData)
 			flags = 15,
 		},
 	}, function()
-		if not DoesEntityExist(entityData.entity) or (#(GetEntityCoords(entityData.entity) - LocalPlayer.state.myPos) > 5.0) then
+		if not DoesEntityExist(entityData.entity) or (#(GetEntityCoords(entityData.entity) - LocalPlayer.state.position) > 5.0) then
             Progress:Cancel()
 			return
         end

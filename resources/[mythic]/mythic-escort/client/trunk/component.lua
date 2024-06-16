@@ -79,7 +79,7 @@ function MountTrunkCam()
 		SetCamRot(cam, 0.0, 0.0, 0.0)
 		SetCamActive(cam, true)
 		RenderScriptCams(true, false, 0, true, true)
-		SetCamCoord(cam, LocalPlayer.state.myPos)
+		SetCamCoord(cam, LocalPlayer.state.position)
 	end
 	AttachCamToEntity(cam, LocalPlayer.state.ped, 0.0, -2.5, 1.0, true)
 	SetCamRot(cam, -30.0, 0.0, GetEntityHeading(LocalPlayer.state.ped))
