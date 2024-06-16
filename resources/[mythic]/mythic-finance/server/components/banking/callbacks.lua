@@ -1,3 +1,5 @@
+local AccountsOccupied = {}
+
 function RegisterBankingCallbacks()
 	Callbacks:RegisterServerCallback("Finance:Paycheck", function(source, data, cb)
 		local pState = Player(source).state
@@ -203,6 +205,8 @@ function RegisterBankingCallbacks()
 		local SID = char:GetData("SID")
 		local account, action = data.account, data.action
 		local accountData = Banking.Accounts:Get(account)
+		if AccountsOccupied[accountData.Account] then return cb(false) end
+		AccountsOccupied[accountData.Account] = true
 		if accountData then
 			if action == "WITHDRAW" then
 				local withdrawAmount = tonumber(data.amount)
@@ -212,7 +216,7 @@ function RegisterBankingCallbacks()
 					and accountData.Balance >= withdrawAmount
 					and HasBankAccountPermission(source, accountData, action, SID)
 				then
-					local balance = Banking.Balance:Withdraw(accountData.Account, withdrawAmount, {
+					local balance = Banking.Balance:Charge(accountData.Account, withdrawAmount, {
 						type = "withdraw",
 						title = "Cash Withdrawal",
 						description = data.description or "No Description",
@@ -224,6 +228,7 @@ function RegisterBankingCallbacks()
 
 					if balance then
 						Wallet:Modify(source, withdrawAmount, true)
+						AccountsOccupied[account] = nil
 						cb(true, balance)
 						return
 					end
@@ -247,6 +252,7 @@ function RegisterBankingCallbacks()
 						})
 
 						if balance then
+							AccountsOccupied[account] = nil
 							cb(true, balance)
 							return
 						end
@@ -292,12 +298,14 @@ function RegisterBankingCallbacks()
 									character = SID,
 								},
 							})
+							AccountsOccupied[account] = nil
 							cb(success2)
 							return
 						end
 					end
 				end
 			end
+			AccountsOccupied[account] = nil
 		end
 		cb(false)
 	end)
