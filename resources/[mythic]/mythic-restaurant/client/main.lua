@@ -29,7 +29,7 @@ AddEventHandler("Proxy:Shared:RegisterReady", function()
 end)
 
 function Startup()
-	Targeting.Zones:AddBox("burgershot-clockinoff", "chess-clock", vector3(-1189.17, -901.79, 13.97), 2.2, 2, {
+	Targeting.Zones:AddBox("burgershot-clockinoff", "clock", vector3(-1189.17, -901.79, 13.97), 2.2, 2, {
 		heading = 30,
 		--debugPoly=true,
 		minZ = 12.37,
@@ -61,7 +61,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("lasttrain-clockinoff", "chess-clock", vector3(-384.8, 268.03, 86.46), 1, 0.8, {
+	Targeting.Zones:AddBox("lasttrain-clockinoff", "clock", vector3(-384.8, 268.03, 86.46), 1, 0.8, {
 		heading = 305,
         --debugPoly = true,
 		minZ = 86.41,
@@ -93,7 +93,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("triad-clockinoff", "chess-clock", vector3(-830.56, -730.64, 28.06), 1, 1, {
+	Targeting.Zones:AddBox("triad-clockinoff", "clock", vector3(-830.56, -730.64, 28.06), 1, 1, {
 		heading = 0,
 		--debugPoly=true,
 		minZ = 27.06,
@@ -125,7 +125,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("uwu-clockinoff", "chess-clock", vector3(-593.97, -1053.52, 22.34), 0.6, 2.8, {
+	Targeting.Zones:AddBox("uwu-clockinoff", "clock", vector3(-593.97, -1053.52, 22.34), 0.6, 2.8, {
 		heading = 90,
 		--debugPoly=true,
 		minZ = 21.94,
@@ -157,7 +157,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("pizza_this-clockinoff", "chess-clock", vector3(804.4, -760.87, 31.27), 1, 1, {
+	Targeting.Zones:AddBox("pizza_this-clockinoff", "clock", vector3(804.4, -760.87, 31.27), 1, 1, {
 		heading = 0,
 		--debugPoly=true,
 		minZ = 30.27,
@@ -189,7 +189,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("avast_arcade-clockinoff", "chess-clock", vector3(-1659.51, -1061.26, 12.16), 1, 1, {
+	Targeting.Zones:AddBox("avast_arcade-clockinoff", "clock", vector3(-1659.51, -1061.26, 12.16), 1, 1, {
 		name = "duty",
 		heading = 46,
 		--debugPoly=true,
@@ -288,7 +288,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("beanmachine-clockinoff", "chess-clock", vector3(126.86, -1035.47, 29.28), 2.0, 0.4, {
+	Targeting.Zones:AddBox("beanmachine-clockinoff", "clock", vector3(126.86, -1035.47, 29.28), 2.0, 0.4, {
 		heading = 340,
 		--debugPoly=true,
 		minZ = 28.48,
@@ -320,7 +320,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("vu-clockinoff", "chess-clock", vector3(133.06, -1286.17, 29.27), 0.9, 0.7, {
+	Targeting.Zones:AddBox("vu-clockinoff", "clock", vector3(133.06, -1286.17, 29.27), 0.9, 0.7, {
 		heading = 30,
 		--debugPoly=true,
 		minZ = 29.07,
@@ -352,7 +352,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("vu-clockinoff2", "chess-clock", vector3(102.0, -1299.66, 28.77), 1, 1, {
+	Targeting.Zones:AddBox("vu-clockinoff2", "clock", vector3(102.0, -1299.66, 28.77), 1, 1, {
 		heading = 30,
 		--debugPoly=true,
 		minZ = 28.37,
@@ -384,7 +384,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("bakery-clockinoff", "chess-clock", vector3(-1264.53, -291.36, 37.39), 0.6, 1, {
+	Targeting.Zones:AddBox("bakery-clockinoff", "clock", vector3(-1264.53, -291.36, 37.39), 0.6, 1, {
 		heading = 20,
 		--debugPoly=true,
 		minZ = 36.39,
@@ -416,7 +416,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("noodle-clockinoff", "chess-clock", vector3(-1185.77, -1149.25, 7.67), 0.8, 2, {
+	Targeting.Zones:AddBox("noodle-clockinoff", "clock", vector3(-1185.77, -1149.25, 7.67), 0.8, 2, {
 		heading = 15,
 		--debugPoly=true,
 		minZ = 6.67,
@@ -448,7 +448,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("tequila-clockinoff", "chess-clock", vector3(-562.95, 283.25, 82.18), 1, 1, {
+	Targeting.Zones:AddBox("tequila-clockinoff", "clock", vector3(-562.95, 283.25, 82.18), 1, 1, {
 		heading = 0,
 		--debugPoly=true,
 		minZ = 81.58,
@@ -480,7 +480,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("rockford_records-clockinoff", "chess-clock", vector3(-1004.61, -269.61, 39.04), 1.2, 2.2, {
+	Targeting.Zones:AddBox("rockford_records-clockinoff", "clock", vector3(-1004.61, -269.61, 39.04), 1.2, 2.2, {
 		heading = 20,
 		--debugPoly=true,
 		minZ = 38.44,
@@ -512,7 +512,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("rockford_records-clockinoff2", "chess-clock", vector3(-990.76, -279.55, 38.2), 0.8, 3.0, {
+	Targeting.Zones:AddBox("rockford_records-clockinoff2", "clock", vector3(-990.76, -279.55, 38.2), 0.8, 3.0, {
 		heading = 25,
 		--debugPoly=true,
 		minZ = 37.6,
@@ -544,7 +544,7 @@ function Startup()
         },
     }, 3.0, true)
 
-	Targeting.Zones:AddBox("prego-clockinoff", "chess-clock", vector3(-1122.19, -1456.06, 5.11), 0.6, 1.6, {
+	Targeting.Zones:AddBox("prego-clockinoff", "clock", vector3(-1122.19, -1456.06, 5.11), 0.6, 1.6, {
 		heading = 35,
 		--debugPoly=true,
 		minZ = 4.71,

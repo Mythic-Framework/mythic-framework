@@ -220,21 +220,21 @@ function GetBusinessClockInMenu(businessName)
 end
 
 AddEventHandler("Businesses:Client:Startup", function()
-    Targeting.Zones:AddBox("digitalden-clockinoff", "chess-clock", vector3(384.17, -830.31, 29.3), 1.2, 0.8, {
+    Targeting.Zones:AddBox("digitalden-clockinoff", "clock", vector3(384.17, -830.31, 29.3), 1.2, 0.8, {
         heading = 0,
         --debugPoly=true,
         minZ = 28.7,
         maxZ = 30.3
 	}, GetBusinessClockInMenu("digitalden"), 3.0, true)
 
-    Targeting.Zones:AddBox("securoserv-clockinoff", "chess-clock", vector3(19.99, -119.98, 56.22), 2, 1.0, {
+    Targeting.Zones:AddBox("securoserv-clockinoff", "clock", vector3(19.99, -119.98, 56.22), 2, 1.0, {
         heading = 340,
         --debugPoly=true,
         minZ = 55.22,
         maxZ = 57.42
 	}, GetBusinessClockInMenu("securoserv"), 3.0, true)
 
-    Targeting.Zones:AddBox("ferrari_pawn-clockinoff", "chess-clock", vector3(167.95, -1314.62, 29.36), 1.0, 2, {
+    Targeting.Zones:AddBox("ferrari_pawn-clockinoff", "clock", vector3(167.95, -1314.62, 29.36), 1.0, 2, {
         heading = 334,
         --debugPoly=true,
         minZ = 28.76,
@@ -278,14 +278,14 @@ AddEventHandler("Businesses:Client:Startup", function()
         },
     }, 3.0, true)
 
-    Targeting.Zones:AddBox("sagma-clockinoff", "chess-clock", vector3(-422.48, 31.83, 46.23), 1, 1, {
+    Targeting.Zones:AddBox("sagma-clockinoff", "clock", vector3(-422.48, 31.83, 46.23), 1, 1, {
         heading = 8,
         --debugPoly=true,
         minZ = 46.03,
         maxZ = 47.23
 	}, GetBusinessClockInMenu("sagma"), 3.0, true)
 
-    Targeting.Zones:AddBox("sagma-clockinoff2", "chess-clock", vector3(-491.26, 31.8, 46.3), 1, 1, {
+    Targeting.Zones:AddBox("sagma-clockinoff2", "clock", vector3(-491.26, 31.8, 46.3), 1, 1, {
         heading = 355,
         --debugPoly=true,
         minZ = 46.1,
