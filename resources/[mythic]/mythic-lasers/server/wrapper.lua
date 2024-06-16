@@ -20,7 +20,8 @@ AddEventHandler('Core:Shared:Ready', function()
             elseif args[1] == "save" then
                 Callbacks:ClientCallback(source, "Lasers:Create:Save")
             else
-
+                Chat.Send.System:Single(source, "Invalid action")
+            end
         end, {
             help = "Create Lasers",
             params = {
@@ -28,7 +29,7 @@ AddEventHandler('Core:Shared:Ready', function()
                     name = "Action",
                     help = "Action to perform (start, end, save)",
                 },
-            },
+            }
         }, 1)
 	end)
 end)
