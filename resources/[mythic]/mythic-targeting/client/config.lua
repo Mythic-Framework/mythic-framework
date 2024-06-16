@@ -105,7 +105,7 @@ Config.VehicleMenu = {
 				and vehState.VIN ~= nil
 				and not vehState.wasThermited
 				and GetEntityHealth(entityData.entity) > 0
-				and isNearTrunk(entityData.entity, 4.0)
+				and IsNearTrunk(entityData.entity, 4.0)
 		end,
 		text = "View Trunk",
 		event = "Inventory:Client:Trunk",
@@ -115,7 +115,7 @@ Config.VehicleMenu = {
 	{
 		icon = "trash",
 		isEnabled = function(data, entityData)
-			return isNearTrunk(entityData.entity, 4.0, true)
+			return IsNearTrunk(entityData.entity, 4.0, true)
 		end,
 		text = "Toss Garbage",
 		event = "Garbage:Client:TossBag",
@@ -311,7 +311,7 @@ Config.VehicleMenu = {
 			return LocalPlayer.state.isEscorting ~= nil
 				and not LocalPlayer.state.isDead
 				and not LocalPlayer.state.inTrunk
-				and isNearTrunk(entity.entity, 4.0, true)
+				and IsNearTrunk(entity.entity, 4.0, true)
 		end,
 	},
 	{
@@ -324,7 +324,7 @@ Config.VehicleMenu = {
 			return LocalPlayer.state.isEscorting == nil
 				and not LocalPlayer.state.isDead
 				and not LocalPlayer.state.inTrunk
-				and isNearTrunk(entity.entity, 4.0, false)
+				and IsNearTrunk(entity.entity, 4.0, false)
 				and GlobalState[string.format("Trunk:%s", NetworkGetNetworkIdFromEntity(entity.entity))]
 				and #GlobalState[string.format("Trunk:%s", NetworkGetNetworkIdFromEntity(entity.entity))] > 0
 		end,
@@ -340,7 +340,7 @@ Config.VehicleMenu = {
 			return LocalPlayer.state.isEscorting == nil
 				and not LocalPlayer.state.isDead
 				and not LocalPlayer.state.inTrunk
-				and isNearTrunk(entityData.entity, 4.0, true)
+				and IsNearTrunk(entityData.entity, 4.0, true)
 		end,
 	},
 	-- Mechanic
@@ -526,7 +526,7 @@ Config.VehicleMenu = {
 	{
 		icon = "hand",
 		isEnabled = function(data, entityData)
-			return isNearTrunk(entityData.entity, 4.0, true)
+			return IsNearTrunk(entityData.entity, 4.0, true)
 		end,
 		text = "Grab Loot",
 		event = "Robbery:Client:MoneyTruck:GrabLoot",
@@ -541,7 +541,7 @@ Config.VehicleMenu = {
 	{
 		icon = "hand",
 		isEnabled = function(data, entityData)
-			return isNearTrunk(entityData.entity, 4.0, true)
+			return IsNearTrunk(entityData.entity, 4.0, true)
 		end,
 		text = "Grab Loot",
 		event = "Robbery:Client:MoneyTruck:GrabLoot",
