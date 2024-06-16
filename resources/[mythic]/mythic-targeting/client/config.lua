@@ -1,4 +1,8 @@
 Config = {
+	Sprite = {
+		color = { r = 138, g = 0, b = 0, a = 255 },
+		active = true
+	},
 	DefaultIcons = {
 		ped = "person-walking",
 		player = "person",
