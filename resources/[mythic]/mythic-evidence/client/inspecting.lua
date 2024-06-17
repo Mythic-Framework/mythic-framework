@@ -44,7 +44,7 @@ AddEventHandler('Animations:Client:UsingCamera', function(using)
 end)
 
 function CanSeeEvidence()
-    return (IsPlayerFreeAiming(LocalPlayer.state.PlayerID) or ignoreFreeAim)
+    return (IsPlayerFreeAiming(LocalPlayer.state.clientID) or ignoreFreeAim)
 end
 
 function StartInspecting()

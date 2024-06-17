@@ -77,7 +77,7 @@ RegisterNetEvent("Farming:Client:OnDuty", function(joiner, time)
 		if _working and not _finished then
 			local closest = nil
 			for k, v in ipairs(_nodes) do
-				local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(v.coords.x, v.coords.y, v.coords.z))
+				local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(v.coords.x, v.coords.y, v.coords.z))
 				if dist <= 2.0 then
 					if closest == nil or dist < closest.dist then
 						closest = {
@@ -118,7 +118,7 @@ RegisterNetEvent("Farming:Client:OnDuty", function(joiner, time)
 			while _working do
 				local closest = nil
 				for k, v in ipairs(_nodes) do
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(v.coords.x, v.coords.y, v.coords.z))
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(v.coords.x, v.coords.y, v.coords.z))
 					if dist <= 20 then
 						DrawMarker(1, v.coords.x, v.coords.y, v.coords.z, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 1.0, 112, 209, 244, 250, false, false, 2, false, false, false, false)
 					end

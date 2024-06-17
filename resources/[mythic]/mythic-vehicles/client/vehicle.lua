@@ -624,21 +624,21 @@ VEHICLE = {
 	Utils = {
 		IsCloseToRearOfVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToFrontOfVehicle(vehicle, coords)
 		end,
 		IsCloseToFrontOfVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToRearOfVehicle(vehicle, coords)
 		end,
 		IsCloseToVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToVehicle(vehicle, coords)

@@ -868,7 +868,7 @@ function DisableFiring(duration)
 	local finished = GetGameTimer() + duration
 	CreateThread(function()
 		while GetGameTimer() < finished do
-			DisablePlayerFiring(LocalPlayer.state.PlayerID, true)
+			DisablePlayerFiring(LocalPlayer.state.clientID, true)
 			Wait(1)
 		end
 	end)

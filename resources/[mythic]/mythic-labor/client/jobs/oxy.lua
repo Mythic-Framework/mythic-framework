@@ -271,7 +271,7 @@ RegisterNetEvent("OxyRun:Client:OnDuty", function(joiner, time)
 
         CreateThread(function()
             while _working and _state == 4 do
-                local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - _l.coords)
+                local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - _l.coords)
                 if dist <= 10.0 then
                     Callbacks:ServerCallback("OxyRun:EnteredArea")
                 end

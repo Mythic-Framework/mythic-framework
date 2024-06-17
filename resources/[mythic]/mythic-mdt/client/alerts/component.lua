@@ -91,7 +91,7 @@ function isEligiblePed(p, gs, spd)
 
 	local startcoords = GetEntityCoords(p)
 
-	if #(LocalPlayer.state.myPos - startcoords) < 10.0 then
+	if #(LocalPlayer.state.position - startcoords) < 10.0 then
 		return false
 	end
 
@@ -156,7 +156,7 @@ function nearNpc(dist, isGunshot)
 	local retval = nil
 	repeat
 		local loc = GetEntityCoords(ped)
-		local d1 = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - loc)
+		local d1 = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - loc)
 		if isEligiblePed(ped, isGunshot) and d1 <= dist and (retval == nil or d1 < retval.dist) then
 			retval = {
 				ped = ped,

@@ -79,7 +79,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				)]
 
 				local dist = #(
-						vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+						vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 						- vector3(p.interior.spawn.x, p.interior.spawn.y, p.interior.spawn.z)
 					)
 				return dist <= 2.0
@@ -101,7 +101,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		-- 			)]
 		-- 		)]
 		-- 		local dist = #(
-		-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+		-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 		-- 				- vector3(p.interior.spawn.x, p.interior.spawn.y, p.interior.spawn.z)
 		-- 			)
 		-- 		return dist <= 2.0

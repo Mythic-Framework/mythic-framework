@@ -2,7 +2,7 @@ local interactionComboZone = nil
 
 TARGETING.Zones = {
     AddBox = function(self, zoneId, icon, center, length, width, options, menuArray, proximity, enabled)
-        if interactionZones[zoneId] and interactionComboZone then
+        if InteractionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
             Wait(100)
         end
@@ -10,7 +10,7 @@ TARGETING.Zones = {
         if enabled == nil then enabled = true end -- Make enabled if not specified
         if type(menuArray) ~= 'table' then menuArray = {} end
 
-        interactionZones[zoneId] = {
+        InteractionZones[zoneId] = {
             type = 'zone',
             enabled = enabled,
             name = zoneId,
@@ -27,7 +27,7 @@ TARGETING.Zones = {
         }
     end,
     AddCircle = function(self, zoneId, icon, center, radius, options, menuArray, proximity, enabled)
-        if interactionZones[zoneId] and interactionComboZone then
+        if InteractionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
             Wait(100)
         end
@@ -35,7 +35,7 @@ TARGETING.Zones = {
         if enabled == nil then enabled = true end -- Make enabled if not specified
         if type(menuArray) ~= 'table' then menuArray = {} end
 
-        interactionZones[zoneId] = {
+        InteractionZones[zoneId] = {
             type = 'zone',
             enabled = enabled,
             name = zoneId,
@@ -51,7 +51,7 @@ TARGETING.Zones = {
         }
     end,
     AddPoly = function(self, zoneId, icon, points, options, menuArray, proximity, enabled)
-        if interactionZones[zoneId] and interactionComboZone then
+        if InteractionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
             Wait(100)
         end
@@ -59,7 +59,7 @@ TARGETING.Zones = {
         if enabled == nil then enabled = true end -- Make enabled if not specified
         if type(menuArray) ~= 'table' then menuArray = {} end
 
-        interactionZones[zoneId] = {
+        InteractionZones[zoneId] = {
             type = 'zone',
             enabled = enabled,
             name = zoneId,
@@ -74,18 +74,18 @@ TARGETING.Zones = {
         }
     end,
     IsEnabled = function(self, zoneId)
-        if interactionZones[zoneId] then
-            return interactionZones[zoneId].toggle
+        if InteractionZones[zoneId] then
+            return InteractionZones[zoneId].toggle
         end
         return false
     end,
     Toggle = function(self, zoneId, toggle)
-        if interactionZones[zoneId] then
-            interactionZones[zoneId].toggle = toggle
+        if InteractionZones[zoneId] then
+            InteractionZones[zoneId].toggle = toggle
         end
     end,
     IsCoordInZone = function(self, zoneId, coords)
-        if interactionComboZone and interactionZones[zoneId] then
+        if interactionComboZone and InteractionZones[zoneId] then
             local isInside, insideZone = interactionComboZone:isPointInside(coords)
             if isInside and insideZone then
                 return insideZone.name
@@ -94,11 +94,11 @@ TARGETING.Zones = {
         return false
     end,
     RemoveZone = function(self, zoneId)
-        if interactionComboZone and interactionZones[zoneId] then
-            interactionZones[zoneId] = nil
+        if interactionComboZone and InteractionZones[zoneId] then
+            InteractionZones[zoneId] = nil
             interactionComboZone:RemoveZone(zoneId)
         else
-            interactionZones[zoneId] = nil
+            InteractionZones[zoneId] = nil
         end
     end,
     Refresh = function(self)
@@ -111,7 +111,7 @@ function InitPolyzoneTargets()
     if not interactionComboZone then
         local createdZones = {}
 
-        for k, v in pairs(interactionZones) do
+        for k, v in pairs(InteractionZones) do
             v.zone.options.name = k
             if v.zone.type == 'box' then
                 table.insert(createdZones, BoxZone:Create(v.zone.center, v.zone.length, v.zone.width, v.zone.options))
@@ -136,10 +136,14 @@ function DeInitPolyzoneTargets()
 end
 
 function GetPZoneAtCoords(endCoords)
+    if not interactionComboZone then
+        return false
+    end
+
     local isInside, insideZone = interactionComboZone:isPointInside(endCoords)
     if isInside and insideZone then
-        local zoneData = interactionZones[insideZone.name]
-        if zoneData and zoneData.enabled and (#(GetEntityCoords(GLOBAL_PED) - endCoords) <= zoneData.proximity) then
+        local zoneData = InteractionZones[insideZone.name]
+        if zoneData and zoneData.enabled and (#(GetEntityCoords(LocalPlayer.state.ped) - endCoords) <= zoneData.proximity) then
             return zoneData
         end
     end

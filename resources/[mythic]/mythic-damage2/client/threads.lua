@@ -231,7 +231,7 @@ function StartThreads()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.armorTicks ~= nil then
 				local car = GetPedArmour(LocalPlayer.state.ped)
-				local max = GetPlayerMaxArmour(LocalPlayer.state.PlayerID)
+				local max = GetPlayerMaxArmour(LocalPlayer.state.clientID)
 
 				if car >= max then
 					LocalPlayer.state:set("armorTicks", nil, true)
@@ -308,7 +308,7 @@ function StartThreads()
 
     CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, LocalPlayer.state.regenRate)
+            SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, LocalPlayer.state.regenRate)
             Wait(250)
         end
     end)

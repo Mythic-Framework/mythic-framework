@@ -57,7 +57,7 @@ AddEventHandler('Core:Shared:Ready', function()
                         and IsEntityAVehicle(target.entity)
                         and not GetIsVehicleEngineRunning(target.entity)
                         and (
-                            (#(GetEntityCoords(target.entity) - LocalPlayer.state.myPos) <= 5.0)
+                            (#(GetEntityCoords(target.entity) - LocalPlayer.state.position) <= 5.0)
                             or Vehicles.Utils:IsCloseToRearOfVehicle(target.entity)
                             or Vehicles.Utils:IsCloseToFrontOfVehicle(target.entity)
                         )
@@ -115,7 +115,7 @@ AddEventHandler('Core:Shared:Ready', function()
                                 if not DoesEntityExist(target.entity) or not (
                                     Vehicles.Utils:IsCloseToRearOfVehicle(target.entity)
                                     or Vehicles.Utils:IsCloseToFrontOfVehicle(target.entity)
-                                    or (#(GetEntityCoords(target.entity) - LocalPlayer.state.myPos) <= 5.0)
+                                    or (#(GetEntityCoords(target.entity) - LocalPlayer.state.position) <= 5.0)
                                 ) then
                                     Progress:Cancel()
                                 end
@@ -154,7 +154,7 @@ AddEventHandler('Core:Shared:Ready', function()
                         target and target.entity and DoesEntityExist(target.entity)
                         and IsEntityAVehicle(target.entity)
                         and (
-                            (#(GetEntityCoords(target.entity) - LocalPlayer.state.myPos) <= 5.0)
+                            (#(GetEntityCoords(target.entity) - LocalPlayer.state.position) <= 5.0)
                             or Vehicles.Utils:IsCloseToRearOfVehicle(target.entity)
                             or Vehicles.Utils:IsCloseToFrontOfVehicle(target.entity)
                         )
@@ -217,7 +217,7 @@ AddEventHandler('Core:Shared:Ready', function()
                             if not DoesEntityExist(target.entity) or not (
                                 Vehicles.Utils:IsCloseToRearOfVehicle(target.entity)
                                 or Vehicles.Utils:IsCloseToFrontOfVehicle(target.entity)
-                                or (#(GetEntityCoords(target.entity) - LocalPlayer.state.myPos) <= 5.0)
+                                or (#(GetEntityCoords(target.entity) - LocalPlayer.state.position) <= 5.0)
                             ) then
                                 Progress:Cancel()
                             end

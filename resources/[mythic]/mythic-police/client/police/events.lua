@@ -151,7 +151,7 @@ RegisterNetEvent("Police:Client:AddDeployedSpike", function(positions, h, owner)
 		local timeout = false
 		SetTimeout(spikeTime - 2000, function() timeout = true; end)
 
-		spikesOut = owner == GetPlayerServerId(LocalPlayer.state.PlayerID)
+		spikesOut = owner == LocalPlayer.state.serverID
 
 		while #(GetEntityCoords(LocalPlayer.state.ped) - positions[1]) > 75.0 and not timeout and not forceDelete[owner] do
 			Wait(10)

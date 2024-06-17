@@ -164,7 +164,7 @@ RegisterNUICallback("SetPed", function(data, cb)
 	player = PlayerPedId()
 	SetEntityMaxHealth(player, 200)
 	SetEntityHealth(player, GetEntityMaxHealth(player))
-	LocalPlayer.state.ped = player
+	LocalPlayer.state:set('ped', player, true)
 	SetPedDefaultComponentVariation(player)
 	SetEntityAsMissionEntity(player, true, true)
 	SetModelAsNoLongerNeeded(model)

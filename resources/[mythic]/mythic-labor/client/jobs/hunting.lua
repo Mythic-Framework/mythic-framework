@@ -97,7 +97,7 @@ function StartBait(item, loc)
     CreateThread(function()
 		local dist = 0
         while dist <= baitConf.distance and _baited and LocalPlayer.state.loggedIn do
-            dist = #(vector3(LocalPlayer.state.myPos) - vector3(loc.x, loc.y, loc.z))
+            dist = #(vector3(LocalPlayer.state.position) - vector3(loc.x, loc.y, loc.z))
 			Wait(500)
         end
 

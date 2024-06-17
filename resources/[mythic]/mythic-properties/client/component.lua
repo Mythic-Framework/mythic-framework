@@ -278,14 +278,14 @@ AddEventHandler("Core:Shared:Ready", function()
 				)]
 				local intr = GlobalState[string.format("Properties:Interior:%s", property.interior)]
 				local dist = #(
-						vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+						vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 						- intr.exit
 					)
 				if dist <= 2.0 then
 					return 'front'
 				elseif intr.backdoorExit then
 					backDist = #(
-						vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+						vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 						- intr.backdoorExit
 					)
 
@@ -325,13 +325,13 @@ AddEventHandler("Core:Shared:Ready", function()
 
 				local intr = GlobalState[string.format("Properties:Interior:%s", property.interior)]
 				local dist = #(
-						vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+						vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 						- intr.exit
 					)
 				local backDist
 				if intr.backdoorExit then
 					backDist = #(
-						vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+						vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 						- intr.backdoorExit
 					)
 				end
@@ -375,13 +375,13 @@ AddEventHandler("Core:Shared:Ready", function()
 				then
 					local intr = GlobalState[string.format("Properties:Interior:%s", property.interior)]
 					local dist = #(
-							vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+							vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 							- intr.exit
 						)
 					local backDist
 					if intr.backdoorExit then
 						backDist = #(
-							vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+							vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 							- intr.backdoorExit
 						)
 					end

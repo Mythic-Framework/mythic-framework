@@ -75,7 +75,7 @@ Spawn = {
 
         SetFocusEntity(PlayerPedId())
         
-        LocalPlayer.state.ped = player
+        LocalPlayer.state:set('ped', player, true)
 
         SetNuiFocus(false)
     
