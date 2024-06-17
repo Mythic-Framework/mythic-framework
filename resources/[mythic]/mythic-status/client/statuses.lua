@@ -143,7 +143,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 end)
 
 function RegisterStatuses()
-	Status:Register("PLAYER_THIRST", 100, "cup-straw", "#07bdf0", true, function(change)
+	Status:Register("PLAYER_THIRST", 100, "droplet", "#07bdf0", true, function(change)
 		if LocalPlayer.state.ignorePLAYER_THIRST then
 			if LocalPlayer.state.ignorePLAYER_THIRST - 1 > 0 then
 				LocalPlayer.state:set("ignorePLAYER_THIRST", LocalPlayer.state.ignorePLAYER_THIRST - 1)
@@ -235,7 +235,7 @@ function RegisterStatuses()
 		hideHigh = true,
 	})
 
-	Status:Register("PLAYER_STRESS", 0, "face-explode", "#de3333", false, function(change, force)
+	Status:Register("PLAYER_STRESS", 0, "brain", "#de3333", false, function(change, force)
 		if _stressTicks > 1 or force then
 			if LocalPlayer.state.ignorePLAYER_STRESS then
 				if LocalPlayer.state.ignorePLAYER_STRESS - 1 > 0 then

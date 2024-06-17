@@ -126,7 +126,7 @@ AddEventHandler('Vehicles:Client:EnterVehicle', function(v, seat)
 
         CreateThread(function()
             while seatbeltThread do
-                if VEHICLE_SEATBELT then
+                if (VEHICLE_SEATBELT and GetEntitySpeed(PlayerPedId()) * 2.23694 >= 25.0) or VEHICLE_HARNESS then
                     DisableControlAction(0, 75, true)
                     Wait(5)
                 else
