@@ -68,7 +68,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		MetricsStartup()
 		TriggerEvent("MDT:Server:RegisterCallbacks")
 
-		Citizen.Wait(2500)
+		Wait(2500)
 		UpdateMDTJobsData()
 	end)
 end)
@@ -81,7 +81,7 @@ function RegisterMiddleware()
     Middleware:Add('Characters:Spawning', function(source)
 		local char = Fetch:Source(source):GetData('Character')
 		if char and char:GetData("Attorney") then
-			Citizen.SetTimeout(5000, function()
+			SetTimeout(5000, function()
 				TriggerClientEvent("MDT:Client:Login", source, nil, nil, nil, true)
 				_onDutyLawyers[source] = char:GetData('SID')
 
@@ -200,7 +200,7 @@ RegisterNetEvent('MDT:Server:OpenPublicRecords', function()
 		TriggerClientEvent("MDT:Client:Logout", source)
 		dumbStuff = true
 
-		Citizen.Wait(1500)
+		Wait(1500)
 	end
 
 	if not _onDutyUsers[src] then

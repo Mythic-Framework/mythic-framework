@@ -5,7 +5,7 @@ function RegisterRandomItems()
 end
 
 function RunSpeed(modifier, duration, cd, ss)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local c = 0
 		if not ss then
 			AnimpostfxPlay("DrugsTrevorClownsFight", 0, true)
@@ -13,11 +13,11 @@ function RunSpeed(modifier, duration, cd, ss)
 		while LocalPlayer.state.loggedIn and c < duration do
 			c += 1
 			SetPedMoveRateOverride(PlayerPedId(), modifier)
-			Citizen.Wait(1)
+			Wait(1)
 		end
 		SetPedMoveRateOverride(PlayerPedId(), 0.0)
 		AnimpostfxStop("DrugsTrevorClownsFight")
-		Citizen.Wait(cd)
+		Wait(cd)
 		_energyCd = false
 	end)
 end

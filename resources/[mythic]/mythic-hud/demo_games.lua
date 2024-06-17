@@ -17,7 +17,7 @@ AddEventHandler("Minigame:Client:DemoSkillbarSuccess", function(data)
 	else
 		scDelay = scDelay - 1000
 		scPass = scPass + 1
-		Citizen.Wait(400)
+		Wait(400)
 		TriggerEvent("Minigame:Client:Skillbar")
 	end
 end)
@@ -50,7 +50,7 @@ AddEventHandler("Minigame:Client:DemoScannerSuccess", function(data)
 		scanPass = 1
 	else
 		scanPass = scanPass + 1
-		Citizen.Wait(400)
+		Wait(400)
 		TriggerEvent("Minigame:Client:Scanner")
 	end
 end)
@@ -81,7 +81,7 @@ AddEventHandler("Minigame:Client:DemoSequencerSuccess", function(data)
 		seqPass = 1
 	else
 		seqPass = seqPass + 1
-		Citizen.Wait(1000)
+		Wait(1000)
 		TriggerEvent("Minigame:Client:Sequencer")
 	end
 end)
@@ -172,7 +172,7 @@ AddEventHandler("Minigame:Client:DemoMemorySuccess", function(data)
 		memPass = 1
 	else
 		memPass = memPass + 1
-		Citizen.Wait(400)
+		Wait(400)
 		TriggerEvent("Minigame:Client:Memory")
 	end
 end)
@@ -198,7 +198,7 @@ AddEventHandler("Minigame:Client:DemoSlidersSuccess", function(data)
 		slidersPass = 1
 	else
 		slidersPass = slidersPass + 1
-		Citizen.Wait(400)
+		Wait(400)
 		TriggerEvent("Minigame:Client:Sliders")
 	end
 end)

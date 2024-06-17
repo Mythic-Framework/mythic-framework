@@ -912,7 +912,7 @@ AddEventHandler('entityRemoved', function(entity)
                 DataStore:DeleteStore('Vehicle', ent.state.VIN)
             end
 
-            Citizen.Wait(1000)
+            Wait(1000)
 
             if isLocal then
                 Vehicles:SpawnTemp(-1, vehModel, coords, heading, function(vehicleId)

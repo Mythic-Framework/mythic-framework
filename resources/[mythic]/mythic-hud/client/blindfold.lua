@@ -52,7 +52,7 @@ function SetupBlindfold()
 	blindfoldObject = CreateObjectNoOffset(model, coords, true, false, false)
 
 	while not DoesEntityExist(blindfoldObject) do
-		Citizen.Wait(0)
+		Wait(0)
 	end
 
 	SendNUIMessage({
@@ -83,11 +83,11 @@ function SetupBlindfold()
 	)
 	SetFollowPedCamViewMode(4)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while blindfoldObject ~= nil do
 			SetEntityLocallyInvisible(blindfoldObject)
 			DisableControlAction(0, 0, true)
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end

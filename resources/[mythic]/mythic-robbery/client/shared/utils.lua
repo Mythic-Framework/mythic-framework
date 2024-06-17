@@ -3,7 +3,7 @@ local hackAnimDict = "anim@heists@ornate_bank@hack"
 function loadAnim(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
@@ -11,7 +11,7 @@ function loadModel(model)
 	if IsModelInCdimage(model) then
 		while not HasModelLoaded(model) do
 			RequestModel(model)
-			Citizen.Wait(5)
+			Wait(5)
 		end
 	end
 end
@@ -46,7 +46,7 @@ RegisterNetEvent("Robbery:Client:ThermiteFx", function(delay, netId)
 		local effect4 = StartNetworkedParticleFxLoopedOnEntity("sp_fbi_fire_trail_smoke", bombObj,0,1.0,0,0,0,0,1.0,false,false,false)
 		RemoveNamedPtfxAsset("scr_ornate_heist")
 	
-		Citizen.Wait(delay or 13000)
+		Wait(delay or 13000)
 	
 		StopParticleFxLooped(effect1, 0)
 		StopParticleFxLooped(effect2, 0)
@@ -166,24 +166,24 @@ end
 -- This probably needs to be refactored to not have so much duplicated code
 function ThermiteShit(loc, data, cb)
 	local p = promise:new()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		RequestAnimDict("anim@heists@ornate_bank@thermal_charge")
 		while not HasAnimDictLoaded("anim@heists@ornate_bank@thermal_charge") do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 		local ped = PlayerPedId()
 		SetEntityHeading(ped, loc.h)
-		Citizen.Wait(100)
+		Wait(100)
 		local rotx, roty, rotz = table.unpack(vec3(GetEntityRotation(PlayerPedId())))
 		local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rotx, roty, rotz + 0.0, 2, false, false, 1065353216, 0, 1.3)
 		NetworkAddPedToSynchronisedScene(ped, bagscene, "anim@heists@ornate_bank@thermal_charge", "thermal_charge", 1.5, -4.0, 1, 16, 1148846080, 0)
 		NetworkStartSynchronisedScene(bagscene)
-		Citizen.Wait(1500)
+		Wait(1500)
 		local x, y, z = table.unpack(GetEntityCoords(ped))
 		local bomba = CreateObject(GetHashKey("hei_prop_heist_thermite"), x, y, z + 0.2,  true,  true, true)
 		SetEntityCollision(bomba, false, true)
 		AttachEntityToEntity(bomba, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
-		Citizen.Wait(3500)
+		Wait(3500)
 
 		DetachEntity(bomba, 1, 1)
 		FreezeEntityPosition(bomba, true)
@@ -197,10 +197,10 @@ function ThermiteShit(loc, data, cb)
 				}, function() end)
 				TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_intro", 8.0, 8.0, 1000, 36, 1, 0, 0, 0)
 				TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_loop", 8.0, 8.0, 6000, 49, 1, 0, 0, 0)
-				Citizen.Wait(2000)
+				Wait(2000)
 				ClearPedTasks(ped)
 
-				Citizen.Wait(data.duration or 11000)
+				Wait(data.duration or 11000)
 			end
 			DeleteObject(bomba)
 			p:resolve(isSuccess)
@@ -211,24 +211,24 @@ end
 
 function BombShit(loc, data, cb)
 	local p = promise:new()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		RequestAnimDict("anim@heists@ornate_bank@thermal_charge")
 		while not HasAnimDictLoaded("anim@heists@ornate_bank@thermal_charge") do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 		local ped = PlayerPedId()
 		SetEntityHeading(ped, loc.h)
-		Citizen.Wait(100)
+		Wait(100)
 		local rotx, roty, rotz = table.unpack(vec3(GetEntityRotation(PlayerPedId())))
 		local bagscene = NetworkCreateSynchronisedScene(loc.x, loc.y, loc.z, rotx, roty, rotz + 0.0, 2, false, false, 1065353216, 0, 1.3)
 		NetworkAddPedToSynchronisedScene(ped, bagscene, "anim@heists@ornate_bank@thermal_charge", "thermal_charge", 1.5, -4.0, 1, 16, 1148846080, 0)
 		NetworkStartSynchronisedScene(bagscene)
-		Citizen.Wait(1500)
+		Wait(1500)
 		local x, y, z = table.unpack(GetEntityCoords(ped))
 		local bomba = CreateObject(GetHashKey("hei_prop_heist_thermite"), x, y, z + 0.2,  true,  true, true)
 		SetEntityCollision(bomba, false, true)
 		AttachEntityToEntity(bomba, ped, GetPedBoneIndex(ped, 28422), 0, 0, 0, 0, 0, 200.0, true, true, false, true, 1, true)
-		Citizen.Wait(3500)
+		Wait(3500)
 
 		DetachEntity(bomba, 1, 1)
 		FreezeEntityPosition(bomba, true)
@@ -242,10 +242,10 @@ function BombShit(loc, data, cb)
 				}, function() end)
 				TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_intro", 8.0, 8.0, 1000, 36, 1, 0, 0, 0)
 				TaskPlayAnim(ped, "anim@heists@ornate_bank@thermal_charge", "cover_eyes_loop", 8.0, 8.0, 6000, 49, 1, 0, 0, 0)
-				Citizen.Wait(2000)
+				Wait(2000)
 				ClearPedTasks(ped)
 
-				Citizen.Wait(data.duration or 11000)
+				Wait(data.duration or 11000)
 			end
 			DeleteObject(bomba)
 			p:resolve(isSuccess)
@@ -256,7 +256,7 @@ end
 
 function AimHackShit(data, cb)
 	local p = promise:new()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		DoAim(data.config, data.data, function(isSuccess, extra)
 			p:resolve(isSuccess)
 		end)
@@ -277,12 +277,12 @@ function HackShit(data, cb)
     
 	local doingShit = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while doingShit do
 			if not IsEntityPlayingAnim(ply, "amb@code_human_in_bus_passenger_idles@female@tablet@base", "base", 3) then
 				TaskPlayAnim(ply, "amb@code_human_in_bus_passenger_idles@female@tablet@base", "base", 3.0, 3.0, -1, 49, 0, false, false, false)
 			end
-			Citizen.Wait(250)
+			Wait(250)
 		end
 	end)
 

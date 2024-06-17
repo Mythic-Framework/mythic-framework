@@ -27,14 +27,14 @@ function runDropsUpdate(checkRemovals)
 end
 
 function startDropsTick()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			runDropsUpdate()
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if #closerDrops > 0 then
 				for k, v in ipairs(closerDrops) do
@@ -66,14 +66,14 @@ function startDropsTick()
 					end
 				end
 			else
-				Citizen.Wait(800)
+				Wait(800)
 			end
-			Citizen.Wait(3)
+			Wait(3)
 		end
 	end)
 end
 
 RegisterNetEvent("Inventory:Client:DropzoneForceUpdate", function()
-	Citizen.Wait(100)
+	Wait(100)
 	runDropsUpdate(true)
 end)

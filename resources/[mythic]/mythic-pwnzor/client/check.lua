@@ -15,13 +15,13 @@ function CheckVariables()
 end
 
 if Enabled then
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while GlobalState["BlacklistedVars"] == nil do
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 
 		while true do
-			Citizen.Wait(30000)
+			Wait(30000)
 			CheckVariables()
 		end
 	end)

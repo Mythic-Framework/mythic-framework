@@ -39,7 +39,7 @@ RegisterNUICallback("CheckCallsign", function(data, cb)
 end)
 
 RegisterNUICallback("CheckParole", function(data, cb)
-	Citizen.Wait(((data.index and (data.index + 1) or 1) * 250)) -- Really Dumb Because You Can't do 2 NUI Cbs at the same time Lazy Fix
+	Wait(((data.index and (data.index + 1) or 1) * 250)) -- Really Dumb Because You Can't do 2 NUI Cbs at the same time Lazy Fix
 	Callbacks:ServerCallback("MDT:CheckParole", data.SID, cb)
 end)
 

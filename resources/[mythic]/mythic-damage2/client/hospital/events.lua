@@ -108,7 +108,7 @@ AddEventHandler("Hospital:Client:LaydownAnimation", function(hitting, coords)
 	LocalPlayer.state:set("isHospitalized", true, true)
 
 	while Animations.Emotes:Get() == "passout3" do
-		Citizen.Wait(250)
+		Wait(250)
 	end
 
 	print("Out of Bed")
@@ -202,21 +202,21 @@ RegisterNetEvent("Hospital:Client:ICU:Enter", function()
 	if not IsScreenFadedOut() then
 		DoScreenFadeOut(1000)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 	end
 
 	local room = Config.ICUBeds[math.random(#Config.ICUBeds)]
 
 	SetEntityCoords(LocalPlayer.state.ped, room[1], room[2], room[3], 0, 0, 0, false)
-	Citizen.Wait(100)
+	Wait(100)
 	SetEntityHeading(LocalPlayer.state.ped, room[4])
 	_disabled = false
 
-	Citizen.Wait(1000)
+	Wait(1000)
 
 	DoScreenFadeIn(1000)
 	while not IsScreenFadedIn() do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 end)

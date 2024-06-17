@@ -75,21 +75,21 @@ AddEventHandler("Casino:Client:StartSpin", function(_, data)
             TaskGoStraightToCoord(LocalPlayer.state.ped, _movePos.x, _movePos.y, _movePos.z, 1.0, -1, 34.52, 0.0)
 
             while #(GetEntityCoords(LocalPlayer.state.ped) - _movePos) > 0.1 do
-                Citizen.Wait(10)
+                Wait(10)
             end
 
             SetEntityHeading(LocalPlayer.state.ped, 327.937)
             TaskPlayAnim(LocalPlayer.state.ped, lib, anim, 8.0, -8.0, -1, 0, 0, false, false, false)
 
             while IsEntityPlayingAnim(LocalPlayer.state.ped, lib, anim, 3) do
-                Citizen.Wait(1)
+                Wait(1)
                 DisableAllControlActions(0)
             end
 
             TaskPlayAnim(LocalPlayer.state.ped, lib, "enter_to_armraisedidle", 8.0, -8.0, -1, 0, 0, false, false, false)
 
             while IsEntityPlayingAnim(LocalPlayer.state.ped, lib, "enter_to_armraisedidle", 3) do
-                Citizen.Wait(1)
+                Wait(1)
                 DisableAllControlActions(0)
             end
 
@@ -135,10 +135,10 @@ RegisterNetEvent("Casino:Client:SpinWheel", function(target, spins, offset)
             _spinningWheel = false
         end
 
-        Citizen.Wait(10)
+        Wait(10)
 
         _spinningWheel = true
-        Citizen.CreateThread(function()
+        CreateThread(function()
             -- local sliceWidth = 360.0 / 20
             -- local finalRotation = (sliceWidth * target) - offset
     
@@ -161,7 +161,7 @@ RegisterNetEvent("Casino:Client:SpinWheel", function(target, spins, offset)
                 end
     
                 SetEntityRotation(_casinoWheel, _casinoWheelRotation.x, _casinoWheelRotation.y - addedRotation, _casinoWheelRotation.z, 2, true)
-                Citizen.Wait(1)
+                Wait(1)
             end
     
             -- wheelSpeed = 1.75
@@ -180,7 +180,7 @@ RegisterNetEvent("Casino:Client:SpinWheel", function(target, spins, offset)
             --     end
     
             --     SetEntityRotation(_casinoWheel, _casinoWheelRotation.x, _casinoWheelRotation.y - addedRotation, _casinoWheelRotation.z, 2, true)
-            --     Citizen.Wait(5)
+            --     Wait(5)
             -- end
     
             -- SetEntityRotation(_casinoWheel, _casinoWheelRotation.x, _casinoWheelRotation.y - finalRotation, _casinoWheelRotation.z, 2, true)
@@ -199,7 +199,7 @@ end)
 -- AddStateBagChangeHandler("Casino:WheelLastRotation", nil, function(bagName, key, value, _unused, replicated)
 --     if _insideCasino and _casinoWheel then
 --         _spinningWheel = false
---         Citizen.Wait(10)
+--         Wait(10)
 
 --         SetEntityRotation(_casinoWheel, _casinoWheelRotation.x, _casinoWheelRotation.y - value, _casinoWheelRotation.z, 2, true)
 --     end
@@ -208,7 +208,7 @@ end)
 RegisterNetEvent("Casino:Client:WheelLastRotation", function(value)
     if _insideCasino and _casinoWheel then
         _spinningWheel = false
-        Citizen.Wait(10)
+        Wait(10)
 
         SetEntityRotation(_casinoWheel, _casinoWheelRotation.x, _casinoWheelRotation.y - value, _casinoWheelRotation.z, 2, true)
     end

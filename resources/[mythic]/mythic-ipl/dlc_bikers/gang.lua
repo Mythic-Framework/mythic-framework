@@ -390,7 +390,7 @@ BikerGang = {
     }
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
     -- Removing the black texture
     BikerGang.Clubhouse.Members.President.Init()
     BikerGang.Clubhouse.Members.VicePresident.Init()

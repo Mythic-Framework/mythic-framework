@@ -13,24 +13,24 @@ end
 function DoVehicleUnlockShit(veh)
     StartVehicleHorn(veh, 80, "HELDDOWN", false)
     SetVehicleLights(veh, 2)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 0)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 2)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 0)
 end
 
 function DoVehicleLockShit(veh)
     StartVehicleHorn(veh, 80, "HELDDOWN", false)
-    Citizen.Wait(160)
+    Wait(160)
     StartVehicleHorn(veh, 350, "HELDDOWN", false)
     SetVehicleLights(veh, 2)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 0)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 2)
-    Citizen.Wait(200)
+    Wait(200)
     SetVehicleLights(veh, 0)
 end
 
@@ -112,14 +112,14 @@ function IsVehicleEmpty(veh)
 end
 
 function UnlockAnim()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while not HasAnimDictLoaded('anim@heists@keycard@') do
 			RequestAnimDict('anim@heists@keycard@')
 			Wait(10)
 		end
 
 		TaskPlayAnim(LocalPlayer.state.ped, 'anim@heists@keycard@', 'exit', 8.0, 1.0, -1, 48, 0, 0, 0, 0)
-		Citizen.Wait(750)
+		Wait(750)
         StopAnimTask(LocalPlayer.state.ped, 'anim@heists@keycard@', 'exit', 1.0)
 	end)
 end

@@ -30,7 +30,7 @@ RegisterNetEvent("UI:Client:Reset", function(manual)
 	Hud.Meth:Close()
 
 	if manual then
-		Citizen.Wait(2500)
+		Wait(2500)
 		Hud:Show()
 	end
 end)

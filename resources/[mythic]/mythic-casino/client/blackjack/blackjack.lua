@@ -125,9 +125,9 @@ AddEventHandler("Casino:Client:Enter", function()
     loadAnim("anim_casino_b@amb@casino@games@shared@dealer@")
     loadAnim("anim_casino_b@amb@casino@games@blackjack@player")
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _insideCasino do
-            Citizen.Wait(350)
+            Wait(350)
             local closestDist = 1000
             local playerCoords = GetEntityCoords(LocalPlayer.state.ped)
             
@@ -143,7 +143,7 @@ AddEventHandler("Casino:Client:Enter", function()
     end)
 
     while not _blackjackTablesConfig do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     for k, v in pairs(_blackjackTables) do
@@ -179,7 +179,7 @@ AddEventHandler("Casino:Client:Enter", function()
 
         local table = GetClosestObjectOfType(v.table.coords.x, v.table.coords.y, v.table.coords.z, 1.0, v.table.prop, 0, 0, 0)
         while table == 0 do
-            Citizen.Wait(250)
+            Wait(250)
             table = GetClosestObjectOfType(v.table.coords.x, v.table.coords.y, v.table.coords.z, 1.0, v.table.prop, 0, 0, 0)
         end
 
@@ -227,12 +227,12 @@ AddEventHandler("Casino:Client:JoinBlackjack", function(_, data)
 
                 _inSittingDownAnimation = false
 
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     while _BJsatAtTable do
                         if shouldForceIdleCardGames then
                             TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_b@amb@casino@games@shared@player@", "idle_cardgames", 1.0, 1.0, -1, 0)
                         end
-                        Citizen.Wait(5)
+                        Wait(5)
                     end
 
                     if _blackJackStatebagHandler then
@@ -337,7 +337,7 @@ end)
 RegisterNetEvent("Casino:Client:BlackjackSyncChipsDoubleDown", function(betAmount, chairId)
     if _insideCasino then
         cleanUpChips(tostring(chairId) .. "chips")
-        Citizen.Wait(100)
+        Wait(100)
         betBlackjack(betAmount, chairId)
     end
 end)
@@ -451,7 +451,7 @@ RegisterNetEvent("Casino:Client:BlackjackGameFinished", function(tableId, played
             cleanUpChips(v, tableId)
             cleanUpChips(tostring(v) .. "chips", tableId)
 
-            Citizen.Wait(2500)
+            Wait(2500)
         end
 
         cleanUpChips(-1 - tableId, tableId)

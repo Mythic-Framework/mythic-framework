@@ -19,7 +19,7 @@ end)
 
 RegisterNetEvent("Job:Client:DutyChanged", function(state)
     if state then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local mySID = LocalPlayer.state.Character:GetData('SID')
             while LocalPlayer.state.loggedIn and LocalPlayer.state.onDuty and _trackedJobs[LocalPlayer.state.onDuty] do
                 if #_alertBlips > 0 then
@@ -31,9 +31,9 @@ RegisterNetEvent("Job:Client:DutyChanged", function(state)
                             table.remove(_alertBlips, k)
                         end
                     end
-                    Citizen.Wait(30000)
+                    Wait(30000)
                 else
-                    Citizen.Wait(1000)
+                    Wait(1000)
                 end
             end
 

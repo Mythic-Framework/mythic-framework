@@ -79,10 +79,10 @@ AddEventHandler("Casino:Client:Enter", function()
     loadAnim("anim_casino_b@amb@casino@games@roulette@dealer")
 
     while not _rouletteTablesConfig do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
-    Citizen.Wait(500)
+    Wait(500)
 
     for k, v in pairs(_rouletteTables) do
         local serverData = _rouletteTablesConfig[k]
@@ -118,7 +118,7 @@ AddEventHandler("Casino:Client:Enter", function()
 
         local table = GetClosestObjectOfType(v.table.coords.x, v.table.coords.y, v.table.coords.z, 1.0, v.table.prop, 0, 0, 0)
         while table == 0 do
-            Citizen.Wait(250)
+            Wait(250)
             table = GetClosestObjectOfType(v.table.coords.x, v.table.coords.y, v.table.coords.z, 1.0, v.table.prop, 0, 0, 0)
         end
 
@@ -192,12 +192,12 @@ AddEventHandler("Casino:Client:JoinRoulette", function(_, data)
                     ShowRouletteGameStateUI(GlobalState[string.format("Casino:Roulette:%s", _rouletteAtTable)])
                 end
 
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     while _rouletteAtTable do
                         if _rouletteForceIdle then
                             TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_b@amb@casino@games@shared@player@", "idle_cardgames", 1.0, 1.0, -1, 0)
                         end
-                        Citizen.Wait(5)
+                        Wait(5)
                     end
 
                     if _rouletteStatebagHandler then
@@ -238,7 +238,7 @@ function LeaveRoulette(skipAnim)
             InfoOverlay:Close()
 
             if not skipAnim then
-                Citizen.Wait(3000)
+                Wait(3000)
             end
 
             NetworkStopSynchronisedScene(ROULETTE_SITTING_SCENE)
@@ -265,16 +265,16 @@ RegisterNetEvent("Casino:Client:RouletteGameStarting", function(tableId)
             RouletteHoverNumbers(tableId, {})
             _rouletteHasChipsPlaced = false
 
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 while _insideCasino and _rouletteAtTable do
                     if _rouletteTableData[_rouletteAtTable] and _rouletteTableData[_rouletteAtTable].startTime then
                         ShowRouletteGameStateUI(GlobalState[string.format("Casino:Roulette:%s", _rouletteAtTable)])
                     else
-                        Citizen.Wait(500)
+                        Wait(500)
                         ShowRouletteGameStateUI(GlobalState[string.format("Casino:Roulette:%s", _rouletteAtTable)])
                         break
                     end
-                    Citizen.Wait(1000)
+                    Wait(1000)
                 end
             end)
         end

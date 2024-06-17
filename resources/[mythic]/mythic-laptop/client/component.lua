@@ -10,7 +10,7 @@ LAPTOP = {
 		SendNUIMessage({ type = "LAPTOP_VISIBLE" })
 		SetNuiFocus(true, true)
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			local playerPed = PlayerPedId()
 			LoadAnim('amb@code_human_in_bus_passenger_idles@female@tablet@base')
 			LoadModel(`prop_cs_tablet`)
@@ -22,7 +22,7 @@ LAPTOP = {
 				if not IsEntityPlayingAnim(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3) then
 					TaskPlayAnim(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3.0, 3.0, -1, 49, 0, false, false, false)
 				end
-				Citizen.Wait(250)
+				Wait(250)
 			end
 
 			StopAnimTask(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3.0)

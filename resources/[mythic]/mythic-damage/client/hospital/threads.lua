@@ -16,7 +16,7 @@ function StartHealThread()
 	end
 	_healThreading = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local key = Keybinds:GetKey("primary_action")
 		while LocalPlayer.state.loggedIn and LocalPlayer.state.isHospitalized do
 			if _leavingBed then
@@ -28,16 +28,16 @@ function StartHealThread()
 					DrawUIText(4, true, 0.5, 0.9, 0.35, 255, 255, 255, 255, string.format('Press ~r~(%s)~s~ To Get Out of Bed', key))
 				end
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 		_healThreading = false
 	end)
 
 	if not _healCounting then
 		_healCounting = true
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while LocalPlayer.state.loggedIn and _countdown >= 0 and LocalPlayer.state.isHospitalized do
-				Citizen.Wait(1000)
+				Wait(1000)
 				_countdown = _countdown - 1
 			end
 			Damage:Heal()
@@ -47,7 +47,7 @@ function StartHealThread()
 end
 
 function StartRPThread()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local key = Keybinds:GetKey("primary_action")
 		while LocalPlayer.state.loggedIn and LocalPlayer.state.isHospitalized do
 			if _leavingBed then
@@ -55,7 +55,7 @@ function StartRPThread()
 			else
 				DrawUIText(4, true, 0.5, 0.9, 0.35, 255, 255, 255, 255, string.format('Press ~r~(%s)~s~ To Get Out of Bed', key))
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end

@@ -20,6 +20,6 @@ end
 function LoadAnim(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end

@@ -31,6 +31,6 @@ function RegisterStreamedFonts()
     end
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     RegisterStreamedFonts()
 end)

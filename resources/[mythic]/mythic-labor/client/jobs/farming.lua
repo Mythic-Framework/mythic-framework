@@ -91,7 +91,7 @@ RegisterNetEvent("Farming:Client:OnDuty", function(joiner, time)
 			if closest ~= nil then
 				_doing = true
 				TaskTurnPedToFaceCoord(LocalPlayer.state.ped, closest.point.coords.x, closest.point.coords.y, closest.point.coords.z, 1.0)
-				Citizen.Wait(1000)
+				Wait(1000)
 				DoAction(closest.point.id)
 			else
 				_doing = false
@@ -114,7 +114,7 @@ RegisterNetEvent("Farming:Client:OnDuty", function(joiner, time)
             Blips:Add(string.format("FarmingNode-%s", v.id), "Farming Action", v.coords, 594, 0, 0.8)
 		end
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while _working do
 				local closest = nil
 				for k, v in ipairs(_nodes) do
@@ -124,7 +124,7 @@ RegisterNetEvent("Farming:Client:OnDuty", function(joiner, time)
 					end
 				end
 
-				Citizen.Wait(5)
+				Wait(5)
 			end
 		end)
 	end)

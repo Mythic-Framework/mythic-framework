@@ -64,7 +64,7 @@
 -- RegisterNetEvent('Scopes:Client:PlayerEnterScope', function(player)
 --     if not LocalPlayer.state.loggedIn then return; end
 
---     Citizen.Wait(100)
+--     Wait(100)
 --     player = tonumber(player)
 
 --     local ptfxVal = Player(player)?.state?.animPtfx
@@ -80,6 +80,6 @@
 --         RemoveNamedPtfxAsset(v.asset)
 
 --         _syncedPtfx[k] = nil
---         Citizen.Wait(10)
+--         Wait(10)
 --     end
 -- end)

@@ -301,14 +301,14 @@ AddEventHandler("Labor:Server:Startup", function()
 										_sellers[_joiners[source]].pedNet = nil
 										_sellers[_joiners[source]].netId = nil
 										Labor.Offers:Task(_joiners[source], _JOB, "Find A Corner")
-										Citizen.SetTimeout(5000, function()
+										SetTimeout(5000, function()
 											TriggerClientEvent(
 												string.format("CornerDealing:Client:%s:EndSelling", _joiners[source]),
 												-1
 											)
 										end)
 									else
-										Citizen.SetTimeout((math.random(15, 30) + 30) * 1000, function()
+										SetTimeout((math.random(15, 30) + 30) * 1000, function()
 											TriggerClientEvent(
 												string.format("CornerDealing:Client:%s:SoldToPed", _joiners[source]),
 												-1

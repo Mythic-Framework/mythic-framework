@@ -55,7 +55,7 @@ function DoTaxiThread(veh)
 	_threading = true
 
 	local prevLocation = GetEntityCoords(veh)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and _inVeh == veh and _state do
 			local currLocation = GetEntityCoords(veh)
 			local dist = #(currLocation - prevLocation)
@@ -66,7 +66,7 @@ function DoTaxiThread(veh)
 				},
 			})
 			prevLocation = currLocation
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 		_threading = false
 	end)

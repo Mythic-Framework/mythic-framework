@@ -27,7 +27,7 @@ AddEventHandler("Casino:Server:Startup", function()
     }, 0)
 
     while not _casinoConfigLoaded do
-        Citizen.Wait(250)
+        Wait(250)
     end
 
     GlobalState["Casino:Vehicle"] = Casino.Config:Get("vehicle")

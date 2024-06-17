@@ -1,18 +1,18 @@
--- Citizen.CreateThread(function()
+-- CreateThread(function()
 -- 	local time = 0
 -- 	local prevPos = nil
 -- 	local currentPos = nil
 
--- 	Citizen.Wait(30000)
+-- 	Wait(30000)
 
 -- 	while GlobalState['AFKTimer'] == nil do
--- 		Citizen.Wait(1000)
+-- 		Wait(1000)
 -- 	end
 
 -- 	local AFKTimer = GlobalState['AFKTimer']
 
 -- 	while true do
--- 		Citizen.Wait(1000)
+-- 		Wait(1000)
 -- 		--TriggerServerEvent('mythic_pwnzor:server:PingCheck', securityToken, isLoggedIn)
 -- 		local playerPed = PlayerPedId()
 -- 		if playerPed then
@@ -41,25 +41,25 @@ RegisterNetEvent("Characters:Client:Spawn")
 AddEventHandler("Characters:Client:Spawn", function()
 	if LocalPlayer.state.isDev then return end
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		local time = 0
 		local prevPos = nil
 		local currentPos = nil
 
-		Citizen.Wait(30000)
+		Wait(30000)
 
 		while GlobalState['AFKTimer'] == nil do
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 
 		local AFKTimer = GlobalState['AFKTimer']
 
 		while LocalPlayer.state.inCreator do
-			Citizen.Wait(30000)
+			Wait(30000)
 		end
 
 		while LocalPlayer.state.loggedIn do
-			Citizen.Wait(1000)
+			Wait(1000)
 			--TriggerServerEvent('mythic_pwnzor:server:PingCheck', securityToken, isLoggedIn)
 			local playerPed = PlayerPedId()
 			if playerPed then

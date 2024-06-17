@@ -123,11 +123,11 @@ function RunFitmentDataUpdate()
 end
 
 function StartFitmentThread()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local tick = 0
         while LocalPlayer.state.loggedIn do
             RunFitmentDataUpdate()
-            Citizen.Wait(5000)
+            Wait(5000)
 
             if tick >= 5 then
                 tick = 0
@@ -138,9 +138,9 @@ function StartFitmentThread()
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            Citizen.Wait(1)
+            Wait(1)
             for k, v in pairs(fitmentVehicles) do
                 if v?.veh and v.veh ~= EDITING_VEHICLE and DoesEntityExist(v.veh) then
                     SetVehicleFrontTrackWidth(v.veh, v?.data?.frontTrack)

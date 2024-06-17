@@ -152,7 +152,7 @@ ANIMATIONS = {
 
 AddEventHandler('Animations:Client:EmoteMenuEmote', function(data)
     Animations.Emotes:Play(data, true)
-    Citizen.Wait(250)
+    Wait(250)
     Animations:OpenMainEmoteMenu()
 end)
 

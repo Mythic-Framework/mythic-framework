@@ -21,7 +21,7 @@ function StartSelfieMode()
         _selfie = true
 
         DestroyMobilePhone()
-        Citizen.Wait(10)
+        Wait(10)
         CreateMobilePhone(0)
         CellCamActivate(true, true)
         CellCamDisableThisFrame(true)
@@ -31,7 +31,7 @@ end
 function StopSelfieMode()
     if _selfie then
         DestroyMobilePhone()
-        Citizen.Wait(10)
+        Wait(10)
         CellCamDisableThisFrame(false)
         CellCamActivate(false, false)
 

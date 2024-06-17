@@ -10,7 +10,7 @@ function startCreation()
 		return
 	end
 	originPoints, targetPoints = {}, {}
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while creationEnabled do
 			if IsControlJustReleased(0, 73) then
 				inOriginMode = not inOriginMode

@@ -325,7 +325,7 @@ function SendPendingLoanEmail(charData, dealerData, vehicleInfoData, downPayment
             }
         )
 
-        Citizen.SetTimeout(60000 * 5, function()
+        SetTimeout(60000 * 5, function()
             _pendingLoanAccept[charData.SID] = nil
         end)
     else

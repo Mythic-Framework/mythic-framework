@@ -1,6 +1,6 @@
 AddEventHandler("Drugs:Client:Startup", function()
     Callbacks:RegisterClientCallback("Drugs:Coke:Use", function(data, cb)
-        Citizen.Wait(400)
+        Wait(400)
         Minigame.Play:RoundSkillbar(1.0, 6, {
             onSuccess = function()
                 cb(true)

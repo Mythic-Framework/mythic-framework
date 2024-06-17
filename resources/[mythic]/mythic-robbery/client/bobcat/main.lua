@@ -3,7 +3,7 @@ SetRelationshipBetweenGroups(5, `BOBCAT_SECURITY`, `PLAYER`)
 SetRelationshipBetweenGroups(5, `PLAYER`, `BOBCAT_SECURITY`)
 
 AddEventHandler("Robbery:Client:Setup", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local interiorid = GetInteriorAtCoords(883.4142, -2282.372, 31.44168)
 		if not GlobalState["Bobcat:VaultDoor"] then
 			RequestIpl("prologue06_int")
@@ -171,7 +171,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 	)
 
 	while GlobalState["Bobcat:LootLocations"] == nil do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	for k, v in ipairs(GlobalState["Bobcat:LootLocations"]) do
@@ -344,7 +344,7 @@ end)
 function SetupPeds(peds, isBobcat, skipLeaveVeh)
     for k, v in ipairs(peds) do
 		while not DoesEntityExist(NetworkGetEntityFromNetworkId(v)) do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
         local ped = NetworkGetEntityFromNetworkId(v)

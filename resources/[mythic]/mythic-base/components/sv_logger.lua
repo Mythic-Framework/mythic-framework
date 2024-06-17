@@ -61,7 +61,7 @@ COMPONENTS.Logger = {
 }
 
 function doLog(level, component, log, flags, data)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local prefix = "[LOG]"
 		local mPrefix = "[LOG]"
 

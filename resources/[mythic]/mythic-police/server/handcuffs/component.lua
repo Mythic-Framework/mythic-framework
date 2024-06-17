@@ -63,8 +63,8 @@ function DoCuff(source, target, isHardCuffed, isForced)
 			else
 				Execute:Client(source, "Notification", "Success", "You Cuffed A Player")
 				Sounds.Play:Distance(target, 10, "handcuff_on.ogg", 0.55)
-				Citizen.CreateThread(function()
-					Citizen.Wait(1050)
+				CreateThread(function()
+					Wait(1050)
 					Sounds.Play:Distance(target, 10, "handcuff_on.ogg", 0.55)
 				end)
 				SetPedConfigFlag(ped, 120, true)
@@ -213,7 +213,7 @@ _HANDCUFFS = {
 			if not inVeh then
 				if source ~= -1 then
 					TriggerClientEvent("Handcuffs:Client:UncuffingAnim", source)
-					Citizen.Wait(2200)
+					Wait(2200)
 				end
 				Sounds.Play:Distance(target, 10, "handcuff_remove.ogg", 0.15)
 				local playerState = Player(target).state

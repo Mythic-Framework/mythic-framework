@@ -54,7 +54,7 @@ AddEventHandler("Drugs:Client:Startup", function()
     end)
 
     Callbacks:RegisterClientCallback("Drugs:Meth:Use", function(data, cb)
-        Citizen.Wait(400)
+        Wait(400)
         Minigame.Play:RoundSkillbar(1.0, 6, {
             onSuccess = function()
                 cb(true)
@@ -87,7 +87,7 @@ RegisterNetEvent("Drugs:Client:Meth:SetupTables", function(tables)
         local obj = CreateObject(`bkr_prop_meth_table01a`, v.coords.x, v.coords.y, v.coords.z, false, true, false)
         SetEntityHeading(obj, v.heading)
         while not DoesEntityExist(obj) do
-            Citizen.Wait(1)
+            Wait(1)
         end
         _methTables[k].entity = obj
         Entity(obj).state.isMethTable = true
@@ -110,7 +110,7 @@ RegisterNetEvent("Drugs:Client:Meth:CreateTable", function(table)
     local obj = CreateObject(`bkr_prop_meth_table01a`, table.coords.x, table.coords.y, table.coords.z, false, true, false)
     SetEntityHeading(obj, table.heading)
     while not DoesEntityExist(obj) do
-        Citizen.Wait(1)
+        Wait(1)
     end
 
     _methTables[table.id].entity = obj
@@ -136,7 +136,7 @@ end)
 
 AddEventHandler("Drugs:Client:Meth:FinishPlacement", function(data, endCoords)
     TaskTurnPedToFaceCoord(LocalPlayer.state.ped, endCoords.coords.x, endCoords.coords.y, endCoords.coords.z, 0.0)
-    Citizen.Wait(1000)
+    Wait(1000)
     Progress:Progress({
         name = "meth_pickup",
         duration = (math.random(5) + 10) * 1000,

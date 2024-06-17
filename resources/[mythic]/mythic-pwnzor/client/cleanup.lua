@@ -1,4 +1,4 @@
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		for _, sctyp in next, GlobalState["BlacklistedSceneTypes"] do
 			SetScenarioTypeEnabled(sctyp, false)
@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
 		for _, carmdl in next, GlobalState["BlacklistedVehs"] do
 			SetVehicleModelIsSuppressed(carmdl, true)
 		end
-		Citizen.Wait(10000)
+		Wait(10000)
 	end
 end)
 
@@ -57,11 +57,11 @@ function ED()
 	return EE(FindFirstPickup, FindNextPickup, EndFindPickup)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	for d in ED() do
 		DeleteEntity(d)
 	end
-	Citizen.Wait(500)
+	Wait(500)
 end)
 
 AddEventHandler("populationPedCreating", function(x, y, z, model)
@@ -78,12 +78,12 @@ AddEventHandler("populationPedCreating", function(x, y, z, model)
 	end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	for p in EP() do
 		SetPedDropsWeapon(p, false)
 		SetPedDropsWeaponsWhenDead(p, false)
 	end
-	Citizen.Wait(1)
+	Wait(1)
 end)
 
 function RWD()
@@ -96,9 +96,9 @@ function RWD()
 	end
 end
 
--- Citizen.CreateThread(function()
+-- CreateThread(function()
 -- 	while true do    
 -- 		RWD()
--- 		Citizen.Wait(60)
+-- 		Wait(60)
 -- 	end
 -- end)

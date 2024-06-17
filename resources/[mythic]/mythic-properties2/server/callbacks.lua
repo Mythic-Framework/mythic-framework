@@ -500,7 +500,7 @@ function RegisterCallbacks()
 								end)
 							end
 	
-							Citizen.SetTimeout(5 * (60 * 1000), function()
+							SetTimeout(5 * (60 * 1000), function()
 								if _selling[data.property] then
 									_selling[data.property] = nil
 								end
@@ -671,7 +671,7 @@ function SendPendingLoanEmail(charData, propertyLabel, downPaymentPercent, downP
             }
         )
 
-        Citizen.SetTimeout(60000 * 5, function()
+        SetTimeout(60000 * 5, function()
             _pendingLoanAccept[charData.SID] = nil
         end)
     else

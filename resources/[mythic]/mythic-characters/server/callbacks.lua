@@ -14,7 +14,7 @@ end)
 function RegisterCallbacks()
 	Callbacks:RegisterServerCallback("Characters:GetServerData", function(source, data, cb)
 		while Fetch:Source(source) == nil do
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		local motd = GetConvar("motd", "Welcome to Mythic RP")
@@ -422,7 +422,7 @@ function IsNumberInUse(number)
 	end)
 
 	while var == nil do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 end
 

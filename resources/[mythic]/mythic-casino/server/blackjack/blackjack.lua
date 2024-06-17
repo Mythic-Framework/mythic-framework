@@ -34,18 +34,18 @@ function StartBlackjackGame(tableId)
 
         UpdateBlackjackGameState(tableId)
 
-        Citizen.SetTimeout(16000, function()
+        SetTimeout(16000, function()
             if not _blackjack[tableId].Started then
                 _blackjack[tableId].Timeout = true
             end
         end)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while (not _blackjack[tableId].Timeout) and not GetBlackjackTableReady(tableId) do
-                Citizen.Wait(250)
+                Wait(250)
             end
 
-            Citizen.Wait(1500)
+            Wait(1500)
 
             local joinedPlayers = 0
 
@@ -78,7 +78,7 @@ function StartBlackjackGame(tableId)
                                 GetCurrentBlackjackHand(tableId, k)
                             )
 
-                            Citizen.Wait(2800)
+                            Wait(2800)
                             UpdateBlackjackGameState(tableId)
                         end
                     end
@@ -99,7 +99,7 @@ function StartBlackjackGame(tableId)
                         )
                     end
     
-                    Citizen.Wait(2500)
+                    Wait(2500)
                     UpdateBlackjackGameState(tableId)
                 end
 
@@ -138,7 +138,7 @@ function StartBlackjackGame(tableId)
                                         GetCurrentBlackjackHand(tableId, k)
                                     )
     
-                                    Citizen.Wait(2000)
+                                    Wait(2000)
     
                                     UpdateBlackjackGameState(tableId)
                                     local currentHand = GetCurrentBlackjackHand(tableId, k)
@@ -183,7 +183,7 @@ function StartBlackjackGame(tableId)
                                             GetCurrentBlackjackHand(tableId, k)
                                         )
 
-                                        Citizen.Wait(2000)
+                                        Wait(2000)
 
                                         UpdateBlackjackGameState(tableId)
                                         local currentHand = GetCurrentBlackjackHand(tableId, k)
@@ -227,12 +227,12 @@ function StartBlackjackGame(tableId)
                     GetCurrentBlackjackHand(tableId, "dealer")
                 )
 
-                Citizen.Wait(2800)
+                Wait(2800)
 
                 local dealerHand = GetCurrentBlackjackHand(tableId, "dealer")
                 TriggerClientEvent("Casino:Client:BlackjackFlipDealerCard", -1, tableId, dealerHand)
 
-                Citizen.Wait(2800)
+                Wait(2800)
                 _blackjack[tableId].Status = 3
                 UpdateBlackjackGameState(tableId)
 
@@ -269,7 +269,7 @@ function StartBlackjackGame(tableId)
                                 GetCurrentBlackjackHand(tableId, "dealer")
                             )
 
-                            Citizen.Wait(2800)
+                            Wait(2800)
 
                             UpdateBlackjackGameState(tableId)
 
@@ -279,7 +279,7 @@ function StartBlackjackGame(tableId)
                     end
                 end
 
-                Citizen.Wait(2500)
+                Wait(2500)
 
                 local sentDealerBust = false
                 local sentEveryoneBust = true
@@ -348,7 +348,7 @@ function StartBlackjackGame(tableId)
                 UpdateBlackjackGameState(tableId)
 
                 TriggerClientEvent("Casino:Client:BlackjackGameFinished", -1, tableId, _blackjack[tableId].SeatsPlayed, sentDealerBust, sentEveryoneBust)
-                Citizen.Wait(4000 + (2500 * #_blackjack[tableId].SeatsPlayed))
+                Wait(4000 + (2500 * #_blackjack[tableId].SeatsPlayed))
 
                 _blackjack[tableId].Starting = false
                 _blackjack[tableId].Started = false
@@ -390,7 +390,7 @@ function GenerateRandomBJDealerVariation()
 
     while var == 7 or usedVariations[var] do
         var = math.random(0, 13)
-        Citizen.Wait(10)
+        Wait(10)
     end
 
     usedVariations[var] = true
@@ -543,7 +543,7 @@ function GetHitStandResponse(src, currentHand, canDouble, currentBet)
         end
     end)
 
-    Citizen.SetTimeout(20000, function()
+    SetTimeout(20000, function()
         if p then
             p:resolve({ success = false })
         end

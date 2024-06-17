@@ -575,7 +575,7 @@ function Threads()
 	end
 	_run = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while true do
 			Logger:Trace("Robbery", "Resetting Store Alert States With Expired Emergency Alerts")
 			for k, v in pairs(_storeAlerts) do
@@ -583,7 +583,7 @@ function Threads()
 					_storeAlerts[k] = nil
 				end
 			end
-			Citizen.Wait((1000 * 60) * 2)
+			Wait((1000 * 60) * 2)
 		end
 	end)
 end
@@ -1012,7 +1012,7 @@ AddEventHandler("Robbery:Server:Setup", function()
 	end)
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		for k, v in pairs(_robbedSafes) do
 			if v.expires < os.time() then
@@ -1030,6 +1030,6 @@ Citizen.CreateThread(function()
 				end
 			end
 		end
-		Citizen.Wait(30000)
+		Wait(30000)
 	end
 end)

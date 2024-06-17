@@ -53,7 +53,7 @@ WEAPON_PROPS = {
     { type = 'object', item = "moneybag", model = `prop_money_bag_01`, bone = `SKEL_PelvisRoot`, x = -0.55, y = -0.11, z = 0.14, rx = 0.0, ry = 90.0, rz = 0.0 },
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
     if IsDuplicityVersion() then
         for k, v in ipairs(WEAPON_PROPS) do
             WEAPON_PROPS[v.item] = v

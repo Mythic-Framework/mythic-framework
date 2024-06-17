@@ -54,7 +54,7 @@ function RemoveCraftingCooldown(source, bench, id)
 end
 
 function LoadCraftingCooldowns()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local cds = MySQL.query.await('SELECT * FROM crafting_cooldowns WHERE expires > ?', { os.time() })
 
 		for k, v in ipairs(cds or {}) do
@@ -69,7 +69,7 @@ function CleanupExpiredCooldowns()
 	if _cdThreading then return end
 	_cdThreading = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _cdThreading do
 			for k, v in pairs(_cooldowns) do
 				for k2, v2 in pairs(v) do
@@ -84,7 +84,7 @@ function CleanupExpiredCooldowns()
 					Logger:Info("Inventory", string.format("Remove ^2%s^7 Expired Crafting Cooldowns", d.affectedRows))
 				end
 			end)
-			Citizen.Wait(60000)
+			Wait(60000)
 		end
 	end)
 end
@@ -99,7 +99,7 @@ end
 CRAFTING = {
 	RegisterBench = function(self, id, label, targeting, location, restrictions, recipes, canUseSchematics)
 		while not itemsLoaded do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		_cooldowns[id] = _cooldowns[id] or {}

@@ -1,4 +1,4 @@
-Citizen.CreateThread(function()
+CreateThread(function()
     GlobalState["MeleeConfig"] = {
         [`WEAPON_BAT`] = 0.5,
         [`WEAPON_DRBAT`] = 0.5,

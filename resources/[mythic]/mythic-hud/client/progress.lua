@@ -47,10 +47,10 @@ local _runProgressThread = false
 
 function runMdfr(duration)
 	local c = 0
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and c < duration / 1000 do
 			c = c + 1
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 		_mdfr = 1.0
 	end)
@@ -163,18 +163,18 @@ function _doProgress(action, start, tick, finish)
 				},
 			})
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				if start ~= nil then
 					start()
 				end
 
 				if tick ~= nil then
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						while LocalPlayer.state.doingAction do
 							if action.tickrate ~= nil then
-								Citizen.Wait(action.tickrate)
+								Wait(action.tickrate)
 							else
-								Citizen.Wait(0)
+								Wait(0)
 							end
 
 							if LocalPlayer.state.doingAction and not (wasCancelled or wasFinished) then
@@ -185,7 +185,7 @@ function _doProgress(action, start, tick, finish)
 				end
 
 				while LocalPlayer.state.doingAction do
-					Citizen.Wait(1)
+					Wait(1)
 					if IsEntityDead(player) and not action.useWhileDead or not LocalPlayer.state.loggedIn then
 						Progress:Cancel()
 					end
@@ -206,14 +206,14 @@ end
 function _doActionStart(player, action)
 	_runProgressThread = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _runProgressThread do
 			_disableInput(player, action.controlDisables)
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _runProgressThread do
 			if LocalPlayer.state.doingAction then
 				if not isAnim then
@@ -244,7 +244,7 @@ function _doActionStart(player, action)
 								)
 							end
 
-							Citizen.CreateThread(function()
+							CreateThread(function()
 								while LocalPlayer.state.doingAction do
 									if
 										LocalPlayer.state.doingAction
@@ -269,7 +269,7 @@ function _doActionStart(player, action)
 											0
 										)
 									end
-									Citizen.Wait(1000)
+									Wait(1000)
 								end
 							end)
 						elseif action.animation.anim ~= nil then
@@ -291,7 +291,7 @@ function _doActionStart(player, action)
 					RequestModel(action.prop.model)
 
 					while not HasModelLoaded(GetHashKey(action.prop.model)) do
-						Citizen.Wait(0)
+						Wait(0)
 					end
 
 					local pCoords = GetOffsetFromEntityInWorldCoords(player, 0.0, 0.0, 0.0)
@@ -346,7 +346,7 @@ function _doActionStart(player, action)
 						RequestModel(action.propTwo.model)
 
 						while not HasModelLoaded(GetHashKey(action.propTwo.model)) do
-							Citizen.Wait(0)
+							Wait(0)
 						end
 
 						local pCoords = GetEntityCoords(player)
@@ -403,7 +403,7 @@ function _doActionStart(player, action)
 					Progress:Fail()
 				end
 			end
-			Citizen.Wait(0)
+			Wait(0)
 		end
 	end)
 end
@@ -439,7 +439,7 @@ end
 function loadAnimDict(dict)
 	while not HasAnimDictLoaded(dict) do
 		RequestAnimDict(dict)
-		Citizen.Wait(5)
+		Wait(5)
 	end
 end
 

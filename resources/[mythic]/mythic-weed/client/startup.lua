@@ -5,7 +5,7 @@ function RegisterTargets()
 end
 
 function LoadWeedModels()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		for k, v in ipairs(Plants) do
 			LoadModel(v.model)
 		end
@@ -15,7 +15,7 @@ end
 function LoadModel(hash)
 	while not HasModelLoaded(hash) do
 		RequestModel(hash)
-		Citizen.Wait(10)
+		Wait(10)
 	end
 end
 

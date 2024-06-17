@@ -96,7 +96,7 @@ DAMAGE = {
         if LocalPlayer.state.isDead then
             DoScreenFadeOut(1000)
             while not IsScreenFadedOut() do
-                Citizen.Wait(10)
+                Wait(10)
             end
         end
 

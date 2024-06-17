@@ -2,7 +2,7 @@ _moneyTruckPeds = {}
 _moneyTrucks = {}
 _truckSpawnEnabled = true
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		for k, v in pairs(_moneyTruckPeds) do
 			for i = #v, 1, -1 do
@@ -24,18 +24,18 @@ Citizen.CreateThread(function()
 				_moneyTruckPeds[k] = nil
 			end
 		end
-		Citizen.Wait(60000)
+		Wait(60000)
 	end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		for k, v in pairs(_moneyTrucks) do
 			if os.time() > v.delete then
 				DeleteEntity(v.entity)
 			end
 		end
-		Citizen.Wait(60000)
+		Wait(60000)
 	end
 end)
 
@@ -85,7 +85,7 @@ function SpawnBobcatTruck(truckModel, skipCooldown)
 		attmps += 1
 		sel = math.random(#_moneyTruckSpawns)
 		coords = table.copy(_moneyTruckSpawns[sel])
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	if not IsTruckAtCoords(coords) then
@@ -100,7 +100,7 @@ function SpawnBobcatTruck(truckModel, skipCooldown)
 	
 			Entity(veh).state.moneyTruck = true
 			SetEntityDistanceCullingRadius(veh, 20000.0)
-			Citizen.Wait(1000)
+			Wait(1000)
 			p:resolve(NetworkGetNetworkIdFromEntity(veh))
 		end)
 		return Citizen.Await(p)

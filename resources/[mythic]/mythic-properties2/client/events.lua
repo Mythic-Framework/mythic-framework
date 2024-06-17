@@ -38,7 +38,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyData, int, fur
 	TriggerEvent("Interiors:Enter", interior.locations.front.coords, propertyData.id, int, propertyData.data)
 
 	-- if wakeUp and intr.locations.wakeup then
-	-- 	Citizen.SetTimeout(250, function()
+	-- 	SetTimeout(250, function()
 	-- 		Animations.Emotes:WakeUp(intr.locations.wakeup)
 	-- 	end)
 	-- end
@@ -51,7 +51,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyData, int, fur
 
 	_isEntering = false
 
-	Citizen.Wait(500)
+	Wait(500)
 	Sync:Stop(1)
 end)
 
@@ -104,7 +104,7 @@ end)
 
 RegisterNetEvent("Properties:Client:AddBlips", function()
 	while LocalPlayer.state.Character == nil or not _propertiesLoaded or not LocalPlayer.state.loggedIn do
-		Citizen.Wait(100)
+		Wait(100)
 	end
 
 	local ownedProps = Properties:GetPropertiesWithAccess()

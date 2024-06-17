@@ -14,7 +14,7 @@ function GetPlayerGridZone()
 end
 
 function StartVOIPGridThreads()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _characterLoaded do
             if not _customChannelOverride then
                 local newGrid = GetPlayerGridZone()
@@ -38,7 +38,7 @@ function StartVOIPGridThreads()
                     MumbleAddVoiceTargetChannel(CURRENT_GRID)
                 end
             end
-            Citizen.Wait(100)
+            Wait(100)
         end
     end)
 end

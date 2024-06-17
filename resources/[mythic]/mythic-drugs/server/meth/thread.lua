@@ -4,7 +4,7 @@ function StartCookThread()
     end
     _threading = true
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _threading do
             for k, v in pairs(_inProgCooks) do
                 if os.time() > v.end_time then
@@ -15,7 +15,7 @@ function StartCookThread()
                 end
             end
 
-            Citizen.Wait(60000)
+            Wait(60000)
         end
     end)
 end

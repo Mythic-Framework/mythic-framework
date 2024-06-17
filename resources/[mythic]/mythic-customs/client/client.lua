@@ -59,10 +59,10 @@ RegisterNetEvent("Characters:Client:Spawn")
 AddEventHandler("Characters:Client:Spawn", function()
     _characterLoaded = true
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _characterLoaded do
             GLOBAL_PED = PlayerPedId()
-            Citizen.Wait(2500)
+            Wait(2500)
         end
     end)
 

@@ -61,7 +61,7 @@ end
 
 function DoCarBombDetonate(veh)
     for i = 1, 5 do
-        Citizen.Wait(100)
+        Wait(100)
         PlaySoundFromEntity(-1, 'Beep_Red', veh, 'DLC_HEIST_HACKING_SNAKE_SOUNDS', true, true)
     end
 
@@ -84,7 +84,7 @@ AddEventHandler('Vehicles:Client:BecameDriver', function(veh)
         CAR_BOMB_TICK_MAX = vehEnt.state.CarBomb.ExplosionTicks or 5
         CAR_BOMB_SPEED = vehEnt.state.CarBomb.Speed or 0
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while CAR_BOMB_THREAD do
 
                 if not CAR_BOMB_ENABLED then
@@ -116,7 +116,7 @@ AddEventHandler('Vehicles:Client:BecameDriver', function(veh)
                         end
                     end
                 end
-                Citizen.Wait(1000)
+                Wait(1000)
             end
         end)
     end

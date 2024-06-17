@@ -2,7 +2,7 @@ local _platform = nil
 local _platformVehicle = nil
 
 AddEventHandler("Casino:Client:Enter", function()
-    Citizen.Wait(2000)
+    Wait(2000)
 
     if _insideCasino then
         local vehData = GlobalState["Casino:Vehicle"]
@@ -42,7 +42,7 @@ function CreateCasinoShowcaseVehicle(vehData)
         SetVehicleDirtLevel(veh, 0.0)
         --RollDownWindows(veh)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             _platform = GetClosestObjectOfType(974.22, 39.76, 72.16, 10.0, -1561087446, 0, 0, 0)
 
             while _insideCasino and _platformVehicle do
@@ -54,7 +54,7 @@ function CreateCasinoShowcaseVehicle(vehData)
 
                 SetEntityHeading(_platform, curHeading + 0.075)
                 SetEntityHeading(_platformVehicle, curHeading + 0.075)
-                Citizen.Wait(0)
+                Wait(0)
             end
         end)
     end)

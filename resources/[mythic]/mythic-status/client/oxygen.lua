@@ -14,7 +14,7 @@ AddEventHandler("Characters:Client:Spawn", function()
     oxygenLevel = 100
     oxygenDepletionRate = 1
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if IsPedSwimmingUnderWater(LocalPlayer.state.ped) then
                 underWater = true
@@ -43,24 +43,24 @@ AddEventHandler("Characters:Client:Spawn", function()
                         oxygenLevel += oxygenDepletionRate
                     end
                 else
-                    Citizen.Wait(900)
+                    Wait(900)
                 end
 			end
 
-			Citizen.Wait(150)
+			Wait(150)
 		end
 	end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		while LocalPlayer.state.loggedIn do
             if oxygenLevel < 100 then
                 local sendingLevel = math.floor(oxygenLevel)
 
                 TriggerEvent("Status:Client:Update", "oxygen", sendingLevel)
 
-                Citizen.Wait(500)
+                Wait(500)
             else
-                Citizen.Wait(2500)
+                Wait(2500)
             end
 		end
 	end)
@@ -138,13 +138,13 @@ function RegisterOxygenCallbacks()
 
                     WearScubaGear()
 
-                    Citizen.CreateThread(function()
-                        Citizen.Wait(5000)
+                    CreateThread(function()
+                        Wait(5000)
                         while oxygenDepletionRate < 1 and LocalPlayer.state.loggedIn do
                             if (oxygenTank and not DoesEntityExist(oxygenTank)) or (oxygenMask and not DoesEntityExist(oxygenMask)) then
                                 WearScubaGear()
                             end
-                            Citizen.Wait(2000)
+                            Wait(2000)
                         end
                     end)
                 end

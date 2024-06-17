@@ -59,7 +59,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			if LocalPlayer.state.loggedIn and HAS_RADIO and not radioChannelCycle then
 				radioChannelCycle = true
 				ToggleRadioPower(false)
-				Citizen.SetTimeout(1000, function()
+				SetTimeout(1000, function()
 					radioChannelCycle = false
 				end)
 			end
@@ -108,7 +108,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 	RADIO_CLICKS_VOLUME = VOIP.Settings.Volumes.RadioClicks:Get()
 	HAS_RADIO = false
 	
-	Citizen.Wait(1000)
+	Wait(1000)
 	
 	HAS_RADIO = CheckCharacterHasRadio()
 	SendUpdates()
@@ -147,7 +147,7 @@ function OpenRadio()
 
 	Weapons:UnequipIfEquippedNoAnim()
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local playerPed = PlayerPedId()
 		LoadAnim('cellphone@')
 		LoadModel(`prop_cs_hand_radio`)
@@ -159,7 +159,7 @@ function OpenRadio()
 			if not IsEntityPlayingAnim(playerPed, 'cellphone@', 'cellphone_text_read_base', 3) then
 				TaskPlayAnim(playerPed, 'cellphone@', 'cellphone_text_read_base', 3.0, 3.0, -1, 49, 0, false, false, false)
 			end
-			Citizen.Wait(250)
+			Wait(250)
 		end
 
 		StopAnimTask(playerPed, 'cellphone@', 'cellphone_text_read_base', 3.0)
@@ -291,20 +291,20 @@ function CycleRadioChannel(up)
 		SetCharacterRadioFrequency(switchingRadioChannel, true)
 	end
 
-	Citizen.SetTimeout(1000, function()
+	SetTimeout(1000, function()
 		radioChannelCycle = false
 	end)
 end
 
 RegisterNetEvent("Job:Client:DutyChanged", function(state)
-	Citizen.Wait(1000)
+	Wait(1000)
 	if LocalPlayer.state.loggedIn then
 		CheckRadioChannelAuth()
 	end
 end)
 
 RegisterNetEvent("Characters:Client:SetData", function()
-	Citizen.Wait(1000)
+	Wait(1000)
 	if LocalPlayer.state.loggedIn then
 		
 		local hasRadio = CheckCharacterHasRadio()

@@ -1,7 +1,7 @@
 function RegisterCommands()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         Callbacks:ServerCallback('Pwnzor:GetCommands', {}, function(cmds)
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 while true do
                     local cmds2 = GetRegisteredCommands()
                     for k, v in ipairs(cmds) do
@@ -18,7 +18,7 @@ function RegisterCommands()
                             end
                         end
 
-                        Citizen.Wait((60000 / #cmds))
+                        Wait((60000 / #cmds))
                     end
                 end
             end)

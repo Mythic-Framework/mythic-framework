@@ -85,7 +85,7 @@ local function disableDispatch()
 	end
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	LocalPlayer.state:set('clientID', PlayerId(), true)
 	LocalPlayer.state:set('serverID', GetPlayerServerId(PlayerId()), true)
 	StatSetInt(`MP0_STAMINA`, 25, true)
@@ -119,9 +119,9 @@ function COMPONENTS.Core.Init(self)
 	disableScenarios()
 	disableDispatch()
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
-			Citizen.Wait(1000)
+			Wait(1000)
 			local ped = PlayerPedId()
 			if ped ~= LocalPlayer.state.ped then
 				LocalPlayer.state:set('ped', ped, true)
@@ -133,32 +133,32 @@ function COMPONENTS.Core.Init(self)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
-			Citizen.Wait(60000)
+			Wait(60000)
 			collectgarbage("collect")
 		end 
 	end)	
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
-			Citizen.Wait(100)
+			Wait(100)
 			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
 			if NetworkIsPlayerActive(PlayerId()) then
 				TriggerEvent("Core:Client:SessionStarted")
 				TriggerServerEvent("Core:Server:SessionStarted")
 				break
 			end
-			Citizen.Wait(100)
+			Wait(100)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		SetRadarBigmapEnabled(false, false)
 
 		Wait(5)
@@ -203,11 +203,11 @@ function COMPONENTS.Core.Init(self)
 			if IsPedInCover(LocalPlayer.state.ped, 0) and not IsPedAimingFromCover(LocalPlayer.state.ped) then
 				DisablePlayerFiring(LocalPlayer.state.ped, true)
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
 			InvalidateIdleCam()
 			InvalidateVehicleIdleCam()
@@ -215,7 +215,7 @@ function COMPONENTS.Core.Init(self)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _baseThreading do
 			local ped = PlayerPedId()
 			SetPedHelmet(ped, false)
@@ -233,16 +233,16 @@ function COMPONENTS.Core.Init(self)
 			SetCreateRandomCops(false)
 			SetCreateRandomCopsOnScenarios(false)
 
-			Citizen.Wait(2)
+			Wait(2)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local resetcounter = 0
 		local jumpDisabled = false
 
 		while _baseThreading do
-			Citizen.Wait(100)
+			Wait(100)
 			if jumpDisabled and resetcounter > 0 and IsPedJumping(PlayerPedId()) then
 				SetPedToRagdoll(PlayerPedId(), 1000, 1000, 3, 0, 0, 0)
 				resetcounter = 0
@@ -251,7 +251,7 @@ function COMPONENTS.Core.Init(self)
 			if not jumpDisabled and IsPedJumping(PlayerPedId()) then
 				jumpDisabled = true
 				resetcounter = 10
-				Citizen.Wait(1200)
+				Wait(1200)
 			end
 
 			if resetcounter > 0 then
@@ -266,19 +266,19 @@ function COMPONENTS.Core.Init(self)
 	end)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while not exports or exports[GetCurrentResourceName()] == nil do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	COMPONENTS.Core:Init()
 
 	TriggerEvent("Proxy:Shared:RegisterReady")
-	for k, v in pairs(COMPONENTS) do
+	for k, _ in pairs(COMPONENTS) do
 		TriggerEvent("Proxy:Shared:ExtendReady", k)
 	end
 
-	Citizen.Wait(1000)
+	Wait(1000)
 
 	COMPONENTS.Proxy.ExportsReady = true
 	TriggerEvent("Core:Shared:Ready")

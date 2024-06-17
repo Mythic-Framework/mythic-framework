@@ -23,7 +23,7 @@ function COMPONENTS.Spawn.Init(self)
     DoScreenFadeIn(500)
 
     while not IsScreenFadingIn() do
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
@@ -34,6 +34,6 @@ end)
 AddEventHandler('onClientMapStart', function()
     COMPONENTS.Spawn:InitCamera()
     exports['spawnmanager']:spawnPlayer()
-    Citizen.Wait(2500)
+    Wait(2500)
 	exports['spawnmanager']:setAutoSpawn(false)
 end)

@@ -109,9 +109,9 @@ function RadioKeyDown()
 		RADIO_TALKING = true
 		VOIP:MicClicks(true)
 		UpdateVOIPIndicatorStatus()
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while RADIO_TALKING and _characterLoaded do
-				Citizen.Wait(0)
+				Wait(0)
 				SetControlNormal(0, 249, 1.0)
 				SetControlNormal(1, 249, 1.0)
 				SetControlNormal(2, 249, 1.0)

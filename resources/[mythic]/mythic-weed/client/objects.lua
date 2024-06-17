@@ -10,12 +10,12 @@ RegisterNetEvent('Weed:Client:Objects:Init', function(plants)
         _nearbyPlants = {}
 
         while not LocalPlayer.state.loggedIn do
-            Citizen.Wait(100)
+            Wait(100)
         end
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while LocalPlayer.state.loggedIn do
-                Citizen.Wait(3000)
+                Wait(3000)
 
                 if _activePlants then
                     local pedCoords = GetEntityCoords(LocalPlayer.state.ped)
@@ -30,7 +30,7 @@ RegisterNetEvent('Weed:Client:Objects:Init', function(plants)
                             if _spawnedPlants[k] and DoesEntityExist(_spawnedPlants[k]) then
                                 DeleteEntity(_spawnedPlants[k])
                                 _spawnedPlants[k] = nil
-                                Citizen.Wait(5)
+                                Wait(5)
                             end
                         end
                     end
@@ -38,9 +38,9 @@ RegisterNetEvent('Weed:Client:Objects:Init', function(plants)
             end
         end)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while LocalPlayer.state.loggedIn do
-                Citizen.Wait(350)
+                Wait(350)
                 if _activePlants and _nearbyPlants then
                     local pedCoords = GetEntityCoords(LocalPlayer.state.ped)
                     for k,v in pairs(_nearbyPlants) do
@@ -48,16 +48,16 @@ RegisterNetEvent('Weed:Client:Objects:Init', function(plants)
                         if #(pedCoords - vector3(weed.plant.location.x, weed.plant.location.y, weed.plant.location.z)) <= 50.0 then
                             if not _spawnedPlants[k] then
                                 _spawnedPlants[k] = CreateWeedPlant(k, weed)
-                                Citizen.Wait(5)
+                                Wait(5)
                             end
                         elseif _spawnedPlants[k] and DoesEntityExist(_spawnedPlants[k]) then
                             DeleteEntity(_spawnedPlants[k])
                             _spawnedPlants[k] = nil
-                            Citizen.Wait(5)
+                            Wait(5)
                         end
                     end
                 else
-                    Citizen.Wait(1500)
+                    Wait(1500)
                 end
             end
         end)

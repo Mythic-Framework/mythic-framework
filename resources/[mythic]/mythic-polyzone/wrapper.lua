@@ -137,7 +137,7 @@ _POLYZONE = {
 
             if existingZone and wCombozone then
                 Polyzone:Remove(id)
-                Citizen.Wait(100)
+                Wait(100)
             end
 
             addedZones[id] = {
@@ -157,7 +157,7 @@ _POLYZONE = {
 
             if existingZone and wCombozone then
                 Polyzone:Remove(id)
-                Citizen.Wait(100)
+                Wait(100)
             end
 
             addedZones[id] = {
@@ -175,7 +175,7 @@ _POLYZONE = {
 
             if existingZone and wCombozone then
                 Polyzone:Remove(id)
-                Citizen.Wait(100)
+                Wait(100)
             end
 
             addedZones[id] = {
@@ -246,14 +246,14 @@ RegisterNetEvent('Polyzone:Client:ToggleDebug', function()
     TriggerEvent('Targeting:Client:PolyzoneDebug', polyDebug)
     if polyDebug and LocalPlayer.state.isAdmin then
         Logger:Warn('Polyzone', 'Polyzone Debug Enabled')
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while polyDebug do
                 if wCombozone then
                     wCombozone:draw()
                 else
-                    Citizen.Wait(500)
+                    Wait(500)
                 end
-                Citizen.Wait(0)
+                Wait(0)
             end
         end)
     end

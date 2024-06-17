@@ -30,7 +30,7 @@ function OpenShowroomManagement(dealerId)
                 local posVehicle = GlobalState.DealershipShowrooms[dealerId] and GlobalState.DealershipShowrooms[dealerId][tostring(pos)]
                 showroomManagement.Add:AdvButton(posVehicle and string.format('%s %s', posVehicle.make and posVehicle.make or 'Unknown', posVehicle.model and posVehicle.model or 'Unknown') or 'No Vehicle', { secondaryLabel = '#'.. pos}, function()
                     showroomManagement:Close()
-                    Citizen.Wait(100)
+                    Wait(100)
                     StartSettingShowroomPosition(stockData, dealerId, pos, posVehicle)
                 end)
             end
@@ -53,7 +53,7 @@ function StartSettingShowroomPosition(stockData, dealerId, position, positionVeh
 
     if positionVehicle then
         showroomManagement.Add:SubMenuBack('Clear Current Vehicle', {}, function()
-            Citizen.Wait(50)
+            Wait(50)
             Callbacks:ServerCallback('Dealerships:ShowroomManagement:SetPosition', {
                 dealerId = dealerId,
                 position = position,
@@ -82,7 +82,7 @@ function StartSettingShowroomPosition(stockData, dealerId, position, positionVeh
 
             for k, v in ipairs(stockData.sorted[category]) do
                 showroomManagementSub[category].Add:AdvButton(('%s %s'):format(v.make, v.model), { secondaryLabel = (v.class or 'Unknown') .. ' Class' }, function()
-                    Citizen.Wait(100)
+                    Wait(100)
                     showroomManagement:Close()
                     SetDealerShowroomVehicleAtPosition(dealerId, position, v)
                 end)
@@ -95,7 +95,7 @@ function StartSettingShowroomPosition(stockData, dealerId, position, positionVeh
     end
 
     showroomManagement.Add:SubMenuBack('Go Back', {}, function()
-        Citizen.Wait(50)
+        Wait(50)
         OpenShowroomManagement(dealerId)
     end)
 

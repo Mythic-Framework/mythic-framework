@@ -94,7 +94,7 @@ exports('ExtendComponent', function(component, data)
 end)
 
 exports('RequestDependencies', function(c, d, cb)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local _loaded = false
         local _attempts = {}
         local _errs = {}
@@ -122,7 +122,7 @@ exports('RequestDependencies', function(c, d, cb)
                 _loaded = true
             end
 
-            Citizen.Wait(100)
+            Wait(100)
         end
 
         cb(_errs)

@@ -8,14 +8,14 @@ RegisterNetEvent('Doors:Client:DoorHelper', function()
     else
         creationHelper = true
         creationHelperEntity = false
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while creationHelper do
                 if creationHelperEntity and creationHelperEntityCoords then
                     DrawMarker(28, creationHelperEntityCoords.x, creationHelperEntityCoords.y, creationHelperEntityCoords.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.6, 0.6, 0.6, 255, 0, 0, 100, false, true, 2, nil, nil, false)
                 else
-                    Citizen.Wait(1000)
+                    Wait(1000)
                 end
-                Citizen.Wait(5)
+                Wait(5)
             end
         end)
     end
@@ -67,7 +67,7 @@ function GetUserInput(windowTitle, defaultText, maxInputLength)
 
     -- Display the input box.
     DisplayOnscreenKeyboard(1, textEntry, "", defaultText or "", "", "", "", maxInputLength or 30)
-    Citizen.Wait(0)
+    Wait(0)
     -- Wait for a result.
     while true do
         local keyboardStatus = UpdateOnscreenKeyboard();
@@ -78,7 +78,7 @@ function GetUserInput(windowTitle, defaultText, maxInputLength)
         elseif keyboardStatus == 1 then -- finished editing
             return GetOnscreenKeyboardResult()
         else
-            Citizen.Wait(0)
+            Wait(0)
         end
     end
 end

@@ -111,9 +111,9 @@ AddEventHandler("Casino:Client:UseSlotMachine", function()
 
                 SITTING_SCENE = NetworkConvertSynchronisedSceneToSynchronizedScene(SITTING_SCENE)
 
-                repeat Citizen.Wait(0) until GetSynchronizedScenePhase(SITTING_SCENE) >= 0.99 or HasAnimEventFired(LocalPlayer.state.ped, 2038294702) or HasAnimEventFired(LocalPlayer.state.ped, -1424880317)
+                repeat Wait(0) until GetSynchronizedScenePhase(SITTING_SCENE) >= 0.99 or HasAnimEventFired(LocalPlayer.state.ped, 2038294702) or HasAnimEventFired(LocalPlayer.state.ped, -1424880317)
 
-                Citizen.Wait(300)
+                Wait(300)
                 loadAnim("anim_casino_a@amb@casino@games@slots@male")
                 FreezeEntityPosition(LocalPlayer.state.ped, true)
                 TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "betidle_idle_a", 2.0, 1.0, -1, 0)
@@ -122,18 +122,18 @@ AddEventHandler("Casino:Client:UseSlotMachine", function()
 
                 TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "betidle_idle_a", 2.0, 1.0, -1, 0)
 
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     PlaySlotMachineSound("welcome_stinger")
                 end)
 
                 ShowSlotStateUI()
 
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     while _satInChair do
                         if not _pauseAnim then
                             TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "betidle_idle_a", 1.0, 1.0, -1, 0)
                         end
-                        Citizen.Wait(5)
+                        Wait(5)
                     end
                 end)
 
@@ -190,23 +190,23 @@ AddEventHandler("Casino:Client:PlaySlotMachine", function(_, data)
         _pauseAnim = true
 
         TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "betidle_press_betmax_a", 3.0, 11.0, -1, 48, 0, false, false, false)
-        Citizen.Wait(500)
+        Wait(500)
         TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "pull_spin_a", 3.0, 11.0, -1, 48, 0, false, false, false)
         PlayEntityAnim(_satInChair.tableObj, "pull_spin_a_slotmachine", "anim_casino_a@amb@casino@games@slots@male", 1000.0, false, true, true, 0, 136704)
 
-        Citizen.Wait(1000)
+        Wait(1000)
 
         Callbacks:ServerCallback("Casino:SlotMachinePlay", data, function(success, reelRotations, timeOut, sound, wonAmount)
             if success then
                 _sessionSpent += data.bet
                 ShowSlotStateUI()
 
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     PlaySlotMachineSound("spinning")
                 end)
 
                 _spinningReels = true
-                Citizen.Wait(timeOut)
+                Wait(timeOut)
                 _spinningReels = false
 
                 for k, v in ipairs(reelRotations) do
@@ -226,13 +226,13 @@ AddEventHandler("Casino:Client:PlaySlotMachine", function(_, data)
             end
         end)
 
-        Citizen.Wait(1500)
+        Wait(1500)
         _pauseAnim = false
     end
 end)
 
 function StartSpinThread()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _satInChair do
             if _spinningReels then
                 for k, v in ipairs(slotObjects) do
@@ -244,9 +244,9 @@ function StartSpinThread()
                     SetEntityRotation(v.obj, v.rot, 0.0, GetEntityHeading(_satInChair.tableObj), 2, true)
                 end
             else
-                Citizen.Wait(250)
+                Wait(250)
             end
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end
@@ -264,7 +264,7 @@ AddEventHandler("Casino:Client:LeaveSlotMachine", function()
 
                 FreezeEntityPosition(LocalPlayer.state.ped, false)
                 TaskPlayAnim(LocalPlayer.state.ped, "anim_casino_a@amb@casino@games@slots@male", "exit_left", 1.0, 1.0, 2500, 0)
-                Citizen.Wait(math.floor(GetAnimDuration("anim_casino_a@amb@casino@games@slots@male", "exit_left") * 800))
+                Wait(math.floor(GetAnimDuration("anim_casino_a@amb@casino@games@slots@male", "exit_left") * 800))
 
                 ClearPedTasks(LocalPlayer.state.ped)
 
@@ -320,7 +320,7 @@ function PlaySlotMachineSound(sound)
         PlaySoundFromEntity(soundID, sound, _satInChair.tableObj, soundRef, false, 20, 0)
 
         while not HasSoundFinished(soundID) do 
-            Citizen.Wait(10)
+            Wait(10)
         end
 
         ReleaseSoundId(soundID)

@@ -113,7 +113,7 @@ function ProcessDamage(ped)
 						or (part == "LFINGER" and v.severity > 2)
 					then
 						local isDisabled = 15
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							while isDisabled > 0 do
 								if IsPedInAnyVehicle(ped, true) then
 									DisableControlAction(0, 63, true) -- veh turn left
@@ -124,12 +124,12 @@ function ProcessDamage(ped)
 								end
 
 								isDisabled = isDisabled - 1
-								Citizen.Wait(1)
+								Wait(1)
 							end
 						end)
 					else
 						local isDisabled = 15
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							while isDisabled > 0 do
 								if IsPedInAnyVehicle(ped, true) then
 									DisableControlAction(0, 63, true) -- veh turn left
@@ -140,7 +140,7 @@ function ProcessDamage(ped)
 								end
 
 								isDisabled = isDisabled - 1
-								Citizen.Wait(1)
+								Wait(1)
 							end
 						end)
 					end
@@ -159,7 +159,7 @@ function ProcessDamage(ped)
 
 						DoScreenFadeOut(100)
 						while not IsScreenFadedOut() do
-							Citizen.Wait(0)
+							Wait(0)
 						end
 
 						if not IsPedRagdoll(ped) and IsPedOnFoot(ped) and not IsPedSwimming(ped) then
@@ -167,7 +167,7 @@ function ProcessDamage(ped)
 							SetPedToRagdoll(ped, 5000, 1, 2)
 						end
 
-						Citizen.Wait(5000)
+						Wait(5000)
 						DoScreenFadeIn(250)
 					end
 					headCount = 0

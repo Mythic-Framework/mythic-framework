@@ -1,5 +1,5 @@
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _loggedIn do
 			Callbacks:ServerCallback("Phone:Email:DeleteExpired", {}, function(ids)
 				for k, v in ipairs(ids) do
@@ -7,7 +7,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 					Phone.Data:Remove("emails", v)
 				end
 			end)
-			Citizen.Wait(1e4)
+			Wait(1e4)
 		end
 	end)
 end)
@@ -21,7 +21,7 @@ AddEventHandler("Phone:Client:Email:Receive", function(email)
 			data = email,
 		},
 	})
-	Citizen.Wait(1e3)
+	Wait(1e3)
 	Phone.Notification:Add(email.sender, email.subject, email.time, 6000, "email", {
 		view = "view/" .. email._id,
 	}, nil)

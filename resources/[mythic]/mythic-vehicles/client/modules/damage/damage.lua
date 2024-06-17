@@ -42,13 +42,13 @@ AddEventHandler('gameEventTriggered', function(event, args)
                         if engineRunning and VEHICLE_INSIDE == DAMAGE_VEHICLE and bodyHealthDiff >= 50.0 and math.random(55) >= 35 then
                             local stalling = true
                             Notification:Error('Engine Stalled')
-                            Citizen.CreateThread(function()
+                            CreateThread(function()
                                 while stalling do
                                     Vehicles.Engine:Force(DAMAGE_VEHICLE, false)
-                                    Citizen.Wait(500)
+                                    Wait(500)
                                 end
                             end)
-                            Citizen.SetTimeout(math.random(1, 5) * 1000, function()
+                            SetTimeout(math.random(1, 5) * 1000, function()
                                 stalling = false
                             end)
                         end

@@ -230,13 +230,13 @@ AddEventHandler("Characters:Client:Spawn", function()
 		end
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _loggedIn do
 			SendNUIMessage({
 				type = "SET_TIME",
 				data = GlobalState["Sync:Time"],
 			})
-			Citizen.Wait(15000)
+			Wait(15000)
 		end
 	end)
 end)

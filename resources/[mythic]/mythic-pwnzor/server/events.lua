@@ -232,7 +232,7 @@ local _blacklistedEvents = {
 	"esx_society:putVehicleDFWMInGarage",
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	GlobalState["BlacklistedVars"] = {
 		"ESX",
 		"fESX",

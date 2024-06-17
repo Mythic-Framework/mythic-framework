@@ -19,21 +19,21 @@ end
 function LoadAnim(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
 function LoadPropDict(model)
     while not HasModelLoaded(GetHashKey(model)) do
         RequestModel(GetHashKey(model))
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
 function PtfxLoad(asset)
     while not HasNamedPtfxAssetLoaded(asset) do
         RequestNamedPtfxAsset(asset)
-        Citizen.Wait(10)
+        Wait(10)
     end
     --UseParticleFxAssetNextCall(asset)
 end
@@ -41,6 +41,6 @@ end
 function ReqAnimSet(anim)
     while not HasAnimSetLoaded(anim) do
         RequestAnimSet(anim)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end

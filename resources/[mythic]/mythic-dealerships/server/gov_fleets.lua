@@ -21,7 +21,7 @@ RegisterNetEvent('FleetDealers:Server:Purchase', function(shop, vehicle, livery)
                 }) then
                     local properties = table.copy(chosenVehicle.defaultProperties)
                     properties.livery = livery
-                    Citizen.Wait(200)
+                    Wait(200)
                     Vehicles.Owned:AddToFleet(
                         shopData.job,
                         false,

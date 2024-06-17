@@ -40,14 +40,14 @@ RegisterNetEvent('Animations:Client:Binoculars', function()
             Animations.Emotes:Play('binoculars', false, false, false)
             Hud:Hide()
 
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 SetTimecycleModifier("default")
                 SetTimecycleModifierStrength(0.3)
 
                 local scaleform = RequestScaleformMovie("BINOCULARS")
 
                 while not HasScaleformMovieLoaded(scaleform) do
-                    Citizen.Wait(10)
+                    Wait(10)
                 end
 
                 binocularConfig.fov = (binocularConfig.fovMax + binocularConfig.fovMin) * 0.5
@@ -69,7 +69,7 @@ RegisterNetEvent('Animations:Client:Binoculars', function()
                     HandleCameraZooming(cam, binocularConfig)
 
                     DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-                    Citizen.Wait(1)
+                    Wait(1)
                 end
 
                 ClearTimecycleModifier()
@@ -106,14 +106,14 @@ RegisterNetEvent('Animations:Client:Camera', function()
 
             TriggerEvent('Animations:Client:UsingCamera', true)
 
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 SetTimecycleModifier("default")
                 SetTimecycleModifierStrength(0.3)
 
                 -- local scaleform = RequestScaleformMovie("security_cam")
 
                 -- while not HasScaleformMovieLoaded(scaleform) do
-                --     Citizen.Wait(10)
+                --     Wait(10)
                 -- end
 
                 camConfig.fov = (camConfig.fovMax + camConfig.fovMin) * 0.5
@@ -152,7 +152,7 @@ RegisterNetEvent('Animations:Client:Camera', function()
                     HandleCameraHeight(cam, camConfig)
 
                     --DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-                    Citizen.Wait(1)
+                    Wait(1)
                     -- tick = tick + 1
                     -- if tick > 500 then
                     --     tick = 0
@@ -243,7 +243,7 @@ local _doingAnimState = false
 AddEventHandler('Characters:Client:Spawn', function()
     _doingAnimState = false
 
-    Citizen.Wait(1000)
+    Wait(1000)
     EnsureCharacterAnimStates()
 end)
 
@@ -288,7 +288,7 @@ local character = LocalPlayer.state.Character
 end
 
 RegisterNetEvent("Characters:Client:SetData", function()
-    Citizen.Wait(1000)
+    Wait(1000)
     if LocalPlayer.state.loggedIn then
         EnsureCharacterAnimStates()
     end

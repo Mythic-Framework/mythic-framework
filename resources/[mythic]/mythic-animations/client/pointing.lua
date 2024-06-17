@@ -4,14 +4,14 @@ function StartPointing()
 
     RequestAnimDict("anim@mp_point")
     while not HasAnimDictLoaded("anim@mp_point") do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     SetPedConfigFlag(LocalPlayer.state.ped, 36, 1)
     TaskMoveNetworkByName(LocalPlayer.state.ped, "task_mp_pointing", 0.5, 0, "anim@mp_point", 24)
     RemoveAnimDict("anim@mp_point")
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _isPointing do
             if GLOBAL_VEH or IsPedArmed(LocalPlayer.state.ped, 7) then
                 return StopPointing()
@@ -46,7 +46,7 @@ function StartPointing()
                 SetTaskMoveNetworkSignalBool(LocalPlayer.state.ped, "isBlocked", blocked)
                 SetTaskMoveNetworkSignalBool(LocalPlayer.state.ped, "isFirstPerson", N_0xee778f8c7e1142e2(N_0x19cafa3c87f7c2ff()) == 4)
             end
-            Citizen.Wait(5)
+            Wait(5)
         end
     end)
 end

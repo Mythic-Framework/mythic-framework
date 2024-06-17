@@ -302,7 +302,7 @@ function RunTableThread()
 		return
 	end
     _threading = true
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _threading do
 			if IsControlJustReleased(0, 202) then
 				listening = false

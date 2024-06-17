@@ -10,7 +10,7 @@ AddEventHandler("Phone:Client:Twitter:Notify", function(tweet)
 	if Phone == nil then return end
 	
 	if tweet.source ~= GetPlayerServerId(PlayerId()) then
-		Citizen.Wait(1e3)
+		Wait(1e3)
 		Phone.Notification:Add(tweet.author.name, tweet.content, tweet.time, 6000, "twitter", {
 			view = "#" .. tweet._id,
 		}, nil)

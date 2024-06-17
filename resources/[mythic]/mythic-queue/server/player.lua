@@ -46,7 +46,7 @@ function PlayerClass(identifier, player, deferrals)
 	end
 
 	while prio == nil do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 
 	local _data = {

@@ -26,7 +26,7 @@ RegisterNetEvent('Damage:Client:Debug', function(model)
         if isAdmin then
             Config.Debug = not Config.Debug
 
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 if Config.Debug then
                     while Config.Debug and LocalPlayer.state.loggedIn do
                         if LocalDamage == nil then
@@ -51,7 +51,7 @@ RegisterNetEvent('Damage:Client:Debug', function(model)
                             DrawUIText(4, 0, 0.015, 0.58, 0.35, 255, 255, 255, 255, 'HP: ~r~' .. GetEntityHealth(PlayerPedId()) .. '~s~ | Armor: ~r~' .. GetPedArmour(PlayerPedId()))
                             DrawUIText(4, 0, 0.015, 0.56, 0.35, 255, 255, 255, 255, 'IsDead: ~r~' .. tostring(LocalPlayer.state.isDead))
                         end
-                        Citizen.Wait(1)
+                        Wait(1)
                     end
                     Config.Debug = false
                 end

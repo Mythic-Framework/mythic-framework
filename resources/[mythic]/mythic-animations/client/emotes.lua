@@ -37,7 +37,7 @@ ANIMATIONS.Emotes = {
 
         if IsInAnimation then
             Animations.Emotes:ForceCancel()
-            Citizen.Wait(250)
+            Wait(250)
         end
 
         if emote ~= nil and type(emote) == 'string' then
@@ -107,11 +107,11 @@ ANIMATIONS.Emotes = {
             SetEntityHeading(ped, pos.h + 0.0)
         end
 
-        Citizen.Wait(500)
+        Wait(500)
 
         TaskPlayAnim(ped, "switch@franklin@bed", "sleep_getup_rubeyes", 8.0, 8.0, -1, 8, 0, false, false, false)
 
-        Citizen.Wait(5000)
+        Wait(5000)
         FreezeEntityPosition(ped, false)
     end,
 }
@@ -234,22 +234,22 @@ function DoAnEmote(emoteData, fromUserInput, length, notCancellable, emoteName, 
 
             if emoteData.AdditionalOptions.PtfxAsset then
                 if emoteData.AdditionalOptions.PtfxAlways then
-                    Citizen.CreateThread(function()
-                        Citizen.Wait(500)
+                    CreateThread(function()
+                        Wait(500)
                         LocalPlayer.state:set('animPtfx', emoteName, true)
                     end)
                 else
                     PtfxWait = emoteData.AdditionalOptions.PtfxWait
                     PtfxPrompt = true
                     Notification:Info(emoteData.AdditionalOptions.PtfxInfo, 5000)
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         while PtfxPrompt do
                             if IsControlPressed(0, 47) then
                                 LocalPlayer.state:set('animPtfx', emoteName, true)
                                 Wait(PtfxWait)
                                 LocalPlayer.state:set('animPtfx', false, true)
                             end
-                            Citizen.Wait(5)
+                            Wait(5)
                         end
                     end)
                 end
@@ -301,13 +301,13 @@ function DoAnEmote(emoteData, fromUserInput, length, notCancellable, emoteName, 
         end
 
         if not isLooped or forcedLength then
-            Citizen.SetTimeout(animLength, function()
+            SetTimeout(animLength, function()
                 Animations.Emotes:ForceCancel()
                 IsAbleToCancel = true
             end)
         end
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while LocalPlayer.state.loggedIn and IsInAnimation and ChosenDict and ChosenAnimation do
                 if not IsEntityPlayingAnim(LocalPlayer.state.ped, ChosenDict, ChosenAnimation, 3) then
                     TaskPlayAnim(LocalPlayer.state.ped, ChosenDict, ChosenAnimation, BlendInOut, BlendInOut, AnimationDuration, MovementType, 0, false, false, false)
@@ -317,7 +317,7 @@ function DoAnEmote(emoteData, fromUserInput, length, notCancellable, emoteName, 
                     Animations.Emotes:ForceCancel()
                 end
 
-                Citizen.Wait(250)
+                Wait(250)
             end
         end)
     end
@@ -326,7 +326,7 @@ end
 -- RegisterNetEvent('Routing:Client:NewRoute', function()
 --     if IsInAnimation then
 --         DestroyAllProps()
---         Citizen.Wait(500)
+--         Wait(500)
 --         DoAnEmote(currentEmoteAllData.emoteData, currentEmoteAllData.fromUserInput, currentEmoteAllData.length, currentEmoteAllData.notCancellable, currentEmoteAllData.emoteName, currentEmoteAllData.skipDisarm)
 --     end
 -- end)

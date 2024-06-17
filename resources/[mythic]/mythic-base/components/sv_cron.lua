@@ -33,9 +33,9 @@ function OnTime(day, hour, min)
 end
 
 function CronTick()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(60000)
+            Wait(60000)
             local time = GetTime()
         
             if time.hour ~= LastTime.hour or time.min ~= LastTime.min then

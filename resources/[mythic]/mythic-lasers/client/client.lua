@@ -138,7 +138,7 @@ function Laser.new(originPoint, targetPoints, options)
 
 	function self._startLaser()
 		if #targetPoints == 1 then
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local direction = norm(targetPoints[1] - originPoint)
 				local destination = originPoint + direction * maxDistance
 				while active do
@@ -152,7 +152,7 @@ function Laser.new(originPoint, targetPoints, options)
 				end
 			end)
 		else
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local deltaTime = 0
 				local fromIndex = 1
 				local toIndex = 2
@@ -209,7 +209,7 @@ function Laser.new(originPoint, targetPoints, options)
 			"Multi-origin laser must have more than one origin and target points"
 		)
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			local deltaTime = 0
 			local fromIndex = 1
 			local toIndex = 2

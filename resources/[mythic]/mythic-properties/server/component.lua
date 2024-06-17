@@ -163,7 +163,7 @@ PROPERTIES = {
 						GlobalState[string.format("Property:%s", doc.id)] = doc
 	
 						while GlobalState[string.format("Property:%s", doc.id)] == nil do
-							Citizen.Wait(5)
+							Wait(5)
 						end
 	
 						Chat.Send.Server:Single(source, "Property Added, Property ID: " .. doc.id)
@@ -556,7 +556,7 @@ PROPERTIES = {
 					r = rand
 				end
 
-				Citizen.Wait(1)
+				Wait(1)
 			end
 			return r
 		end,
@@ -575,7 +575,7 @@ PROPERTIES = {
 					end
 				end
 
-				Citizen.Wait(1)
+				Wait(1)
 			end
 			return r
 		end,

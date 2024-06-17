@@ -426,7 +426,7 @@ function CreateStoreLog(inventory, item, count, buyer, metadata, itemId)
 end
 
 function DoMerge(source, data, cb)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local player = Fetch:Source(source)
 		local char = player:GetData("Character")
 	
@@ -639,7 +639,7 @@ function DoMerge(source, data, cb)
 end
 
 function DoSwap(source, data, cb)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local player = Fetch:Source(source)
 		local char = player:GetData("Character")
 	
@@ -815,7 +815,7 @@ function DoSwap(source, data, cb)
 end
 
 function DoMove(source, data, cb)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local player = Fetch:Source(source)
 		local char = player:GetData("Character")
 	
@@ -2218,7 +2218,7 @@ INVENTORY = {
 	},
 	Holding = {
 		Put = function(self, source)
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local p = promise.new()
 				local plyr = Fetch:Source(source)
 				if plyr ~= nil then
@@ -2262,7 +2262,7 @@ INVENTORY = {
 			end)
 		end,
 		Take = function(self, source)
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local p = promise.new()
 				local plyr = Fetch:Source(source)
 				if plyr ~= nil then

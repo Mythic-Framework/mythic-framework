@@ -21,9 +21,9 @@ function PutShittyThingsOnCD()
 		GlobalState[pId] = time
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while time > os.time() do
-			Citizen.Wait(5000)
+			Wait(5000)
 		end
 		for k, v in ipairs(VANG_CASES) do
 			local pId = string.format("Vangelico:Case:%s", k)
@@ -34,9 +34,9 @@ function PutShittyThingsOnCD()
 end
 
 function StartJewelryTimer()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while os.time() < _caseResetTime do
-			Citizen.Wait(5000)
+			Wait(5000)
 		end
 
 		if GlobalState["Vangelico:State"] == 2 then
@@ -55,10 +55,10 @@ AddEventHandler("Robbery:Server:Setup", function()
 	GlobalState["VangelicoRequiredPd"] = _requiredPd
 	GlobalState["VangelicoCases"] = VANG_CASES
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		GlobalState["Vangelico:State"] = 2
 		while GetGameTimer() < _notAllowedTill do
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 		GlobalState["Vangelico:State"] = nil
 	end)

@@ -7,7 +7,7 @@ function LoadModel(model)
 	RequestModel(model)
 	local attempts = 0
 	while not HasModelLoaded(model) and attempts < 10 do
-		Citizen.Wait(100)
+		Wait(100)
 		attempts += 1
 	end
 end
@@ -139,12 +139,12 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				end
 			end
 		end
-		Citizen.Wait(1)
+		Wait(1)
 	end
 end)
 
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.Wait(1500)
+	Wait(1500)
 	TriggerEvent("Weapons:Client:Attach")
 end)
 

@@ -144,7 +144,7 @@ function RunStartup()
 						Logger:Error('Jobs', 'Error Inserting Job on Default Job Update')
 						p:resolve(false)
 					else
-						Citizen.Wait(10000)
+						Wait(10000)
 						p:resolve(true)
 					end
 				end)

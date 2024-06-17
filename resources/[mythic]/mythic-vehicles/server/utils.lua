@@ -28,7 +28,7 @@ function CreateAutomobile(model, coords, heading)
         return nil
     else
         local veh = CreateVehicle(model, coords.x, coords.y, coords.z + 0.2, heading + 0.0, true, true)
-        while not DoesEntityExist(veh) do Citizen.Wait(10) end
+        while not DoesEntityExist(veh) do Wait(10) end
         TriggerClientEvent("Vehicles:Client:SetDespawnStuff", -1, veh)
         return veh
     end

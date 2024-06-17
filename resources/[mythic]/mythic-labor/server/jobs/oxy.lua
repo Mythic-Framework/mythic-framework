@@ -9,9 +9,9 @@ local _oxyCars = {}
 local _loot = {}
 
 local _availableRuns = 10
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-		Citizen.Wait(1000 * 60 * 60)
+		Wait(1000 * 60 * 60)
 		_availableRuns += math.random(2, 5)
 	end
 end)
@@ -154,7 +154,7 @@ AddEventHandler("Labor:Server:Startup", function()
 					_sellers[_joiners[source]].state = 2
 					Labor.Offers:Task(_joiners[source], _JOB, "Go To The Pickup Location")
 
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						local ending = false
 						local ent = NetworkGetEntityFromNetworkId(_sellers[_joiners[source]].vehicle.NetId)
 						while _sellers[_joiners[source]] ~= nil do
@@ -165,7 +165,7 @@ AddEventHandler("Labor:Server:Startup", function()
 									TriggerClientEvent(string.format("OxyRun:Client:%s:VehiclePoofed", _joiners[source]), -1)
 								end
 							end
-							Citizen.Wait(10)
+							Wait(10)
 						end
 					end)
 
@@ -308,8 +308,8 @@ AddEventHandler("Labor:Server:Startup", function()
 			Labor.Offers:Start(_joiners[source], _JOB, "Wait For Buyers", 10)
 			TriggerClientEvent(string.format("OxyRun:Client:%s:Near", _joiners[source]), -1)
 
-			Citizen.CreateThread(function()
-				Citizen.Wait(math.random(1, 2) * 60000)
+			CreateThread(function()
+				Wait(math.random(1, 2) * 60000)
 				while
 					_joiners[source] ~= nil
 					and _sellers[_joiners[source]] ~= nil
@@ -345,12 +345,12 @@ AddEventHandler("Labor:Server:Startup", function()
 							p:resolve(veh ~= nil)
 						end)
 						if Citizen.Await(p) then
-							Citizen.Wait(math.random(30) * 1000)
+							Wait(math.random(30) * 1000)
 						else
-							Citizen.Wait(2000)
+							Wait(2000)
 						end
 					else
-						Citizen.Wait(5000)
+						Wait(5000)
 					end
 				end
 			end)

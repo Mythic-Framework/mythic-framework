@@ -1,14 +1,14 @@
 _payPeriod = 20
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while not _loaded do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     Logger:Info("Jobs", "Salary Thread Starting")
 
     while true do
-        Citizen.Wait(1000 * 60 * _payPeriod)
+        Wait(1000 * 60 * _payPeriod)
 
         for k, v in pairs(Fetch:All()) do
             local char = v:GetData("Character")

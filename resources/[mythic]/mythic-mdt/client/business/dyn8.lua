@@ -69,23 +69,23 @@ RegisterNUICallback("Dyn8ShowPropertyLocations", function(data, cb)
 
         if _drawingPropertyLocations then
             _drawingPropertyLocations = false
-            Citizen.Wait(100)
+            Wait(100)
         end
 
         _drawingPropertyLocations = true
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while LocalPlayer.state.loggedIn and _drawingPropertyLocations do
                 for k, v in pairs(prop.location) do
                     Print3DText(vector3(v.x + 0.0, v.y + 0.0, v.z + 1.0), locationTypes[k])
                     DrawMarker(2, v.x + 0.0, v.y + 0.0, v.z + 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.4, 0.4, 19, 98, 49, 200, 1, 1, 0, 0)
                 end
 
-                Citizen.Wait(5)
+                Wait(5)
             end
         end)
 
-        Citizen.SetTimeout(30000, function()
+        SetTimeout(30000, function()
             _drawingPropertyLocations = false
         end)
     else

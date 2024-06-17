@@ -15,7 +15,7 @@ function StartListMenuPrompt(menu, timeout)
 
     if timeout then
         local showingAtTime = GetGameTimer()
-        Citizen.SetTimeout(timeout, function()
+        SetTimeout(timeout, function()
             if showingListMenuPrompt and currentlyShowing == showingAtTime then
                 ListMenu:Close()
                 showingListMenuPrompt:resolve({ success = false, timeout = true, data = {} })

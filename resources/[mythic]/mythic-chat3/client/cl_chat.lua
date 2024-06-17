@@ -24,12 +24,12 @@ function RetrieveComponents()
 end
 
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		SetTextChatEnabled(false)
 		SetNuiFocus(false)
 
 		while LocalPlayer.state.loggedIn do
-			Citizen.Wait(1)
+			Wait(1)
 
 			if not chatInputActive then
 				if IsControlPressed(0, 245) then
@@ -281,7 +281,7 @@ RegisterNUICallback("loaded", function(data, cb)
 
 	cb("ok")
 
-	Citizen.SetTimeout(5000, function()
+	SetTimeout(5000, function()
 		chatLoaded = true
 	end)
 end)

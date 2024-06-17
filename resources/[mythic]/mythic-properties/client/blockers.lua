@@ -253,12 +253,12 @@ AddEventHandler('Interiors:Enter', function(coords)
         end
 
         if #nearBlockers > 0 then
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 while _insideInterior do
                     for k, v in ipairs(nearBlockers) do
                         _drawWall(v.p1, v.p2, v.minZ, v.maxZ, 30, 30, 30, 255)
                     end
-                    Citizen.Wait(3)
+                    Wait(3)
                 end
             end)
         end

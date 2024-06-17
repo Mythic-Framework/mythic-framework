@@ -25,10 +25,10 @@ function StartPreview(int)
 
         DoScreenFadeOut(250)
         while not IsScreenFadedOut() do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
-        Citizen.Wait(200)
+        Wait(200)
 
         SetFocusArea(intData.locations.front.coords.x, intData.locations.front.coords.y, intData.locations.front.coords.z, 0.0, 0.0, 0.0)
         SetupGTACamera(_previewingInterior[_previewingInteriorCam].coords, _previewingInterior[_previewingInteriorCam].rotation)
@@ -48,7 +48,7 @@ end
 function EndPreview()
     DoScreenFadeOut(250)
     while not IsScreenFadedOut() do
-        Citizen.Wait(0)
+        Wait(0)
     end
 
     CleanupGTACamera()
@@ -67,10 +67,10 @@ function PrevPreview()
 
         DoScreenFadeOut(250)
         while not IsScreenFadedOut() do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
-        Citizen.Wait(200)
+        Wait(200)
 
         SetupGTACamera(_previewingInterior[_previewingInteriorCam].coords, _previewingInterior[_previewingInteriorCam].rotation)
 
@@ -92,10 +92,10 @@ function NextPreview()
 
         DoScreenFadeOut(250)
         while not IsScreenFadedOut() do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
-        Citizen.Wait(200)
+        Wait(200)
 
         SetupGTACamera(_previewingInterior[_previewingInteriorCam].coords, _previewingInterior[_previewingInteriorCam].rotation)
 
@@ -117,7 +117,7 @@ function SetupGTACamera(c, r)
 	SetCamCoord(cam, c.x, c.y, c.z)
 	SetCamRot(cam, r.x, r.y, r.z, 2)
 	RenderScriptCams(1, 0, 0, 1, 1)
-	Citizen.Wait(250)
+	Wait(250)
 	createdCamera = cam
 end
 
@@ -133,7 +133,7 @@ function InstructionScaleform(scaleform, isGroup, isOnline, canRot)
 	if createdCamera ~= 0 then
 		local scaleform = RequestScaleformMovie(scaleform)
 		while not HasScaleformMovieLoaded(scaleform) do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 		PushScaleformMovieFunction(scaleform, "CLEAR_ALL")
 		PopScaleformMovieFunctionVoid()
@@ -183,7 +183,7 @@ function InstructionButtonMessage(text)
 end
 
 function CameraLoop()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while createdCamera ~= 0 do
             DisableControlAction(0, 1, true) -- LookLeftRight
             DisableControlAction(0, 2, true) -- LookUpDown
@@ -212,15 +212,15 @@ function CameraLoop()
             DisableControlAction(0, 263, true) -- disable melee
             DisableControlAction(0, 264, true) -- disable melee
             DisableControlAction(0, 257, true) -- disable melee
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while createdCamera ~= 0 do
             local instructions = InstructionScaleform("instructional_buttons", isGroup, isOnline, canRot)
             DrawScaleformMovieFullscreen(instructions, 255, 255, 255, 255, 0)
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end
