@@ -37,7 +37,7 @@ AddEventHandler('Vehicles:Client:StartUp', function()
         end
     end
 
-    Interaction:RegisterMenu("veh_storage", false, "square-parking", function()
+    Interaction:RegisterMenu("veh_storage", 'Garage List', "warehouse", function()
         OpenVehicleStorage()
         Interaction:Hide()
     end, function()
