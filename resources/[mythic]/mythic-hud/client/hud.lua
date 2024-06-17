@@ -16,8 +16,8 @@ local _zoomLevels = {
 	1400,
 }
 
--- Citizen.CreateThread(function()
--- 	Citizen.Wait(4000)
+-- CreateThread(function()
+-- 	Wait(4000)
 -- 	if not GetResourceKvpInt("zoomLevel") then
 -- 		SetResourceKvpInt("zoomLevel", 3)
 -- 		_zoomLevel = 3
@@ -331,13 +331,13 @@ HUD = {
 				if not _idsCd then
 					ShowIds()
 					_idsCd = true
-					Citizen.SetTimeout(6000, function()
+					SetTimeout(6000, function()
 						HUD.ID:Toggle()
 					end)
 				end
 			else
 				_showingIds = false
-				Citizen.SetTimeout(10000, function()
+				SetTimeout(10000, function()
 					_idsCd = false
 				end)
 			end
@@ -529,7 +529,7 @@ function ShowIds()
 
 	local showInvisible = LocalPlayer.state.isDev
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _showingIds do
 			for _, data in ipairs(nearPlayers) do
 				local targetPed = GetPlayerPed(data.id)
@@ -537,11 +537,11 @@ function ShowIds()
 					DrawText3D(GetPedBoneCoords(targetPed, 0), data.SID, 255, 255, 255)
 				end
 			end
-			Citizen.Wait(0)
+			Wait(0)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _showingIds do
 			nearPlayers = {}
 			local playerCoords = GetEntityCoords(LocalPlayer.state.ped)
@@ -574,7 +574,7 @@ function ShowIds()
 end
 
 function StartThreads()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _toggled do
 			if IsPauseMenuActive() and not _paused then
 				_paused = true
@@ -595,7 +595,7 @@ function StartThreads()
 					type = "UPDATE_LOCATION",
 					data = { location = GetLocation() },
 				})
-				Citizen.Wait(200)
+				Wait(200)
 				SendNUIMessage({
 					type = "UPDATE_HP",
 					data = {
@@ -603,7 +603,7 @@ function StartThreads()
 						armor = GetPedArmour(LocalPlayer.state.ped),
 					},
 				})
-				Citizen.Wait(200)
+				Wait(200)
 			else
 				if not IsPauseMenuActive() then
 					SendNUIMessage({
@@ -617,7 +617,7 @@ function StartThreads()
 					end
 					_paused = false
 				end
-				Citizen.Wait(400)
+				Wait(400)
 			end
 		end
 	end)
@@ -640,7 +640,7 @@ function StartVehicleThreads()
 		})
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		DisplayRadar(true)
 		while _vehToggled do
 			local speed = math.ceil(GetEntitySpeed(GLOBAL_VEH) * 2.237)
@@ -648,17 +648,17 @@ function StartVehicleThreads()
 				type = "UPDATE_SPEED",
 				data = { speed = speed },
 			})
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		DisplayRadar(false)
 	end)
 
 	if GetPedInVehicleSeat(GLOBAL_VEH, -1) ~= LocalPlayer.state.ped then
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			local lastIgnition = Entity(GLOBAL_VEH).state?.VEH_IGNITION
 			while _vehToggled do
-				Citizen.Wait(1000)
+				Wait(1000)
 
 				if GLOBAL_VEH then
 					local ignitionState = Entity(GLOBAL_VEH).state?.VEH_IGNITION
@@ -676,7 +676,7 @@ function StartVehicleThreads()
 	end
 
 	if class ~= 13 then
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while _vehToggled do
 				local checkEngine = false
 
@@ -703,7 +703,7 @@ function StartVehicleThreads()
 					data = { checkEngine = checkEngine },
 				})
 
-				Citizen.Wait(10000)
+				Wait(10000)
 			end
 		end)
 	else
@@ -715,7 +715,7 @@ function StartVehicleThreads()
 
 end
 
--- Citizen.CreateThread(function()
+-- CreateThread(function()
 -- 	SetMapZoomDataLevel(0, 0.96, 0.9, 0.08, 0.0, 0.0) -- Level 0
 -- 	SetMapZoomDataLevel(1, 1.6, 0.9, 0.08, 0.0, 0.0) -- Level 1
 -- 	SetMapZoomDataLevel(2, 8.6, 0.9, 0.08, 0.0, 0.0) -- Level 2
@@ -723,19 +723,19 @@ end
 -- 	SetMapZoomDataLevel(4, 22.3, 0.9, 0.08, 0.0, 0.0) -- Level 4
 -- end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	SetRadarZoom(1200)
 end)
 
 -- function DoRadarFix()
--- 	Citizen.CreateThread(function()
--- 		Citizen.Wait(300)
+-- 	CreateThread(function()
+-- 		Wait(300)
 -- 		SetRadarZoom(_zoomLevels[6])
--- 		Citizen.Wait(300)
+-- 		Wait(300)
 -- 		SetRadarZoom(_zoomLevels[4])
--- 		Citizen.Wait(300)
+-- 		Wait(300)
 -- 		SetRadarZoom(_zoomLevels[1])
--- 		Citizen.Wait(300)
+-- 		Wait(300)
 -- 		SetRadarZoom(_zoomLevels[_zoomLevel])
 -- 	end)
 -- end

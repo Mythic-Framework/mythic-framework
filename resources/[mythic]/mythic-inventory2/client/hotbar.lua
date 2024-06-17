@@ -23,8 +23,8 @@ function OpenHotBar()
                 equipped = Weapons:GetEquippedItem()
 			},
         })
-        Citizen.CreateThread(function()
-            Citizen.Wait(5000)
+        CreateThread(function()
+            Wait(5000)
             _openCd = false
         end)
     end

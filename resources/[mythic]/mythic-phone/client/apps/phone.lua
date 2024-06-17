@@ -11,10 +11,10 @@ function StartCallTimeout()
 	else
 		PhonePlayCall(false)
 	end
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local count = 0
 		while _calling do
-			Citizen.Wait(1)
+			Wait(1)
 			if count < 3000 then
 				count = count + 1
 			else
@@ -136,8 +136,8 @@ RegisterNetEvent("Phone:Client:Phone:EndCall", function()
 
 	fucksound()
 
-	Citizen.CreateThread(function()
-		Citizen.Wait(100)
+	CreateThread(function()
+		Wait(100)
 		Sounds.Play:One("ended.ogg", 0.15)
 	end)
 

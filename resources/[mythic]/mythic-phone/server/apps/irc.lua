@@ -58,7 +58,7 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 		end
 
 		while v == -1 do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		cb(_cachedMessages[data])

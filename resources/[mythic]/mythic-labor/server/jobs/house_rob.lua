@@ -73,7 +73,7 @@ function StartAlarmCheck(joiner)
 			_robbers[joiner].expires = os.time() + (60 * 3)
 		end
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while
 				_robbers[joiner] ~= nil
 				and _robbers[joiner].nodes ~= nil
@@ -100,7 +100,7 @@ function StartAlarmCheck(joiner)
 					})
 					return
 				end
-				Citizen.Wait(10000)
+				Wait(10000)
 			end
 		end)
 	end
@@ -369,12 +369,12 @@ AddEventHandler("Labor:Server:Startup", function()
 		cb(GlobalState[string.format("%s:RobbingHouse", source)], intr)
 		Routing:RoutePlayerToGlobalRoute(source)
 
-		Citizen.Wait(300)
+		Wait(300)
 
 		if _joiners[source] ~= nil and _robbers[_joiners[source]] ~= nil and _robbers[_joiners[source]].state == 5 then
 			if Labor.Offers:Update(_joiners[source], _JOB, 1, true) then
 				_robbers[_joiners[source]].state = 6
-				Citizen.Wait(1000)
+				Wait(1000)
 				Labor.Offers:ManualFinish(_joiners[source], _JOB)
 			end
 		elseif _joiners[source] ~= nil and _robbers[_joiners[source]] ~= nil and _robbers[_joiners[source]].state == 4 then
@@ -498,7 +498,7 @@ AddEventHandler("Labor:Server:HouseRobbery:Queue", function(source, data)
 				house = rand
 			end
 
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		local pData = HouseRobberyProperties[house]

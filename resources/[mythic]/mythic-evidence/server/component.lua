@@ -72,9 +72,9 @@ function StartDeletionThread()
     if not _deletionThead then
         _deletionThead = true
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while true do
-                Citizen.Wait((60 * 1000) * 30)
+                Wait((60 * 1000) * 30)
 
                 if #EVIDENCE_CACHE > 0 then
                     local removed = 0
@@ -100,7 +100,7 @@ AddEventHandler('Sync:Server:WeatherChange', function(weather)
     if IsWeatherTypeRain(weather) then
         -- Wash away evidence after a bit
         if #EVIDENCE_CACHE > 0 then
-            Citizen.SetTimeout(45000, function()
+            SetTimeout(45000, function()
                 local removed = 0
                 for k, v in ipairs(EVIDENCE_CACHE) do
                     if v.type == 'blood' then

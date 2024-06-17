@@ -17,7 +17,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 	_polys = {}
 
 	while GlobalState["FleecaRobberies"] == nil do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 
 	for k, v in ipairs(GlobalState["FleecaRobberies"]) do
@@ -182,7 +182,7 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 					local CashAppear = function()
 						RequestModel(cartData.type.hand)
 						while not HasModelLoaded(cartData.type.hand) do
-							Citizen.Wait(1)
+							Wait(1)
 						end
 						local grabobj = CreateObject(cartData.type.hand, myCoords, true)
 
@@ -209,9 +209,9 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 						)
 						local startedGrabbing = GetGameTimer()
 
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							while GetGameTimer() - startedGrabbing < 37000 do
-								Citizen.Wait(1)
+								Wait(1)
 								DisableControlAction(0, 73, true)
 								if HasAnimEventFired(LocalPlayer.state.ped, GetHashKey("CASH_APPEAR")) then
 									if not IsEntityVisible(grabobj) then
@@ -249,10 +249,10 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 						and not HasModelLoaded(cartData.type.empty)
 						and not HasModelLoaded(baghash)
 					do
-						Citizen.Wait(100)
+						Wait(100)
 					end
 					while not NetworkHasControlOfEntity(entity.entity) do
-						Citizen.Wait(1)
+						Wait(1)
 						NetworkRequestControlOfEntity(entity.entity)
 					end
 					local GrabBag = CreateObject(
@@ -295,7 +295,7 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 					)
 					--SetPedComponentVariation(LocalPlayer.state.ped, 5, 0, 0, 0)
 					NetworkStartSynchronisedScene(Grab1)
-					Citizen.Wait(1500)
+					Wait(1500)
 					CashAppear()
 					local Grab2 = NetworkCreateSynchronisedScene(
 						GetEntityCoords(entity.entity),
@@ -338,7 +338,7 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 						1
 					)
 					NetworkStartSynchronisedScene(Grab2)
-					Citizen.Wait(37000)
+					Wait(37000)
 					local Grab3 = NetworkCreateSynchronisedScene(
 						GetEntityCoords(entity.entity),
 						GetEntityRotation(entity.entity),
@@ -381,14 +381,14 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 					SetEntityRotation(NewTrolley, GetEntityRotation(entity.entity))
 					local timout = 0
 					while not NetworkHasControlOfEntity(entity.entity) and timeout <= 1000 do
-						Citizen.Wait(1)
+						Wait(1)
 						NetworkRequestControlOfEntity(entity.entity)
 						timeout += 1
 					end
 					DeleteObject(entity.entity)
 					local timout2 = 0
 					while DoesEntityExist(entity.entity) and timout2 <= 1000 do
-						Citizen.Wait(1)
+						Wait(1)
 						DeleteObject(entity.entity)
 						timout2 += 1
 					end
@@ -396,7 +396,7 @@ AddEventHandler("Robbery:Client:Fleeca:LootTrolley", function(entity, data)
 					Callbacks:ServerCallback("Robbery:Fleeca:Vault:FinishLootTrolley", {
 						cart = data,
 					})
-					Citizen.Wait(1800)
+					Wait(1800)
 					if DoesEntityExist(GrabBag) then
 						DeleteEntity(GrabBag)
 					end
@@ -419,7 +419,7 @@ function DoLockpick(data, base, cb)
 
 	Minigame.Play:RoundSkillbar(base + (0.2 * stageComplete), size, {
 		onSuccess = function()
-			Citizen.Wait(400)
+			Wait(400)
 
 			if stageComplete >= (data.stages or 3) then
 				stageComplete = 0
@@ -513,7 +513,7 @@ function DoCaptcha(passes, config, data, cb)
 			onSuccess = function(data)
 				if _capPass < passes then
 					_capPass += 1
-					Citizen.Wait(1500)
+					Wait(1500)
 					DoCaptcha(passes, config, data, cb)
 				else
 					cb(true, data)
@@ -672,7 +672,7 @@ function OpenDoor(checkOrigin, door)
 		repeat
 			SetEntityHeading(obj, GetEntityHeading(obj) + door.step)
 			count = count + 1
-			Citizen.Wait(10)
+			Wait(10)
 		until count == 150
 	end
 end
@@ -686,7 +686,7 @@ function CloseDoor(checkOrigin, door)
 		repeat
 			SetEntityHeading(obj, GetEntityHeading(obj) - door.step)
 			count = count + 1
-			Citizen.Wait(10)
+			Wait(10)
 		until count == 150
 	end
 end
@@ -700,7 +700,7 @@ end)
 
 function SpawnCarts()
 	while _cleanup do
-		Citizen.Wait(3)
+		Wait(3)
 	end
 
 	if LocalPlayer.state.fleeca ~= nil then
@@ -723,7 +723,7 @@ function SpawnCarts()
 				if obj == 0 then
 					RequestModel(hash)
 					while not HasModelLoaded(hash) do
-						Citizen.Wait(1)
+						Wait(1)
 					end
 					obj = CreateObject(hash, v.coords[1], v.coords[2], v.coords[3], 1, 0, 0)
 					SetEntityRotation(obj, v.rotate.x, v.rotate.y, v.rotate.z, 0, true)

@@ -95,7 +95,7 @@ end
 function loadAnimDict(pDict)
 	while not HasAnimDictLoaded(pDict) do
 		RequestAnimDict(pDict)
-		Citizen.Wait(5)
+		Wait(5)
 	end
 end
 
@@ -176,10 +176,10 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 					if _SellingPed ~= 0 then
 						AddTargetingShit(_SellingPed)
 					else
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							while _working and _state == 1 and _SellingPed == nil and _onDutyTime == dutyTime do
 								while not DoesEntityExist(NetworkGetEntityFromNetworkId(netId)) do
-									Citizen.Wait(3000)
+									Wait(3000)
 								end
 
 								if _working and _state == 1 and _SellingPed == nil then
@@ -234,7 +234,7 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 			local start = GetGameTimer()
 			_startTime = start
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				while _working and _state == 1 and _startTime == start do
 					if _SellingPed ~= nil then
 						local myCoords = GetEntityCoords(LocalPlayer.state.ped)
@@ -243,12 +243,12 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 						local dist = #(pedCoords - myCoords)
 						if dist <= 30.0 then
 							DrawMarker(2, pedCoords.x, pedCoords.y, pedCoords.z + 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.25, 0.25, 255, 0, 0, 150, true, true, 0, 0)
-							Citizen.Wait(1)
+							Wait(1)
 						else
-							Citizen.Wait(dist)
+							Wait(dist)
 						end
 					else
-						Citizen.Wait(1000)
+						Wait(1000)
 					end
 				end
 			end)
@@ -256,7 +256,7 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 			if joiner == GetPlayerServerId(PlayerId()) then
 				if not _threading then
 					local notFoundCount = 0
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						local ending = false
 						while _working and _state == 1 and _startTime == start do
 							if not ending then
@@ -268,11 +268,11 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 									end
 								end
 							end
-							Citizen.Wait(10)
+							Wait(10)
 						end
 					end)
 		
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						local ending = false
 						while _working and _state == 1 and _startTime == start do
 							if not ending and _SellingVeh ~= 0 and _SellingVeh ~= nil then
@@ -284,18 +284,18 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 									Callbacks:ServerCallback("CornerDealing:LeaveArea")
 								end
 							end
-							Citizen.Wait(10)
+							Wait(10)
 						end
 					end)
 
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						while _working and _state == 1 and LocalPlayer.state.loggedIn do
 							PopulateNow()
-							Citizen.Wait(1000)
+							Wait(1000)
 						end
 					end)
 	
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						while _working and _state == 1 and LocalPlayer.state.loggedIn and notFoundCount < 10 and _startTime == start do
 							if _SellingPed == nil then
 								local peds = GetGamePool("CPed")
@@ -364,7 +364,7 @@ RegisterNetEvent("CornerDealing:Client:OnDuty", function(joiner, time)
 									return
 								end
 							end
-							Citizen.Wait(10000)
+							Wait(10000)
 						end
 						_threading = false
 					end)
@@ -477,7 +477,7 @@ AddEventHandler("CornerDealing:Client:Sell", function(data)
 				local attempt = 0
 				while not NetworkHasControlOfEntity(_SellingPed) and attempt < 100 do
 					NetworkRequestControlOfEntity(_SellingPed)
-					Citizen.Wait(10)
+					Wait(10)
 					attempt += 10
 				end
 

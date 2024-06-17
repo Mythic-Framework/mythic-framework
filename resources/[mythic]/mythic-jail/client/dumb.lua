@@ -42,7 +42,7 @@ end
 function DoBoardShit(jailer, duration, date)
 	local scf = RequestScaleformMovie("mugshot_board_01")
 	while not HasScaleformMovieLoaded(scf) do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	local myname = string.format(
@@ -52,13 +52,13 @@ function DoBoardShit(jailer, duration, date)
 	)
 	local mysid = LocalPlayer.state.Character:GetData("SID")
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and _doingMugshot do
             local obj = GetClosestObjectOfType(GetEntityCoords(PlayerPedId()), 10.0, `prop_police_id_board`, 0, 0, 0)
 			if obj then
 				scaleformShit(scf, obj, jailer, myname, mysid, duration, date)
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end

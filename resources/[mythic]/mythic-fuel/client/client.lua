@@ -136,12 +136,12 @@ AddEventHandler("Vehicles:Client:BecameDriver", function(veh, seat, class)
 	local vehState = Entity(veh).state
 	if vehState.VIN and vehState.Fuel ~= nil and class ~= 13 then
 		TriggerEvent('Vehicles:Client:Fuel', vehState.Fuel, false)
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while LocalPlayer.state.loggedIn and DRIVING_VEHICLE do
 				if GetPedInVehicleSeat(DRIVING_VEHICLE, -1) == LocalPlayer.state.ped then
 					RunFuelTick(DRIVING_VEHICLE)
 				end
-				Citizen.Wait(3000)
+				Wait(3000)
 			end
 		end)
 	else
@@ -152,8 +152,8 @@ end)
 AddEventHandler('Vehicles:Client:EnterVehicle', function(veh)
 	VEHICLE_INSIDE = veh
 
-	Citizen.CreateThread(function()
-		Citizen.Wait(500)
+	CreateThread(function()
+		Wait(500)
 		while VEHICLE_INSIDE and not DRIVING_VEHICLE do
 			if DoesEntityExist(VEHICLE_INSIDE) then
 				local vehEntity = Entity(VEHICLE_INSIDE)
@@ -161,7 +161,7 @@ AddEventHandler('Vehicles:Client:EnterVehicle', function(veh)
 					TriggerEvent('Vehicles:Client:Fuel', vehEntity.state.Fuel)
 				end
 			end
-			Citizen.Wait(3000)
+			Wait(3000)
 		end
 	end)
 end)
@@ -213,14 +213,14 @@ function LowFuelEffects(veh)
     if _engineShutoff then return end
 
     _engineShutoff = true
-    Citizen.SetTimeout(2000, function()
+    SetTimeout(2000, function()
         _engineShutoff = false
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _engineShutoff do
             SetVehicleEngineOn(veh, false, true)
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end
@@ -302,7 +302,7 @@ AddEventHandler('Vehicles:Client:StartFueling', function(entityData)
 
 				Notification:Info("Nice One Champ")
 
-				Citizen.SetTimeout(60000, function()
+				SetTimeout(60000, function()
 					for k, v in ipairs(_fuelFires) do
 						RemoveScriptFire(v)
 					end
@@ -425,7 +425,7 @@ AddEventHandler('Vehicles:Client:StartJerryFueling', function(entityData)
 			
 							Notification:Info("Nice One Champ")
 			
-							Citizen.SetTimeout(60000, function()
+							SetTimeout(60000, function()
 								for k, v in ipairs(_fuelFires) do
 									RemoveScriptFire(v)
 								end

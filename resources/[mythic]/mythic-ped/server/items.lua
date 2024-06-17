@@ -18,7 +18,7 @@ function RegisterItemUses()
 				local char = Fetch:Source(source):GetData("Character")
 				if item.MetaData.mask then
 					TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-					Citizen.Wait(300)
+					Wait(300)
 					local ped = char:GetData("Ped")
 					if ped.customization.components.mask.drawableId ~= 0 then
 						Ped.Mask:Unequip(source)
@@ -36,7 +36,7 @@ function RegisterItemUses()
 				local char = Fetch:Source(source):GetData("Character")
 				if item.MetaData.hat then
 					TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-					Citizen.Wait(300)
+					Wait(300)
 					local ped = char:GetData("Ped")
 					if not ped.customization.props.hat.disabled then
 						Ped.Hat:Unequip(source)
@@ -54,7 +54,7 @@ function RegisterItemUses()
 				local char = Fetch:Source(source):GetData("Character")
 				if item.MetaData.accessory then
 					TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-					Citizen.Wait(300)
+					Wait(300)
 					local ped = char:GetData("Ped")
 					if (ped.customization.components.accessory?.drawableId or 0) ~= 0 then
 						Ped.Necklace:Unequip(source)

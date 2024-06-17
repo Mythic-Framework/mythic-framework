@@ -1,4 +1,4 @@
--- Citizen.CreateThread(function()
+-- CreateThread(function()
 --     local o = nil
 --     local om = nil
 
@@ -18,6 +18,6 @@
 --             om = cm
 --         end
 
---         Citizen.Wait(5000)
+--         Wait(5000)
 --     end
 -- end)

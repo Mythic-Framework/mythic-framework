@@ -34,7 +34,7 @@ end
 CRAFTING = {
 	RegisterBench = function(self, id, label, targeting, location, restrictions, recipes, canUseSchematics)
 		while not itemsLoaded do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		_cooldowns[id] = _cooldowns[id] or {}

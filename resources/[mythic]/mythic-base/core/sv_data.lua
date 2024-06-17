@@ -6,10 +6,10 @@ COMPONENTS.Default = {
     _name = { 'base' },
     _protected = true,
     Add = function(self, collection, date, data)
-        Citizen.CreateThread(function()
+        CreateThread(function()
             -- Prevents doing this operation multiple times because earlier
             -- Calls haven't finished yet
-            while _inserting[collection] ~= nil do Citizen.Wait(10) end
+            while _inserting[collection] ~= nil do Wait(10) end
 
             for k, v in ipairs(data) do
                 v.default = true
@@ -70,10 +70,10 @@ COMPONENTS.Default = {
         end)
     end,
     AddAuth = function(self, collection, date, data)
-        Citizen.CreateThread(function()
+        CreateThread(function()
             -- Prevents doing this operation multiple times because earlier
             -- Calls haven't finished yet
-            while _inserting[collection] ~= nil do Citizen.Wait(10) end
+            while _inserting[collection] ~= nil do Wait(10) end
 
             for k, v in ipairs(data) do
                 v.default = true

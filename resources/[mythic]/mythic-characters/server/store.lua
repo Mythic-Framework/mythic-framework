@@ -49,12 +49,12 @@ function StoreData(source)
 end
 
 local _prevSaved = 0
-Citizen.CreateThread(function()
+CreateThread(function()
 	while Fetch == nil or Database == nil do
-		Citizen.Wait(1000)
+		Wait(1000)
 	end
 
-	Citizen.Wait(120000)
+	Wait(120000)
 
 	while true do
 		local v = Fetch:Next(_prevSaved)
@@ -80,6 +80,6 @@ Citizen.CreateThread(function()
 			{ console = true }
 		)
 
-		Citizen.Wait(600000 / math.max(1, c))
+		Wait(600000 / math.max(1, c))
 	end
 end)

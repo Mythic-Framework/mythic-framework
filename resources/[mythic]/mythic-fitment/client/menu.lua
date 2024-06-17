@@ -17,7 +17,7 @@ function OpenWheelMenu()
     wheelMenu = Menu:Create('vehicle_wheels', 'Vehicle Wheels', function()
         wheelMenuOpen = true
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while wheelMenuOpen do
                 if editedFrontTrack then
                     SetVehicleFrontTrackWidth(EDITING_VEHICLE, editedFrontTrack)
@@ -26,11 +26,11 @@ function OpenWheelMenu()
                 if editedRearTrack then
                     SetVehicleRearTrackWidth(EDITING_VEHICLE, editedRearTrack)
                 end
-                Citizen.Wait(0)
+                Wait(0)
             end
         end)
     end, function()
-        Citizen.Wait(100)
+        Wait(100)
         wheelMenu = false
         collectgarbage()
         wheelMenuOpen = false

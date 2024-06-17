@@ -35,8 +35,8 @@ function RetrieveComponents()
 	--Weapons = exports['mythic-base']:FetchComponent('Weapons')
 end
 
-Citizen.CreateThread(function()
-	Citizen.Wait(1000)
+CreateThread(function()
+	Wait(1000)
 	LoadItems()
 end)
 
@@ -140,9 +140,9 @@ end)
 
 local _openCd = false
 function startCd()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		_openCd = true
-		Citizen.Wait(1000)
+		Wait(1000)
 		_openCd = false
 	end)
 end
@@ -170,10 +170,10 @@ INVENTORY = {
 					if inventory ~= nil then
 						LocalPlayer.state.inventoryOpen = true
 
-						Citizen.CreateThread(function()
+						CreateThread(function()
 							TransitionToBlurred(50)
 							while LocalPlayer.state.inventoryOpen do
-								Citizen.Wait(50)
+								Wait(50)
 							end
 							TriggerServerEvent("Inventory:server:closePlayerInventory", LocalPlayer.state.Char)
 							TransitionFromBlurred(1000)
@@ -330,7 +330,7 @@ INVENTORY = {
 						})
 					end
 
-					Citizen.SetTimeout(3000, function()
+					SetTimeout(3000, function()
 						_hkCd = false
 					end)
 				end)
@@ -716,7 +716,7 @@ function OpenInventory()
 			local p = promise.new()
 
 			while GetEntitySpeed(playerPed) > 2.5 do
-				Citizen.Wait(1)
+				Wait(1)
 			end
 
 			if Inventory:IsEnabled() then

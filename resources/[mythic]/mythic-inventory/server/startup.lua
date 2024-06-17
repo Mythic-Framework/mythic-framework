@@ -228,11 +228,11 @@ function LoadItems()
 					if v.gangChain ~= nil then
 						if v.gangChain ~= char:GetData("GangChain") then
 							TriggerClientEvent("Ped:Client:ChainAnim", source)
-							Citizen.Wait(3000)
+							Wait(3000)
 							char:SetData("GangChain", v.gangChain)
 						else
 							TriggerClientEvent("Ped:Client:ChainAnim", source)
-							Citizen.Wait(3000)
+							Wait(3000)
 							char:SetData("GangChain", "NONE")
 						end
 					end

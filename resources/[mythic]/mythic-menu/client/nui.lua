@@ -80,14 +80,14 @@ RegisterNUICallback("ToggleFocusLoss", function(data, cb)
 	if not stupidFocusLoss and allowUnfocus[MENU_OPEN] then
 		stupidFocusLoss = true
 		SetNuiFocus(false, false)
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while stupidFocusLoss do
 				if IsControlJustReleased(0, 21) then
 					SetNuiFocus(true, true)
 					SetCursorLocation(0.2, 0.5)
 					stupidFocusLoss = false
 				end
-				Citizen.Wait(5)
+				Wait(5)
 			end
 		end)
 	end

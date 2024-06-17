@@ -1,5 +1,5 @@
 AddEventHandler('Vehicles:Client:CharacterLogin', function()
-    Citizen.CreateThread(function() -- Vehicle Events Thread
+    CreateThread(function() -- Vehicle Events Thread
         while _characterLoaded do
             GLOBAL_PED = PlayerPedId()
             if VEHICLE_INSIDE then
@@ -46,7 +46,7 @@ AddEventHandler('Vehicles:Client:CharacterLogin', function()
                 end
             end
     
-            Citizen.Wait(250)
+            Wait(250)
         end
     end)
 end)

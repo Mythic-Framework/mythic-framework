@@ -36,7 +36,7 @@ function StartHeliCamera()
 		SetTimecycleModifierStrength(0.3)
 		local scaleform = RequestScaleformMovie("HELI_CAM")
 		while not HasScaleformMovieLoaded(scaleform) do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 
 		cam = CreateCam("DEFAULT_SCRIPTED_FLY_CAMERA", true)
@@ -48,9 +48,9 @@ function StartHeliCamera()
 		PushScaleformMovieFunctionParameterInt(0) -- 0 for nothing, 1 for LSPD logo
 		PopScaleformMovieFunctionVoid()
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while heliCamera do
-				Citizen.Wait(2000)
+				Wait(2000)
 
 				if locked_on_vehicle then
 					if not DoesEntityExist(locked_on_vehicle) or not HasEntityClearLosToEntity(inHeli, locked_on_vehicle, 4294967295) or #(GetEntityCoords(LocalPlayer.state.ped) - GetEntityCoords(locked_on_vehicle)) > 300.0 then
@@ -64,9 +64,9 @@ function StartHeliCamera()
 			end
 		end)
 	
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while heliCamera and LocalPlayer.state.loggedIn do
-				Citizen.Wait(5)
+				Wait(5)
 
 				if locked_on_vehicle then
 					if DoesEntityExist(locked_on_vehicle) then
@@ -89,7 +89,7 @@ function StartHeliCamera()
 				PushScaleformMovieFunctionParameterFloat(GetCamRot(cam, 2).z)
 				PopScaleformMovieFunctionVoid()
 				DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-				--Citizen.Wait(0)
+				--Wait(0)
 			end
 
 			heliCamera = false

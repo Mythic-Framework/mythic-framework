@@ -94,7 +94,7 @@ SOUNDS.Do = {
 				volume = vol,
 			})
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				while _sounds[playerNetId] ~= nil and _sounds[playerNetId][soundFile] ~= nil do
 					tPlayer = GetPlayerFromServerId(playerNetId)
 					tPed = GetPlayerPed(tPlayer)
@@ -119,7 +119,7 @@ SOUNDS.Do = {
 						file = soundFile,
 						volume = vol,
 					})
-					Citizen.Wait(100)
+					Wait(100)
 				end
 			end)
 		end,
@@ -152,7 +152,7 @@ SOUNDS.Do = {
 				volume = vol,
 			})
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				while _sounds[playerNetId] ~= nil and _sounds[playerNetId][soundFile] ~= nil do
 					local distIs = #(GetEntityCoords(LocalPlayer.state.ped) - location)
 					vol = soundVolume * (1.0 - (distIs / maxDistance))
@@ -165,7 +165,7 @@ SOUNDS.Do = {
 						file = soundFile,
 						volume = vol,
 					})
-					Citizen.Wait(100)
+					Wait(100)
 				end
 			end)
 		end,
@@ -234,7 +234,7 @@ SOUNDS.Do = {
 				volume = vol,
 			})
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				while _sounds[playerNetId] ~= nil and _sounds[playerNetId][soundFile] ~= nil do
 					tPlayer = GetPlayerFromServerId(playerNetId)
 					tPed = GetPlayerPed(tPlayer)
@@ -259,7 +259,7 @@ SOUNDS.Do = {
 						file = soundFile,
 						volume = vol,
 					})
-					Citizen.Wait(100)
+					Wait(100)
 				end
 			end)
 		end,
@@ -294,7 +294,7 @@ SOUNDS.Do = {
 				volume = vol,
 			})
 
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				while _sounds[playerNetId] ~= nil and _sounds[playerNetId][soundFile] ~= nil do
 					local distIs = #(
 							vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
@@ -310,7 +310,7 @@ SOUNDS.Do = {
 						file = soundFile,
 						volume = vol,
 					})
-					Citizen.Wait(100)
+					Wait(100)
 				end
 			end)
 		end,

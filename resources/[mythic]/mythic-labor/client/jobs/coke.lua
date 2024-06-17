@@ -39,7 +39,7 @@ function SpawnPeds()
         local ped = CreatePed(5, _drop.ped, coords.x, coords.y, gZ, math.random(360) * 1.0, true, true)
 
         while not DoesEntityExist(ped) do
-            Citizen.Wait(1)
+            Wait(1)
         end
 
         local w = _cokeWeapons[math.random(#_cokeWeapons)]

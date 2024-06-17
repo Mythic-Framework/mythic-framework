@@ -37,13 +37,13 @@ _vehicleRepair = {
                 local driverPed = GetPedInVehicleSeat(veh, -1)
                 if driverPed == 0 or driverPed == GLOBAL_PED then
                     local timeout = false
-                    Citizen.SetTimeout(2000, function() 
+                    SetTimeout(2000, function() 
                         timeout = true
                     end)
 
                     while not NetworkHasControlOfEntity(veh) and not timeout do
                         NetworkRequestControlOfEntity(veh)
-                        Citizen.Wait(100)
+                        Wait(100)
                     end
 
                     local isHelicopter = GetVehicleClass(veh) == 15
@@ -159,13 +159,13 @@ _vehicleRepair = {
                 local driverPed = GetPedInVehicleSeat(veh, -1)
                 if driverPed == 0 or driverPed == GLOBAL_PED then
                     local timeout = false
-                    Citizen.SetTimeout(2000, function() 
+                    SetTimeout(2000, function() 
                         timeout = true
                     end)
 
                     while not NetworkHasControlOfEntity(veh) and not timeout do
                         NetworkRequestControlOfEntity(veh)
-                        Citizen.Wait(100)
+                        Wait(100)
                     end
 
                     if NetworkHasControlOfEntity(veh) then
@@ -235,7 +235,7 @@ AddEventHandler('Vehicles:Client:StartUp', function()
                 local vehicle = entity.entity
                 if Vehicles.Repair:NeedsKit(vehicle, type) then
                     TaskTurnPedToFaceEntity(GLOBAL_PED, vehicle, 1)
-                    Citizen.Wait(500)
+                    Wait(500)
                     Vehicles.Sync.Doors:Open(vehicle, 4, false, false)
                     Progress:Progress({
                         name = "vehicle_repair_kit",

@@ -24,7 +24,7 @@ function TaskTick()
 		end
 	end
 
-	Citizen.SetTimeout(60000, TaskTick)
+	SetTimeout(60000, TaskTick)
 end
 
 COMPONENTS.Tasks = {

@@ -636,7 +636,7 @@ _LABOR = {
 									}
 								)
 
-								Citizen.SetTimeout(30 * 1000, function()
+								SetTimeout(30 * 1000, function()
 									if _pendingInvites[source] ~= nil then
 										_pendingInvites[source] = nil
 

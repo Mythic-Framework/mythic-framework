@@ -119,20 +119,20 @@ AddEventHandler("Characters:Client:Spawn", function()
 		visibleWhileDead = true,
 	})
 
-	Citizen.SetTimeout(5000, function()
+	SetTimeout(5000, function()
 		UpdateVOIPIndicatorStatus()
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _characterLoaded do
 			GLOBAL_PED = PlayerPedId()
-			Citizen.Wait(5000)
+			Wait(5000)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _characterLoaded do
-			Citizen.Wait(100)
+			Wait(100)
 			local isTalking = NetworkIsPlayerTalking(PlayerId())
 			if isTalking and not PLAYER_TALKING then
 				PLAYER_TALKING = true

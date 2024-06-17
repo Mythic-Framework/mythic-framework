@@ -1,4 +1,4 @@
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
         for k, v in pairs(_offers) do
             if _Jobs[v.job].Timeout then
@@ -11,6 +11,6 @@ Citizen.CreateThread(function()
                 end
             end
         end
-		Citizen.Wait(30000)
+		Wait(30000)
 	end
 end)

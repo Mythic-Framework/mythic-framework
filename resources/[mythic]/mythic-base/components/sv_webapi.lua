@@ -73,7 +73,7 @@ COMPONENTS.WebAPI = {
 		)
 
 		while rData == nil do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 
 		return rData

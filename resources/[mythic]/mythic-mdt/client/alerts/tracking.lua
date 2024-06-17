@@ -7,11 +7,11 @@ _trackedJobs = {
 
 RegisterNetEvent('Job:Client:DutyChanged', function(state)
     if state and _trackedJobs[state] then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local mySID = LocalPlayer.state.Character:GetData('SID')
             Logger:Trace('Tracking', 'Start Emergency Tracking')
             while LocalPlayer.state.loggedIn and LocalPlayer.state.onDuty and _trackedJobs[LocalPlayer.state.onDuty] do
-                Citizen.Wait(1000)
+                Wait(1000)
                 local trackingData = GlobalState.GovernmentTrackers
                 for k, v in pairs(trackingData) do
                     if v.SID ~= mySID and v.Job and _trackedJobs[v.Job] then

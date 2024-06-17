@@ -208,7 +208,7 @@ function RouletteBetRenderState(tableId, state)
     _rouletteRenderBets = state
 
     if _rouletteRenderBets then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _rouletteRenderBets do
                 if aimingAtBet ~= -1 and lastAimedBet ~= aimingAtBet then
                     lastAimedBet = aimingAtBet
@@ -225,11 +225,11 @@ function RouletteBetRenderState(tableId, state)
                     RouletteHoverNumbers(tableId, {})
                 end
 
-                Citizen.Wait(5)
+                Wait(5)
             end
         end)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _rouletteRenderBets do
                 ShowCursorThisFrame()
 
@@ -258,7 +258,7 @@ function RouletteBetRenderState(tableId, state)
                 if not foundBet then
                     aimingAtBet = -1
                 end
-                Citizen.Wait(0)
+                Wait(0)
             end
         end)
     end
@@ -317,7 +317,7 @@ function RouletteHoverNumbers(tableId, hoveredNumbers)
         if t ~= nil then
             RequestModel(GetHashKey(t.hoverObject))
             while not HasModelLoaded(GetHashKey(t.hoverObject)) do
-                Citizen.Wait(1)
+                Wait(1)
             end
 
             local obj = CreateObject(GetHashKey(t.hoverObject), t.hoverPos, false)
@@ -338,7 +338,7 @@ function RouletteSpin(tableId, tickRate, winIndex)
         RouletteSpeakPed(tableId, "MINIGAME_DEALER_CLOSED_BETS")
         TaskPlayAnim(tablePed, "anim_casino_b@amb@casino@games@roulette@dealer", "no_more_bets", 3.0, 3.0, -1, 0, 0, true, true, true)
 
-        Citizen.Wait(1500)
+        Wait(1500)
 
         if DoesEntityExist(tableData.ballObject) then
             DeleteObject(tableData.ballObject)
@@ -352,7 +352,7 @@ function RouletteSpin(tableId, tickRate, winIndex)
 
         loadAnim("anim_casino_b@amb@casino@games@roulette@table")
 
-        Citizen.Wait(3000)
+        Wait(3000)
 
         tableData.ballObject = CreateObject(`vw_prop_roulette_ball`, ballOffset, false)
 
@@ -372,20 +372,20 @@ function RouletteSpin(tableId, tickRate, winIndex)
             PlayEntityAnim(tableData.ballObject, string.format("exit_%s_ball", tickRate), "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704)
             PlayEntityAnim(tableObj, string.format("exit_%s_wheel", tickRate), "anim_casino_b@amb@casino@games@roulette@table", 1000.0, false, true, false, 0, 136704)
 
-            Citizen.Wait(11000)
+            Wait(11000)
 
             RouletteSpeakPed(tableId, "MINIGAME_ROULETTE_BALL_" .. winIndex)
 
-            Citizen.Wait(1500)
+            Wait(1500)
 
             if DoesEntityExist(tableObj) and DoesEntityExist(tablePed) then
                 TaskPlayAnim(tablePed, "anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_zone1", 3.0, 3.0, -1, 0, 0, true, true, true)
-                Citizen.Wait(1500)
+                Wait(1500)
                 TaskPlayAnim(tablePed, "anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_zone2", 3.0, 3.0, -1, 0, 0, true, true, true)
-                Citizen.Wait(1500)
+                Wait(1500)
                 TaskPlayAnim(tablePed, "anim_casino_b@amb@casino@games@roulette@dealer", "clear_chips_zone3", 3.0, 3.0, -1, 0, 0, true, true, true)
 
-                Citizen.Wait(2000)
+                Wait(2000)
                 if DoesEntityExist(tableObj) and DoesEntityExist(tablePed) then
                     TaskPlayAnim(tablePed, "anim_casino_b@amb@casino@games@roulette@dealer", "idle", 3.0, 3.0, -1, 0, 0, true, true, true)
                 end
@@ -411,7 +411,7 @@ function RouletteChangeCameraMode(tableId)
         if _rouletteCamMode == 1 then
             DoScreenFadeOut(200)
             while not IsScreenFadedOut() do
-                Citizen.Wait(1)
+                Wait(1)
             end
             _rouletteCamMode = 2
             local camOffset = GetOffsetFromEntityInWorldCoords(tableObj, 1.45, -0.15, 2.15)
@@ -422,7 +422,7 @@ function RouletteChangeCameraMode(tableId)
         elseif _rouletteCamMode == 2 then
             DoScreenFadeOut(200)
             while not IsScreenFadedOut() do
-                Citizen.Wait(1)
+                Wait(1)
             end
             _rouletteCamMode = 3
             local camOffset = GetWorldPositionOfEntityBone(tableObj, GetEntityBoneIndexByName(tableObj, "Roulette_Wheel"))
@@ -434,7 +434,7 @@ function RouletteChangeCameraMode(tableId)
         elseif _rouletteCamMode == 3 then
             DoScreenFadeOut(200)
             while not IsScreenFadedOut() do
-                Citizen.Wait(1)
+                Wait(1)
             end
             _rouletteCamMode = 1
             local rot = vector3(270.0, -90.0, tableData.heading + 270.0)
@@ -453,7 +453,7 @@ function RouletteSitDownAnim(chairData)
     NetworkAddPedToSynchronisedScene(LocalPlayer.state.ped, ROULETTE_SITTING_SCENE, "anim_casino_b@amb@casino@games@shared@player@", "sit_enter_left", 2.0, -2.0, 13, 16, 2.0, 0)
     NetworkStartSynchronisedScene(ROULETTE_SITTING_SCENE)
 
-    Citizen.Wait(4000)
+    Wait(4000)
 
     NetworkStopSynchronisedScene(ROULETTE_SITTING_SCENE)
 end
@@ -527,7 +527,7 @@ function GetRouletteTableObject(tableId)
     if tData then
         local tableObj = GetClosestObjectOfType(tData.table.coords.x, tData.table.coords.y, tData.table.coords.z, 1.0, tData.table.prop, 0, 0, 0)
         while tableObj == 0 do
-            Citizen.Wait(50)
+            Wait(50)
             table = GetClosestObjectOfType(tData.table.coords.x, tData.table.coords.y, tData.table.coords.z, 1.0, tData.table.prop, 0, 0, 0)
         end
 

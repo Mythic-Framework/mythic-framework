@@ -24,9 +24,9 @@ AddEventHandler("Core:Shared:Ready", function()
 
 			-- Callbacks:ServerCallback("Commands:ValidateAdmin", {}, function(isAdmin)
 			-- 	if not isAdmin then
-			-- 		Citizen.CreateThread(function()
+			-- 		CreateThread(function()
 			-- 			while _r do
-			-- 				Citizen.Wait(1)
+			-- 				Wait(1)
 			-- 				local ped = PlayerPedId()
 			-- 				SetPedInfiniteAmmoClip(ped, false)
 			-- 				SetEntityInvincible(ped, false)

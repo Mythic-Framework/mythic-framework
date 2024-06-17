@@ -5,7 +5,7 @@ COMPONENTS.Sequence = {
 	Get = function(self, key)
 		if _loading[key] then
 			while _loading[key] do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 		end
 

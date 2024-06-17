@@ -15,7 +15,7 @@ function loadModel(model)
 	if IsModelInCdimage(model) then
 		while not HasModelLoaded(model) do
 			RequestModel(model)
-			Citizen.Wait(5)
+			Wait(5)
 		end
 	end
 end
@@ -23,7 +23,7 @@ end
 function LoadAnim(dict)
 	while not HasAnimDictLoaded(dict) do
 		RequestAnimDict(dict)
-		Citizen.Wait(10)
+		Wait(10)
 	end
 end
 
@@ -58,7 +58,7 @@ function YouFuckingSuck()
 	local waitTime = math.random(5000, 10000)
 	StopAnimTask(LocalPlayer.state.ped, "anim@heists@fleeca_bank@drilling", "drill_straight_start")
 	StopAnimTask(LocalPlayer.state.ped, "anim@heists@fleeca_bank@drilling", "drill_straight_idle")
-	Citizen.Wait(50)
+	Wait(50)
 	TaskPlayAnim(
 		LocalPlayer.state.ped,
 		"anim@heists@fleeca_bank@drilling",
@@ -72,7 +72,7 @@ function YouFuckingSuck()
 
 	PlaySoundFrontend(Drilling.Sounds.FailSound, "Drill_Jam", "DLC_HEIST_FLEECA_SOUNDSET", true)
 	--ToggleDrillParticleFx( false, _drillPropHandle, ref _drillFx );
-	Citizen.Wait(waitTime)
+	Wait(waitTime)
 	StopSound(Drilling.Sounds.FailSound)
 end
 

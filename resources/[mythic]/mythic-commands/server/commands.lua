@@ -67,7 +67,7 @@ function RegisterChatCommands()
 			end
 
 			TriggerClientEvent("Animations:Client:DiceRoll", source)
-			Citizen.Wait(1000)
+			Wait(1000)
 			TriggerClientEvent("Chat:Client:ReceiveMe", -1, source, GetGameTimer(), str, true)
 		else
 			Chat.Send.System:Single(source, "Invalid Arguments")

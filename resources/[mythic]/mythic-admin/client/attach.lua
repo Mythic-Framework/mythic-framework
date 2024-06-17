@@ -43,7 +43,7 @@ local function createScaleformThread()
         -- yay, scaleforms
         local scaleform = RequestScaleformMovie("instructional_buttons")
         while not HasScaleformMovieLoaded(scaleform) do
-            Citizen.Wait(1)
+            Wait(1)
         end
         PushScaleformMovieFunction(scaleform, "CLEAR_ALL")
         PopScaleformMovieFunctionVoid()
@@ -70,7 +70,7 @@ local function createScaleformThread()
 
         while isSpectateEnabled do
             DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255, 0)
-            Citizen.Wait(0)
+            Wait(0)
         end
         SetScaleformMovieAsNoLongerNeeded()
     end)
@@ -112,7 +112,7 @@ end
 local function createSpectatorTeleportThread()
     CreateThread(function()
         while isSpectateEnabled do
-            Citizen.Wait(500)
+            Wait(500)
 
             -- Check if ped still exists
             if not DoesEntityExist(storedTargetPed) then
@@ -150,13 +150,13 @@ local function toggleSpectate(targetPed, targetPlayerId)
         end
 
         DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do Citizen.Wait(0) end
+        while not IsScreenFadedOut() do Wait(0) end
 
         RequestCollisionAtCoord(lastSpectateLocation.x, lastSpectateLocation.y, lastSpectateLocation.z)
         SetEntityCoords(playerPed, lastSpectateLocation.x, lastSpectateLocation.y, lastSpectateLocation.z)
         -- The player is still frozen while we wait for collisions to load
         while not HasCollisionLoadedAroundEntity(playerPed) do
-            Citizen.Wait(5)
+            Wait(5)
         end
 
         preparePlayerForSpec(false)
@@ -173,7 +173,7 @@ local function toggleSpectate(targetPed, targetPlayerId)
 
         RequestCollisionAtCoord(targetCoords.x, targetCoords.y, targetCoords.z)
         while not HasCollisionLoadedAroundEntity(targetPed) do
-            Citizen.Wait(5)
+            Wait(5)
         end
 
         NetworkSetInSpectatorMode(true, targetPed)
@@ -192,7 +192,7 @@ local function cleanupFailedResolve()
     SetEntityCoords(playerPed, lastSpectateLocation.x, lastSpectateLocation.y, lastSpectateLocation.z)
     -- The player is still frozen while we wait for collisions to load
     while not HasCollisionLoadedAroundEntity(playerPed) do
-        Citizen.Wait(5)
+        Wait(5)
     end
     preparePlayerForSpec(false)
 
@@ -212,7 +212,7 @@ RegisterNetEvent('Admin:Client:Attach', function(tSource, tCoord, tData)
         end
 
         DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do Citizen.Wait(0) end
+        while not IsScreenFadedOut() do Wait(0) end
 
         local tpCoords = calculateSpectatorCoords(tCoord)
         SetEntityCoords(LocalPlayer.state.ped, tpCoords.x, tpCoords.y, tpCoords.z, 0, 0, 0, false)
@@ -229,7 +229,7 @@ RegisterNetEvent('Admin:Client:Attach', function(tSource, tCoord, tData)
                 resolvePlayerFailed = true
                 break;
             end
-            Citizen.Wait(50)
+            Wait(50)
             targetPlayerId = GetPlayerFromServerId(tSource)
             resolvePlayerAttempts = resolvePlayerAttempts + 1
         until (GetPlayerPed(targetPlayerId) > 0) and targetPlayerId ~= -1
@@ -245,7 +245,7 @@ RegisterNetEvent('Admin:Client:Attach', function(tSource, tCoord, tData)
         CreateThread(function()
             while isSpectateEnabled do
                 createGamerTagInfo()
-                Citizen.Wait(50)
+                Wait(50)
             end
             clearGamerTagInfo()
         end)

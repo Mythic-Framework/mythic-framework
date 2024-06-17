@@ -89,7 +89,7 @@ function StandTheFuckUp(forced, cry)
         LocalPlayer.state:set('sitting', false, true)
 
         if not forced then
-            Citizen.Wait(1000)
+            Wait(1000)
         end
 
         if not cry and #(GetEntityCoords(LocalPlayer.state.ped) - enterChairPosition) <= 5.0 then

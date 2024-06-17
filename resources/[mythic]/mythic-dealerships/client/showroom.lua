@@ -26,7 +26,7 @@ function SpawnShowroom(id)
                 SetVehicleDirtLevel(veh, 0.0)
                 RollDownWindows(veh)
             end)
-            Citizen.Wait(100)
+            Wait(100)
         end
     end
 end
@@ -42,9 +42,9 @@ end
 
 RegisterNetEvent('Dealerships:Client:ShowroomUpdate', function(dealerId)
     if _withinShowroom and _withinShowroom == dealerId then
-        Citizen.Wait(500)
+        Wait(500)
         DeleteShowroom(_withinShowroom)
-        Citizen.Wait(150)
+        Wait(150)
         SpawnShowroom(_withinShowroom)
     end
 end)

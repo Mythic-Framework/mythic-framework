@@ -41,7 +41,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		Init()
 
 		while GlobalState["HiddenHospital"] == nil do
-			Citizen.Wait(5)
+			Wait(5)
 		end
 
 		PedInteraction:Add("HiddenHospital", `s_m_m_doctor_01`, GlobalState["HiddenHospital"].coords, GlobalState["HiddenHospital"].heading, 25.0, {
@@ -135,7 +135,7 @@ HOSPITAL = {
 			else
 				_healEnd = GetCloudTimeAsInt() + (60 * 1)
 				Hud.DeathTexts:Show("hospital", GetCloudTimeAsInt(), _healEnd, "primary_action")
-				Citizen.SetTimeout(((_healEnd - GetCloudTimeAsInt()) - 10) * 1000, function()
+				SetTimeout(((_healEnd - GetCloudTimeAsInt()) - 10) * 1000, function()
 					if LocalPlayer.state.loggedIn and LocalPlayer.state.isHospitalized then
 						Damage:Revive()
 					end

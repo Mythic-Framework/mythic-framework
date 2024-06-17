@@ -4,7 +4,7 @@ TARGETING.Zones = {
     AddBox = function(self, zoneId, icon, center, length, width, options, menuArray, proximity, enabled)
         if interactionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
-            Citizen.Wait(100)
+            Wait(100)
         end
 
         if enabled == nil then enabled = true end -- Make enabled if not specified
@@ -29,7 +29,7 @@ TARGETING.Zones = {
     AddCircle = function(self, zoneId, icon, center, radius, options, menuArray, proximity, enabled)
         if interactionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
-            Citizen.Wait(100)
+            Wait(100)
         end
 
         if enabled == nil then enabled = true end -- Make enabled if not specified
@@ -53,7 +53,7 @@ TARGETING.Zones = {
     AddPoly = function(self, zoneId, icon, points, options, menuArray, proximity, enabled)
         if interactionZones[zoneId] and interactionComboZone then
             interactionComboZone:RemoveZone(zoneId)
-            Citizen.Wait(100)
+            Wait(100)
         end
 
         if enabled == nil then enabled = true end -- Make enabled if not specified
@@ -155,14 +155,14 @@ AddEventHandler('Targeting:Client:PolyzoneDebug', function(state)
 
     polyDebug = state
     if polyDebug then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while polyDebug do
                 if interactionComboZone then
                     interactionComboZone:draw()
                 else
-                    Citizen.Wait(500)
+                    Wait(500)
                 end
-                Citizen.Wait(0)
+                Wait(0)
             end
         end)
     end

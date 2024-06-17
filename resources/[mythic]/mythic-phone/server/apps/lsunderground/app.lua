@@ -104,7 +104,7 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 								)
 							)
 
-							Citizen.SetTimeout(5000, function()
+							SetTimeout(5000, function()
 								Phone.Notification:Add(
 									source,
 									"App Installed",

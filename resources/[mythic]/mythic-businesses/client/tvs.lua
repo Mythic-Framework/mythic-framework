@@ -77,7 +77,7 @@ function EnterTVZone(id)
 
     PopScaleformMovieFunctionVoid()
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while insideTV do
             for k, v in ipairs(zoneData.tvs) do
                 DrawScaleformMovie_3dSolid(
@@ -93,11 +93,11 @@ function EnterTVZone(id)
                     2
                 )
             end
-            Citizen.Wait(0)
+            Wait(0)
         end
     end)
 
-    Citizen.Wait(1500)
+    Wait(1500)
 
     if createdDUI then
         SendDUIMessage(createdDUI.dui, {
@@ -121,7 +121,7 @@ end)
 
 RegisterNetEvent('TVs:Client:Update', function(id)
     if insideTV == id then
-        Citizen.Wait(1500)
+        Wait(1500)
         if createdDUI then
             SendDUIMessage(createdDUI.dui, {
                 event = 'updateLink',

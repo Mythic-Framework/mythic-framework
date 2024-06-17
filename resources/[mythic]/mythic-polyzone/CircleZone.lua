@@ -22,10 +22,10 @@ local function _initDebug(zone, options)
     return
   end
   
-  Citizen.CreateThread(function()
+  CreateThread(function()
     while not zone.destroyed do
       zone:draw()
-      Citizen.Wait(0)
+      Wait(0)
     end
   end)
 end

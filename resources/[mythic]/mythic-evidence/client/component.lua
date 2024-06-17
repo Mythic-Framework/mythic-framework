@@ -140,7 +140,7 @@ local pendingEvidenceUpdate = false
 function UpdateCachedEvidence()
     if not pendingEvidenceUpdate then
         pendingEvidenceUpdate = true
-        Citizen.SetTimeout(5000, function()
+        SetTimeout(5000, function()
             pendingEvidenceUpdate = false
             SendCachedEvidence()
         end)

@@ -18,7 +18,7 @@ local _drunkVehicleActions = {
 }
 
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local wasDrunk = false
 		local lastShakeTime = 0
 		local drunkMovement = 0
@@ -28,7 +28,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 
 		LoadAnimSets(_drunkMovementClipsets)
 
-		Citizen.Wait(10000)
+		Wait(10000)
 
 		while LocalPlayer.state.loggedIn do
 			if not LocalPlayer.state.isDead then
@@ -124,7 +124,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 					SetPedMotionBlur(LocalPlayer.state.ped, true)
 					SetPedConfigFlag(LocalPlayer.state.ped, 100, true)
 
-					Citizen.Wait(1000)
+					Wait(1000)
 				elseif wasDrunk then
 					wasDrunk = false
 					LocalPlayer.state:set('isDrunk', false, true)
@@ -141,12 +141,12 @@ AddEventHandler("Characters:Client:Spawn", function()
 					SetPedConfigFlag(LocalPlayer.state.ped, 100, false)
 					ShakeGameplayCam("DRUNK_SHAKE", 0.0)
 
-					Citizen.Wait(10000)
+					Wait(10000)
 				else
-					Citizen.Wait(10000)
+					Wait(10000)
 				end
 			else
-				Citizen.Wait(10000)
+				Wait(10000)
 			end
 		end
 
@@ -351,7 +351,7 @@ function RegisterDrunkCallbacks()
 
                     local endTime = GetGameTimer() + alcohol.maxTime
 
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         local tick = 3
                         while LocalPlayer.state.loggedIn and Animations.Emotes:Get() == alcohol.anim do
                             if tick >= 5 then
@@ -365,7 +365,7 @@ function RegisterDrunkCallbacks()
                             else
                                 tick += 1
                             end
-                            Citizen.Wait(1000)
+                            Wait(1000)
                         end
                     end)
                 end
@@ -377,9 +377,9 @@ function RegisterDrunkCallbacks()
 end
 
 function DrunkTemporaryBlackout()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		DoScreenFadeOut(500)
-		Citizen.Wait(3500)
+		Wait(3500)
 		DoScreenFadeIn(500)
 	end)
 end

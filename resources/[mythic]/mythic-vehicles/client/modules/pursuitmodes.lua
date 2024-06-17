@@ -3,7 +3,7 @@ _inPursuitVehicleSettings = nil
 _inPursuitVehicleMode = 1
 
 AddEventHandler("Characters:Client:Spawn", function()
-    Citizen.Wait(500)
+    Wait(500)
     Hud:RegisterStatus("pursuit-modes", 0, 100, "gauge-circle-bolt", "#892020", true, false, {
         hideZero = true,
     })
@@ -28,7 +28,7 @@ AddEventHandler('Vehicles:Client:StartUp', function()
             Entity(_inPursuitVehicle).state:set('PursuitMode', _inPursuitVehicleMode, true)
 
             _timeout = true
-            Citizen.SetTimeout(1000, function()
+            SetTimeout(1000, function()
                 _timeout = false
             end)
         end

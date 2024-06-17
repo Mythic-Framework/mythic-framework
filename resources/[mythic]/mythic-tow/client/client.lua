@@ -198,9 +198,9 @@ function DetachVehicleFromTow(towTruck, towedVehicle)
         if towTruckControl and towedVehControl and IsEntityAttachedToEntity(towTruck, towedVehicle) then
             local releaseCoords = GetOffsetFromEntityInWorldCoords(towTruck, 0.0, -10.0, 0.0)
             DetachEntity(towedVehicle, true)
-            Citizen.Wait(150)
+            Wait(150)
             SetEntityCoords(towedVehicle, releaseCoords)
-            Citizen.Wait(50)
+            Wait(50)
             SetVehicleOnGroundProperly(towedVehicle)
 
             if Entity(towedVehicle).state.towObjective then

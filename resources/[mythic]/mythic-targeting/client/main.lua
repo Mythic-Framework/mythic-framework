@@ -54,7 +54,7 @@ AddEventHandler('Core:Shared:Ready', function()
 
         if LocalPlayer.state.loggedIn then
             DeInitPolyzoneTargets()
-            Citizen.Wait(100)
+            Wait(100)
             InitPolyzoneTargets()
         end
     end)
@@ -63,17 +63,17 @@ end)
 RegisterNetEvent('Characters:Client:Spawn')
 AddEventHandler('Characters:Client:Spawn', function()
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
             GLOBAL_PED = PlayerPedId()
-            Citizen.Wait(5000)
+            Wait(5000)
         end
     end)
 
     local lastEntity = nil
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            Citizen.Wait(500)
+            Wait(500)
             local hitting, endCoords, entity = GetEntityPlayerIsLookingAt(25.0, GLOBAL_PED, 286)
             if hitting and GetEntityType(entity) > 0 and entity ~= lastEntity then
                 lastEntity = entity
@@ -85,7 +85,7 @@ AddEventHandler('Characters:Client:Spawn', function()
         end
     end)
 
-    Citizen.Wait(2000)
+    Wait(2000)
 
     InitPolyzoneTargets()
 end)

@@ -55,7 +55,7 @@ FinanceOrganization = {
     }
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
     FinanceOrganization.Office.Init()
 
     while true do

@@ -7,7 +7,7 @@ AddEventHandler("Phone:Client:IRC:Notify", function(message)
 			data = message,
 		},
 	})
-	Citizen.Wait(1e3)
+	Wait(1e3)
 	Phone.Notification:Add("New Message", "You received a message in #" .. message.channel, message.time, 6000, "irc", {
 		view = "view/" .. message.channel,
 	}, nil)

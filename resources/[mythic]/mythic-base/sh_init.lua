@@ -2,7 +2,7 @@ COMPONENTS = {}
 
 AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local ver
             repeat Wait(0) until COMPONENTS.Convar.MFW_VERSION ~= nil
 

@@ -10,11 +10,11 @@ RegisterNetEvent("Admin:Client:NukeCountdown", function()
     ShowNukeSprite()
     Sounds.Play:One("nukeincome.ogg", 0.5)
 
-    Citizen.Wait(3000)
+    Wait(3000)
 
     for i = 1, 10 do
         Sounds.Play:One("countbeep.ogg", 0.5)
-        Citizen.Wait(2000)
+        Wait(2000)
     end
 end)
 
@@ -25,7 +25,7 @@ RegisterNetEvent("Admin:Client:Nuke", function()
 
     Sounds.Play:One("nukeboom.ogg", 0.3)
 
-    Citizen.Wait(500)
+    Wait(500)
 
     StartScreenEffect("PeyoteIn", 1000, false)
 
@@ -36,29 +36,29 @@ RegisterNetEvent("Admin:Client:Nuke", function()
 
     if IsPedOnFoot(LocalPlayer.state.ped) then
 		SetPedToRagdoll(LocalPlayer.state.ped, 5000, 5000, 0, true, true, false)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(LocalPlayer.state.ped, 1, 0.00, 0.00, 5000.00, true, false, false, true)
 	elseif IsPedInAnyVehicle(LocalPlayer.state.ped) then
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, 10000.00, 10000.00, true, true, true, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, 10000.00, 10000.00, true, true, true, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, 10000.00, 10000.00, true, true, true, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, 10000.00, 10000.00, true, true, true, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, 10000.00, 10000.00, true, true, true, true)
-        Citizen.Wait(250)
+        Wait(250)
 		ApplyForceToEntityCenterOfMass(veh, 1, 0.00, -10000.00, -10000.00, true, true, true, true)
 	end
 
@@ -67,7 +67,7 @@ RegisterNetEvent("Admin:Client:Nuke", function()
 	StartScreenEffect("Damage", 60000, false)
 	StartScreenEffect("RaceTurbo", 60000, false)
 
-    Citizen.Wait(60000)
+    Wait(60000)
 
     SetCamEffect(0)
 	StopAllScreenEffects()
@@ -78,11 +78,11 @@ end)
 local alpha = 255
 
 function ShowNukeSprite()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         RequestStreamedTextureDict("Biohazard", true)
 		while not HasStreamedTextureDictLoaded("Biohazard") do
 			RequestStreamedTextureDict("Biohazard", true)
-		    Citizen.Wait(10)
+		    Wait(10)
 		end
 
         local dir = true
@@ -103,7 +103,7 @@ function ShowNukeSprite()
             end
 
             DrawSprite("Biohazard", "nukeilluminated", 0.80, 0.80, 0.1205, 0.20, 0.00, 255, 255, 255, alpha)
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end

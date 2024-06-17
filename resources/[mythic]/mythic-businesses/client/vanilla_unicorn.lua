@@ -188,11 +188,11 @@ function MakeItRainBitch(targetSource, cashType, time)
 
     local targetPed = GetPlayerPed(targetPlayer)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         _makingItRain = true
         Animations.Emotes:Play('makeitrain', false, false, false)
 
-        Citizen.Wait(7500)
+        Wait(7500)
 
         while 
             _makingItRain
@@ -215,7 +215,7 @@ function MakeItRainBitch(targetSource, cashType, time)
             end)
 
             Citizen.Await(p)
-            Citizen.Wait(time)
+            Wait(time)
         end
 
         _makingItRain = false

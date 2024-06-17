@@ -188,7 +188,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 			DoScreenFadeOut(1000)
 			while not IsScreenFadedOut() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 
 			Animations.Emotes:Play("mugshot", false, -1, true)
@@ -205,36 +205,36 @@ AddEventHandler("Core:Shared:Ready", function()
 				0,
 				false
 			)
-			Citizen.Wait(100)
+			Wait(100)
 			SetEntityHeading(LocalPlayer.state.ped, Config.Mugshot.headings[1])
 			FreezeEntityPosition(LocalPlayer.state.ped, true)
 
 			DoScreenFadeIn(1000)
 			while not IsScreenFadedIn() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 
 			Sounds.Play:One("mugshot.ogg", 0.2)
-			Citizen.Wait(2000)
+			Wait(2000)
 			for i = 2, #Config.Mugshot.headings do
 				if LocalPlayer.state.loggedIn then
 					SetEntityHeading(LocalPlayer.state.ped, Config.Mugshot.headings[i])
-					Citizen.Wait(1000)
+					Wait(1000)
 					Sounds.Play:One("mugshot.ogg", 0.2)
-					Citizen.Wait(3000)
+					Wait(3000)
 				end
 			end
 
 			SetEntityHeading(LocalPlayer.state.ped, Config.Mugshot.headings[1])
 			Sounds.Play:One("mugshot.ogg", 0.2)
-			Citizen.Wait(2000)
+			Wait(2000)
 
 			Animations.Emotes:ForceCancel()
 			_doingMugshot = false
 
 			DoScreenFadeOut(1000)
 			while not IsScreenFadedOut() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 
 			FreezeEntityPosition(LocalPlayer.state.ped, false)

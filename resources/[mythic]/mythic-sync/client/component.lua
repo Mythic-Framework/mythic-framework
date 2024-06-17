@@ -81,14 +81,14 @@ AddEventHandler("Proxy:Shared:RegisterReady", function()
 	exports["mythic-base"]:RegisterComponent("Sync", SYNC)
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	StartSyncThreads()
 end)
 
 function StartSyncThreads()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while GlobalState["Sync:Time"] == nil do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		local hour = 0
@@ -103,21 +103,21 @@ function StartSyncThreads()
 				_timeMinute = 0
 			end
 
-			Citizen.Wait(2500)
+			Wait(2500)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while true do
 			NetworkOverrideClockTime(_timeHour, _timeMinute, 0)
 			if _blackoutState then
 				SetArtificialLightsStateAffectsVehicles(false)
 			end
-			Citizen.Wait(50)
+			Wait(50)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while true do
 			if not _isStopped then
 				if _inCayo or _inCayoStorm then
@@ -130,7 +130,7 @@ function StartSyncThreads()
 					ClearOverrideWeather()
 					ClearWeatherTypePersist()
 					SetWeatherTypeOvertimePersist(lazyNick, 1.0)
-					Citizen.Wait(1000)
+					Wait(1000)
 
 					SetWeatherTypePersist(lazyNick)
 					SetWeatherTypeNow(lazyNick)
@@ -150,7 +150,7 @@ function StartSyncThreads()
 							ClearOverrideWeather()
 							ClearWeatherTypePersist()
 							SetWeatherTypeOvertimePersist(_weatherState, 15.0)
-							Citizen.Wait(15000)
+							Wait(15000)
 							Logger:Trace("Sync", "Finished Transitioning to Weather: ".. _weatherState)
 							isTransionHappening = false
 						end
@@ -171,11 +171,11 @@ function StartSyncThreads()
 					SetWeatherTypeNowPersist(_weatherState)
 				end
 				
-				Citizen.Wait(750)
+				Wait(750)
 			else
 				SetRainFxIntensity(0.0)
 				SetWeatherTypeNowPersist("EXTRASUNNY")
-				Citizen.Wait(2000)
+				Wait(2000)
 			end
 		end
 	end)

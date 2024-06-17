@@ -1,5 +1,5 @@
 COMPONENTS.Convar = {}
-Citizen.CreateThread(function()
+CreateThread(function()
     COMPONENTS.Convar = {
         ENVIRONMENT = { key = 'sv_environment', value = GetConvar('sv_environment', 'DEV'), stop = true },
         ACCESS_ROLE = { key = 'sv_access_role', value = GetConvar('sv_access_role', 0), stop = false },

@@ -26,7 +26,7 @@ RegisterNetEvent("Particles:Client:DoFx", function(x, y, z, particleId, allocate
 				StartParticleFxLoopedAtCoord(particleName, x, y, z, rX, rY, rZ, scale, false, false, false, false)
 			local object = { ["particle"] = particle, ["id"] = allocatedID }
 			particleEffects[allocatedID] = object
-			Citizen.Wait(duration)
+			Wait(duration)
 			StopParticleFxLooped(particle, false)
 		end
 

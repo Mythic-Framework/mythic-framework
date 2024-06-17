@@ -19,7 +19,7 @@ local _items = {
 }
 
 AddEventHandler("Labor:Server:Startup", function()
-	Citizen.Wait(10000)
+	Wait(10000)
 	local menu = {
 		main = {
 			label = "Goods Exporter",

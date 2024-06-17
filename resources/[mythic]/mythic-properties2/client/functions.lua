@@ -7,42 +7,42 @@ function EnterProperty(data, backdoor)
 
 			DoScreenFadeOut(1000)
 			while not IsScreenFadedOut() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 
 			while not _propertiesLoaded do
-				Citizen.Wait(100)
+				Wait(100)
 			end
 
 			local property = _properties[pId]
 
 			Sounds.Play:One("door_open.ogg", 0.3)
-			Citizen.Wait(200)
+			Wait(200)
 			FreezeEntityPosition(PlayerPedId(), true)
-			Citizen.Wait(50)
+			Wait(50)
 
 			local interior = PropertyInteriors[int]
 
 			if backdoor and interior.locations.back then
 				SetEntityCoords(PlayerPedId(), interior.locations.back.coords.x, interior.locations.back.coords.y, interior.locations.back.coords.z, 0, 0, 0, false)
-				Citizen.Wait(100)
+				Wait(100)
 				SetEntityHeading(PlayerPedId(), interior.locations.back.heading)
 			else
 				SetEntityCoords(PlayerPedId(), interior.locations.front.coords.x, interior.locations.front.coords.y, interior.locations.front.coords.z, 0, 0, 0, false)
-				Citizen.Wait(100)
+				Wait(100)
 				SetEntityHeading(PlayerPedId(), interior.locations.front.heading)
 			end
 
 			local time = GetGameTimer()
 			while (not HasCollisionLoadedAroundEntity(PlayerPedId()) and (GetGameTimer() - time) < 10000) do
-				Citizen.Wait(100)
+				Wait(100)
 			end
 
 			FreezeEntityPosition(PlayerPedId(), false)
 
 			DoScreenFadeIn(1000)
 			while not IsScreenFadedIn() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 		end
 	end)
@@ -55,11 +55,11 @@ function ExitProperty(data, backdoor)
 
 		DoScreenFadeOut(500)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		while not _propertiesLoaded do
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		local property = _properties[pId]
@@ -80,10 +80,10 @@ function ExitProperty(data, backdoor)
 		Sync:Start()
 
 		Sounds.Play:One("door_close.ogg", 0.3)
-		Citizen.Wait(200)
+		Wait(200)
 
 		FreezeEntityPosition(PlayerPedId(), true)
-		Citizen.Wait(50)
+		Wait(50)
 
 		-- Targeting.Zones:RemoveZone(string.format("property-%s-logout", pId))
 		-- Targeting.Zones:RemoveZone(string.format("property-%s-closet", pId))
@@ -120,14 +120,14 @@ function ExitProperty(data, backdoor)
 
 		local time = GetGameTimer()
 		while (not HasCollisionLoadedAroundEntity(PlayerPedId()) and (GetGameTimer() - time) < 10000) do
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		FreezeEntityPosition(PlayerPedId(), false)
 
 		DoScreenFadeIn(500)
 		while not IsScreenFadedIn() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 	end)
 

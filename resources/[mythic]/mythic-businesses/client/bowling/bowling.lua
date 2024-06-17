@@ -3,7 +3,7 @@ local awaitingBowl = false
 local pressedBowl = false
 
 local insideBowlingStart = false
--- Citizen.CreateThread(function()
+-- CreateThread(function()
 --     local center = vector3(728.477, -771.375, 25.446)
 --     local points = GetBowlingPinLayout(center)
 
@@ -11,7 +11,7 @@ local insideBowlingStart = false
 --         for k, v in ipairs(points) do
 --             DrawSphere(v, 0.05, 255, 0, 0, 100)
 --         end
---         Citizen.Wait(5)
+--         Wait(5)
 --     end
 -- end)
 
@@ -147,7 +147,7 @@ function SendBowlingNotification(text, time)
 end
 
 function BowlingBlockers()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while isBowling do
             DisableControlAction(0, 22, true)
             DisableControlAction(0, 24, true)
@@ -157,7 +157,7 @@ function BowlingBlockers()
             DisableControlAction(0, 33, true)
             DisableControlAction(0, 34, true)
             DisableControlAction(0, 35, true)
-            Citizen.Wait(0)
+            Wait(0)
         end
     end)
 end
@@ -200,14 +200,14 @@ function StartBowlingShit(alleyId, isSecondTry, currentPinsDown, currentHitPins)
         TaskPlayAnim(LocalPlayer.state.ped, 'weapons@projectile@', 'aimlive_l', 8.0, -8.0, -1, 17, 0, false, false, false)
     end
 
-    Citizen.Wait(1000)
+    Wait(1000)
 
     pressedBowl = false
     Action:Show('{keybind}bowling_aim_left{/keybind} Aim Left | {keybind}bowling_aim_right{/keybind} Aim Right | {keybind}primary_action{/keybind} Bowl')
 
     local tm = 0
     while tm < 7500 and not pressedBowl do
-        Citizen.Wait(10)
+        Wait(10)
         tm += 10
     end
 
@@ -230,7 +230,7 @@ function StartBowlingShit(alleyId, isSecondTry, currentPinsDown, currentHitPins)
         end
     end
 
-    Citizen.Wait(150)
+    Wait(150)
     DetachEntity(ball)
 
     SetEntityHeading(ball, GetEntityHeading(LocalPlayer.state.ped))
@@ -239,14 +239,14 @@ function StartBowlingShit(alleyId, isSecondTry, currentPinsDown, currentHitPins)
 
     local pinsBitch = true
     local pinsTarget = false
-    Citizen.SetTimeout(4000, function()
+    SetTimeout(4000, function()
         pinsBitch = false
     end)
 
     while pinsBitch do
         if #(GetEntityCoords(ball) - alleyData.endZone) <= 1.5 then
-            Citizen.CreateThread(function()
-                Citizen.Wait(750)
+            CreateThread(function()
+                Wait(750)
                 for k, v in ipairs(pins) do
                     local entRotation = GetEntityRotation(v)
                     if not (entRotation.x <= 10.0 and entRotation.x >= -10.0 and entRotation.y <= 10.0 and entRotation.y >= -10.0 and entRotation.z <= 10.0 and entRotation.z >= -10.0) then
@@ -255,10 +255,10 @@ function StartBowlingShit(alleyId, isSecondTry, currentPinsDown, currentHitPins)
                     end
                 end
             end)
-            Citizen.Wait(2500)
+            Wait(2500)
             pinsTarget = true
         end
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     print('Delete Bowling Ball')
@@ -276,12 +276,12 @@ function StartBowlingShit(alleyId, isSecondTry, currentPinsDown, currentHitPins)
             end
         end
 
-        Citizen.Wait(3000)
+        Wait(3000)
     end
 
     print('Hit Pins: ', pinsDown)
 
-    Citizen.Wait(2000)
+    Wait(2000)
 
     for k, v in ipairs(pins) do
         DeleteEntity(v)
@@ -398,7 +398,7 @@ AddEventHandler('Keybinds:Client:KeyUp:primary_action', function()
                 Action:Hide()
                 TriggerServerEvent('Bowling:Server:StartBowling', insideBowlingStart)
                 _actionCD = true
-                Citizen.SetTimeout(30000, function()
+                SetTimeout(30000, function()
                     _actionCD = false
                 end)
             end

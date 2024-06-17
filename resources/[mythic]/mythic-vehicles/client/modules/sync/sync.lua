@@ -89,9 +89,9 @@ function GetSyncedVehicleStateData(veh, isEmergency)
     return vState, vEmergencyState
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(30000)
+        Wait(30000)
         vehicleActionRLimits = {}
     end
 end)
@@ -145,7 +145,7 @@ AddEventHandler('Vehicles:Client:BecameDriver', function(veh, seat, class)
 
     SetAudioFlag("PoliceScannerDisabled", true)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while SYNC_DRIVING_VEHICLE do
             local sleep = true
             if DISABLE_AIR_CONTROL then
@@ -164,9 +164,9 @@ AddEventHandler('Vehicles:Client:BecameDriver', function(veh, seat, class)
                 sleep = false
             end
 
-            Citizen.Wait(1)
+            Wait(1)
             if sleep then
-                Citizen.Wait(250)
+                Wait(250)
             end
         end
     end)

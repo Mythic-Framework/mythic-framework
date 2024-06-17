@@ -1,5 +1,5 @@
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.Wait(5000)
+	Wait(5000)
 	StartThreads()
 end)
 
@@ -34,7 +34,7 @@ local _excludes = {
 }
 
 function StartThreads()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			local cw = GetSelectedPedWeapon(LocalPlayer.state.ped)
 			local isArmed = false
@@ -68,22 +68,22 @@ function StartThreads()
 					then
 						LocalPlayer.state:set("GSR", GlobalState["OS:Time"], true)
 					end
-					Citizen.Wait(60000)
+					Wait(60000)
 				end
 			else
-				Citizen.Wait(1000)
+				Wait(1000)
 			end
 
-			Citizen.Wait(50)
+			Wait(50)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.GSR and IsPedSwimming(LocalPlayer.state.ped) then
 				LocalPlayer.state:set("GSR", nil, true)
 			end
-			Citizen.Wait(3000)
+			Wait(3000)
 		end
 	end)
 
@@ -91,7 +91,7 @@ function StartThreads()
 		[`WEAPON_UNARMED`] = true,
 		[`WEAPON_FLASHLIGHT`] = true,
 	}
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if not LocalPlayer.state.isDead then
 				if
@@ -99,11 +99,11 @@ function StartThreads()
 					and IsPlayerFreeAiming(LocalPlayer.state.PlayerID)
 				then
 					Status.Modify:Add("PLAYER_STRESS", 1, false, true)
-					Citizen.Wait(40000)
+					Wait(40000)
 				end
-				Citizen.Wait(100)
+				Wait(100)
 			else
-				Citizen.Wait(10000)
+				Wait(10000)
 			end
 		end
 	end)
