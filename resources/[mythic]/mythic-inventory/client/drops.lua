@@ -2,13 +2,13 @@ local closerDrops = {}
 local closerDropsIds = {}
 
 function runDropsUpdate(checkRemovals)
-	if LocalPlayer.state.myPos ~= nil then
+	if LocalPlayer.state.position ~= nil then
 		closerDrops = {}
 		closerDropsIds = {}
 		local dropZones = GlobalState["Dropzones"]
 		if #dropZones > 0 then
 			for k, v in ipairs(dropZones) do
-				local distance = #(LocalPlayer.state.myPos - vector3(v.coords.x, v.coords.y, v.coords.z))
+				local distance = #(LocalPlayer.state.position - vector3(v.coords.x, v.coords.y, v.coords.z))
 				if distance <= 25.0 then
 					if not closerDrops[k] then
 						table.insert(

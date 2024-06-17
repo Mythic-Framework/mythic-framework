@@ -73,7 +73,7 @@ AddEventHandler("Labor:Client:Setup", function()
         if _working and _p ~= nil and _nodes ~= nil then
             local robberyHouse = GlobalState[string.format("Robbery:InProgress:%s", _p)]
             if robberyHouse then
-                return #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(robberyHouse.x, robberyHouse.y, robberyHouse.z)) <= 3.0
+                return #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(robberyHouse.x, robberyHouse.y, robberyHouse.z)) <= 3.0
             end
         end
 
@@ -85,7 +85,7 @@ AddEventHandler("Labor:Client:Setup", function()
 		ExitHouse()
 	end, function()
         if GlobalState[string.format("%s:RobbingHouse", LocalPlayer.state.ID)] ~= nil and _exit ~= nil then
-            local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - _exit)
+            local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - _exit)
             return dist <= 2.0
         else
             return false
@@ -237,10 +237,10 @@ RegisterNetEvent("HouseRobbery:Client:OnDuty", function(joiner, time)
         _blip = Blips:Add("HouseRobbery", "Target House", { x = data.coords.x, y = data.coords.y, z = data.coords.z }, 40, 23, 0.9)
 
         Citizen.CreateThread(function()
-            local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(data.coords.x, data.coords.y, data.coords.z))
+            local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(data.coords.x, data.coords.y, data.coords.z))
             while _working and LocalPlayer.state.loggedIn and dist > 20 do
                 Citizen.Wait(100)
-                dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(data.coords.x, data.coords.y, data.coords.z))
+                dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(data.coords.x, data.coords.y, data.coords.z))
             end
             Callbacks:ServerCallback("HouseRobbery:ArrivedNear", {})
         end)
@@ -251,7 +251,7 @@ RegisterNetEvent("HouseRobbery:Client:OnDuty", function(joiner, time)
             if LocalPlayer.state.inRobbedHouse then
                 Citizen.Wait(100)
             else
-                local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(data.x, data.y, data.z))
+                local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(data.x, data.y, data.z))
                 if dist < 20 then
                     DrawMarker(1, data.x, data.y, data.z + 0.5, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 1.0, 250, 250, 250, 250, false, false, 2, false, false, false, false)
                     Citizen.Wait(3)

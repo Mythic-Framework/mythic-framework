@@ -39,7 +39,7 @@ AddEventHandler("Robbery:Client:Setup", function()
                 minDist = 2.0,
                 isEnabled = function(data, entity)
                     if LocalPlayer.state.ATMRobbery and LocalPlayer.state.ATMRobbery > 0 then
-                        if _atmZone and #(_atmZone.coords - LocalPlayer.state.myPos) <= _atmZone.radius then
+                        if _atmZone and #(_atmZone.coords - LocalPlayer.state.position) <= _atmZone.radius then
                             return true
                         end
                     end

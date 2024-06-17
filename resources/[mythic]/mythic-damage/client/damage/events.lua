@@ -67,7 +67,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.armorTicks ~= nil then
 				local car = GetPedArmour(LocalPlayer.state.ped)
-				local max = GetPlayerMaxArmour(LocalPlayer.state.PlayerID)
+				local max = GetPlayerMaxArmour(LocalPlayer.state.clientID)
 
 				if car >= max then
 					LocalPlayer.state:set("armorTicks", nil, true)

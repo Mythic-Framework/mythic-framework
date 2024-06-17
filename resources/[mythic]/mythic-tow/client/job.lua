@@ -25,7 +25,7 @@ AddEventHandler('Tow:Client:OffDuty', function()
 end)
 
 AddEventHandler('Tow:Client:RequestTruck', function()
-    local availableSpace = GetClosestAvailableParkingSpace(LocalPlayer.state.myPos, _towSpaces)
+    local availableSpace = GetClosestAvailableParkingSpace(LocalPlayer.state.position, _towSpaces)
     if availableSpace then
         Callbacks:ServerCallback('Tow:RequestTruck', availableSpace, function(vehNet)
             if vehNet ~= nil then

@@ -160,7 +160,7 @@ RegisterNetEvent("Mining:Client:OnDuty", function(joiner, time)
 			while _working do
 				local closest = nil
 				for k, v in pairs(_nodes) do
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - v.coords)
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - v.coords)
 					if closest == nil or dist < closest.dist then
 						closest = {
 							dist = dist,

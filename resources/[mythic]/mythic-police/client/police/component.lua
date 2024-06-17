@@ -385,7 +385,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			for k, v in ipairs(bruh) do
 				local fuck = GlobalState[string.format("Robbery:InProgress:%s", v)]
 				if fuck then
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(fuck.x, fuck.y, fuck.z))
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(fuck.x, fuck.y, fuck.z))
 					if dist <= 3.0 then
 						Callbacks:ServerCallback("Police:Breach", {
 							type = "robbery",
@@ -403,7 +403,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				for k, v in ipairs(bruh) do
 					local fuck = GlobalState[string.format("Robbery:InProgress:%s", v)]
 					if fuck then
-						local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(fuck.x, fuck.y, fuck.z))
+						local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(fuck.x, fuck.y, fuck.z))
 						return dist <= 3.0
 					end
 				end
@@ -433,7 +433,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			}, function(cancelled)
 				cb(not cancelled)
 				if not cancelled then
-					--Sounds.Play:Location(LocalPlayer.state.myPos, 20, "breach.ogg", 0.15)
+					--Sounds.Play:Location(LocalPlayer.state.position, 20, "breach.ogg", 0.15)
 				end
 			end)
 		end)

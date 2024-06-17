@@ -153,7 +153,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _pdAlarm
 			-- 			)
 			-- 		return dist <= 2.0 and GlobalState["Vangelico:Alarm"]
@@ -167,7 +167,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _officeHack
 			-- 			)
 			-- 		return dist <= 2.0 and not GlobalState["Vangelico:Lockdown"]
@@ -181,7 +181,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _officeHack
 			-- 			)
 			-- 		return dist <= 2.0 and not GlobalState["Vangelico:Lockdown"]

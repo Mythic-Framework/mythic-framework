@@ -107,7 +107,7 @@ function StartTracking()
 				if math.floor(bleedTickTimer % (Config.BleedTickRate / 10)) == 0 then
 					local moving = #(
 							vector2(prevPos.x, prevPos.y)
-							- vector2(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y)
+							- vector2(LocalPlayer.state.position.x, LocalPlayer.state.position.y)
 						)
 					if (moving > 1 and not IsPedInAnyVehicle(LocalPlayer.state.ped)) and LocalDamage.Bleed > 2 then
 						Notification.Persistent:Custom(
@@ -117,7 +117,7 @@ function StartTracking()
 						)
 						advanceBleedTimer = advanceBleedTimer + Config.BleedMovementAdvance
 						bleedTickTimer = bleedTickTimer + Config.BleedMovementTick
-						prevPos = LocalPlayer.state.myPos
+						prevPos = LocalPlayer.state.position
 					else
 						Notification.Persistent:Remove(bleedMoveNotifId)
 						bleedTickTimer = bleedTickTimer + 1
@@ -496,9 +496,9 @@ Citizen.CreateThread(function()
 	while true do
 		SetEntityMaxHealth(LocalPlayer.state.ped, 200)
 		if Config.RegenRate >= 0 and Config.RegenRate <= 1.0 then
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, Config.RegenRate)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, Config.RegenRate)
 		else
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, 0.0)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, 0.0)
 		end
 
 		Citizen.Wait(1000)

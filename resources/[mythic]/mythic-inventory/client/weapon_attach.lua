@@ -69,7 +69,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				if count < weaponLimit and not isEquipped then
 					local bone = GetPedBoneIndex(PlayerPedId(), 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
@@ -105,7 +105,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				elseif count < weaponLimit and not isEquipped then
 					local bone = GetPedBoneIndex(PlayerPedId(), v.bone or 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
@@ -118,7 +118,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				if count < weaponLimit then
 					local bone = GetPedBoneIndex(PlayerPedId(), 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
