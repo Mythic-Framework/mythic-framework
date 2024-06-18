@@ -100,7 +100,7 @@ function PlayerClass(identifier, player, deferrals)
 				return true
 			end
 			
-			print(type(Convar.ACCESS_ROLE.value))
+			-- print(type(Convar.ACCESS_ROLE.value))
 			if Convar.ACCESS_ROLE.value == '0' then
 				return true
 			end
