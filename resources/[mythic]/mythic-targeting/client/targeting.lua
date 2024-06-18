@@ -261,7 +261,7 @@ function StartTargeting()
                 for _, v in pairs(InteractionZones) do
                     if v.enabled then
                         local center = v.zone.center
-                        if #(LocalPlayer.state.position - center) <= (v?.proximity or 3.0)then
+                        if #(LocalPlayer.state.position - center) <= (v?.proximity and v.proximity * 1.5 or 3.0)then
                             DrawPoints[#DrawPoints+1] = center
                         end
                     end
@@ -270,7 +270,7 @@ function StartTargeting()
                 for _, v in pairs(TargetableEntities) do
                     local entity = v.entity
                     local entityCoords = getEntityMiddle(entity)
-                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity or 3.0) then
+                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity and v.proximity * 1.5 or 3.0) then
                         DrawPoints[#DrawPoints+1] = entityCoords
                     end
                 end
@@ -278,7 +278,7 @@ function StartTargeting()
                 for _, v in pairs(InteractablePeds) do
                     local entity = v.ped
                     local entityCoords = getEntityMiddle(entity)
-                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity or 3.0) then
+                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity and v.proximity * 1.5 or 3.0) then
                         DrawPoints[#DrawPoints+1] = entityCoords
                     end
                 end
