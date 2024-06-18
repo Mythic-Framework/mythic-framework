@@ -18,17 +18,16 @@ COMPONENTS.Game = {
 
 			return players
 		end,
-		GetClosestPlayer = function(self, coords)
+		GetClosestPlayer = function(self, _coords)
 			local players = self:GetPlayerPeds()
 			local closestDistance = -1
 			local closestPlayer = -1
-			local coords = coords
+			local coords = _coords
 			local usePlayerPed = false
-			local playerPed = PlayerPedId()
-			local playerId = PlayerId()
+			local playerId = LocalPlayer.state.clientID
 			if coords == nil then
 				usePlayerPed = true
-				coords = GetEntityCoords(playerPed)
+				coords = LocalPlayer.state.position
 			end
 
 			for i = 1, #players, 1 do
@@ -60,14 +59,14 @@ COMPONENTS.Game = {
 			local objects = {}
 			for obj in EnumerateObjects() do
 				local objectCoords = GetEntityCoords(obj)
-				if GetDistanceBetweenCoords(objectCoords, coords) <= radius then
+				if #(objectCoords - vector3(coords.x, coords.y, coords.z)) <= radius then
 					table.insert(objects, obj)
 				end
 			end
 			return objects
 		end,
 		Spawn = function(self, coords, modelName, heading, cb)
-			local model = (type(modelName) == "number" and modelName or GetHashKey(modelName))
+			local model = (type(modelName) == "number" and modelName or joaat(modelName))
 			CreateThread(function()
 				COMPONENTS.Stream.RequestModel(model)
 				local obj = CreateObject(model, coords.x, coords.y, coords.z, true, false, true)
@@ -78,7 +77,7 @@ COMPONENTS.Game = {
 			end)
 		end,
 		SpawnLocal = function(self, coords, modelName, heading, cb)
-			local model = (type(modelName) == "number" and modelName or GetHashKey(modelName))
+			local model = (type(modelName) == "number" and modelName or joaat(modelName))
 			CreateThread(function()
 				COMPONENTS.Stream.RequestModel(model)
 
@@ -90,7 +89,7 @@ COMPONENTS.Game = {
 			end)
 		end,
 		SpawnLocalNoOffset = function(self, coords, modelName, heading, cb)
-			local model = (type(modelName) == "number" and modelName or GetHashKey(modelName))
+			local model = (type(modelName) == "number" and modelName or joaat(modelName))
 			CreateThread(function()
 				COMPONENTS.Stream.RequestModel(model)
 
