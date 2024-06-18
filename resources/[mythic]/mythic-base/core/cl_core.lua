@@ -86,8 +86,8 @@ local function disableDispatch()
 end
 
 CreateThread(function()
-	LocalPlayer.state:set('clientID', PlayerId(), true)
-	LocalPlayer.state:set('serverID', GetPlayerServerId(PlayerId()), true)
+	LocalPlayer.state:set('clientID', PlayerId())
+	LocalPlayer.state:set('serverID', GetPlayerServerId(PlayerId()))
 	StatSetInt(`MP0_STAMINA`, 25, true)
 
 	AddStateBagChangeHandler(
@@ -113,8 +113,8 @@ function COMPONENTS.Core.Init(self)
 	ShutdownLoadingScreenNui()
 	ShutdownLoadingScreen()
 
-	LocalPlayer.state:set('ped', PlayerPedId(), true)
-	LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
+	LocalPlayer.state:set('ped', PlayerPedId())
+	LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped))
 
 	disableScenarios()
 	disableDispatch()
@@ -124,7 +124,7 @@ function COMPONENTS.Core.Init(self)
 			Wait(1000)
 			local ped = PlayerPedId()
 			if ped ~= LocalPlayer.state.ped then
-				LocalPlayer.state:set('ped', ped, true)
+				LocalPlayer.state:set('ped', ped)
 				SetEntityProofs(LocalPlayer.state.ped, false, false, false, false, false, true, false, false)
 				SetPedDropsWeaponsWhenDead(LocalPlayer.state.ped, false)
 				SetPedAmmoToDrop(LocalPlayer.state.ped, 0)
@@ -143,7 +143,7 @@ function COMPONENTS.Core.Init(self)
 	CreateThread(function()
 		while _baseThreading do
 			Wait(100)
-			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
+			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped))
 		end
 	end)
 
