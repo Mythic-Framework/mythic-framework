@@ -1,14 +1,7 @@
 local _jobs = {}
-local LastTime = nil
+local lastTime = nil
 
-AddEventHandler('Proxy:Shared:RegisterReady', function()
-    if LastTime == nil then
-        LastTime = GetTime()
-        CronTick()
-    end
-end)
-
-function GetTime()
+local function getTime()
     local date = os.date("*t")
 
     return {
@@ -18,7 +11,7 @@ function GetTime()
     }
 end
 
-function OnTime(day, hour, min)
+local function onTime(day, hour, min)
     for k, v in pairs(_jobs) do
         if v.pause or v.skip then
             if v.skip then
@@ -32,19 +25,30 @@ function OnTime(day, hour, min)
     end
 end
 
-function CronTick()
+local function cronTick()
     CreateThread(function()
         while true do
             Wait(60000)
-            local time = GetTime()
-        
-            if time.hour ~= LastTime.hour or time.min ~= LastTime.min then
-                OnTime(time.day, time.hour, time.min)
-                LastTime = time
+            local time = getTime()
+
+            if not lastTime then
+                lastTime = time
+            end
+
+            if time.hour ~= lastTime.hour or time.min ~= lastTime.min then
+                onTime(time.day, time.hour, time.min)
+                lastTime = time
             end
         end
     end)
 end
+
+AddEventHandler('Proxy:Shared:RegisterReady', function()
+    if not lastTime then
+        lastTime = getTime()
+        cronTick()
+    end
+end)
 
 COMPONENTS.Cron = {
     _required = { 'Register', 'Delete', 'Pause', 'Resume', 'Skip' },

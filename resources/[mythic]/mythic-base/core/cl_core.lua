@@ -86,8 +86,8 @@ local function disableDispatch()
 end
 
 CreateThread(function()
-	LocalPlayer.state:set('clientID', PlayerId(), true)
-	LocalPlayer.state:set('serverID', GetPlayerServerId(PlayerId()), true)
+	LocalPlayer.state:set('clientID', PlayerId())
+	LocalPlayer.state:set('serverID', GetPlayerServerId(PlayerId()))
 	StatSetInt(`MP0_STAMINA`, 25, true)
 
 	AddStateBagChangeHandler(
@@ -103,7 +103,7 @@ CreateThread(function()
 	)
 end)
 
-_baseThreading = false
+local _baseThreading = false
 function COMPONENTS.Core.Init(self)
 	if _baseThreading then
 		return
@@ -113,8 +113,8 @@ function COMPONENTS.Core.Init(self)
 	ShutdownLoadingScreenNui()
 	ShutdownLoadingScreen()
 
-	LocalPlayer.state:set('ped', PlayerPedId(), true)
-	LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
+	LocalPlayer.state:set('ped', PlayerPedId())
+	LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped))
 
 	disableScenarios()
 	disableDispatch()
@@ -124,7 +124,7 @@ function COMPONENTS.Core.Init(self)
 			Wait(1000)
 			local ped = PlayerPedId()
 			if ped ~= LocalPlayer.state.ped then
-				LocalPlayer.state:set('ped', ped, true)
+				LocalPlayer.state:set('ped', ped)
 				SetEntityProofs(LocalPlayer.state.ped, false, false, false, false, false, true, false, false)
 				SetPedDropsWeaponsWhenDead(LocalPlayer.state.ped, false)
 				SetPedAmmoToDrop(LocalPlayer.state.ped, 0)
@@ -137,13 +137,13 @@ function COMPONENTS.Core.Init(self)
 		while _baseThreading do
 			Wait(60000)
 			collectgarbage("collect")
-		end 
-	end)	
+		end
+	end)
 
 	CreateThread(function()
 		while _baseThreading do
 			Wait(100)
-			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped), true)
+			LocalPlayer.state:set('position', GetEntityCoords(LocalPlayer.state.ped))
 		end
 	end)
 
@@ -200,7 +200,7 @@ function COMPONENTS.Core.Init(self)
 			SetScenarioPedDensityMultiplierThisFrame(0.8, 0.8)
 			NetworkSetFriendlyFireOption(true)
 
-			if IsPedInCover(LocalPlayer.state.ped, 0) and not IsPedAimingFromCover(LocalPlayer.state.ped) then
+			if IsPedInCover(LocalPlayer.state.ped, false) and not IsPedAimingFromCover(LocalPlayer.state.ped) then
 				DisablePlayerFiring(LocalPlayer.state.ped, true)
 			end
 			Wait(1)
@@ -217,7 +217,7 @@ function COMPONENTS.Core.Init(self)
 
 	CreateThread(function()
 		while _baseThreading do
-			local ped = PlayerPedId()
+			local ped = LocalPlayer.state.ped
 			SetPedHelmet(ped, false)
 			if IsPedInAnyVehicle(ped, false) then
 				if GetPedInVehicleSeat(GetVehiclePedIsIn(ped, false), 0) == ped then
@@ -243,12 +243,13 @@ function COMPONENTS.Core.Init(self)
 
 		while _baseThreading do
 			Wait(100)
-			if jumpDisabled and resetcounter > 0 and IsPedJumping(PlayerPedId()) then
-				SetPedToRagdoll(PlayerPedId(), 1000, 1000, 3, 0, 0, 0)
+			local ped = LocalPlayer.state.ped
+			if jumpDisabled and resetcounter > 0 and IsPedJumping(ped) then
+				SetPedToRagdoll(ped, 1000, 1000, 3, false, false, false)
 				resetcounter = 0
 			end
 
-			if not jumpDisabled and IsPedJumping(PlayerPedId()) then
+			if not jumpDisabled and IsPedJumping(ped) then
 				jumpDisabled = true
 				resetcounter = 10
 				Wait(1200)
@@ -267,7 +268,8 @@ function COMPONENTS.Core.Init(self)
 end
 
 CreateThread(function()
-	while not exports or exports[GetCurrentResourceName()] == nil do
+	local resourceName = GetCurrentResourceName()
+	while not exports or exports[resourceName] == nil do
 		Wait(1)
 	end
 
