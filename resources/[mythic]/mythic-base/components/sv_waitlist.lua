@@ -178,13 +178,13 @@ COMPONENTS.WaitList = {
 	Pause = function(self, id)
 		if _queues[id] ~= nil then
 			COMPONENTS.Logger:Info("WaitList", string.format("^2%s^7 WaitList Process Paused", id))
-			queues[id].paused = true
+			_queues[id].paused = true
 		end
 	end,
 	Unpause = function(self, id)
 		if _queues[id] ~= nil then
 			COMPONENTS.Logger:Info("WaitList", string.format("^2%s^7 WaitList Process Unpaused", id))
-			queues[id].paused = false
+			_queues[id].paused = false
 		end
 	end,
 	Interact = {

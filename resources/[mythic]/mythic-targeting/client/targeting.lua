@@ -166,7 +166,6 @@ function StartTargeting()
 
                 local hitting, endCoords, entity = GetEntityPlayerIsLookingAt(25.0, LocalPlayer.state.ped)
                 local nowHitting = nil
-                table.wipe(DrawPoints)
 
                 if hitting then
                     local entityType = GetEntityType(entity)
@@ -191,8 +190,6 @@ function StartTargeting()
                                     nowHitting = interactablePed
                                     nowHitting.entity = entity
                                     nowHitting.endCoords = endCoords
-                                else
-                                    DrawPoints[#DrawPoints + 1] = getEntityMiddle(entity)
                                 end
                             end
                         end
@@ -212,8 +209,6 @@ function StartTargeting()
                                     nowHitting = interactableEntity
                                     nowHitting.entity = entity
                                     nowHitting.endCoords = endCoords
-                                else
-                                    DrawPoints[#DrawPoints + 1] = getEntityMiddle(entity)
                                 end
                             end
                         end
@@ -253,6 +248,42 @@ function StartTargeting()
                 end
 
                 Wait(250)
+            end
+        end)
+
+        CreateThread(function ()
+            while holdingTargeting do
+                table.wipe(DrawPoints)
+
+                --#TODO: Check all the targetable object models?
+                --#TODO: Check all the targetable ped models?
+
+                for _, v in pairs(InteractionZones) do
+                    if v.enabled then
+                        local center = v.zone.center
+                        if #(LocalPlayer.state.position - center) <= (v?.proximity and v.proximity * 1.5 or 3.0)then
+                            DrawPoints[#DrawPoints+1] = center
+                        end
+                    end
+                end
+
+                for _, v in pairs(TargetableEntities) do
+                    local entity = v.entity
+                    local entityCoords = getEntityMiddle(entity)
+                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity and v.proximity * 1.5 or 3.0) then
+                        DrawPoints[#DrawPoints+1] = entityCoords
+                    end
+                end
+
+                for _, v in pairs(InteractablePeds) do
+                    local entity = v.ped
+                    local entityCoords = getEntityMiddle(entity)
+                    if entityCoords and #(LocalPlayer.state.position - entityCoords) <= (v?.proximity and v.proximity * 1.5 or 3.0) then
+                        DrawPoints[#DrawPoints+1] = entityCoords
+                    end
+                end
+
+                Wait(1000)
             end
         end)
 
