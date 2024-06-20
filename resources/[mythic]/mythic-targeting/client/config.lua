@@ -114,17 +114,14 @@ Config.VehicleMenu = {
 	},
 	{
 		icon = "trash",
-		isEnabled = function(data, entityData)
-			return IsNearTrunk(entityData.entity, 4.0, true)
-		end,
 		text = "Toss Garbage",
 		event = "Garbage:Client:TossBag",
 		model = `trash2`,
 		tempjob = "Garbage",
 		data = {},
-		minDist = 10.0,
+		minDist = 5.0,
 		isEnabled = function(data, entityData)
-			return LocalPlayer.state.carryingGarbabge and LocalPlayer.state.inGarbagbeZone
+			return LocalPlayer.state.carryingGarbabge and LocalPlayer.state.inGarbagbeZone and IsNearTrunk(entityData.entity, 4.0, true)
 		end
 	},
 	{
