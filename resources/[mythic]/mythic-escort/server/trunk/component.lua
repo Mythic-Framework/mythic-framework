@@ -49,7 +49,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
                 if t ~= nil then
                     Callbacks:ClientCallback(t, "Trunk:GetPulledOut", {}, function()
-						Citizen.Wait(500)
+						Wait(500)
                         Escort:Do(source, {
                             target = t,
                             inVeh = false

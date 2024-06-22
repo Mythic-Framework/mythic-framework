@@ -208,7 +208,7 @@ function CreateLoanTasks()
                             Phone.Notification:Add(onlineChar:GetData("Source"), "Loan Payment Due", "You have a loan payment that is due very soon.", os.time() * 1000, 7500, "loans", {})
                         end
 
-                        Citizen.Wait(100)
+                        Wait(100)
                     end
                 end
             end

@@ -68,18 +68,18 @@ AddEventHandler('Characters:Client:Spawn', function()
     Animations.Emotes:Cancel()
     TriggerEvent('Animations:Client:StandUp', true, true)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do 
-            Citizen.Wait(5000)
+            Wait(5000)
             if not _isCrouched and not LocalPlayer.state.drunkMovement then
                 Animations.PedFeatures:RequestFeaturesUpdate()
             end
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            Citizen.Wait(5)
+            Wait(5)
             DisableControlAction(0, 36, true)
             if IsDisabledControlJustPressed(0, 36) then 
                 Animations.PedFeatures:ToggleCrouch()
@@ -95,7 +95,7 @@ end)
 RegisterNetEvent('Characters:Client:Logout')
 AddEventHandler('Characters:Client:Logout', function()
     Animations.Emotes:ForceCancel()
-    Citizen.Wait(20)
+    Wait(20)
 
     LocalPlayer.state:set('anim', false, true)
 end)

@@ -189,7 +189,7 @@ AddEventHandler("Labor:Client:Setup", function()
         },
     }
 
-    Citizen.Wait(2000)
+    Wait(2000)
 
     for k, v in ipairs(basicFish) do
         local fishData = Inventory.Items:GetData(v)
@@ -209,7 +209,7 @@ AddEventHandler("Labor:Client:Setup", function()
     end
 
     for k, v in ipairs(fishingStores) do
-        PedInteraction:Add(string.format("FishingJob%s", k), `a_m_m_hillbilly_01`, v.coords, v.heading, 25.0, shopData, "fishing-rod")
+        PedInteraction:Add(string.format("FishingJob%s", k), `a_m_m_hillbilly_01`, v.coords, v.heading, 25.0, shopData, "fish-fins")
     end
 end)
 
@@ -298,7 +298,7 @@ RegisterNetEvent("Fishing:Client:StartFishing", function(toolUsed)
             tick = 0
         end
 
-        Citizen.Wait(500)
+        Wait(500)
     end
 
     _isFishing = false
@@ -349,7 +349,7 @@ function DoFishBite(zone, toolUsed)
             return false
         end
 
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     Callbacks:ServerCallback("Fishing:Catch", {
@@ -509,12 +509,12 @@ function StartFishingAnimation()
     fishingRodObj = CreateObject(fishingRodProp, GetEntityCoords(LocalPlayer.state.ped), true, true, true)
     AttachEntityToEntity(fishingRodObj, LocalPlayer.state.ped, GetPedBoneIndex(LocalPlayer.state.ped, 60309), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, true, 1, true)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _isFishing and LocalPlayer.state.loggedIn do
             if not IsEntityPlayingAnim(LocalPlayer.state.ped, "amb@world_human_stand_fishing@base", "base", 3) and not IsEntityPlayingAnim(LocalPlayer.state.ped, "amb@world_human_stand_fishing@idle_a", "idle_c", 3) then
                 TaskPlayAnim(LocalPlayer.state.ped, "amb@world_human_stand_fishing@base", "base", 3.0, 3.0, -1, 49, 0, false, false, false)
             end
-            Citizen.Wait(250)
+            Wait(250)
         end
 
         StopAnimTask(LocalPlayer.state.ped, "amb@world_human_stand_fishing@base", "base", 3.0)
@@ -524,10 +524,10 @@ function StartFishingAnimation()
 end
 
 function DoFishingCatchingAnimation()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         TaskPlayAnim(LocalPlayer.state.ped, "amb@world_human_stand_fishing@idle_a", "idle_c", 3.0, 3.0, -1, 49, 0, false, false, false)
         StopAnimTask(LocalPlayer.state.ped, "amb@world_human_stand_fishing@base", "base", 3.0)
-        Citizen.Wait(5000)
+        Wait(5000)
 
         if _isFishing then
             TaskPlayAnim(LocalPlayer.state.ped, "amb@world_human_stand_fishing@base", "base", 3.0, 3.0, -1, 49, 0, false, false, false)
@@ -539,12 +539,12 @@ end
 function StartFishingNetAnimation()
     LoadAnim("amb@world_human_bum_wash@male@low@idle_a")
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _isFishing and LocalPlayer.state.loggedIn do
             if not IsEntityPlayingAnim(LocalPlayer.state.ped, "amb@world_human_bum_wash@male@low@idle_a", "idle_a", 3) then
                 TaskPlayAnim(LocalPlayer.state.ped, "amb@world_human_bum_wash@male@low@idle_a", "idle_a", 3.0, 3.0, -1, 49, 0, false, false, false)
             end
-            Citizen.Wait(250)
+            Wait(250)
         end
 
         StopAnimTask(LocalPlayer.state.ped, "amb@world_human_bum_wash@male@low@idle_a", "idle_a", 3.0)
@@ -556,7 +556,7 @@ function DoFishingNetCatchingAnimation()
 end
 
 function StartFishingControlBlockers()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _isFishing do
             DisablePlayerFiring(PlayerId(), true) -- Disable weapon firing
             DisableControlAction(0, 24, true) -- disable attack
@@ -572,7 +572,7 @@ function StartFishingControlBlockers()
             DisableControlAction(0, 264, true) -- disable melee
             DisableControlAction(0, 257, true) -- disable melee
 
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 end
@@ -580,13 +580,13 @@ end
 function LoadAnim(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
 function LoadPropDict(model)
     while not HasModelLoaded(model) do
         RequestModel(model)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end

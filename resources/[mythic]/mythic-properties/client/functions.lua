@@ -3,7 +3,7 @@ _stashModel = `hei_heist_bed_chestdrawer_04`
 _logoutModel = `v_res_msonbed`
 _closetModel = `prop_wardrobe_door_01`
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	RequestModel(_stashModel)
 	RequestModel(_logoutModel)
 	RequestModel(_closetModel)
@@ -16,35 +16,35 @@ function EnterProperty(data, backdoor)
 			Interaction:Hide()
 			DoScreenFadeOut(1000)
 			while not IsScreenFadedOut() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 			Sounds.Play:One("door_open.ogg", 0.3)
-			Citizen.Wait(200)
+			Wait(200)
 
 			local f = GlobalState[string.format("Properties:Interior:%s", prop.interior)]
 			FreezeEntityPosition(PlayerPedId(), true)
-			Citizen.Wait(50)
+			Wait(50)
 
 			if backdoor and f.backdoor then
 				SetEntityCoords(PlayerPedId(), f.backdoor.x, f.backdoor.y, f.backdoor.z, 0, 0, 0, false)
-				Citizen.Wait(100)
+				Wait(100)
 				SetEntityHeading(PlayerPedId(), f.backdoor.h)
 			else
 				SetEntityCoords(PlayerPedId(), f.x, f.y, f.z, 0, 0, 0, false)
-				Citizen.Wait(100)
+				Wait(100)
 				SetEntityHeading(PlayerPedId(), f.h)
 			end
 
 			local time = GetGameTimer()
 			while (not HasCollisionLoadedAroundEntity(PlayerPedId()) and (GetGameTimer() - time) < 10000) do
-				Citizen.Wait(100)
+				Wait(100)
 			end
 
 			FreezeEntityPosition(PlayerPedId(), false)
 
 			DoScreenFadeIn(1000)
 			while not IsScreenFadedIn() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 		end
 	end)
@@ -58,17 +58,17 @@ function ExitProperty(data, backdoor)
 
 		DoScreenFadeOut(500)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		TriggerEvent('Interiors:Exit')
 		Sync:Start()
 
 		Sounds.Play:One("door_close.ogg", 0.3)
-		Citizen.Wait(200)
+		Wait(200)
 
 		FreezeEntityPosition(PlayerPedId(), true)
-		Citizen.Wait(50)
+		Wait(50)
 
 		Targeting.Zones:RemoveZone(string.format("property-%s-logout", property.id))
 		Targeting.Zones:RemoveZone(string.format("property-%s-closet", property.id))
@@ -105,14 +105,14 @@ function ExitProperty(data, backdoor)
 
 		local time = GetGameTimer()
 		while (not HasCollisionLoadedAroundEntity(PlayerPedId()) and (GetGameTimer() - time) < 10000) do
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		FreezeEntityPosition(PlayerPedId(), false)
 
 		DoScreenFadeIn(500)
 		while not IsScreenFadedIn() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 	end)
 end

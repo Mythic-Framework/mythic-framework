@@ -44,7 +44,7 @@ function InstructionScaleform(scaleform, showFurnitureButtons, offsetMode)
 	if createdCamera ~= 0 then
 		local scaleform = RequestScaleformMovie(scaleform)
 		while not HasScaleformMovieLoaded(scaleform) do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 		PushScaleformMovieFunction(scaleform, "CLEAR_ALL")
 		PopScaleformMovieFunctionVoid()
@@ -163,7 +163,7 @@ function RunPlacementThread(model, canPlaceInside, showFurnitureButtons, stupidF
     }
     local offsetMode = false
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _placeData ~= nil and _placing do
             if IsPedInAnyVehicle(myPed) then
                 ObjectPlacer:Cancel()
@@ -271,7 +271,7 @@ function RunPlacementThread(model, canPlaceInside, showFurnitureButtons, stupidF
                 placementCoords = nil
             end
 
-            Citizen.Wait(1)
+            Wait(1)
         end
 
         DeleteObject(obj)

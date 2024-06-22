@@ -49,7 +49,7 @@ function Block()
 		return
 	end
 	wepBlocking = true
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and wepEquipped do
 			local ply = PlayerId()
 			local ped = PlayerPedId()
@@ -63,13 +63,13 @@ function Block()
 				DisableControlAction(0, 58, true)
 				DisablePlayerFiring(LocalPlayer.state.ped, true)
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 		wepBlocking = false
 	end)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	DecorRegister("HuntingSpawn", 2)
 	DecorRegister("HuntingIllegal", 2)
 	DecorRegister("BeingHarvested", 2)
@@ -84,7 +84,7 @@ Citizen.CreateThread(function()
                 wepEquipped = false
             end
         end
-        Citizen.Wait(1000)
+        Wait(1000)
     end
 end)
 
@@ -94,16 +94,16 @@ function StartBait(item, loc)
     _baited = true
 
 	local baitConf = _localConfig.Baits[item]
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		local dist = 0
         while dist <= baitConf.distance and _baited and LocalPlayer.state.loggedIn do
-            dist = #(vector3(LocalPlayer.state.myPos) - vector3(loc.x, loc.y, loc.z))
-			Citizen.Wait(500)
+            dist = #(vector3(LocalPlayer.state.position) - vector3(loc.x, loc.y, loc.z))
+			Wait(500)
         end
 
 		if _baited and LocalPlayer.state.loggedIn then
 			local t = (1000 * 60 * math.random(1, baitConf.time))
-			Citizen.Wait(t)
+			Wait(t)
 			Callbacks:ServerCallback("Hunting:GenerateAnimal", item, function(r)
 				if r ~= nil then
 					SpawnAnimal(r, loc, baitConf)
@@ -136,7 +136,7 @@ function SpawnAnimal(data, loc, bait)
     local modelName = data.animal.Model
     RequestModel(modelName)
     while not HasModelLoaded(modelName) do
-        Citizen.Wait(100)
+        Wait(100)
     end
     local spawn = GenerateSpawnLocation(bait, loc)
     local spawnedAnimal = CreatePed(28, data.animal.Model, spawn, true, true, true)
@@ -151,15 +151,15 @@ function SpawnAnimal(data, loc, bait)
     
     SetModelAsNoLongerNeeded(modelName)
     TaskGoStraightToCoord(spawnedAnimal, loc, 1.0, -1, 0.0, 0.0)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local startFlee = false
         while not IsPedDeadOrDying(spawnedAnimal) and not startFlee do
             local spawnedAnimalCoords = GetEntityCoords(spawnedAnimal)
             if #(loc - spawnedAnimalCoords) < 0.5 then
                 ClearPedTasks(spawnedAnimal)
-                Citizen.Wait(1500)
+                Wait(1500)
                 TaskStartScenarioInPlace(spawnedAnimal, "WORLD_DEER_GRAZING", 0, true)
-                Citizen.SetTimeout(12500, function()
+                SetTimeout(12500, function()
                     startFlee = true
                 end)
             end
@@ -168,7 +168,7 @@ function SpawnAnimal(data, loc, bait)
                 TaskSmartFleePed(spawnedAnimal, PlayerPedId(), 750.0, -1)
             	startFlee = true
             end
-            Citizen.Wait(1000)
+            Wait(1000)
         end
         if not IsPedDeadOrDying(spawnedAnimal) then
             TaskSmartFleePed(spawnedAnimal, PlayerPedId(), 750.0, -1)
@@ -423,7 +423,7 @@ AddEventHandler("Hunting:Client:Harvest", function(entity, data)
 	if not entity then return end
 	DecorSetBool(entity.entity, "BeingHarvested", true)
 	TaskTurnPedToFaceEntity(LocalPlayer.state.ped, entity.entity, -1)
-	Citizen.Wait(1000)
+	Wait(1000)
 	Progress:ProgressWithTickEvent({
 		name = 'trap-action',
 		duration = 18000,

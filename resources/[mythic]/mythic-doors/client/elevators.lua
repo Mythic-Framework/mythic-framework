@@ -127,12 +127,12 @@ AddEventHandler("Doors:Client:UseElevator", function(data)
                 end, function(cancelled)
                     if not cancelled and not ELEVATOR_STATE[data.elevator].locked then
                         DoScreenFadeOut(500)
-                        while not IsScreenFadedOut() do Citizen.Wait(10) end
+                        while not IsScreenFadedOut() do Wait(10) end
             
                         SetEntityCoords(GLOBAL_PED, floorData.coords.x, floorData.coords.y, floorData.coords.z)
                         SetEntityHeading(GLOBAL_PED, floorData.coords.w)
                         Sounds.Play:Distance(5.0, "elevator-bell.ogg", 0.4)
-                        Citizen.Wait(250)
+                        Wait(250)
                         DoScreenFadeIn(500)
                     end
                 end)

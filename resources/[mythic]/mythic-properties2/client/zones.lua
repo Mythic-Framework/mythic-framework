@@ -1,7 +1,7 @@
 function CreatePropertyZones(propertyId, int)
     DestroyPropertyZones(propertyId)
 
-    Citizen.Wait(100)
+    Wait(100)
 
     local interior = PropertyInteriors[int]
     if interior then
@@ -181,7 +181,7 @@ function CreatePropertyZones(propertyId, int)
             )
         end
 
-        Citizen.Wait(1000)
+        Wait(1000)
         Targeting.Zones:Refresh()
     end
 end

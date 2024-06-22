@@ -1,6 +1,6 @@
-Citizen.CreateThread(function()
+CreateThread(function()
     while GetIsLoadingScreenActive() do
-        Citizen.Wait(0)
+        Wait(0)
     end
     SendNUIMessage({
         type = 'APP_SHOW'
@@ -12,7 +12,7 @@ function loadModel(model)
 	if IsModelInCdimage(model) then
 		while not HasModelLoaded(model) do
 			RequestModel(model)
-			Citizen.Wait(5)
+			Wait(5)
 		end
 	end
 end
@@ -29,7 +29,7 @@ RegisterNUICallback('GetData', function(data, cb)
     cb("ok")
 
 	while LocalPlayer.state.ID == nil do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
     Callbacks:ServerCallback('Characters:GetServerData', {}, function(serverData)
@@ -63,7 +63,7 @@ RegisterNUICallback('GetData', function(data, cb)
                     )
 
                     while not DoesEntityExist(ped) do
-                        Citizen.Wait(1)
+                        Wait(1)
                     end
     
                     SetEntityCoords(ped, previews[k][1], previews[k][2], previews[k][3], 0.0, 0.0, 0.0, false)
@@ -85,7 +85,7 @@ RegisterNUICallback('GetData', function(data, cb)
                     )
 
                     while not DoesEntityExist(ped) do
-                        Citizen.Wait(1)
+                        Wait(1)
                     end
     
                     SetEntityCoords(ped, previews[k][1], previews[k][2], previews[k][3], 0.0, 0.0, 0.0, false)

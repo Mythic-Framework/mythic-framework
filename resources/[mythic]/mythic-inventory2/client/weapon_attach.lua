@@ -22,7 +22,7 @@ function LoadModel(model)
 	RequestModel(model)
 	local attempts = 0
 	while not HasModelLoaded(model) and attempts < 10 do
-		Citizen.Wait(100)
+		Wait(100)
 		attempts += 1
 	end
 end
@@ -72,7 +72,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 	end
 
 	while Weapons == nil do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	if attaching then
@@ -96,10 +96,10 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
 
 					while not DoesEntityExist(obj) do
-						Citizen.Wait(1)
+						Wait(1)
 					end
 
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
@@ -160,7 +160,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				elseif count < weaponLimit and not isEquipped then
 					local bone = GetPedBoneIndex(PlayerPedId(), v.bone or 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
@@ -175,7 +175,7 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 				if count < weaponLimit then
 					local bone = GetPedBoneIndex(PlayerPedId(), 24818)
 					local obj = CreateObject(v.model, 1.0, 1.0, 1.0, 1, 1, 0)
-					Entity(obj).state:set("WeaponOwner", GetPlayerServerId(LocalPlayer.state.PlayerID), true)
+					Entity(obj).state:set("WeaponOwner", LocalPlayer.state.serverID, true)
 					table.insert(attachedObjects, {
 						object = obj,
 						type = v.type,
@@ -204,12 +204,12 @@ RegisterNetEvent("Weapons:Client:Attach", function(force)
 end)
 
 RegisterNetEvent("Characters:Client:Spawn", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _cachedInventory == nil do
-			Citizen.Wait(100)
+			Wait(100)
 		end
 	
-		Citizen.Wait(1000)
+		Wait(1000)
 		
 		TriggerEvent("Weapons:Client:Attach")
 	end)

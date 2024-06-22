@@ -13,7 +13,6 @@ function RetrieveComponents()
     Weapons = exports["mythic-base"]:FetchComponent("Weapons")
     Progress = exports["mythic-base"]:FetchComponent("Progress")
     Vehicles = exports["mythic-base"]:FetchComponent("Vehicles")
-    Targeting = exports["mythic-base"]:FetchComponent("Targeting")
     ListMenu = exports["mythic-base"]:FetchComponent("ListMenu")
     Action = exports["mythic-base"]:FetchComponent("Action")
     Sounds = exports["mythic-base"]:FetchComponent("Sounds")
@@ -61,7 +60,7 @@ AddEventHandler("Core:Shared:Ready", function()
         -- local dui = CreateBillboardDUI('https://i.imgur.com/Zlf40QZ.png', 1024, 512)
         -- AddReplaceTexture('ch2_03b_cg2_03b_bb', 'ch2_03b_bb_lowdown', dui.dictionary, dui.texture)
 
-        -- Citizen.Wait(10000)
+        -- Wait(10000)
 
         -- print(dui.id)
 
@@ -88,7 +87,7 @@ function StartUp()
 end
 
 AddEventHandler('Characters:Client:Spawn', function()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
             for k,v in pairs(_billboardConfig) do
                 local dist = #(GetEntityCoords(LocalPlayer.state.ped) - v.coords)
@@ -105,7 +104,7 @@ AddEventHandler('Characters:Client:Spawn', function()
                     _billboardDUIs[k] = nil
                 end
             end
-            Citizen.Wait(1500)
+            Wait(1500)
         end
     end)
 end)

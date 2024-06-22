@@ -57,7 +57,7 @@ _CRYPTO = {
 	Coin = {
 		Create = function(self, name, acronym, price, buyable, sellable)
 			while Crypto == nil do
-				Citizen.Wait(1)
+				Wait(1)
 			end
 			
 			if not Crypto.Coin:Get(acronym) then

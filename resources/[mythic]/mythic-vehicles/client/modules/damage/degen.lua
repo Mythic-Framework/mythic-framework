@@ -114,14 +114,14 @@ function RunVehiclePartsDamageEffects(veh)
 
                 if amount then
                     Logger:Trace('Vehicles', 'Running Damage Effects - Axle')
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         for i = 0, amount do
                             SetVehicleSteerBias(veh, -1.0)
-                            Citizen.Wait(1)
+                            Wait(1)
                         end
                         for i = 0, amount do
                             SetVehicleSteerBias(veh, 1.0)
-                            Citizen.Wait(1)
+                            Wait(1)
                         end
                     end)
                 end
@@ -132,19 +132,19 @@ function RunVehiclePartsDamageEffects(veh)
                 if (currentDamage.Electronics >= 15.0 and funChance >= 80) or (currentDamage.Electronics < 15.0 and currentDamage.Electronics >= 5.0 and funChance >= 65) or (currentDamage.Electronics < 5.0 and funChance >= 50) then
                     Logger:Trace('Vehicles', 'Running Damage Effects - Electronics')
                     if currentDamage.Electronics <= 10 and funChance >= 90 then
-                        Citizen.CreateThread(function()
+                        CreateThread(function()
                             SetVehicleControlsInverted(veh, true)
-                            Citizen.Wait(12000)
+                            Wait(12000)
                             SetVehicleControlsInverted(veh, false)
                         end)
                     end
 
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         for i = 1, 10 do
                             SetVehicleLights(veh, 2)
-                            Citizen.Wait(400)
+                            Wait(400)
                             SetVehicleLights(veh, 0)
-                            Citizen.Wait(math.random(5, 50))
+                            Wait(math.random(5, 50))
                         end
                     end)
                 end
@@ -154,10 +154,10 @@ function RunVehiclePartsDamageEffects(veh)
             -- Brakes
             if (currentDamage.Brakes and currentDamage.Brakes <= 25.0) and funChance >= 50 then
                 Logger:Trace('Vehicles', 'Running Damage Effects - Brakes')
-                Citizen.CreateThread(function()
+                CreateThread(function()
                     WEAK_BRAKES = true
                     SetVehicleWeakBrakesState(veh, true)
-                    Citizen.Wait(currentDamage.Brakes <= 5.0 and 60000 or 15000)
+                    Wait(currentDamage.Brakes <= 5.0 and 60000 or 15000)
                     if WEAK_BRAKES then
                         SetVehicleWeakBrakesState(veh, false)
                         WEAK_BRAKES = false
@@ -183,12 +183,12 @@ function RunVehiclePartsDamageEffects(veh)
                 if amount then
                     Logger:Trace('Vehicles', 'Running Damage Effects - Fuel Injectors')
 
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         for i = 1, amount do
                             Vehicles.Engine:Force(veh, false)
-                            Citizen.Wait(wait)
+                            Wait(wait)
                             Vehicles.Engine:Force(veh, true)
-                            Citizen.Wait(wait + 100)
+                            Wait(wait + 100)
                         end
                     end)
                 end
@@ -242,12 +242,12 @@ function RunVehiclePartsDamageEffects(veh)
 
                 if amount then
                     Logger:Trace('Vehicles', 'Running Damage Effects - Transmission')
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         for i = 1, amount do
                             SetVehicleHandbrake(veh, true)
-                            Citizen.Wait(200)
+                            Wait(200)
                             SetVehicleHandbrake(veh, false)
-                            Citizen.Wait(math.random(350, 1200))
+                            Wait(math.random(350, 1200))
                         end
                     end)
                 end
@@ -270,12 +270,12 @@ function RunVehiclePartsDamageEffects(veh)
                 if wait then
                     Logger:Trace('Vehicles', 'Running Damage Effects - Clutch')
                     local lolGetFucked = true
-                    Citizen.SetTimeout(wait, function()
+                    SetTimeout(wait, function()
                         lolGetFucked = false
                     end)
-                    Citizen.CreateThread(function()
+                    CreateThread(function()
                         while lolGetFucked do
-                            Citizen.Wait(5)
+                            Wait(5)
                             SetVehicleCurrentRpm(veh, 0.2)
                         end
                     end)

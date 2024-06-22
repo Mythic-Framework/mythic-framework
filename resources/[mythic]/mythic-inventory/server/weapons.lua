@@ -296,7 +296,7 @@ WEAPONS = {
 													comps
 												)
 
-												Citizen.Wait(400)
+												Wait(400)
 
 												TriggerClientEvent("Weapons:Client:UpdateAttachments", source, comps)
 

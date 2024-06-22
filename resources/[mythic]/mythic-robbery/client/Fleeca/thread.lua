@@ -1,5 +1,5 @@
 function FleecaThreads()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if GlobalState["FleecaRobberies"] ~= nil then
 				local myCoords = GetEntityCoords(LocalPlayer.state.ped)
@@ -13,9 +13,9 @@ function FleecaThreads()
 						OpenDoor(bankData.points.vaultPC.coords, bankData.doors.vaultDoor)
 					end
 				end
-				Citizen.Wait(1000)
+				Wait(1000)
 			else
-				Citizen.Wait(3000)
+				Wait(3000)
 			end
 		end
 	end)

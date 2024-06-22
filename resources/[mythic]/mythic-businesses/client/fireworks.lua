@@ -30,11 +30,11 @@ AddEventHandler("Businesses:Client:Startup", function()
 
         Notification:Info("RUN AWAY!")
 
-        Citizen.Wait(9000)
+        Wait(9000)
 
         cb(x, y, z)
 
-        Citizen.Wait(8500)
+        Wait(8500)
 
         DeleteObject(prop)
     end)
@@ -43,22 +43,22 @@ end)
 RegisterNetEvent("Fireworks:Client:Play", function(firework, x, y, z)
     RequestNamedPtfxAsset(particleDict)
     while not HasNamedPtfxAssetLoaded(particleDict) do
-        Citizen.Wait(1)
+        Wait(1)
     end
 
     RequestNamedPtfxAsset("proj_xmas_firework")
     while not HasNamedPtfxAssetLoaded("proj_xmas_firework") do
-        Citizen.Wait(1)
+        Wait(1)
     end
 
     if firework == 1 then -- cl4
         for i = 1, 8 do
             UseParticleFxAssetNextCall(particleDict)
             local particle = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_trailburst", x, y, z, 0.0, 0.0, 0.0, math.random() * 0.5 + 0.8, false, false, false, false)
-            Citizen.Wait(1500)
+            Wait(1500)
         end
 
-        Citizen.Wait(2500)
+        Wait(2500)
 
         UseParticleFxAssetNextCall(particleDict)
         local particle2 = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_trailburst", x, y, z, 0.0, 0.0, 0.0, math.random() * 0.5 + 1.8, false, false, false, false)
@@ -66,10 +66,10 @@ RegisterNetEvent("Fireworks:Client:Play", function(firework, x, y, z)
         for i = 1, 5 do
             UseParticleFxAssetNextCall(particleDict)
             local particle = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_fountain", x, y, z, 0.0, 0.0, 0.0, math.random() * 0.5 + 0.8, false, false, false, false)
-            Citizen.Wait(1500)
+            Wait(1500)
         end
 
-        Citizen.Wait(1000)
+        Wait(1000)
 
         UseParticleFxAssetNextCall(particleDict)
         local particle2 = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_fountain", x, y, z, 0.0, 0.0, 0.0, math.random() * 1.5 + 1.8, false, false, false, false)
@@ -77,16 +77,16 @@ RegisterNetEvent("Fireworks:Client:Play", function(firework, x, y, z)
         for i = 1, 5 do
             UseParticleFxAssetNextCall(particleDict)
             local particle = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_shotburst", x, y, z, 0.0, 0.0, 0.0, math.random() * 0.5 + 0.8, false, false, false, false)
-            Citizen.Wait(1500)
+            Wait(1500)
         end
 
-        Citizen.Wait(1000)
+        Wait(1000)
 
         for i = 1, 3 do
             UseParticleFxAssetNextCall(particleDict)
             local particle2 = StartNetworkedParticleFxNonLoopedAtCoord("scr_indep_firework_shotburst", x, y, z, 0.0, 0.0, 0.0, math.random() * 1.5 + 1.8, false, false, false, false)
 
-            Citizen.Wait(2500)
+            Wait(2500)
         end
     elseif firework == 4 then
         UseParticleFxAssetNextCall(particleDict)
@@ -100,10 +100,10 @@ RegisterNetEvent("Fireworks:Client:Play", function(firework, x, y, z)
             UseParticleFxAssetNextCall("proj_xmas_firework")
             local particle = StartNetworkedParticleFxNonLoopedAtCoord("scr_firework_xmas_ring_burst_rgw", x, y, z + 30.0, 0.0, 0.0, 0.0, randomNess, false, false, false, false)
 
-            Citizen.Wait(1500)
+            Wait(1500)
         end
 
-        Citizen.Wait(1000)
+        Wait(1000)
 
         for i = 1, 3 do
             local randomness = math.random() * 1.5 + 1.8
@@ -114,7 +114,7 @@ RegisterNetEvent("Fireworks:Client:Play", function(firework, x, y, z)
             UseParticleFxAssetNextCall("proj_xmas_firework")
             local particle = StartNetworkedParticleFxNonLoopedAtCoord("scr_firework_xmas_ring_burst_rgw", x, y, z + 30.0, 0.0, 0.0, 0.0, randomness - 1.8, false, false, false, false)
 
-            Citizen.Wait(2500)
+            Wait(2500)
         end
     end
 end)

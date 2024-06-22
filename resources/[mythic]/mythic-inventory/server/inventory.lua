@@ -1178,7 +1178,7 @@ INVENTORY = {
 		table.insert(drops, area)
 		GlobalState["Dropzones"] = drops
 
-		Citizen.Wait(300)
+		Wait(300)
 		TriggerClientEvent("Inventory:Client:DropzoneForceUpdate", -1)
 
 		return string.format("%s:%s", coords.x, coords.y)
@@ -1665,7 +1665,7 @@ INVENTORY = {
 				end
 
 				if _refreshAttchs[Owner] then
-					Citizen.Wait(1000)
+					Wait(1000)
 					TriggerClientEvent("Weapons:Client:Attach", plyr:GetData("Source"))
 					_refreshAttchs[Owner] = false
 				end
@@ -2236,7 +2236,7 @@ INVENTORY = {
 	},
 	Holding = {
 		Put = function(self, source)
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local p = promise.new()
 				local plyr = Fetch:Source(source)
 				if plyr ~= nil then
@@ -2257,7 +2257,7 @@ INVENTORY = {
 									invTypeTo = 2,
 									countTo = slotData.Count,
 								}, function() end)
-								Citizen.Wait(1)
+								Wait(1)
 							else
 								Execute:Client(source, "Notification", "Error", "No Available Slots")
 								break
@@ -2270,7 +2270,7 @@ INVENTORY = {
 			end)
 		end,
 		Take = function(self, source)
-			Citizen.CreateThread(function()
+			CreateThread(function()
 				local p = promise.new()
 				local plyr = Fetch:Source(source)
 				if plyr ~= nil then
@@ -2293,7 +2293,7 @@ INVENTORY = {
 										invTypeTo = 1,
 										countTo = slotData.Count,
 									}, function() end)
-									Citizen.Wait(1)
+									Wait(1)
 								else
 									Execute:Client(source, "Notification", "Error", "No Available Slots")
 									p:resolve(false)

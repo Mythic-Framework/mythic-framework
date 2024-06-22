@@ -7,7 +7,7 @@ local deadAnim = "dead_d"
 local vehDict = "veh@low@front_ps@idle_duck"
 local vehAnim = "sit"
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	loadAnimDict(koDict)
 	loadAnimDict(deadDict)
 	loadAnimDict(vehDict)
@@ -56,7 +56,7 @@ local changeHandler = nil
 RegisterNetEvent("Characters:Client:Spawn", function()
 	changeHandler = AddStateBagChangeHandler(
 		"isDead",
-		string.format("player:%s", GetPlayerServerId(LocalPlayer.state.PlayerID)),
+		string.format("player:%s", LocalPlayer.state.serverID),
 		function(bagName, key, value, _unused, replicated)
 			DoDeadEvent()
 		end
@@ -87,7 +87,7 @@ function DoDeadEvent()
 end
 
 function DeadAnimLoop()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local ped = PlayerPedId()
 		local aDict = deadDict
 		local aAnim = deadAnim
@@ -109,12 +109,12 @@ function DeadAnimLoop()
 		end
 
 		while GetEntitySpeed(ped) > 0.5 do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		DoScreenFadeOut(1000)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		AnimpostfxPlay("DeathFailMPIn", 100.0, true)
@@ -130,7 +130,7 @@ function DeadAnimLoop()
 			ClearPedTasksImmediately(ped)
 		else
 			TaskWarpPedIntoVehicle(ped, veh, seat)
-			Citizen.Wait(300)
+			Wait(300)
 		end
 
 		DoScreenFadeIn(300)
@@ -143,13 +143,13 @@ function DeadAnimLoop()
 				TaskPlayAnim(ped, vehDict, vehAnim, 8.0, -8, -1, 1, 0, 0, 0, 0)
 			elseif IsEntityInWater(ped) then
 				SetPedToRagdoll(PlayerPedId(), 3000, 3000, 3, 0, 0, 0)
-				Citizen.Wait(2500)
+				Wait(2500)
 			elseif LocalPlayer.state.inTrunk then
 				-- dosomething?
 			else
 				TaskPlayAnim(ped, aDict, aAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
 			end
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		AnimpostfxStop("DeathFailMPIn")
@@ -164,7 +164,7 @@ function DeadAnimLoop()
 end
 
 function DisableControls()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and LocalPlayer.state.isDead do
 			DisableControlAction(0, 30, true) -- disable left/right
 			DisableControlAction(0, 31, true) -- disable forward/back
@@ -189,7 +189,7 @@ function DisableControls()
 			DisableControlAction(0, 263, true) -- disable melee
 			DisableControlAction(0, 264, true) -- disable melee
 			DisableControlAction(0, 257, true) -- disable melee
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end

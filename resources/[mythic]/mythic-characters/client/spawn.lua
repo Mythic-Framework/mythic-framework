@@ -17,14 +17,14 @@ Spawn = {
         FreezeEntityPosition(ped, true)
         SetEntityVisible(ped, false)
         DoScreenFadeIn(500)
-        Citizen.Wait(500) -- Why the fuck does NUI just not do this without a wait here???
+        Wait(500) -- Why the fuck does NUI just not do this without a wait here???
         SetNuiFocus(true, true)
         SendNUIMessage({ type = 'APP_SHOW' })
     end,
     SpawnToWorld = function(self, data, cb)
         DoScreenFadeOut(500)
         while not IsScreenFadedOut() do
-            Citizen.Wait(10)
+            Wait(10)
         end
     
         local player = PlayerPedId()
@@ -38,7 +38,7 @@ Spawn = {
         RequestModel(model)
     
         while not HasModelLoaded(model) do
-          Citizen.Wait(500)
+          Wait(500)
         end
         SetPlayerModel(PlayerId(), model)
         player = PlayerPedId()
@@ -46,7 +46,7 @@ Spawn = {
         SetEntityAsMissionEntity(player, true, true)
         SetModelAsNoLongerNeeded(model)
     
-        Citizen.Wait(300)
+        Wait(300)
 
         DestroyAllCams(true)
         RenderScriptCams(false, true, 1, true, true)
@@ -75,7 +75,7 @@ Spawn = {
 
         SetFocusEntity(PlayerPedId())
         
-        LocalPlayer.state.ped = player
+        LocalPlayer.state:set('ped', player, true)
 
         SetNuiFocus(false)
     

@@ -329,7 +329,7 @@ end
 AddEventHandler("Polyzone:Enter", function(id, testedPoint, insideZones, data)
 	if _pzs[id] and Status.Get:Single("PLAYER_STRESS").value > 0 and not _delay then
 		while GetVehiclePedIsIn(LocalPlayer.state.ped) ~= 0 do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 		_inPoly = id
 		Action:Show(string.format("{keybind}primary_action{/keybind} To %s", _pzDefs[_pzs[id]].action))

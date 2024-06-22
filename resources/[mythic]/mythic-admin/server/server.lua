@@ -262,7 +262,7 @@ function RegisterChatCommands()
 
 	Chat:RegisterAdminCommand("nuke", function(source, args, rawCommand)
 		TriggerClientEvent("Admin:Client:NukeCountdown", -1)
-		Citizen.Wait(23000)
+		Wait(23000)
 		TriggerClientEvent("Admin:Client:Nuke", -1)
 	end, {
 		help = "DO NOT USE",

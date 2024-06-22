@@ -72,7 +72,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 			local ped = CreatePed(5, model, coords.x + math.random(-15.0, 15.0), coords.y + math.random(-15.0, 15.0), coords.z, math.random(360) * 1.0, true, true)
 
 			while not DoesEntityExist(ped) do
-				Citizen.Wait(1)
+				Wait(1)
 			end
 
 			local w = _bobcatWeapons[math.random(#_bobcatWeapons)]
@@ -138,7 +138,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 			AddTextComponentString(text)
 			EndTextCommandSetBlipName(blip)
 
-			Citizen.SetTimeout((1000 * 60) * 10, function()
+			SetTimeout((1000 * 60) * 10, function()
 				RemoveBlip(blip)
 			end)
 

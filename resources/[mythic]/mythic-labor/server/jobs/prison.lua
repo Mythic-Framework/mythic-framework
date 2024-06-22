@@ -76,7 +76,7 @@ AddEventHandler("Labor:Server:Prison:Queue", function(source, data)
 
 		while f == _Prisoners[_joiners[source]].jobIndex do
 			f = math.random(#_prisonJobs)
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		_Prisoners[_joiners[source]].state = 1

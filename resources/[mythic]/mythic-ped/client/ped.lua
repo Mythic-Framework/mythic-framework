@@ -62,9 +62,9 @@ end)
 RegisterNetEvent("Ped:Client:RemoveGlasses", function()
 	if LocalPlayer.state.Character ~= nil and not LocalPed.customization.props.glass.disabled and not _glassesOff then
 		_glassesOff = true
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			TriggerEvent("Ped:Client:HatGlassAnim")
-			Citizen.Wait(500)
+			Wait(500)
 			ClearPedProp(LocalPlayer.state.ped, 1)
 		end)
 	end
@@ -73,9 +73,9 @@ end)
 RegisterNetEvent("Ped:Client:RemoveKevlar", function()
 	if LocalPlayer.state.Character ~= nil and not LocalPed.customization.props.glass.disabled and not _vestOff then
 		_vestOff = true
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			TriggerEvent("Ped:Client:HatGlassAnim")
-			Citizen.Wait(500)
+			Wait(500)
 			ClearPedProp(LocalPlayer.state.ped, 1)
 		end)
 	end
@@ -114,9 +114,9 @@ function RegisterInteraction()
 				end,
 				action = function()
 					_glassesOff = true
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						TriggerEvent("Ped:Client:HatGlassAnim")
-						Citizen.Wait(500)
+						Wait(500)
 						ClearPedProp(LocalPlayer.state.ped, 1)
 					end)
 					Interaction:Hide()
@@ -130,9 +130,9 @@ function RegisterInteraction()
 				end,
 				action = function()
 					_glassesOff = false
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						TriggerEvent("Ped:Client:HatGlassAnim")
-						Citizen.Wait(500)
+						Wait(500)
 						SetPedPropIndex(
 							LocalPlayer.state.ped,
 							LocalPed.customization.props.glass.componentId,
@@ -158,9 +158,9 @@ function RegisterInteraction()
 						)
 				end,
 				action = function()
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						TriggerEvent("Ped:Client:HatGlassAnim")
-						Citizen.Wait(500)
+						Wait(500)
 
 						if not LocalPed.customization.props.hat.disabled
 							and GetPedPropIndex(LocalPlayer.state.ped, 0) == -1
@@ -202,9 +202,9 @@ function RegisterInteraction()
 					-- 				)
 					-- 		end,
 					-- 		action = function()
-					-- 			Citizen.CreateThread(function()
+					-- 			CreateThread(function()
 					-- 				TriggerEvent("Ped:Client:HatGlassAnim")
-					-- 				Citizen.Wait(500)
+					-- 				Wait(500)
 					-- 				SetPedPropIndex(
 					-- 					LocalPlayer.state.ped,
 					-- 					LocalPed.customization.props.hat.componentId,
@@ -231,9 +231,9 @@ function RegisterInteraction()
 					-- 				)
 					-- 		end,
 					-- 		action = function()
-					-- 			Citizen.CreateThread(function()
+					-- 			CreateThread(function()
 					-- 				TriggerEvent("Ped:Client:HatGlassAnim")
-					-- 				Citizen.Wait(500)
+					-- 				Wait(500)
 					-- 				SetPedPropIndex(
 					-- 					LocalPlayer.state.ped,
 					-- 					LocalPed.customization.props.hat.componentId,
@@ -255,9 +255,9 @@ function RegisterInteraction()
 					-- 				)
 					-- 		end,
 					-- 		action = function()
-					-- 			Citizen.CreateThread(function()
+					-- 			CreateThread(function()
 					-- 				TriggerEvent("Ped:Client:HatGlassAnim")
-					-- 				Citizen.Wait(500)
+					-- 				Wait(500)
 					-- 				SetPedPropIndex(
 					-- 					LocalPlayer.state.ped,
 					-- 					LocalPed.customization.props.glass.componentId,
@@ -344,7 +344,7 @@ function AttachProp(propId, attachModel, boneNumberSent, x, y, z, xR, yR, zR, ke
 	local bone = GetPedBoneIndex(PlayerPedId(), boneNumberSent)
 	RequestModel(attachModel)
 	while not HasModelLoaded(attachModel) do
-		Citizen.Wait(0)
+		Wait(0)
 	end
 	local attachedProp = CreateObject(attachModel, 1.0, 1.0, 1.0, 1, 1, 0)
 	attachedProps[propId] = attachedProp
@@ -774,7 +774,7 @@ PED = {
 			_currentState = "CREATOR"
 
 			Sync:Start()
-			Citizen.Wait(300)
+			Wait(300)
 			Sync:Stop(true)
 
 			FROZEN = true
@@ -793,7 +793,7 @@ PED = {
 			RequestModel(model)
 
 			while not HasModelLoaded(model) do
-				Citizen.Wait(500)
+				Wait(500)
 			end
 			SetPlayerModel(PlayerId(), model)
 			player = PlayerPedId()
@@ -805,7 +805,7 @@ PED = {
 			SetModelAsNoLongerNeeded(model)
 			Ped:ApplyToPed(LocalPed)
 			SetEntityCoords(player, _creatorLocation.x, _creatorLocation.y, _creatorLocation.z)
-			Citizen.Wait(200)
+			Wait(200)
 			SetEntityHeading(player, _creatorLocation.h)
 
 			PlayIdleAnimation()
@@ -814,7 +814,7 @@ PED = {
 
 			DoScreenFadeIn(500)
 			while not IsScreenFadedIn() do
-				Citizen.Wait(10)
+				Wait(10)
 			end
 
 			TransitionFromBlurred(500)
@@ -824,7 +824,7 @@ PED = {
 			NetworkSetEntityInvisibleToNetwork(player, false)
 			SetEntityVisible(player, true)
 			SetNuiFocus(true, true)
-			Citizen.Wait(100)
+			Wait(100)
 			SendNUIMessage({
 				type = "SET_STATE",
 				data = {
@@ -861,7 +861,7 @@ PED = {
 			NetworkSetEntityInvisibleToNetwork(player, false)
 			SetEntityVisible(player, true)
 			SetNuiFocus(true, true)
-			Citizen.Wait(100)
+			Wait(100)
 			SendNUIMessage({
 				type = "SET_STATE",
 				data = {
@@ -922,7 +922,7 @@ PED = {
 			})
 			Ped.Customization:Hide()
 
-			Citizen.Wait(1000) -- When naked it overrides the cancel so just do this again after a second for a lazy fix idk
+			Wait(1000) -- When naked it overrides the cancel so just do this again after a second for a lazy fix idk
 
 			Ped:ApplyToPed(LocalPlayer.state.Character:GetData("Ped"))
 			return true
@@ -981,7 +981,7 @@ end)
 function loadAnimDict(dict)
 	while not HasAnimDictLoaded(dict) do
 		RequestAnimDict(dict)
-		Citizen.Wait(5)
+		Wait(5)
 	end
 end
 
@@ -1006,21 +1006,21 @@ end)
 RegisterNetEvent("Ped:Client:MaskAnim", function()
 	loadAnimDict("missfbi4")
 	TaskPlayAnim(LocalPlayer.state.ped, "missfbi4", "takeoff_mask", 4.0, 3.0, -1, 49, 1.0, 0, 0, 0)
-	Citizen.Wait(1000)
+	Wait(1000)
 	ClearPedTasks(LocalPlayer.state.ped)
 end)
 
 RegisterNetEvent("Ped:Client:HatGlassAnim", function()
 	loadAnimDict("mp_masks@on_foot")
 	TaskPlayAnim(LocalPlayer.state.ped, "mp_masks@on_foot", "put_on_mask", 4.0, 3.0, -1, 49, 1.0, 0, 0, 0)
-	Citizen.Wait(500)
+	Wait(500)
 	ClearPedTasks(LocalPlayer.state.ped)
 end)
 
 RegisterNetEvent("Ped:Client:ChainAnim", function()
 	loadAnimDict("clothingtie")
 	TaskPlayAnim(LocalPlayer.state.ped, "clothingtie", "try_tie_positive_a", 1.0, 1.0, -1, 48, -1, 0, 0, 0)
-	Citizen.Wait(4000)
+	Wait(4000)
 	ClearPedTasks(LocalPlayer.state.ped)
 end)
 

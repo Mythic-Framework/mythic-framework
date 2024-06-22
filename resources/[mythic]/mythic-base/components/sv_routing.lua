@@ -29,7 +29,7 @@ COMPONENTS.Routing = {
 
         local ped = GetPlayerPed(source)
         if ped then
-            for k, v in ipairs(GetAllObjects()) do
+            for _, v in ipairs(GetAllObjects()) do
                 if GetEntityAttachedTo(v) == ped then
                     SetEntityRoutingBucket(v, route)
                 end

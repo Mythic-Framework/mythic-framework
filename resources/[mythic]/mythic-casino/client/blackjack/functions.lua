@@ -1722,7 +1722,7 @@ function ensureCardModelsLoaded()
         if not HasModelLoaded(model) then
             RequestModel(model)
             while not HasModelLoaded(model) do
-                Citizen.Wait(0)
+                Wait(0)
             end
         end
     end

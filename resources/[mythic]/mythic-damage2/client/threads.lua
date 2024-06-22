@@ -62,7 +62,7 @@ AddEventHandler("Keybinds:Client:KeyUp:secondary_action", function()
 						if bedId ~= nil then
 							_sendToHosp = bedId
 							LocalPlayer.state:set("isHospitalized", true, true)
-							Citizen.Wait(250)
+							Wait(250)
 							Hospital:SendToBed(Config.Beds[_sendToHosp], false, bedId)
 						else
 							Notification:Error("Unable To Respawn Yet, Please Wait")
@@ -83,29 +83,29 @@ end)
 function StartThreads()
     LocalPlayer.state.regenRate = 0.0
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
             if GetPedStealthMovement(PlayerPedId()) then
                 SetPedStealthMovement(PlayerPedId(), 0, 0)
             end
-            Citizen.Wait(20)
+            Wait(20)
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local sid = LocalPlayer.state.Character:GetData("SID")
         while LocalPlayer.state.loggedIn do
-            Citizen.Wait((1000 * 60) * 1)
+            Wait((1000 * 60) * 1)
             if LocalPlayer.state.Character ~= nil and sid == LocalPlayer.state.Character:GetData("SID") then
                 TriggerServerEvent("Damage:Server:StoreHealth", GetEntityHealth(LocalPlayer.state.ped), GetPedArmour(LocalPlayer.state.ped))
             end
         end
     end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if not LocalPlayer.state.inCreator then
-				Citizen.Wait(10000)
+				Wait(10000)
 				local myhp = GetEntityHealth(LocalPlayer.state.ped) - 100
 				if myhp <= 10 then
 					SetFlash(0, 0, 500, math.random(10) * 1000, 500)
@@ -117,12 +117,12 @@ function StartThreads()
 					SetFlash(0, 0, 1, 0, 1)
 				end
 			else
-				Citizen.Wait(30000)
+				Wait(30000)
 			end
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
         LocalPlayer.state:set("isHospitalized", false, true)
         LocalPlayer.state:set("isDead", false, true)
         LocalPlayer.state:set("deadData", false, true)
@@ -143,7 +143,7 @@ function StartThreads()
 						isMinor = false
 					else
 						_hasKO = true
-						Citizen.SetTimeout((1000 * 60) * 5, function()
+						SetTimeout((1000 * 60) * 5, function()
 							_hasKO = false
 						end)
 					end
@@ -161,7 +161,7 @@ function StartThreads()
                     Hud.DeathTexts:Show(isMinor and "knockout" or "death", deadTime, releaseTime)
 
                     while not LocalPlayer.state.isDead do
-                        Citizen.Wait(1)
+                        Wait(1)
                     end
                 
                     TriggerEvent("Ped:Client:Died")
@@ -177,11 +177,11 @@ function StartThreads()
             else
 
             end
-            Citizen.Wait(100)
+            Wait(100)
 		end
 	end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		if _healTickRunning then
 			return
 		end
@@ -215,15 +215,15 @@ function StartThreads()
 						LocalPlayer.state:set("healTicks", nil, true)
 					end
 				end
-				Citizen.Wait(10000)
+				Wait(10000)
 			else
-				Citizen.Wait(2000)
+				Wait(2000)
 			end
 		end
 		_healTickRunning = false
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		if _armrTickRunning then
 			return
 		end
@@ -231,7 +231,7 @@ function StartThreads()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.armorTicks ~= nil then
 				local car = GetPedArmour(LocalPlayer.state.ped)
-				local max = GetPlayerMaxArmour(LocalPlayer.state.PlayerID)
+				local max = GetPlayerMaxArmour(LocalPlayer.state.clientID)
 
 				if car >= max then
 					LocalPlayer.state:set("armorTicks", nil, true)
@@ -257,15 +257,15 @@ function StartThreads()
 						LocalPlayer.state:set("armorTicks", nil, true)
 					end
 				end
-				Citizen.Wait(10000)
+				Wait(10000)
 			else
-				Citizen.Wait(2000)
+				Wait(2000)
 			end
 		end
 		_armrTickRunning = false
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.isLimping then
 				local luck = math.random(100)
@@ -276,14 +276,14 @@ function StartThreads()
 					SetPedToRagdoll(LocalPlayer.state.ped, 1500, 2000, 3, true, true, false)
 				end
 
-				Citizen.Wait(100)
+				Wait(100)
 			else
-				Citizen.Wait(2500)
+				Wait(2500)
 			end
 		end
 	end)
     
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		while LocalPlayer.state.loggedIn do
             if LocalPlayer.state.onPainKillers ~= nil and LocalPlayer.state.onPainKillers > 0 then
 				LocalPlayer.state.onPainKillers = LocalPlayer.state.onPainKillers - 1
@@ -302,14 +302,14 @@ function StartThreads()
 			end
             
 			ApplyLimp(LocalPlayer.state.ped)
-			Citizen.Wait(200)
+			Wait(200)
 		end
 	end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, LocalPlayer.state.regenRate)
-            Citizen.Wait(250)
+            SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, LocalPlayer.state.regenRate)
+            Wait(250)
         end
     end)
 end

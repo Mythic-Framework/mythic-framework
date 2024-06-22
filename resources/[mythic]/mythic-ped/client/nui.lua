@@ -143,7 +143,7 @@ RegisterNUICallback("SetPed", function(data, cb)
 	RequestModel(model)
 	local c = 0
 	while not HasModelLoaded(model) do
-		Citizen.Wait(1)
+		Wait(1)
 		c = c + 1
 		if c >= 2000 then
 			cb(false)
@@ -164,7 +164,7 @@ RegisterNUICallback("SetPed", function(data, cb)
 	player = PlayerPedId()
 	SetEntityMaxHealth(player, 200)
 	SetEntityHealth(player, GetEntityMaxHealth(player))
-	LocalPlayer.state.ped = player
+	LocalPlayer.state:set('ped', player, true)
 	SetPedDefaultComponentVariation(player)
 	SetEntityAsMissionEntity(player, true, true)
 	SetModelAsNoLongerNeeded(model)

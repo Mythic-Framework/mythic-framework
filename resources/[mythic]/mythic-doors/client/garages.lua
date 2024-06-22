@@ -587,7 +587,7 @@ function DoGarageKeyFobAction()
         end
 
         rLimited = true
-        Citizen.SetTimeout(650, function()
+        SetTimeout(650, function()
             rLimited = false
         end)
     end

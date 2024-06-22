@@ -17,7 +17,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 	playerHealth = GetEntityHealth(LocalPlayer.state.ped)
 	playerArmor = GetPedArmour(LocalPlayer.state.ped)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		if _healTickRunning then
 			return
 		end
@@ -51,15 +51,15 @@ AddEventHandler("Characters:Client:Spawn", function()
 						LocalPlayer.state:set("healTicks", nil, true)
 					end
 				end
-				Citizen.Wait(10000)
+				Wait(10000)
 			else
-				Citizen.Wait(2000)
+				Wait(2000)
 			end
 		end
 		_healTickRunning = false
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		if _armrTickRunning then
 			return
 		end
@@ -67,7 +67,7 @@ AddEventHandler("Characters:Client:Spawn", function()
 		while LocalPlayer.state.loggedIn do
 			if LocalPlayer.state.armorTicks ~= nil then
 				local car = GetPedArmour(LocalPlayer.state.ped)
-				local max = GetPlayerMaxArmour(LocalPlayer.state.PlayerID)
+				local max = GetPlayerMaxArmour(LocalPlayer.state.clientID)
 
 				if car >= max then
 					LocalPlayer.state:set("armorTicks", nil, true)
@@ -93,9 +93,9 @@ AddEventHandler("Characters:Client:Spawn", function()
 						LocalPlayer.state:set("armorTicks", nil, true)
 					end
 				end
-				Citizen.Wait(10000)
+				Wait(10000)
 			else
-				Citizen.Wait(2000)
+				Wait(2000)
 			end
 		end
 		_armrTickRunning = false
@@ -124,7 +124,7 @@ end
 function diecunt(ped, isMinor)
 	if not _hasKnockedOut then
 		_hasKnockedOut = true
-		Citizen.SetTimeout(60000 * 5, function()
+		SetTimeout(60000 * 5, function()
 			_hasKnockedOut = false
 		end)
 	else
@@ -139,7 +139,7 @@ function diecunt(ped, isMinor)
 	LocalPlayer.state:set("isDeadTime", GetCloudTimeAsInt(), true)
 
 	while not LocalPlayer.state.isDead do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	TriggerEvent("Ped:Client:Died")
@@ -248,7 +248,7 @@ AddEventHandler("Damage:Client:Triggers:EntityDamaged", function(ped, attacker, 
 							end
 
 							_cd[bodypart] = true
-							Citizen.SetTimeout(15000, function()
+							SetTimeout(15000, function()
 								_cd[bodypart] = nil
 							end)
 						end

@@ -13,7 +13,7 @@ function CameraLoop()
 		end
 	)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while createdCamera ~= 0 and currId == LocalPlayer.state.inCCTVCam?.camKey do
             DisableControlAction(0, 1, true) -- LookLeftRight
             DisableControlAction(0, 2, true) -- LookUpDown
@@ -42,11 +42,11 @@ function CameraLoop()
             DisableControlAction(0, 263, true) -- disable melee
             DisableControlAction(0, 264, true) -- disable melee
             DisableControlAction(0, 257, true) -- disable melee
-            Citizen.Wait(1)
+            Wait(1)
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while createdCamera ~= 0 and currId == LocalPlayer.state.inCCTVCam?.camKey do
             local instructions = InstructionScaleform("instructional_buttons", isGroup, isOnline, canRot)
             DrawScaleformMovieFullscreen(instructions, 255, 255, 255, 255, 0)
@@ -95,7 +95,7 @@ function CameraLoop()
                 end
             end
     
-            Citizen.Wait(1)
+            Wait(1)
         end
 		RemoveStateBagChangeHandler(handler)
     end)
@@ -110,7 +110,7 @@ function SetupGTACamera(x, y, z, r)
 	SetCamCoord(cam, x, y, z)
 	SetCamRot(cam, r.x, r.y, r.z, 2)
 	RenderScriptCams(1, 0, 0, 1, 1)
-	Citizen.Wait(250)
+	Wait(250)
 	createdCamera = cam
 end
 
@@ -134,7 +134,7 @@ function EnterCam(camId)
 		globalCamera = camId
 		DoScreenFadeOut(250)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 
 		if GlobalState[camKey].isOnline then
@@ -158,12 +158,12 @@ function EnterCam(camId)
 
 			SetTimecycleModifier(currentTimecycle)
 			offline = false
-			Citizen.Wait(200)
+			Wait(200)
 		else
 			currentTimecycle = "Broken_camera_fuzz"
 			SetTimecycleModifier(currentTimecycle)
 			offline = true
-			Citizen.Wait(200)
+			Wait(200)
 		end
 		canrotate = GlobalState[camKey].canRotate
 		local firstCamx = GlobalState[camKey].x
@@ -186,7 +186,7 @@ function ExitCam()
     LocalPlayer.state:set("inCCTVCam", false, true)
 
 	while not IsScreenFadedOut() do
-		Citizen.Wait(0)
+		Wait(0)
 	end
 	CleanupGTACamera()
 
@@ -198,7 +198,7 @@ function InstructionScaleform(scaleform, isGroup, isOnline, canRot)
 	if createdCamera ~= 0 then
 		local scaleform = RequestScaleformMovie(scaleform)
 		while not HasScaleformMovieLoaded(scaleform) do
-			Citizen.Wait(0)
+			Wait(0)
 		end
 		PushScaleformMovieFunction(scaleform, "CLEAR_ALL")
 		PopScaleformMovieFunctionVoid()

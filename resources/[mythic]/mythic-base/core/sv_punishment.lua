@@ -508,7 +508,7 @@ COMPONENTS.Punishment.Ban = {
 					banStr = banStr,
 				}
 
-				Citizen.CreateThread(function()
+				CreateThread(function()
 					if dbf and tPlayer then
 						tPlayer:DeleteStore()
 					end

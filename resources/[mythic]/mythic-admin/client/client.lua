@@ -149,7 +149,7 @@ RegisterNetEvent('Admin:Client:ChangePed', function(model)
         if not HasModelLoaded(hash) then
             RequestModel(hash)
             while not HasModelLoaded(hash) do
-                Citizen.Wait(100)
+                Wait(100)
             end
         end
 

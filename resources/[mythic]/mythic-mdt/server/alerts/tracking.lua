@@ -3,9 +3,9 @@ _trackingEmployees = {}
 function StartAETrackingThreads()
     GlobalState.GovernmentTrackers = {}
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while true do
-            Citizen.Wait(2500)
+            Wait(2500)
             for k, v in pairs(emergencyAlertsData) do
                 if v ~= nil and v.Source then
                     local tpCoords = Player(v.Source)?.state?.tpLocation

@@ -144,7 +144,7 @@ local _pdStationPolys = {
 function loadModel(model)
 	RequestModel(model)
 	while not HasModelLoaded(model) do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 end
 
@@ -385,7 +385,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			for k, v in ipairs(bruh) do
 				local fuck = GlobalState[string.format("Robbery:InProgress:%s", v)]
 				if fuck then
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(fuck.x, fuck.y, fuck.z))
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(fuck.x, fuck.y, fuck.z))
 					if dist <= 3.0 then
 						Callbacks:ServerCallback("Police:Breach", {
 							type = "robbery",
@@ -403,7 +403,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				for k, v in ipairs(bruh) do
 					local fuck = GlobalState[string.format("Robbery:InProgress:%s", v)]
 					if fuck then
-						local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - vector3(fuck.x, fuck.y, fuck.z))
+						local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(fuck.x, fuck.y, fuck.z))
 						return dist <= 3.0
 					end
 				end
@@ -433,7 +433,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			}, function(cancelled)
 				cb(not cancelled)
 				if not cancelled then
-					--Sounds.Play:Location(LocalPlayer.state.myPos, 20, "breach.ogg", 0.15)
+					--Sounds.Play:Location(LocalPlayer.state.position, 20, "breach.ogg", 0.15)
 				end
 			end)
 		end)
@@ -444,7 +444,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				if not _cuffCd then
 					TriggerServerEvent("Police:Server:Cuff")
 					_cuffCd = true
-					Citizen.SetTimeout(3000, function()
+					SetTimeout(3000, function()
 						_cuffCd = false
 					end)
 				end
@@ -456,7 +456,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				if not _cuffCd then
 					TriggerServerEvent("Police:Server:Uncuff")
 					_cuffCd = true
-					Citizen.SetTimeout(3000, function()
+					SetTimeout(3000, function()
 						_cuffCd = false
 					end)
 				end
@@ -468,8 +468,8 @@ AddEventHandler("Core:Shared:Ready", function()
 		-- 		if not _cuffCd then
 		-- 			TriggerServerEvent("Police:Server:ToggleCuff")
 		-- 			_cuffCd = true
-		-- 			Citizen.CreateThread(function()
-		-- 				Citizen.Wait(2000)
+		-- 			CreateThread(function()
+		-- 				Wait(2000)
 		-- 				_cuffCd = false
 		-- 			end)
 		-- 		end
@@ -516,7 +516,7 @@ AddEventHandler("Core:Shared:Ready", function()
 									0,
 									0
 								)
-								Citizen.Wait(350)
+								Wait(350)
 								ClearPedSecondaryTask(LocalPlayer.state.ped)
 								SetPedToRagdoll(LocalPlayer.state.ped, 500, 500, 0, 0, 0, 0)
 							end
@@ -796,7 +796,7 @@ function StupidRagdoll(tackleAnim)
 		)
 		time = 1000
 	end
-	Citizen.Wait(350)
+	Wait(350)
 	ClearPedSecondaryTask(LocalPlayer.state.ped)
 	SetPedToRagdoll(LocalPlayer.state.ped, time, time, 0, 0, 0, 0)
 end

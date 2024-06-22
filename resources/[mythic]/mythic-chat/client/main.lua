@@ -59,13 +59,13 @@ AddEventHandler('Chat:Client:ReceiveMe', function(sender, uid, message)
         if dist <= 15.0 and HasEntityClearLosToEntity(myPed, senderPed, 17) then
             local timer = 350
             mes[sender] = uid
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 while dist <= 25.0 and mes[sender] == uid and timer > 0 do
                     senderPos = GetPedBoneCoords(senderPed, 0)
                     Print3DText(senderPos, message)
                     dist = #(senderPos - GetEntityCoords(myPed))
                     timer = timer - 1
-                    Citizen.Wait(5)
+                    Wait(5)
                 end
             end)
         end

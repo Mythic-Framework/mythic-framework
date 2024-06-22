@@ -11,7 +11,7 @@ scaleform.__index = scaleform
 function COMPONENTS.Scaleform.Request(self, Name)
 	local ScaleformHandle = RequestScaleformMovie(Name)
 	local StartTime = GetGameTimer()
-	while not HasScaleformMovieLoaded(ScaleformHandle) do Citizen.Wait(0) 
+	while not HasScaleformMovieLoaded(ScaleformHandle) do Wait(0) 
 		if GetGameTimer() - StartTime >= 5000 then
 			print('Failed Requesting Scaleform ' .. Name)
 			return
@@ -25,7 +25,7 @@ function COMPONENTS.Scaleform.RequestHud(self, id)
 	local ScaleformHandle = RequestHudScaleform(id)
 	local StartTime = GetGameTimer()
 	while not HasHudScaleformLoaded(ScaleformHandle) do 
-		Citizen.Wait(0) 
+		Wait(0) 
 		if GetGameTimer() - StartTime >= 5000 then
 			print('Failed Loading Scaleform ' .. id)
 			return

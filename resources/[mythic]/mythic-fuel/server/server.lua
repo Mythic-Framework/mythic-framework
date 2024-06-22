@@ -33,9 +33,9 @@ AddEventHandler('Core:Shared:Ready', function()
         RegisterCallbacks()
 
         if not threading then
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 while true do
-                    Citizen.Wait(1000 * 60 * 10)
+                    Wait(1000 * 60 * 10)
                     if depositData.amount > 0 then
                         Logger:Trace("Fuel", string.format("Depositing ^2$%s^7 To ^3%s^7", math.abs(depositData.amount), bankAcc))
                         Banking.Balance:Deposit(bankAcc, math.abs(depositData.amount), {
@@ -54,7 +54,7 @@ AddEventHandler('Core:Shared:Ready', function()
             threading = true
         end
 
-        Citizen.Wait(2000)
+        Wait(2000)
         local f = Banking.Accounts:GetOrganization("dgang")
         bankAcc = f.Account
     end)

@@ -215,7 +215,7 @@ RegisterNUICallback("loaded", function(data, cb)
 	cb("ok")
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	SetTextChatEnabled(false)
 	SetNuiFocus(false)
 

@@ -156,11 +156,11 @@ RegisterNetEvent("Mining:Client:OnDuty", function(joiner, time)
             Blips:Add(string.format("MiningNode-%s", v.id), "Mining Node", v.coords, 594, 0, 0.8)
 		end
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while _working do
 				local closest = nil
 				for k, v in pairs(_nodes) do
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - v.coords)
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - v.coords)
 					if closest == nil or dist < closest.dist then
 						closest = {
 							dist = dist,
@@ -172,12 +172,12 @@ RegisterNetEvent("Mining:Client:OnDuty", function(joiner, time)
 				if closest ~= nil then
 					if closest.dist <= 20 then
 						DrawMarker(1, closest.point.coords.x, closest.point.coords.y, closest.point.coords.z - 0.98, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 1.0, 112, 209, 244, 250, false, false, 2, false, false, false, false)
-						Citizen.Wait(5)
+						Wait(5)
 					else
-						Citizen.Wait(closest.dist * 100)
+						Wait(closest.dist * 100)
 					end
 				else
-					Citizen.Wait(1000)
+					Wait(1000)
 				end
 			end
 		end)

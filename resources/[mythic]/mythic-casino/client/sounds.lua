@@ -1,19 +1,19 @@
 function StartCasinoBackgroundAudioThread()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while not RequestScriptAudioBank("DLC_VINEWOOD/CASINO_GENERAL", false, -1) do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
         while not RequestScriptAudioBank("DLC_VINEWOOD/CASINO_SLOT_MACHINES_01", false, -1) do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
         while not RequestScriptAudioBank("DLC_VINEWOOD/CASINO_SLOT_MACHINES_02", false, -1) do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
         while not RequestScriptAudioBank("DLC_VINEWOOD/CASINO_SLOT_MACHINES_03", false, -1) do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
         while _insideCasinoAudio do
@@ -25,7 +25,7 @@ function StartCasinoBackgroundAudioThread()
                 StartAudioScene("DLC_VW_Casino_General")
             end
 
-            Citizen.Wait(500)
+            Wait(500)
         end
 
         StopCasinoBackgroundAudio()

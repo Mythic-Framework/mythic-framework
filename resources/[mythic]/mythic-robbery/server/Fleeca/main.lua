@@ -66,14 +66,14 @@ function ResetFleeca(fleecaId)
 end
 
 function StartAutoCDTimer(fleecaId)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		if _triggered[fleecaId] then
 			return
 		else
 			_triggered[fleecaId] = true
 		end
 
-		Citizen.Wait(1000 * 60 * 30)
+		Wait(1000 * 60 * 30)
 
 		if _inProgress[fleecaId] then
 			_inProgress[fleecaId] = false

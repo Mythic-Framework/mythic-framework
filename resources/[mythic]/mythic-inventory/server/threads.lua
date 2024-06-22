@@ -85,9 +85,9 @@ function InventoryThreads()
 	end
 	_started = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while true do
-			Citizen.Wait(1000 * 60 * 10)
+			Wait(1000 * 60 * 10)
 			for k, v in pairs(pendingShopDeposits) do
 				if v.tax then
 					Logger:Trace("Inventory", string.format("Depositing ^2$%s^7 To ^3%s^7 For Tax On ^2%s^7 Store Transactions", v.amount, k, v.transactions))
@@ -112,15 +112,15 @@ function InventoryThreads()
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while true do
 			if _forcing then
 				Logger:Trace("Inventory", "Force Inventory Saving Occuring, Waiting To Scan Saves To Not Interfere")
-				Citizen.Wait(30000)
+				Wait(30000)
 			else
 				if #createdInventories == 0 then
 					Logger:Trace("Inventory", "No Inventories To Save, Waiting...")
-					Citizen.Wait(60000)
+					Wait(60000)
 				else
 					local p = promise.new()
 
@@ -137,7 +137,7 @@ function InventoryThreads()
 							)
 						)
 						table.remove(createdInventories, 1)
-						Citizen.Wait((1000 * 60 * 5) / (#createdInventories or 1))
+						Wait((1000 * 60 * 5) / (#createdInventories or 1))
 					else
 						local slots = Inventory:GetSlots(createdInventories[1].owner, createdInventories[1].type)
 						local save = {}
@@ -200,11 +200,11 @@ function InventoryThreads()
 
 						Citizen.Await(p)
 						table.remove(createdInventories, 1)
-						Citizen.Wait(math.abs(math.ceil(((1000 * 60 * 5) / (#createdInventories or 1)))))
+						Wait(math.abs(math.ceil(((1000 * 60 * 5) / (#createdInventories or 1)))))
 					end
 				end
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end

@@ -32,7 +32,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 	_isEntering = true
 
 	while GlobalState[string.format("%s:Property", LocalPlayer.state.ID)] == nil do
-		Citizen.Wait(10)
+		Wait(10)
 		print("Interior Stuff Waiting, This Shouldn't Spam")
 	end
 
@@ -42,7 +42,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 	TriggerEvent("Interiors:Enter", vector3(intr.x, intr.y, intr.z), propertyId, property.interior, property.data)
 
 	if wakeUp and intr.locations.wakeup then
-		Citizen.SetTimeout(250, function()
+		SetTimeout(250, function()
 			Animations.Emotes:WakeUp(intr.locations.wakeup)
 		end)
 	end
@@ -55,7 +55,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 	Targeting.Zones:RemoveZone(string.format("property-%s-warehouse", propertyId))
 	Targeting.Zones:RemoveZone(string.format("property-%s-office", propertyId))
 
-	Citizen.Wait(100)
+	Wait(100)
 
 	if intr.locations.logout then
 		Targeting.Zones:AddBox(
@@ -277,7 +277,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 		)
 	end
 
-	Citizen.Wait(1000)
+	Wait(1000)
 	Sync:Stop(1)
 	Targeting.Zones:Refresh()
 
@@ -330,7 +330,7 @@ end)
 
 RegisterNetEvent("Properties:Client:AddBlips", function()
 	while LocalPlayer.state.Character == nil do
-		Citizen.Wait(5)
+		Wait(5)
 	end
 
 	if GlobalState.Properties then

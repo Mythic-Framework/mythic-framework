@@ -2,7 +2,7 @@ _dropping = {}
 COMPONENTS.Players = COMPONENTS.Players or {}
 COMPONENTS.RecentDisconnects = COMPONENTS.RecentDisconnects or {}
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		for k, v in pairs(COMPONENTS.Players) do
 			if not GetPlayerEndpoint(k) and not _dropping[k] then
@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
 				COMPONENTS.Players[k] = nil
 			end
 		end
-		Citizen.Wait(10000)
+		Wait(10000)
 	end
 end)
 
@@ -88,7 +88,7 @@ AddEventHandler("Core:Server:ForceUnload", function(source)
 end)
 
 AddEventHandler("Queue:Server:SessionActive", function(source, data)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		Player(source).state.ID = source
 
 		if data == nil then

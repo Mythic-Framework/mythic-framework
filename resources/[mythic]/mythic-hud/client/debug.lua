@@ -166,9 +166,9 @@ function canPedBeUsed(ped)
 	return true
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
-		Citizen.Wait(1)
+		Wait(1)
 
 		if _debugging then
 			local pos = GetEntityCoords(GetPlayerPed(-1))
@@ -241,7 +241,7 @@ Citizen.CreateThread(function()
             local veh = GetVehicle()
             local nearobj = GetObject()
 		else
-			Citizen.Wait(5000)
+			Wait(5000)
 		end
 	end
 end)

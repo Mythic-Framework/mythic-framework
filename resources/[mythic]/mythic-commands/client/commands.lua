@@ -48,7 +48,7 @@ RegisterNetEvent("Commands:Client:TeleportToMarker", function()
 				break
 			end
 
-			Citizen.Wait(5)
+			Wait(5)
 		end
 		Notification:Success("Teleported")
 	else

@@ -21,7 +21,7 @@ COMPONENTS.Callbacks = {
     end,
     DoClientCallback = function(self, event, extraId, data)
         if _cCallbacks[event] ~= nil then
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 _cCallbacks[event](data, function(...)
                     TriggerServerEvent('Callbacks:Server:ReceiveCallback', event, extraId, ...)
                 end)

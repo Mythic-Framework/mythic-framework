@@ -37,13 +37,13 @@ local function _initDebug(zone, options)
     return
   end
   
-  Citizen.CreateThread(function()
+  CreateThread(function()
     local entity = zone.entity
     local shouldDraw = options.debugPoly
     while not zone.destroyed do
       UpdateOffsets(entity, zone)
       if shouldDraw then zone:draw() end
-      Citizen.Wait(0)
+      Wait(0)
     end
   end)
 end

@@ -83,9 +83,9 @@ AddEventHandler('Locations:Client:LogoutLocation', function()
 end)
 
 AddEventHandler("Characters:Client:Spawn", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
-			Citizen.Wait(20000)
+			Wait(20000)
 
             if not LocalPlayer.state?.tpLocation then
                 local coords = GetEntityCoords(PlayerPedId())

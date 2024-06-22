@@ -2,7 +2,7 @@ function FlipVehicle(vehicle, correctPitch)
     if vehicle and DoesEntityExist(vehicle) then
         local vehicleRot = GetEntityRotation(vehicle)
         SetEntityRotation(vehicleRot.x, correctPitch, vehicleRot.z)
-        Citizen.Wait(50)
+        Wait(50)
         SetVehicleOnGroundProperly(vehicle)
     end
 end
@@ -10,7 +10,7 @@ end
 AddEventHandler('Vehicles:Client:FlipVehicle', function(entityData)
     if not entityData then return end
     TaskTurnPedToFaceEntity(LocalPlayer.state.ped, entityData.entity, 1)
-    Citizen.Wait(250)
+    Wait(250)
     Progress:ProgressWithTickEvent({
 		name = "flipping_vehicle",
 		duration = math.random(13, 20) * 1000,
@@ -29,7 +29,7 @@ AddEventHandler('Vehicles:Client:FlipVehicle', function(entityData)
 			flags = 15,
 		},
 	}, function()
-		if not DoesEntityExist(entityData.entity) or (#(GetEntityCoords(entityData.entity) - LocalPlayer.state.myPos) > 5.0) then
+		if not DoesEntityExist(entityData.entity) or (#(GetEntityCoords(entityData.entity) - LocalPlayer.state.position) > 5.0) then
             Progress:Cancel()
 			return
         end

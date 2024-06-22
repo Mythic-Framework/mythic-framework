@@ -1,7 +1,7 @@
 _disabled = false
 
 function DisableControls()
-    Citizen.CreateThread(function()
+    CreateThread(function()
 		while LocalPlayer.state.loggedIn and _disabled do
 			DisableControlAction(0, 0, true) -- INPUT_NEXT_CAMERA
 			DisableControlAction(0, 21, true) -- INPUT_SPRINT
@@ -32,7 +32,7 @@ function DisableControls()
 			DisableControlAction(0, 263, true) -- INPUT_MELEE_ATTACK1
 			DisableControlAction(0, 264, true) -- INPUT_MELEE_ATTACK2
 			DisablePlayerFiring(PlayerId(), true) -- Disable weapon firing
-			Citizen.Wait(1)
+			Wait(1)
 		end
     end)
 end

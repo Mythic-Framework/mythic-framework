@@ -27,7 +27,7 @@ AddEventHandler("Businesses:Client:Startup", function()
                             if not success then
                                 Notification:Error("Error!")
                             else
-                                Sounds.Play:Location(LocalPlayer.state.myPos, 10, "breach.ogg", 0.15)
+                                Sounds.Play:Location(LocalPlayer.state.position, 10, "breach.ogg", 0.15)
                             end
                         end)
                     end
@@ -81,7 +81,7 @@ AddEventHandler("Businesses:Client:Startup", function()
     Callbacks:RegisterClientCallback("StorageUnits:Passcode", function(code, cb)
         Minigame.Play:Keypad(code, false, 10000, true, {
             onSuccess = function(data)
-                Citizen.Wait(2000)
+                Wait(2000)
                 cb(true, data)
             end,
             onFail = function(data)

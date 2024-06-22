@@ -6,7 +6,7 @@ AddEventHandler('Labor:Client:Setup', function()
 			text = "Export Items",
 			event = "Labor:Client:Export:GetMenu",
 		},
-	}, 'money-check-dollar-pen', 'WORLD_HUMAN_CLIPBOARD')
+    }, 'sack-dollar', 'WORLD_HUMAN_CLIPBOARD')
 end)
 
 AddEventHandler("Labor:Client:Export:GetMenu", function()

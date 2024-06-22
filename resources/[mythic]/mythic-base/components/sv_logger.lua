@@ -1,5 +1,3 @@
-local DISCORD_NAME = "Logger Bot"
-local DISCORD_IMAGE = "https://pbs.twimg.com/profile_images/847824193899167744/J1Teh4Di_400x400.jpg"
 local logWebhook = GetConvar("discord_log_webhook", "NOT SET")
 
 local colors = {
@@ -19,49 +17,8 @@ local levelColors = {
 	[5] = "critical",
 }
 
-AddEventHandler("Logger:Log", function(component, log, flags, extra)
-	COMPONENTS.Logger:Log(component, log, flags, extra)
-end)
-AddEventHandler("Logger:Trace", function(component, log, flags, extra)
-	COMPONENTS.Logger:Trace(component, log, flags, extra)
-end)
-AddEventHandler("Logger:Info", function(component, log, flags, extra)
-	COMPONENTS.Logger:Info(component, log, flags, extra)
-end)
-AddEventHandler("Logger:Warn", function(component, log, flags, extra)
-	COMPONENTS.Logger:Warn(component, log, flags, extra)
-end)
-AddEventHandler("Logger:Error", function(component, log, flags, extra)
-	COMPONENTS.Logger:Error(component, log, flags, extra)
-end)
-AddEventHandler("Logger:Critical", function(component, log, flags, extra)
-	COMPONENTS.Logger:Critical(component, log, flags, extra)
-end)
-COMPONENTS.Logger = {
-	_required = { "Log" },
-	_name = "base",
-	Trace = function(self, component, log, flags, data)
-		doLog(1, component, log, flags, data)
-	end,
-	Info = function(self, component, log, flags, data)
-		doLog(2, component, log, flags, data)
-	end,
-	Warn = function(self, component, log, flags, data)
-		doLog(3, component, log, flags, data)
-	end,
-	Error = function(self, component, log, flags, data)
-		doLog(4, component, log, flags, data)
-	end,
-	Critical = function(self, component, log, flags, data)
-		doLog(5, component, log, flags, data)
-	end,
-	Log = function(self, component, log, flags, extra) -- Retained purely for legacy sake, stop using this
-		doLog(0, component, log, flags, extra)
-	end,
-}
-
-function doLog(level, component, log, flags, data)
-	Citizen.CreateThread(function()
+local function doLog(level, component, log, flags, data)
+	CreateThread(function()
 		local prefix = "[LOG]"
 		local mPrefix = "[LOG]"
 
@@ -115,7 +72,7 @@ function doLog(level, component, log, flags, data)
 						--server = COMPONENTS.Config.Server.ID,
 						level = level,
 						component = component,
-						log = machineLog or log,
+						log = log,
 						data = data,
 					},
 				})
@@ -189,3 +146,44 @@ function doLog(level, component, log, flags, data)
 		end
 	end)
 end
+
+AddEventHandler("Logger:Log", function(component, log, flags, extra)
+	COMPONENTS.Logger:Log(component, log, flags, extra)
+end)
+AddEventHandler("Logger:Trace", function(component, log, flags, extra)
+	COMPONENTS.Logger:Trace(component, log, flags, extra)
+end)
+AddEventHandler("Logger:Info", function(component, log, flags, extra)
+	COMPONENTS.Logger:Info(component, log, flags, extra)
+end)
+AddEventHandler("Logger:Warn", function(component, log, flags, extra)
+	COMPONENTS.Logger:Warn(component, log, flags, extra)
+end)
+AddEventHandler("Logger:Error", function(component, log, flags, extra)
+	COMPONENTS.Logger:Error(component, log, flags, extra)
+end)
+AddEventHandler("Logger:Critical", function(component, log, flags, extra)
+	COMPONENTS.Logger:Critical(component, log, flags, extra)
+end)
+COMPONENTS.Logger = {
+	_required = { "Log" },
+	_name = "base",
+	Trace = function(self, component, log, flags, data)
+		doLog(1, component, log, flags, data)
+	end,
+	Info = function(self, component, log, flags, data)
+		doLog(2, component, log, flags, data)
+	end,
+	Warn = function(self, component, log, flags, data)
+		doLog(3, component, log, flags, data)
+	end,
+	Error = function(self, component, log, flags, data)
+		doLog(4, component, log, flags, data)
+	end,
+	Critical = function(self, component, log, flags, data)
+		doLog(5, component, log, flags, data)
+	end,
+	Log = function(self, component, log, flags, extra) -- Retained purely for legacy sake, stop using this
+		doLog(0, component, log, flags, extra)
+	end,
+}

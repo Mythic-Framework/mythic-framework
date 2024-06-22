@@ -63,9 +63,9 @@ end)
 
 RegisterNetEvent('Characters:Client:Spawn')
 AddEventHandler('Characters:Client:Spawn', function()
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
-            Citizen.Wait(2000)
+            Wait(2000)
             local playerCoords = GetEntityCoords(LocalPlayer.state.ped)
             _nearbyScenes = {}
             collectgarbage()
@@ -78,7 +78,7 @@ AddEventHandler('Characters:Client:Spawn', function()
         end
     end)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while LocalPlayer.state.loggedIn do
             if #_nearbyScenes > 0 then
                 local playerCoords = GetEntityCoords(LocalPlayer.state.ped)
@@ -88,9 +88,9 @@ AddEventHandler('Characters:Client:Spawn', function()
                     end
                 end
             else
-                Citizen.Wait(250)
+                Wait(250)
             end
-            Citizen.Wait(3)
+            Wait(3)
         end
     end)
 end)
@@ -238,14 +238,14 @@ AddEventHandler('Scenes:Client:OpenOptionsMenu', function(values, data)
 
     _creationMenu = Menu:Create('scenes', 'Scene Creation', function()
         _creationOpen = true
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _creationOpen do
                 DrawScene(creatingSceneData)
-                Citizen.Wait(2)
+                Wait(2)
             end
         end)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _creationOpen do
                 if (#(GetEntityCoords(LocalPlayer.state.ped) - creatingSceneData.coords) > 10.0) then
                     Notification:Error('Scene Creation Cancelled - Too Far Away')
@@ -253,7 +253,7 @@ AddEventHandler('Scenes:Client:OpenOptionsMenu', function(values, data)
                     _creationMenu:Close()
                     break
                 end
-                Citizen.Wait(2500)
+                Wait(2500)
             end
         end)
     end, function()
@@ -452,16 +452,16 @@ function EditScene(id, fuckface, data)
     _creationMenu = Menu:Create('scenes', 'Edit Scene', function()
         _creationOpen = true
         _hiddenScenes[fuckface._id] = true
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _creationOpen do
                 DrawScene(creatingSceneData)
-                Citizen.Wait(2)
+                Wait(2)
             end
 
             _hiddenScenes[fuckface._id] = nil
         end)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while _creationOpen do
                 if (#(GetEntityCoords(LocalPlayer.state.ped) - creatingSceneData.coords) > 10.0) then
                     Notification:Error('Scene Edit Cancelled - Too Far Away')
@@ -469,7 +469,7 @@ function EditScene(id, fuckface, data)
                     _creationMenu:Close()
                     break
                 end
-                Citizen.Wait(2500)
+                Wait(2500)
             end
         end)
     end, function()
@@ -675,9 +675,9 @@ RegisterNetEvent('Scenes:Client:StartEdit', function()
     Scenes:Edit()
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while not HasStreamedTextureDictLoaded('arpscenes') do
-        Citizen.Wait(100) 
+        Wait(100) 
         RequestStreamedTextureDict('arpscenes', true)
     end
 end)

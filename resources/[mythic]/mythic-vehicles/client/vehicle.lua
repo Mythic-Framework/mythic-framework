@@ -194,10 +194,10 @@ VEHICLE = {
 	
 				RequestAnimDict("veh@break_in@0h@p_m_one@")
 				while not HasAnimDictLoaded("veh@break_in@0h@p_m_one@") do
-					Citizen.Wait(5)
+					Wait(5)
 				end
 	
-				Citizen.CreateThread(function()
+				CreateThread(function()
 					while dumbAnim do
 						TaskPlayAnim(
 							GLOBAL_PED,
@@ -212,7 +212,7 @@ VEHICLE = {
 							0,
 							0
 						)
-						Citizen.Wait(1000)
+						Wait(1000)
 	
 						if math.random(100) <= 50 then
 							SetVehicleAlarm(VEHICLE_INSIDE, true)
@@ -296,10 +296,10 @@ VEHICLE = {
 				local dumbAnim = true
 				RequestAnimDict("veh@break_in@0h@p_m_one@")
 				while not HasAnimDictLoaded("veh@break_in@0h@p_m_one@") do
-					Citizen.Wait(5)
+					Wait(5)
 				end
 	
-				Citizen.CreateThread(function()
+				CreateThread(function()
 					while dumbAnim do
 						TaskPlayAnim(
 							GLOBAL_PED,
@@ -314,7 +314,7 @@ VEHICLE = {
 							0,
 							0
 						)
-						Citizen.Wait(1000)
+						Wait(1000)
 					end
 				end)
 	
@@ -338,7 +338,7 @@ VEHICLE = {
 	
 					Minigame.Play:RoundSkillbar(v, config.base - k, {
 						onSuccess = function()
-							Citizen.Wait(400)
+							Wait(400)
 							stageComplete = true
 						end,
 						onFail = function()
@@ -362,7 +362,7 @@ VEHICLE = {
 					})
 	
 					while not stageComplete do
-						Citizen.Wait(1)
+						Wait(1)
 					end
 				end
 	
@@ -435,7 +435,7 @@ VEHICLE = {
 	
 					Minigame.Play:RoundSkillbar(v, config.base - k, {
 						onSuccess = function()
-							Citizen.Wait(400)
+							Wait(400)
 							stageComplete = true
 						end,
 						onFail = function()
@@ -459,7 +459,7 @@ VEHICLE = {
 					})
 	
 					while not stageComplete do
-						Citizen.Wait(1)
+						Wait(1)
 					end
 				end
 	
@@ -624,21 +624,21 @@ VEHICLE = {
 	Utils = {
 		IsCloseToRearOfVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToFrontOfVehicle(vehicle, coords)
 		end,
 		IsCloseToFrontOfVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToRearOfVehicle(vehicle, coords)
 		end,
 		IsCloseToVehicle = function(self, vehicle, coords)
 			if not coords then
-				coords = LocalPlayer.state.myPos
+				coords = LocalPlayer.state.position
 			end
 
 			return IsCloseToVehicle(vehicle, coords)
@@ -674,7 +674,7 @@ AddEventHandler("Vehicles:Client:EnterVehicle", function(veh)
 
 	TriggerEvent("Vehicles:Client:Seatbelt", false)
 
-	Citizen.Wait(1000)
+	Wait(1000)
 
 	TriggerEvent("Vehicles:Client:Ignition", vehEnt.state.VEH_IGNITION)
 end)
@@ -694,7 +694,7 @@ AddEventHandler('Vehicles:Client:BecameDriver', function(veh, seat)
     end
 
     while IsVehicleNeedsToBeHotwired(VEHICLE_INSIDE) do
-        Citizen.Wait(0)
+        Wait(0)
         SetVehicleNeedsToBeHotwired(VEHICLE_INSIDE, false)
     end
 

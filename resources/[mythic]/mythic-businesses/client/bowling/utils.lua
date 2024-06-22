@@ -1,14 +1,14 @@
 function LoadDict(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
 function LoadRequestModel(object)
     local model = GetHashKey(object)
     while not HasModelLoaded(model) do
-        Citizen.Wait(50)
+        Wait(50)
         RequestModel(model)
     end
 end

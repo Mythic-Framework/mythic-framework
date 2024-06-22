@@ -355,9 +355,9 @@ function StartExpirationThread()
     if not _expirationThread then
         _expirationThread = true
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while true do
-                Citizen.Wait(60 * 1000 * 30)
+                Wait(60 * 1000 * 30)
                 if _hasLoadedScenes then
                     local deleteScenes = {}
                     local timeStamp = os.time()

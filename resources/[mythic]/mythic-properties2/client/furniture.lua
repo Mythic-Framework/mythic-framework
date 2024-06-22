@@ -25,7 +25,7 @@ function PlaceFurniture(v)
         SetEntityHeading(obj, v.heading + 0.0)
         FreezeEntityPosition(obj, true)
         while not DoesEntityExist(obj) do
-            Citizen.Wait(1)
+            Wait(1)
         end
 
         local furnData = FurnitureConfig[v.model]
@@ -124,7 +124,7 @@ function PlaceFurniture(v)
             targeting = hasTargeting,
         })
 
-        Citizen.Wait(1)
+        Wait(1)
     else
         print("Failed to Load Model: " .. v.model)
     end
@@ -210,7 +210,7 @@ function CycleFurniture(direction)
 
     InfoOverlay:Close()
     ObjectPlacer:Cancel(true, true)
-    Citizen.Wait(200)
+    Wait(200)
     local fKey = _furnitureCategory[_furnitureCategoryCurrent]
     local fData = FurnitureConfig[fKey]
     if fData then
@@ -259,7 +259,7 @@ AddEventHandler("Furniture:Client:Cancel", function()
             Phone:Open()
         end
 
-        Citizen.Wait(200)
+        Wait(200)
         DisablePauseMenu(false)
         InfoOverlay:Close()
     end
@@ -312,7 +312,7 @@ AddEventHandler("Furniture:Client:CancelMove", function(data)
             Phone:Open()
         end
 
-        Citizen.Wait(200)
+        Wait(200)
         DisablePauseMenu(false)
     end
 end)
@@ -324,7 +324,7 @@ RegisterNetEvent("Furniture:Client:AddItem", function(property, index, item)
 
         if LocalPlayer.state.furnitureEdit then
             SetFurnitureEditMode(false)
-            Citizen.Wait(100)
+            Wait(100)
             SetFurnitureEditMode(true)
         end
     end
@@ -352,7 +352,7 @@ RegisterNetEvent("Furniture:Client:MoveItem", function(property, id, item)
 
         if LocalPlayer.state.furnitureEdit then
             SetFurnitureEditMode(false)
-            Citizen.Wait(100)
+            Wait(100)
             SetFurnitureEditMode(true)
         end
 
@@ -406,10 +406,10 @@ function DisablePauseMenu(state)
     if _disablePause ~= state then
         _disablePause = state
         if _disablePause then
-            Citizen.CreateThread(function()
+            CreateThread(function()
 				while _disablePause do
 					DisableControlAction(0, 200, true)
-					Citizen.Wait(1)
+					Wait(1)
 				end
 			end)
         end

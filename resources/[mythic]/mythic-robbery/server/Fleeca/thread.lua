@@ -5,7 +5,7 @@ function StartFleecaThreads()
 	end
 	_threading = true
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _threading do
 			for k, v in pairs(FLEECA_LOCATIONS) do
 				if _fcGlobalReset[k] ~= nil and os.time() > _fcGlobalReset[k] then
@@ -13,11 +13,11 @@ function StartFleecaThreads()
 					ResetFleeca(k)
 				end
 			end
-			Citizen.Wait(30000)
+			Wait(30000)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _threading do
 			for k, v in pairs(FLEECA_LOCATIONS) do
 				if
@@ -33,7 +33,7 @@ function StartFleecaThreads()
 				end
 			end
 
-			Citizen.Wait(30000)
+			Wait(30000)
 		end
 	end)
 end

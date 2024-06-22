@@ -14,8 +14,8 @@ AddEventHandler("Phone:Client:PingEm:AcceptPing", function(data)
 		source = data.source,
 	})
 
-	Citizen.CreateThread(function()
-		Citizen.Wait(30000)
+	CreateThread(function()
+		Wait(30000)
 		Blips:Remove(id)
 	end)
 end)

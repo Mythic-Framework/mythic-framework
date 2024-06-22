@@ -165,7 +165,7 @@ RegisterNUICallback('CurrentVehicleAction', function(data, cb)
                 elseif data.action == 'customs' then
                     TriggerEvent('VehicleCustoms:Client:Admin', true, 0.0)
 
-                    Citizen.SetTimeout(1000, function()
+                    SetTimeout(1000, function()
                         CloseMenu()
                     end)
 

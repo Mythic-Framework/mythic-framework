@@ -5,7 +5,7 @@ COMPONENTS.Core = {
 			file = true,
 		})
 
-		Citizen.Wait(1000) -- Need wait period so logging can finish
+		Wait(1000) -- Need wait period so logging can finish
 	    os.exit()
 	end,
 	DropAll = function(self)
@@ -41,9 +41,9 @@ AddEventHandler("txAdmin:events:scheduledRestart", function(eventData)
 end)
 
 AddEventHandler("Core:Server:StartupReady", function()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while not exports or exports[GetCurrentResourceName()] == nil do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		TriggerEvent(
@@ -54,7 +54,7 @@ AddEventHandler("Core:Server:StartupReady", function()
 			COMPONENTS.Convar.GAME_DB.value
 		)
 		while not COMPONENTS.Proxy.DatabaseReady do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		TriggerEvent("Proxy:Shared:RegisterReady")
@@ -62,7 +62,7 @@ AddEventHandler("Core:Server:StartupReady", function()
 			TriggerEvent("Proxy:Shared:ExtendReady", k)
 		end
 
-		Citizen.Wait(1000)
+		Wait(1000)
 
 		COMPONENTS.Proxy.ExportsReady = true
 		TriggerEvent("Proxy:Shared:ExportsReady")
@@ -72,10 +72,10 @@ AddEventHandler("Core:Server:StartupReady", function()
 	end)
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		GlobalState["OS:Time"] = os.time()
-		Citizen.Wait(1000)
+		Wait(1000)
 	end
 end)
 

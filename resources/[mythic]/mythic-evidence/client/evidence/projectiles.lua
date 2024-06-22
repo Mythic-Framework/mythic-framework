@@ -20,7 +20,7 @@ function StartHoldingWeapon(weapon, weaponData, weaponItemData)
 
     if not hasWeapon then
         hasWeapon = true
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while hasWeapon do
                 if IsPedShooting(LocalPlayer.state.ped) then
                     -- Generate Randomness (Simulate Dropping and make sure they don't all stack ontop of eachother)
@@ -76,9 +76,9 @@ function StartHoldingWeapon(weapon, weaponData, weaponItemData)
                     end
 
                     UpdateCachedEvidence()
-                    Citizen.Wait(250)
+                    Wait(250)
                 end
-                Citizen.Wait(1)
+                Wait(1)
             end
         end)
     end

@@ -29,15 +29,15 @@ end)
 RegisterNetEvent("Police:Client:Search", function(hitting, data)
 	Inventory.Search:Character(hitting.serverId)
 	while not LocalPlayer.state.inventoryOpen do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.inventoryOpen do
 			if #(GetEntityCoords(LocalPlayer.state.ped) - GetEntityCoords(GetPlayerPed(GetPlayerFromServerId(hitting.serverId)))) > 3.0 then
 				Inventory.Close:All()
 			end
-			Citizen.Wait(2)
+			Wait(2)
 		end
 	end)
 end)
@@ -139,7 +139,7 @@ local forceDelete = {}
 
 AddEventHandler("Keybinds:Client:KeyDown:cancel_action", function()
 	if spikesOut then
-		Citizen.SetTimeout(300, function()
+		SetTimeout(300, function()
 			TriggerServerEvent("Police:Server:RemoveSpikes")
 		end)
 	end
@@ -149,12 +149,12 @@ RegisterNetEvent("Police:Client:AddDeployedSpike", function(positions, h, owner)
 	if #(GetEntityCoords(LocalPlayer.state.ped) - positions[1]) <= 800.0 then
 		local start = GetGameTimer()
 		local timeout = false
-		Citizen.SetTimeout(spikeTime - 2000, function() timeout = true; end)
+		SetTimeout(spikeTime - 2000, function() timeout = true; end)
 
-		spikesOut = owner == GetPlayerServerId(LocalPlayer.state.PlayerID)
+		spikesOut = owner == LocalPlayer.state.serverID
 
 		while #(GetEntityCoords(LocalPlayer.state.ped) - positions[1]) > 75.0 and not timeout and not forceDelete[owner] do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		if not timeout and not forceDelete[owner] then
@@ -172,7 +172,7 @@ end)
 
 RegisterNetEvent("Police:Client:RemoveSpikes", function(owner)
 	forceDelete[owner] = true
-	Citizen.SetTimeout(500, function()
+	SetTimeout(500, function()
 		forceDelete[owner] = false
 	end)
 end)
@@ -256,7 +256,7 @@ AddEventHandler("Police:Client:SpikeyBois", function(x, y, z, obj, cunts, owner)
 			end
 		end
 		timer = timer + 1
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	DeleteEntity(obj)

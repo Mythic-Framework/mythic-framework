@@ -8,7 +8,7 @@ COMPONENTS.Discord = {
 		SetDiscordRichPresenceAction(0, "Register at MythicRP.net", "https://mythicrp.com")
 		SetDiscordRichPresenceAction(1, "Join Our Discord", "https://discord.gg/mythicrp")
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while true do
 				local char = LocalPlayer.state.Character
 				local playerCount = GlobalState["PlayerCount"] or 0
@@ -32,12 +32,12 @@ COMPONENTS.Discord = {
 				-- SetDiscordRichPresenceAssetSmallText(
 				-- 	string.format("%s/%s [Queue: %s]", playerCount, GlobalState.MaxPlayers, queueCount)
 				-- )
-				Citizen.Wait(30000)
+				Wait(30000)
 			end
 		end)
 	end,
 }
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	COMPONENTS.Discord:RichPresence()
 end)

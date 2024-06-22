@@ -5,7 +5,7 @@ local crouchStrafeAnimSet = "move_ped_crouched_strafing"
 function RequestAndLoadAnimSet(animSet)
     RequestAnimSet(crouchAnimSet)
     while not HasAnimSetLoaded(crouchAnimSet) do
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 

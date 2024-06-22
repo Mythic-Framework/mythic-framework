@@ -67,7 +67,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 	})
 
 	while not GlobalState["VangelicoCases"] do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 
 	for k, v in ipairs(GlobalState["VangelicoCases"]) do
@@ -153,7 +153,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _pdAlarm
 			-- 			)
 			-- 		return dist <= 2.0 and GlobalState["Vangelico:Alarm"]
@@ -167,7 +167,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _officeHack
 			-- 			)
 			-- 		return dist <= 2.0 and not GlobalState["Vangelico:Lockdown"]
@@ -181,7 +181,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 			-- 	data = {},
 			-- 	isEnabled = function()
 			-- 		local dist = #(
-			-- 				vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z)
+			-- 				vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z)
 			-- 				- _officeHack
 			-- 			)
 			-- 		return dist <= 2.0 and not GlobalState["Vangelico:Lockdown"]
@@ -202,7 +202,7 @@ function loadParticle()
 		RequestNamedPtfxAsset("scr_jewelheist")
 	end
 	while not HasNamedPtfxAssetLoaded("scr_jewelheist") do
-		Citizen.Wait(0)
+		Wait(0)
 	end
 	SetPtfxAssetNextCall("scr_jewelheist")
 end
@@ -211,7 +211,7 @@ function loadAnimation()
 	loadAnimDict("missheist_jewel")
 	TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 2.0, "robberyglassbreak", 0.5)
 	TaskPlayAnim(PlayerPedId(), "missheist_jewel", "smash_case", 8.0, 1.0, -1, 2, 0, 0, 0, 0)
-	Citizen.Wait(2200)
+	Wait(2200)
 end
 
 AddEventHandler("Robbery:Client:Vangelico:BreakCase", function(entity, data)
@@ -223,8 +223,8 @@ AddEventHandler("Robbery:Client:Vangelico:BreakCase", function(entity, data)
 		loadParticle()
 		TaskTurnPedToFaceCoord(LocalPlayer.state.ped, data.coords.x, data.coords.y, data.coords.z, 1.0)
 
-		Citizen.CreateThread(function()
-			Citizen.Wait(600)
+		CreateThread(function()
+			Wait(600)
 			Sounds.Play:Location(data.coords, 10.0, "jewel_glass.ogg", 0.15)
 			StartParticleFxLoopedAtCoord(
 				"scr_jewel_cab_smash",

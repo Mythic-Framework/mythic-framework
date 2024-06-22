@@ -16,14 +16,15 @@ end
 
 function COMPONENTS.Spawn.Init(self)
     DoScreenFadeOut(500)
-    SetEntityCoords(PlayerPedId(), self.SpawnPoint.x, self.SpawnPoint.y, self.SpawnPoint.z)
-    SetEntityHeading(PlayerPedId(), self.SpawnPoint.h)
+    local playerPed = PlayerPedId()
+    SetEntityCoords(playerPed, self.SpawnPoint.x, self.SpawnPoint.y, self.SpawnPoint.z, false, false, false, false)
+    SetEntityHeading(playerPed, self.SpawnPoint.h)
     ShutdownLoadingScreen()
 
     DoScreenFadeIn(500)
 
     while not IsScreenFadingIn() do
-        Citizen.Wait(10)
+        Wait(10)
     end
 end
 
@@ -34,6 +35,6 @@ end)
 AddEventHandler('onClientMapStart', function()
     COMPONENTS.Spawn:InitCamera()
     exports['spawnmanager']:spawnPlayer()
-    Citizen.Wait(2500)
+    Wait(2500)
 	exports['spawnmanager']:setAutoSpawn(false)
 end)

@@ -2,10 +2,10 @@ function StartTracking()
 	Damage.Alerts:All()
 	Damage.Apply:Movement()
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if not LocalPlayer.state.inCreator then
-				Citizen.Wait(10000)
+				Wait(10000)
 				local myhp = GetEntityHealth(LocalPlayer.state.ped) - 100
 				if myhp <= 10 then
 					SetFlash(0, 0, 500, math.random(10) * 1000, 500)
@@ -17,12 +17,12 @@ function StartTracking()
 					SetFlash(0, 0, 1, 0, 1)
 				end
 			else
-				Citizen.Wait(30000)
+				Wait(30000)
 			end
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn ~= nil do
 			local size = cTable(_damagedLimbs)
 			if size > 0 then
@@ -35,14 +35,14 @@ function StartTracking()
 
 				SetPedMoveRateOverride(LocalPlayer.state.ped, Config.MovementRate[level])
 
-				Citizen.Wait(500)
+				Wait(500)
 			else
-				Citizen.Wait(1000)
+				Wait(1000)
 			end
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if
 				LocalDamage ~= nil
@@ -89,12 +89,12 @@ function StartTracking()
 				end
 			end
 
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 	end)
 
 	local prevPos = nil
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		prevPos = GetEntityCoords(LocalPlayer.state.ped, true)
 		while LocalPlayer.state.loggedIn do
 			if
@@ -107,7 +107,7 @@ function StartTracking()
 				if math.floor(bleedTickTimer % (Config.BleedTickRate / 10)) == 0 then
 					local moving = #(
 							vector2(prevPos.x, prevPos.y)
-							- vector2(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y)
+							- vector2(LocalPlayer.state.position.x, LocalPlayer.state.position.y)
 						)
 					if (moving > 1 and not IsPedInAnyVehicle(LocalPlayer.state.ped)) and LocalDamage.Bleed > 2 then
 						Notification.Persistent:Custom(
@@ -117,7 +117,7 @@ function StartTracking()
 						)
 						advanceBleedTimer = advanceBleedTimer + Config.BleedMovementAdvance
 						bleedTickTimer = bleedTickTimer + Config.BleedMovementTick
-						prevPos = LocalPlayer.state.myPos
+						prevPos = LocalPlayer.state.position
 					else
 						Notification.Persistent:Remove(bleedMoveNotifId)
 						bleedTickTimer = bleedTickTimer + 1
@@ -125,11 +125,11 @@ function StartTracking()
 				end
 			end
 
-			Citizen.Wait(300)
+			Wait(300)
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			if IsInjuryCausingLimp() then
 				local luck = math.random(100)
@@ -140,14 +140,14 @@ function StartTracking()
 					SetPedToRagdoll(LocalPlayer.state.ped, 1500, 2000, 3, true, true, false)
 				end
 
-				Citizen.Wait(100)
+				Wait(100)
 			else
-				Citizen.Wait(2500)
+				Wait(2500)
 			end
 		end
 	end)
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and LocalPlayer.state.Character do
 			-- if not LocalPlayer.state.isDead then
 			-- 	local health = GetEntityHealth(LocalPlayer.state.ped)
@@ -218,7 +218,7 @@ function StartTracking()
 			end
 
 			Damage.Apply:Movement(LocalPlayer.state.ped)
-			Citizen.Wait(200)
+			Wait(200)
 		end
 	end)
 end
@@ -231,7 +231,7 @@ local _sendToHosp = false
 LocalPlayer.state.isDead = false
 
 function DisableControls()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn and LocalPlayer.state.isDead do
 			DisableControlAction(0, 30, true) -- disable left/right
 			DisableControlAction(0, 31, true) -- disable forward/back
@@ -256,7 +256,7 @@ function DisableControls()
 			DisableControlAction(0, 263, true) -- disable melee
 			DisableControlAction(0, 264, true) -- disable melee
 			DisableControlAction(0, 257, true) -- disable melee
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end
@@ -274,14 +274,14 @@ function DoDeadStuff(isMinor)
 	_sendToHosp = false
 
 	local ped = PlayerPedId()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while GetEntitySpeed(ped) > 0.5 do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 
 		DoScreenFadeOut(1000)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(10)
+			Wait(10)
 		end
 
 		AnimpostfxPlay("DeathFailMPIn", 100.0, true)
@@ -318,7 +318,7 @@ function DoDeadStuff(isMinor)
 			ClearPedTasksImmediately(ped)
 		else
 			TaskWarpPedIntoVehicle(ped, veh, seat)
-			Citizen.Wait(300)
+			Wait(300)
 		end
 
 		Damage.Alerts:Reset()
@@ -338,13 +338,13 @@ function DoDeadStuff(isMinor)
 				TaskPlayAnim(ped, vehDict, vehAnim, 8.0, -8, -1, 1, 0, 0, 0, 0)
 			elseif IsEntityInWater(ped) then
 				SetPedToRagdoll(PlayerPedId(), 3000, 3000, 3, 0, 0, 0)
-				Citizen.Wait(2500)
+				Wait(2500)
 			elseif LocalPlayer.state.inTrunk then
 				-- dosomething?
 			else
 				TaskPlayAnim(ped, aDict, aAnim, 1.0, 1.0, -1, 1, 0, 0, 0, 0)
 			end
-			Citizen.Wait(100)
+			Wait(100)
 		end
 
 		AnimpostfxStop("DeathFailMPIn")
@@ -358,7 +358,7 @@ function DoDeadStuff(isMinor)
 			else
 				DoScreenFadeOut(1000)
 				while not IsScreenFadedOut() do
-					Citizen.Wait(10)
+					Wait(10)
 				end
 			end
 
@@ -427,7 +427,7 @@ function respawnCd(isMinor)
 	_countdown = isMinor and Config.KnockoutTimer or Config.RespawnTimer
 	_waiting = true
 	_respawning = false
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local key = Keybinds:GetKey("secondary_action")
 		while
 			LocalPlayer.state.loggedIn
@@ -471,16 +471,16 @@ function respawnCd(isMinor)
 					)
 				end
 			end
-			Citizen.Wait(1)
+			Wait(1)
 		end
 		_threading = false
 	end)
 
 	if not _counting then
 		_counting = true
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while LocalPlayer.state.loggedIn and _countdown >= 0 and LocalPlayer.state.isDead and _counting do
-				Citizen.Wait(1000)
+				Wait(1000)
 				_countdown = _countdown - 1
 			end
 			_counting = false
@@ -488,19 +488,19 @@ function respawnCd(isMinor)
 	end
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while LocalPlayer.state.ped == nil do
-		Citizen.Wait(1)
+		Wait(1)
 	end
 
 	while true do
 		SetEntityMaxHealth(LocalPlayer.state.ped, 200)
 		if Config.RegenRate >= 0 and Config.RegenRate <= 1.0 then
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, Config.RegenRate)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, Config.RegenRate)
 		else
-			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.PlayerID, 0.0)
+			SetPlayerHealthRechargeMultiplier(LocalPlayer.state.clientID, 0.0)
 		end
 
-		Citizen.Wait(1000)
+		Wait(1000)
 	end
 end)

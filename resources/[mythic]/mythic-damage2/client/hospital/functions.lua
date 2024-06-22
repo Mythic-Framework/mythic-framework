@@ -12,7 +12,7 @@ function SetBedCam(bed)
 	if not IsScreenFadedOut() then
 		DoScreenFadeOut(1000)
 		while not IsScreenFadedOut() do
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end
 
@@ -28,21 +28,21 @@ function SetBedCam(bed)
 
     RequestAnimDict(inBedDict)
     while not HasAnimDictLoaded(inBedDict) do
-        Citizen.Wait(0)
+        Wait(0)
     end
 
     SetEntityHeading(player, _curBed.h + 180)
 
-    Citizen.Wait(150)
+    Wait(150)
 
     TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
-    Citizen.CreateThread(function()
-        Citizen.Wait(500)
+    CreateThread(function()
+        Wait(500)
         while LocalPlayer.state.isHospitalized and not _leavingBed do
             TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
             FreezeEntityPosition(player, true)
             SetEntityInvincible(player, true)
-            Citizen.Wait(200)
+            Wait(200)
         end
         SetEntityInvincible(player, false) -- Please
         ClearPedTasksImmediately(player)
@@ -58,7 +58,7 @@ function SetBedCam(bed)
     LocalPlayer.state:set("isHospitalized", true, true)
     DoScreenFadeIn(1000)
     while not IsScreenFadedIn() do
-        Citizen.Wait(1)
+        Wait(1)
     end
     _leavingBed = false
 end
@@ -71,7 +71,7 @@ function LeaveBed()
     else
         RequestAnimDict(getOutDict)
         while not HasAnimDictLoaded(getOutDict) do
-            Citizen.Wait(0)
+            Wait(0)
         end
 
         SetEntityInvincible(player, false)

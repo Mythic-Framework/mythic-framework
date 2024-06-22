@@ -188,11 +188,11 @@ function MakeItRainBitch(targetSource, cashType, time)
 
     local targetPed = GetPlayerPed(targetPlayer)
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         _makingItRain = true
         Animations.Emotes:Play('makeitrain', false, false, false)
 
-        Citizen.Wait(7500)
+        Wait(7500)
 
         while 
             _makingItRain
@@ -215,7 +215,7 @@ function MakeItRainBitch(targetSource, cashType, time)
             end)
 
             Citizen.Await(p)
-            Citizen.Wait(time)
+            Wait(time)
         end
 
         _makingItRain = false
@@ -239,7 +239,7 @@ function GetNearbyFuckingStripper()
 
     for k, v in ipairs(GetActivePlayers()) do
         local dist = #(myCoords - GetEntityCoords(GetPlayerPed(v)))
-        if v ~= LocalPlayer.state.PlayerID and dist <= 5.0 then
+        if v ~= LocalPlayer.state.clientID and dist <= 5.0 then
             local pSrc = GetPlayerServerId(v)
             local pAnim = Player(pSrc).state.anim
             if IsDoingStripperDance(pAnim) then

@@ -146,7 +146,7 @@ end)
 
 -- Drawing
 function drawThread()
-  Citizen.CreateThread(function()
+  CreateThread(function()
     while drawZone do
       if createdZone then
         createdZone:draw()

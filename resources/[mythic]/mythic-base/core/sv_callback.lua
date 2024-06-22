@@ -9,7 +9,7 @@ COMPONENTS.Callbacks = {
     end,
     DoServerCallback = function(self, source, event, data, extraId)
         if _sCallbacks[event] ~= nil then
-            Citizen.CreateThread(function()
+            CreateThread(function()
                 _sCallbacks[event](source, data, function(...)
                     TriggerClientEvent('Callbacks:Client:ReceiveCallback', source, event, extraId, ...)
                 end)

@@ -127,7 +127,7 @@ HOSPITAL = {
 						Released = false,
 					})
 
-					Citizen.CreateThread(function()
+					CreateThread(function()
 						Jobs.Duty:Off(target, Player(target).state.onDuty)
 						Handcuffs:UncuffTarget(-1, target)
 						Ped.Mask:UnequipNoItem(target)

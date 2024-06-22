@@ -192,7 +192,7 @@ AddEventHandler("Robbery:Client:Store:LockpickSuccess", function(data)
 			}, function(s) end)
 		else
 			_lpPass = _lpPass + 1
-			Citizen.Wait(800)
+			Wait(800)
 			LPScan(data)
 		end
 	end
@@ -285,7 +285,7 @@ AddEventHandler("Robbery:Client:Store:SafeCrackSuccess", function(data)
 		Callbacks:ServerCallback("Robbery:Store:Safe", data, function(s) end)
 	else
 		_scPass = _scPass + 1
-		Citizen.Wait(1500)
+		Wait(1500)
 		SCSeq(data)
 	end
 end)

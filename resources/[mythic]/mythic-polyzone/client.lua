@@ -350,12 +350,12 @@ local function _createGrid(poly, options)
   poly.gridArea = 0.0
   poly.gridCellWidth = poly.size.x / poly.gridDivisions
   poly.gridCellHeight = poly.size.y / poly.gridDivisions
-  Citizen.CreateThread(function()
+  CreateThread(function()
     -- Calculate all grid cells that are entirely inside the polygon
     local isInside = {}
     local gridCellArea = poly.gridCellWidth * poly.gridCellHeight
     for y=1, poly.gridDivisions do
-      Citizen.Wait(0)
+      Wait(0)
       isInside[y] = {}
       for x=1, poly.gridDivisions do
         if _isGridCellInsidePoly(x-1, y-1, poly) then
@@ -374,7 +374,7 @@ local function _createGrid(poly, options)
       print("[PolyZone] Debug: Grid Coverage at " .. coverage .. "% with " .. poly.gridDivisions
       .. " divisions. Optimal coverage for memory usage and startup time is 80-90%")
 
-      Citizen.CreateThread(function()
+      CreateThread(function()
         poly.lines = _calculateLinesForDrawingGrid(poly)
         -- A lot of memory is used by this pre-calc. Force a gc collect after to clear it out
         collectgarbage("collect")
@@ -430,13 +430,13 @@ local function _initDebug(poly, options)
     return
   end
   
-  Citizen.CreateThread(function()
+  CreateThread(function()
     while not poly.destroyed do
       poly:draw()
       if options.debugGrid and poly.lines then
         _drawGrid(poly)
       end
-      Citizen.Wait(0)
+      Wait(0)
     end
   end)
 end
@@ -532,7 +532,7 @@ function PolyZone:onPointInOut(getPointCb, onPointInOutCb, waitInMS)
   local _waitInMS = 500
   if waitInMS ~= nil then _waitInMS = waitInMS end
 
-  Citizen.CreateThread(function()
+  CreateThread(function()
     local isInside = nil
     while not self.destroyed do
       if not self.paused then
@@ -543,7 +543,7 @@ function PolyZone:onPointInOut(getPointCb, onPointInOutCb, waitInMS)
           isInside = newIsInside
         end
       end
-      Citizen.Wait(_waitInMS)
+      Wait(_waitInMS)
     end
   end)
 end

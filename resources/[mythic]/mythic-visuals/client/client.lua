@@ -18,7 +18,7 @@ local function starts_with(str, start)
 end
 
 local function setVisualSettings(file)
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local settingsFile = LoadResourceFile(GetCurrentResourceName(), file)
 		local lines = stringsplit(settingsFile, "\n")
 		for k,v in ipairs(lines) do
@@ -37,7 +37,7 @@ local function setVisualSettings(file)
 	end)
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	local state = GetResourceKvpInt("VISUALS_TOGGLE") or 0
 	if state == 1 then
 		setVisualSettings("visualsettings.dat")

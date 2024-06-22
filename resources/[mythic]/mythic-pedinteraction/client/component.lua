@@ -37,9 +37,9 @@ RegisterNetEvent("Characters:Client:Spawn")
 AddEventHandler("Characters:Client:Spawn", function()
     _characterLoaded = true
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while _characterLoaded do
-            Citizen.Wait(1500)
+            Wait(1500)
             local pedCoords = GetEntityCoords(PlayerPedId())
 
             for k, v in pairs(_interactionPeds) do
@@ -138,7 +138,7 @@ end)
 function CreateDumbAssPed(model, coords, heading, menu, icon, scenario, anim, component)
     RequestModel(model)
     while not HasModelLoaded(model) do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     local ped = CreatePed(5, model, coords.x, coords.y, coords.z, heading, false, false)
@@ -178,6 +178,6 @@ end
 function LoadAnim(dict)
     while not HasAnimDictLoaded(dict) do
         RequestAnimDict(dict)
-        Citizen.Wait(10)
+        Wait(10)
     end
 end

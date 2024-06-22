@@ -53,15 +53,15 @@ CHARACTERS = {
 			SendNUIMessage({
 				type = "APP_RESET",
 			})
-			Citizen.Wait(500)
+			Wait(500)
 			exports["mythic-base"]:FetchComponent("Spawn"):Init()
 		end)
 	end,
 	Update = function(self)
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			while self.Updating do
 				TriggerServerEvent("Characters:Server:StoreUpdate")
-				Citizen.Wait(180000)
+				Wait(180000)
 			end
 		end)
 	end,

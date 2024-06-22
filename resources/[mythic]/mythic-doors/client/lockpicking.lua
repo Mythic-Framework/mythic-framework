@@ -23,7 +23,7 @@ function AddLockpickFailedAttempt(doorId)
 
     if lockpickAttempts[doorId] >= Config.Lockpick.maxAttempts then -- Reached Max, Give Cooldown to try again
         local startID = _character.ID
-        Citizen.SetTimeout(60000 * 15, function()
+        SetTimeout(60000 * 15, function()
             if lockpickAttempts[doorId] and characterLoaded and startID == _character.ID then
                 lockpickAttempts[doorId] = nil
             end
@@ -48,7 +48,7 @@ end
 --             if doorDist <= 1.5 then
 --                 local chance = math.random(100)
 --                 if chance >= Config.Lockpick.chance then
---                     Citizen.SetTimeout(math.random(Config.Lockpick.animDuration) * 1000, function() 
+--                     SetTimeout(math.random(Config.Lockpick.animDuration) * 1000, function() 
 --                         Progress:Fail()
 --                         AddLockpickFailedAttempt(showingDoorInfo)
 --                         if math.random(100) <= 40 then -- 40% chance of lockpick breaking or it is just incompetence

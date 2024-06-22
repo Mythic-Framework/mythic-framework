@@ -2,7 +2,7 @@
 local _scanDelay = 500
 
 --[[
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         local office = 0
         
@@ -30,7 +30,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(_scanDelay)
+        Wait(_scanDelay)
     end
 end)
 ]]

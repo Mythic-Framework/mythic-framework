@@ -9,7 +9,7 @@ end)
 SPAWN = {
     SpawnToWorld = function(self, data, cb)
         DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do Citizen.Wait(10) end
+        while not IsScreenFadedOut() do Wait(10) end
         Callbacks:ServerCallback('Ped:CheckPed', {}, function(hasPed)
             data.Ped = hasPed.ped
             if not hasPed.existed then
@@ -23,7 +23,7 @@ SPAWN = {
     end,
     PlacePedIntoWorld = function(self, data)
         DoScreenFadeOut(500)
-        while not IsScreenFadedOut() do Citizen.Wait(10) end
+        while not IsScreenFadedOut() do Wait(10) end
 
         local player = PlayerPedId()
         SetTimecycleModifier('default')
@@ -40,11 +40,11 @@ SPAWN = {
         RequestModel(model)
 
         while not HasModelLoaded(model) do
-          Citizen.Wait(500)
+          Wait(500)
         end
         SetPlayerModel(PlayerId(), model)
         player = PlayerPedId()
-        LocalPlayer.state.ped = player
+        LocalPlayer.state:set('ped', player, true)
         SetPedDefaultComponentVariation(player)
         SetEntityAsMissionEntity(player, true, true)
         SetModelAsNoLongerNeeded(model)
@@ -74,12 +74,12 @@ SPAWN = {
         else
             SetEntityCoords(player, data.spawn.location.x + 0.0, data.spawn.location.y + 0.0, data.spawn.location.z + 0.0)
 
-            Citizen.Wait(200)
+            Wait(200)
             SetEntityHeading(player, data.spawn.location.h)
 
             local time = GetGameTimer()
             while (not HasCollisionLoadedAroundEntity(player) and (GetGameTimer() - time) < 10000) do
-                Citizen.Wait(100)
+                Wait(100)
             end
 
             FreezeEntityPosition(player, false)
@@ -87,7 +87,7 @@ SPAWN = {
             DoScreenFadeIn(500)
         end
 
-        Citizen.SetTimeout(500, function()
+        SetTimeout(500, function()
             SetPedArmour(player, data.Armor)
         end)
 

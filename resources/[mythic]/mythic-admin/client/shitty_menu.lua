@@ -10,7 +10,7 @@ function OpenStaffMenu(data)
             _menuOpen = true
         end, function()
             _menuOpen = false
-            Citizen.Wait(100)
+            Wait(100)
             adminSubMenus = nil
             adminMenu = nil 
             collectgarbage()

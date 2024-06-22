@@ -39,7 +39,7 @@ function SpawnPeds()
         local ped = CreatePed(5, _drop.ped, coords.x, coords.y, gZ, math.random(360) * 1.0, true, true)
 
         while not DoesEntityExist(ped) do
-            Citizen.Wait(1)
+            Wait(1)
         end
 
         local w = _cokeWeapons[math.random(#_cokeWeapons)]
@@ -116,7 +116,7 @@ AddEventHandler("Labor:Client:Setup", function()
 					return LocalPlayer.state.Character:GetData("TempJob") == "Coke"
                         and _working
                         and _state == 0
-                        and _joiner == GetPlayerServerId(LocalPlayer.state.PlayerID)
+                        and _joiner == LocalPlayer.state.serverID
 				end,
 			},
 		},
@@ -151,7 +151,7 @@ RegisterNetEvent("Coke:Client:OnDuty", function(joiner, time)
 	eventHandlers["poly-enter"] = AddEventHandler("Polyzone:Enter", function(id, testedPoint, insideZone, data)
 		if id == "cayo_perico" and _state == 1 then
             Callbacks:ServerCallback("Coke:ArriveAtCayo", {}, function() end)
-		elseif id == "CokeDrop" and _state == 3 and not _spawned and _joiner == GetPlayerServerId(LocalPlayer.state.PlayerID) then
+		elseif id == "CokeDrop" and _state == 3 and not _spawned and _joiner == LocalPlayer.state.serverID then
             Callbacks:ServerCallback("Coke:ArrivedAtPoint", {}, function()
                 SpawnPeds(data)
                 RegisterHatedTargetsAroundPed(LocalPlayer.state.ped, _drop.size * 2)

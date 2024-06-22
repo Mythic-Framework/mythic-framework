@@ -203,9 +203,9 @@ function SetFreecamEnabled(enable, isNoclip)
         SetFreecamPosition(pos.x, pos.y, pos.z)
         SetFreecamRotation(rot.x, rot.y, rot.z)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while IsFreecamEnabled() do
-                Citizen.Wait(5)
+                Wait(5)
                 CameraLoop()
             end
         end)

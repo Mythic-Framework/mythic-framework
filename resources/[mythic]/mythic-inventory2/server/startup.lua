@@ -69,7 +69,7 @@ function ClearBrokenItems()
 	-- Logger:Warn("Inventory", "^1DELETING EXPIRED ITEMS, THIS WILL LIKELY TAKE A MINUTE^7")
 	-- local total = countTable(itemsDatabase)
 	-- local checked = 0
-	-- Citizen.CreateThread(function()
+	-- CreateThread(function()
 	-- 	for k, v in pairs(itemsDatabase) do
 	-- 		if v.durability ~= nil and v.isDestroyed then
 	-- 			MySQL.single("SELECT COUNT(*) as Count FROM inventory WHERE item_id = ? and expiryDate = -1", {
@@ -112,17 +112,17 @@ function ClearBrokenItems()
 	-- end)
 
 	-- while checked < total do
-	-- 	Citizen.Wait(100)
+	-- 	Wait(100)
 	-- end
 
 	-- Logger:Warn("Inventory", "^1FINISHED DELETING EXPIRED ITEMS^7")
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _started do
 			MySQL.query("DELETE FROM inventory WHERE expiryDate < ? AND expiryDate != -1", { os.time() }, function(d)
 				Logger:Info("Inventory", string.format("Cleaned Up ^2%s^7 Degraded Items", d.affectedRows))
 			end)
-			Citizen.Wait((1000 * 60) * 30)
+			Wait((1000 * 60) * 30)
 		end
 	end)
 end
@@ -241,11 +241,11 @@ function LoadItems()
 					if v.gangChain ~= nil then
 						if v.gangChain ~= char:GetData("GangChain") then
 							TriggerClientEvent("Ped:Client:ChainAnim", source)
-							Citizen.Wait(3000)
+							Wait(3000)
 							char:SetData("GangChain", v.gangChain)
 						else
 							TriggerClientEvent("Ped:Client:ChainAnim", source)
-							Citizen.Wait(3000)
+							Wait(3000)
 							char:SetData("GangChain", "NONE")
 						end
 					end
@@ -295,8 +295,8 @@ shopLocations = {}
 storeBankAccounts = {}
 pendingShopDeposits = {}
 function LoadShops()
-	Citizen.CreateThread(function()
-		Citizen.Wait(10000)
+	CreateThread(function()
+		Wait(10000)
 
 		local f = Banking.Accounts:GetOrganization("dgang")
 

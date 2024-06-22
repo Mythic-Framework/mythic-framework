@@ -28,10 +28,10 @@ end
 
 function StartEscortThread(t)
 	while LocalPlayer.state.isEscorting == nil do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local ped = GetPlayerPed(t)
 		local myped = PlayerPedId()
 
@@ -40,14 +40,14 @@ function StartEscortThread(t)
 				DisableControlAction(1, 21, true) -- Sprint
 			end
 			DisableControlAction(1, 23, true) -- F
-			Citizen.Wait(5)
+			Wait(5)
 		end
 	end)
 end
 
 RegisterNetEvent("Escort:Client:Escorted", function()
 	while LocalPlayer.state.myEscorter == nil do
-		Citizen.Wait(10)
+		Wait(10)
 	end
 
 	if LocalPlayer.state.isCuffed then
@@ -62,12 +62,12 @@ RegisterNetEvent("Escort:Client:Escorted", function()
 		Progress:Cancel()
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		local ped = GetPlayerPed(GetPlayerFromServerId(LocalPlayer.state.myEscorter))
 		local myped = PlayerPedId()
 
 		while not DoesEntityExist(ped) do
-			Citizen.Wait(1)
+			Wait(1)
 			ped = GetPlayerPed(GetPlayerFromServerId(LocalPlayer.state.myEscorter))
 		end
 
@@ -92,7 +92,7 @@ RegisterNetEvent("Escort:Client:Escorted", function()
 			DisableControlAction(1, 21, true) -- Sprint
 			DisableControlAction(1, 22, true) -- Jump
 			DisableControlAction(1, 23, true) -- F
-			Citizen.Wait(5)
+			Wait(5)
 		end
 		DetachEntity(LocalPlayer.state.ped, true, true)
 	end)

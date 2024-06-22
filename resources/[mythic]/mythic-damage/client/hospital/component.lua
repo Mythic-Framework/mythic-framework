@@ -38,7 +38,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		Init()
 
 		while GlobalState["HiddenHospital"] == nil do
-			Citizen.Wait(5)
+			Wait(5)
 		end
 
 		PedInteraction:Add("HiddenHospital", `s_m_m_doctor_01`, GlobalState["HiddenHospital"].coords, GlobalState["HiddenHospital"].heading, 25.0, {

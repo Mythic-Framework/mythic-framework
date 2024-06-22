@@ -83,12 +83,12 @@ AddEventHandler("Core:Shared:Ready", function()
 				local interior = PropertyInteriors[_insideInterior]
 
 				if interior then
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.front.coords)
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.front.coords)
 
 					if dist <= 2.0 then
 						return 'front'
 					elseif interior.locations.back then
-						backDist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.back.coords)
+						backDist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.back.coords)
 						if backDist <= 2.0 then
 							return 'back'
 						end
@@ -119,10 +119,10 @@ AddEventHandler("Core:Shared:Ready", function()
 
 				local interior = PropertyInteriors[_insideInterior]
 
-				local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.front.coords)
+				local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.front.coords)
 				local backDist
 				if interior.locations.back then
-					backDist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.back.coords)
+					backDist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.back.coords)
 				end
 
 				if (dist <= 2.0 or (backDist and backDist <= 2.0)) then
@@ -160,10 +160,10 @@ AddEventHandler("Core:Shared:Ready", function()
 					)
 				then
 					local interior = PropertyInteriors[_insideInterior]
-					local dist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.front.coords)
+					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.front.coords)
 					local backDist
 					if interior.locations.back then
-						backDist = #(vector3(LocalPlayer.state.myPos.x, LocalPlayer.state.myPos.y, LocalPlayer.state.myPos.z) - interior.locations.back.coords)
+						backDist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - interior.locations.back.coords)
 					end
 
 					if (dist <= 2.0 or (backDist and backDist <= 2.0)) then

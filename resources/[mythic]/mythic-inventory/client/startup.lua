@@ -11,13 +11,13 @@ function LoadItems()
 		type = "ITEMS_UNLOADED",
 		data = {},
 	})
-	Citizen.Wait(100)
+	Wait(100)
 	SendNUIMessage({
 		type = "RESET_ITEMS",
 		data = {},
 	})
 
-	Citizen.Wait(1000)
+	Wait(1000)
 
 	for _, its in pairs(_itemsSource) do
 		for k, v in ipairs(its) do
@@ -32,7 +32,7 @@ function LoadItems()
 		end
 	end
 
-	Citizen.Wait(1000)
+	Wait(1000)
 
 	SendNUIMessage({
 		type = "ITEMS_LOADED",

@@ -1,5 +1,5 @@
 function MazeBankThreads()
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while LocalPlayer.state.loggedIn do
 			local myCoords = GetEntityCoords(LocalPlayer.state.ped)
 			for k, v in ipairs(_mbHacks) do
@@ -11,7 +11,7 @@ function MazeBankThreads()
 					OpenDoor(v.coords, v.doorConfig)
 				end
 			end
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 	end)
 end

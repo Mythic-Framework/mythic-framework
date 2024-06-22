@@ -9,7 +9,7 @@ function StartCasinoWallsThread()
     RequestStreamedTextureDict("Prop_Screen_Vinewood")
 
     while not HasStreamedTextureDictLoaded("Prop_Screen_Vinewood") do
-        Citizen.Wait(100)
+        Wait(100)
     end
 
     RegisterNamedRendertarget("casinoscreen_01")
@@ -18,11 +18,11 @@ function StartCasinoWallsThread()
 
     videoWallRenderTarget = GetNamedRendertargetRenderId("casinoscreen_01")
 
-    Citizen.CreateThread(function()
+    CreateThread(function()
         local lastUpdatedTvChannel = 0
 
         while _insideCasino do
-            Citizen.Wait(0)
+            Wait(0)
 
             if videoWallRenderTarget then
                 local currentTime = GetGameTimer()

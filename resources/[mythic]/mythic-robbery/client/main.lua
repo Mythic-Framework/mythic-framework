@@ -62,7 +62,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		RegisterGamesCallbacks()
 		TriggerEvent("Robbery:Client:Setup")
 
-		Citizen.CreateThread(function()
+		CreateThread(function()
 			PedInteraction:Add(
 				"RobToolsPickup",
 				GetHashKey("csb_anton"),
@@ -148,10 +148,10 @@ AddEventHandler("Robbery:Client:Holdup:Do", function(entity, data)
 				Inventory.Dumbfuck:Open(s)
 
 				while not LocalPlayer.state.inventoryOpen do
-					Citizen.Wait(1)
+					Wait(1)
 				end
 
-				Citizen.CreateThread(function()
+				CreateThread(function()
 					while LocalPlayer.state.inventoryOpen do
 						if
 							#(
@@ -161,7 +161,7 @@ AddEventHandler("Robbery:Client:Holdup:Do", function(entity, data)
 						then
 							Inventory.Close:All()
 						end
-						Citizen.Wait(2)
+						Wait(2)
 					end
 				end)
 			end)

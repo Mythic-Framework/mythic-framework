@@ -341,10 +341,10 @@ function StartRacePD()
 		Notification:Info(string.format("Race Starting In %s", countdownMax - countdown))
 		UISounds.Play:FrontEnd(-1, "5_SEC_WARNING", "HUD_MINI_GAME_SOUNDSET")
 		countdown = countdown + 1
-		Citizen.Wait(1000)
+		Wait(1000)
 	end
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		Notification:Info("Race Started")
 		UISounds.Play:FrontEnd(-1, "GO", "HUD_MINI_GAME_SOUNDSET")
 		SendNUIMessage({
@@ -464,7 +464,7 @@ function StartRacePD()
 				end
 			end
 
-			Citizen.Wait(1)
+			Wait(1)
 		end
 	end)
 end
@@ -715,7 +715,7 @@ function CreatorThreadPD()
 		r = false,
 	}
 
-	Citizen.CreateThread(function()
+	CreateThread(function()
 		while _creator do
 			DisplayTempCheckpointPD()
 
@@ -742,7 +742,7 @@ function CreatorThreadPD()
 				Wait(1000)
 			end
 
-			Citizen.Wait(1)
+			Wait(1)
 		end
 		CleanupPD()
 		SendNUIMessage({

@@ -3,7 +3,7 @@ function beingCuffedAnim(cId)
 	local cuffer = GetPlayerPed(GetPlayerFromServerId(cid))
 	local dir = GetEntityHeading(cuffer)
 	--SetEntityCoords(LocalPlayer.state.ped, GetOffsetFromEntityInWorldCoords(cuffer, 0.0, 0.45, 0.0))
-	Citizen.Wait(100)
+	Wait(100)
 	SetEntityHeading(LocalPlayer.state.ped, dir)
 	TaskPlayAnim(LocalPlayer.state.ped, "mp_arrest_paired", "crook_p2_back_right", 8.0, -8, -1, 32, 0, 0, 0, 0)
 end
@@ -22,9 +22,9 @@ function CuffAttempt()
         return
     end
     cuffAttemptThreading = (GetGameTimer() + 30000)
-    Citizen.CreateThread(function()
+    CreateThread(function()
         while GetGameTimer() < cuffAttemptThreading do
-            Citizen.Wait(10)
+            Wait(10)
         end
         ResetTimer()
     end)
