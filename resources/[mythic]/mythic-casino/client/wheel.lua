@@ -5,7 +5,7 @@ _casinoWheelRotation = vec3(-0.000000, 9.000000, -31.843399)
 _spinningWheel = false
 
 AddEventHandler("Casino:Client:Startup", function()
-    Targeting.Zones:AddBox("casino-wheelspin", "circle-dashed", vector3(989.45, 42.64, 71.27), 1.0, 1.2, {
+    Targeting.Zones:AddBox("casino-wheelspin", "arrows-spin", vector3(989.45, 42.64, 71.27), 1.0, 1.2, {
         heading = 330,
         --debugPoly=true,
         minZ = 70.47,
