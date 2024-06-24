@@ -30,7 +30,7 @@ AddEventHandler("Casino:Client:Startup", function()
 
     for k,v in pairs(_rouletteTables) do
         local maxBet = formatNumberToCurrency(math.floor(_rouletteTablesConfig[k].maxBet))
-        Targeting.Zones:AddBox("casino-roulette-" .. k, "cards", v.polyzone.center, v.polyzone.length, v.polyzone.width, v.polyzone.options, {
+        Targeting.Zones:AddBox("casino-roulette-" .. k, "card", v.polyzone.center, v.polyzone.length, v.polyzone.width, v.polyzone.options, {
             {
                 icon = "circle-dollar-to-slot",
                 text = _rouletteTablesConfig[k].isVIP and string.format("Join VIP Game ($%s Max Bet)", maxBet) or string.format("Join Game ($%s Max Bet)", maxBet),
