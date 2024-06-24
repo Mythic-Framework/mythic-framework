@@ -127,7 +127,7 @@ function CreateDealerships()
         -- Targets
         if data.zones and #data.zones.employeeInteracts > 0 then
             for k, v in ipairs(data.zones.employeeInteracts) do
-                Targeting.Zones:AddBox(string.format('dealership_%s_employee_%s', dealerId, k), 'car-building', v.center, v.length, v.width, v.options, {
+                Targeting.Zones:AddBox(string.format('dealership_%s_employee_%s', dealerId, k), 'car', v.center, v.length, v.width, v.options, {
                     { 
                         icon = 'car',
                         text = 'Edit Showroom',
