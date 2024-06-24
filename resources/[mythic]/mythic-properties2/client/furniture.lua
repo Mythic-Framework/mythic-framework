@@ -37,7 +37,7 @@ function PlaceFurniture(v)
 
         if furnData then
             if _specCategories[furnData.cat] then
-                local icon = "draw-square"
+                local icon = "square"
                 local menu = {
                     {
                         icon = "arrows-up-down-left-right",
@@ -76,10 +76,10 @@ function PlaceFurniture(v)
                 }
 
                 if furnData.cat == "storage" then
-                    icon = "box-open-full"
+                    icon = "boxes-packing"
 
                     table.insert(menu, {
-                        icon = "box-open-full",
+                        icon = "boxes-packing",
                         text = "Access Storage",
                         event = "Properties:Client:Stash",
                         isEnabled = function(data)
@@ -91,7 +91,7 @@ function PlaceFurniture(v)
                     })
 
                     table.insert(menu, {
-                        icon = "clothes-hanger",
+                        icon = "shirt",
                         text = "Open Wardrobe",
                         event = "Properties:Client:Closet",
                     })
@@ -148,7 +148,7 @@ function SetFurnitureEditMode(state)
         if state then
             for k, v in ipairs(_spawnedFurniture) do
                 if not v.targeting then
-                    Targeting:AddEntity(v.entity, "draw-square", {
+                    Targeting:AddEntity(v.entity, "square", {
                         {
                             icon = "arrows-up-down-left-right",
                             text = "Move",

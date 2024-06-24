@@ -49,7 +49,7 @@ AddEventHandler('Core:Shared:Ready', function()
         if #error > 0 then return; end
         RetrieveComponents()
 
-        Interaction:RegisterMenu("veh_wheels", false, "tire", function()
+        Interaction:RegisterMenu("veh_wheels", "Wheel Fitment", "truck-monster", function()
             OpenWheelMenu()
             Interaction:Hide()
         end, function()
