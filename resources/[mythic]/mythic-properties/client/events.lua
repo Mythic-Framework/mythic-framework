@@ -186,7 +186,7 @@ RegisterNetEvent("Properties:Client:InnerStuff", function(propertyId, wakeUp)
 	-- 		intr.locations.warehouse.extras,
 	-- 		{
 	-- 			{
-	-- 				icon = "bed-front",
+	-- 				icon = "bed",
 	-- 				text = "Switch Characters",
 	-- 				event = "Properties:Client:Logout",
 	-- 				data = propertyId,

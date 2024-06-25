@@ -204,7 +204,7 @@ RegisterNetEvent("Apartment:Client:InnerStuff", function(aptId, unit, wakeUp)
 
 	Targeting.Zones:AddBox(
 		string.format("apt-%s-logout", aptId),
-		"bed-front",
+		"bed",
 		p.interior.locations.logout.coords,
 		p.interior.locations.logout.length,
 		p.interior.locations.logout.width,
