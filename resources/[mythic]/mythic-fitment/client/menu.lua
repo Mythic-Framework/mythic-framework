@@ -120,7 +120,7 @@ function OpenWheelMenu()
     end)
 
     wheelMenu.Add:Button('Reset', { error = true }, function()
-        Logger:Trace('Fitment', 'Attempt Save')
+        Logger:Trace('Fitment', 'Attempt Reset')
 
         Callbacks:ServerCallback('Vehicles:WheelFitment', {
             vNet = VehToNet(EDITING_VEHICLE),
