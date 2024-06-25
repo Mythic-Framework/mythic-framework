@@ -12,7 +12,6 @@
 
 ## Project Maintainers
 - Treyyyy - Maintainer & Community Owner
-- Jay - Maintainer &
 - Nex - Maintainer
 - TheCasual420Gamer - Maintainer
 - Tyh - Maintainer
