@@ -97,7 +97,7 @@ AddEventHandler("Labor:Client:Setup", function()
 		100.0,
 		{
 			{
-				icon = "face-surprise"
+				icon = "face-surprise",
 				text = "Let's Have Some Fun ($100,000)",
 				event = "Coke:Client:StartWork",
 				isEnabled = function()
