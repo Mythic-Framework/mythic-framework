@@ -12,10 +12,9 @@
 
 ## Project Maintainers
 - Treyyyy - Maintainer & Community Owner
+- Tyh - Maintainer & Community Owner
 - Nex - Maintainer
 - TheCasual420Gamer - Maintainer
-- Tyh - Maintainer
-- PLACEHOLDER - Maintainer
 
 ## Credits
 - Alzar & Dr Nick - Original Maintainers and Creators
