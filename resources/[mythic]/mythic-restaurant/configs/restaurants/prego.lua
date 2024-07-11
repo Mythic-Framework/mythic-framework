@@ -6,7 +6,7 @@ table.insert(Config.Restaurants, {
             label = "Drinks",
             targeting = {
                 actionString = "Preparing",
-                icon = "cup-straw-swoosh",
+                icon = "kitchen-set",
                 poly = {
                     coords = vector3(-1117.32, -1455.51, 5.11),
                     w = 0.8,
