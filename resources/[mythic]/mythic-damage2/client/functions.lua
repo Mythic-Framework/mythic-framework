@@ -103,7 +103,7 @@ function DeadAnimLoop()
 			end
 		end
 
-		if LocalPlayer.state.deadData and LocalPlayer.state.deadData.isMinor then
+		if LocalPlayer.state.deadData and LocalPlayer.state.deadData?.isMinor then
 			aDict = koDict
 			aAnim = koAnim
 		end
