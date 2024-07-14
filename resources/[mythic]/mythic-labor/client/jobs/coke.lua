@@ -188,7 +188,7 @@ RegisterNetEvent("Coke:Client:OnDuty", function(joiner, time)
                         end,
                     },
                 },
-                "block-question",
+                "question",
                 "WORLD_HUMAN_AA_SMOKE"
             )
         end
@@ -247,7 +247,7 @@ RegisterNetEvent("Coke:Client:OnDuty", function(joiner, time)
                     end,
                 },
             },
-            "block-question",
+            " question",
             "WORLD_HUMAN_AA_SMOKE"
         )
     end)
