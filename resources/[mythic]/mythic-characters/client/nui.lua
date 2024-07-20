@@ -8,7 +8,7 @@ CreateThread(function()
 end)
 
 
-function loadModel(model)
+local function loadModel(model)
 	if IsModelInCdimage(model) then
 		while not HasModelLoaded(model) do
 			RequestModel(model)
@@ -24,9 +24,11 @@ local previews = {
     vector4(679.232, 585.493, 129.461, 236.240),
     vector4(682.157, 587.705, 129.461, 199.840),
 }
+
 local peds = {}
+
 RegisterNUICallback('GetData', function(data, cb)
-    cb("ok")
+    cb('ok')
 
 	while LocalPlayer.state.ID == nil do
 		Wait(1)
@@ -41,7 +43,7 @@ RegisterNUICallback('GetData', function(data, cb)
         Callbacks:ServerCallback('Characters:GetCharacters', {}, function(characters)
             SetEntityCoords(PlayerPedId(),  685.865, 576.222, 132.841, 0.0, 0.0, 0.0, false)
 
-            local cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 685.865, 576.222, 132.841, 338.730, 0.00, 0.00, 75.00, false, 0)
+            local cam2 = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', 685.865, 576.222, 132.841, 338.730, 0.00, 0.00, 75.00, false, 0)
             SetCamActiveWithInterp(cam2, cam, 1000, true, true)
             RenderScriptCams(true, false, 1, true, true)
             TransitionFromBlurred(500)
@@ -50,10 +52,10 @@ RegisterNUICallback('GetData', function(data, cb)
 
             for k, v in ipairs(characters) do
                 if v.Preview then
-                    loadModel(GetHashKey(v.Preview.model))
+                    loadModel(joaat(v.Preview.model))
                     local ped = CreatePed(
                         5,
-                        GetHashKey(v.Preview.model),
+                        joaat(v.Preview.model),
                         previews[k][1],
                         previews[k][2],
                         previews[k][3],
@@ -65,7 +67,7 @@ RegisterNUICallback('GetData', function(data, cb)
                     while not DoesEntityExist(ped) do
                         Wait(1)
                     end
-    
+
                     SetEntityCoords(ped, previews[k][1], previews[k][2], previews[k][3], 0.0, 0.0, 0.0, false)
                     FreezeEntityPosition(ped, true)
                     Ped:Preview(ped, tonumber(v.Gender), v.Preview, false, v.GangChain)
@@ -87,12 +89,12 @@ RegisterNUICallback('GetData', function(data, cb)
                     while not DoesEntityExist(ped) do
                         Wait(1)
                     end
-    
+
                     SetEntityCoords(ped, previews[k][1], previews[k][2], previews[k][3], 0.0, 0.0, 0.0, false)
                     FreezeEntityPosition(ped, true)
 
                     print(ped)
-    
+
                     table.insert(peds, ped)
                 end
             end
@@ -111,7 +113,7 @@ RegisterNUICallback('GetData', function(data, cb)
 end)
 
 RegisterNUICallback('CreateCharacter', function(data, cb)
-    cb("ok")
+    cb('ok')
     Callbacks:ServerCallback('Characters:CreateCharacter', data, function(character)
         if character ~= nil then
             SendNUIMessage({
@@ -129,7 +131,7 @@ RegisterNUICallback('CreateCharacter', function(data, cb)
 end)
 
 RegisterNUICallback('DeleteCharacter', function(data, cb)
-    cb("ok")
+    cb('ok')
     Callbacks:ServerCallback('Characters:DeleteCharacter', data.id, function(status)
         if status then
             SendNUIMessage({
@@ -137,15 +139,15 @@ RegisterNUICallback('DeleteCharacter', function(data, cb)
                 data = { id = data.id }
             })
         end
-        for k, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
+        for _, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
         peds = {}
-        
+
         SendNUIMessage({ type = 'LOADING_HIDE' })
     end)
 end)
 
 RegisterNUICallback('SelectCharacter', function(data, cb)
-    cb("ok")
+    cb('ok')
     Callbacks:ServerCallback('Characters:GetSpawnPoints', data.id, function(spawns)
         if spawns then
             SendNUIMessage({
@@ -157,14 +159,14 @@ RegisterNUICallback('SelectCharacter', function(data, cb)
                 data = { state = 'STATE_SPAWN' }
             })
         end
-        for k, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
+        for _, v in ipairs(peds) do if DoesEntityExist(v) then DeleteEntity(v) end end -- Clear old peds
         peds = {}
         SendNUIMessage({ type = 'LOADING_HIDE' })
     end)
 end)
 
 RegisterNUICallback('PlayCharacter', function(data, cb)
-    cb("ok")
+    cb('ok')
     Callbacks:ServerCallback('Characters:GetCharacterData', data.character.ID, function(cData)
         cData.spawn = data.spawn
         TriggerEvent('Characters:Client:SetData', -1, cData, function()
@@ -184,7 +186,7 @@ RegisterNUICallback('PlayCharacter', function(data, cb)
     end)
 end)
 
-RegisterNetEvent("Characters:Client:Spawned", function()
+RegisterNetEvent('Characters:Client:Spawned', function()
     TriggerEvent('Characters:Client:Spawn')
     TriggerServerEvent('Characters:Server:Spawn')
     SetNuiFocus(false)
