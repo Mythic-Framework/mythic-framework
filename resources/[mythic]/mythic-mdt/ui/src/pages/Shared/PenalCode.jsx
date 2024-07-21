@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 26,
 		color: theme.palette.text.main,
 		marginRight: 16,
+		userSelect: 'none'
 	},
 	keyItem: {
 		display: 'inline-block',
@@ -102,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
 		'& svg': {
 			marginRight: 5,
 		},
+		userSelect: 'none'
 	},
 	infractionKey: {
 		color: theme.palette.info.main,

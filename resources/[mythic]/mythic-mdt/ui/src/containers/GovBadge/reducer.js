@@ -1,20 +1,16 @@
 
 export const initialState = {
-    showing: false,
+    showing: process.env.NODE_ENV != 'production',
 	type: 2,
-	data: {},
-
-
-	// showing: true,
-	// data: {
-	// 	Department: 'doj',
-	// 	SID: 3,
-	// 	First: 'Walter',
-	// 	Last: 'Western',
-	// 	Callsign: 202,
-	// 	Mugshot: 'https://i.imgur.com/B2A7EiH.png',
-	// 	Title: 'Justice',
-	// }
+	data: {
+		Department: 'doj',
+		SID: 3,
+		First: 'Walter',
+		Last: 'Western',
+		Callsign: 202,
+		Mugshot: 'https://i.imgur.com/B2A7EiH.png',
+		Title: 'Justice',
+	}
 };
 
 const appReducer = (state = initialState, action) => {

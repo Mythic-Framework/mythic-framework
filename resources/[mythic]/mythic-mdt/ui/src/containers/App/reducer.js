@@ -4,92 +4,92 @@ export const initialState = {
 	//hidden: true,
 	opacity: false,
 	attorney: false,
-	tabletData: process.env.NODE_ENV != 'production' ? {
-		links: [
-			{
-				name: 'home',
-				icon: ['fas', 'house'],
-				label: 'Home',
-				path: '/',
-				exact: true,
-			},
-			{
-				name: 'documents',
-				icon: ['fas', 'file-lines'],
-				label: 'Documents',
-				path: '/business/search/document',
-				exact: true,
-			},
-			{
-				name: 'receipts',
-				icon: ['fas', 'money-check-dollar'],
-				label: 'Receipts',
-				path: '/business/search/receipt',
-				exact: true,
-			},
-			// {
-			// 	name: 'employees',
-			// 	icon: ['fas', 'person'],
-			// 	label: 'Employees',
-			// 	path: '/business/search/documents',
-			// 	exact: true,
-			// },
-			{
-				name: 'pdm-stocks',
-				icon: ['fas', 'cars'],
-				label: 'Vehicle Stock',
-				path: '/business/pdm-sales',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'pdm-credit-check',
-				icon: ['fas', 'magnifying-glass-dollar'],
-				label: 'Run Credit Check',
-				path: '/business/pdm-credit',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'pdm-licence-check',
-				icon: ['fas', 'id-card'],
-				label: 'Run License Check',
-				path: '/business/search/documents',
-				exact: true,
-			},
-			{
-				name: 'pdm-manage',
-				icon: ['fas', 'list-check'],
-				label: 'Manage Dealership',
-				path: '/business/pdm-manage',
-				exact: true,
-			},
-			{
-				name: 'pdm-history',
-				icon: ['fas', 'clock-rotate-left'],
-				label: 'Sales History',
-				path: '/business/pdm-saleshistory',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'dyn8-properties',
-				icon: ['fas', 'house-building'],
-				label: 'Properties',
-				path: '/business/dyn8-properties',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'dyn8-credit',
-				icon: ['fas', 'magnifying-glass-dollar'],
-				label: 'Run Credit Check',
-				path: '/business/dyn8-credit',
-				exact: true,
-				//permission: 'LOL',
-			},
-		]
-	} : null,
+	// tabletData: process.env.NODE_ENV != 'production' ? {
+	// 	links: [
+	// 		{
+	// 			name: 'home',
+	// 			icon: ['fas', 'house'],
+	// 			label: 'Home',
+	// 			path: '/',
+	// 			exact: true,
+	// 		},
+	// 		{
+	// 			name: 'documents',
+	// 			icon: ['fas', 'file-lines'],
+	// 			label: 'Documents',
+	// 			path: '/business/search/document',
+	// 			exact: true,
+	// 		},
+	// 		{
+	// 			name: 'receipts',
+	// 			icon: ['fas', 'money-check-dollar'],
+	// 			label: 'Receipts',
+	// 			path: '/business/search/receipt',
+	// 			exact: true,
+	// 		},
+	// 		// {
+	// 		// 	name: 'employees',
+	// 		// 	icon: ['fas', 'person'],
+	// 		// 	label: 'Employees',
+	// 		// 	path: '/business/search/documents',
+	// 		// 	exact: true,
+	// 		// },
+	// 		{
+	// 			name: 'pdm-stocks',
+	// 			icon: ['fas', 'car-burst'],
+	// 			label: 'Vehicle Stock',
+	// 			path: '/business/pdm-sales',
+	// 			exact: true,
+	// 			//permission: 'LOL',
+	// 		},
+	// 		{
+	// 			name: 'pdm-credit-check',
+	// 			icon: ['fas', 'magnifying-glass-dollar'],
+	// 			label: 'Run Credit Check',
+	// 			path: '/business/pdm-credit',
+	// 			exact: true,
+	// 			//permission: 'LOL',
+	// 		},
+	// 		{
+	// 			name: 'pdm-licence-check',
+	// 			icon: ['fas', 'id-card'],
+	// 			label: 'Run License Check',
+	// 			path: '/business/search/documents',
+	// 			exact: true,
+	// 		},
+	// 		{
+	// 			name: 'pdm-manage',
+	// 			icon: ['fas', 'list-check'],
+	// 			label: 'Manage Dealership',
+	// 			path: '/business/pdm-manage',
+	// 			exact: true,
+	// 		},
+	// 		{
+	// 			name: 'pdm-history',
+	// 			icon: ['fas', 'clock-rotate-left'],
+	// 			label: 'Sales History',
+	// 			path: '/business/pdm-saleshistory',
+	// 			exact: true,
+	// 			//permission: 'LOL',
+	// 		},
+	// 		{
+	// 			name: 'dyn8-properties',
+	// 			icon: ['fas', 'house-chimney-window'],
+	// 			label: 'Properties',
+	// 			path: '/business/dyn8-properties',
+	// 			exact: true,
+	// 			//permission: 'LOL',
+	// 		},
+	// 		{
+	// 			name: 'dyn8-credit',
+	// 			icon: ['fas', 'magnifying-glass-dollar'],
+	// 			label: 'Run Credit Check',
+	// 			path: '/business/dyn8-credit',
+	// 			exact: true,
+	// 			//permission: 'LOL',
+	// 		},
+	// 	]
+	// } : null,
 	pointBreakpoints: {
 		reduction: 25,
 		license: 12,
@@ -108,14 +108,15 @@ export const initialState = {
 		User: '606c22a749c1c980e8289b35',
 		Phone: '121-195-9016',
 		Gender: 0,
-		Callsign: 400,
+		Callsign: 'X-69',
 		Jobs: [],
 		Qualifications: ['fto'],
 		Origin: 'United States',
-		First: 'Testy',
-		Last: 'McTest',
+		First: 'Simone',
+		Last: 'Pistoni',
 		DOB: '1991-01-01T07:59:59.000Z',
 	} : null,
+
 	// govJob: process.env.NODE_ENV != 'production' ? {
 	// 	Workplace: {
 	// 		Id: 'doj',
@@ -128,6 +129,7 @@ export const initialState = {
 	// 	},
 	// 	Id: 'government',
 	// } : null ,
+
 	// govJob: process.env.NODE_ENV != 'production' ? {
 	// 	Workplace: {
 	// 		Id: 'lspd',
@@ -140,6 +142,46 @@ export const initialState = {
 	// 	},
 	// 	Id: 'police',
 	// } : null,
+
+	// govJob: process.env.NODE_ENV != 'production' ? {
+	// 	Workplace: {
+	// 		Id: 'bsco',
+	// 		Name: 'Blaine County\n Sheriff\'s Office',
+	// 	},
+	// 	Name: 'Police',
+	// 	Grade: {
+	// 		Id: 'sheriff',
+	// 		Name: 'Sheriff',
+	// 	},
+	// 	Id: 'police',
+	// } : null,
+
+	govJob: process.env.NODE_ENV != 'production' ? {
+		Workplace: {
+			Id: 'sasp',
+			Name: 'San Andreas Highway Patrol',
+		},
+		Name: 'Police',
+		Grade: {
+			Id: 'trooper',
+			Name: 'Trooper',
+		},
+		Id: 'police',
+	} : null,
+
+	// govJob: process.env.NODE_ENV != 'production' ? {
+	// 	Workplace: {
+	// 		Id: 'fib',
+	// 		Name: 'Federal Investigation Bureau',
+	// 	},
+	// 	Name: 'Police',
+	// 	Grade: {
+	// 		Id: 'director',
+	// 		Name: 'FIB Director',
+	// 	},
+	// 	Id: 'police',
+	// } : null,
+
 	// govJob: process.env.NODE_ENV != 'production' ? {
 	// 	Workplace: {
 	// 		Id: 'safd',
@@ -152,57 +194,14 @@ export const initialState = {
 	// 	},
 	// 	Id: 'ems',
 	// } : null,
-	govJob: process.env.NODE_ENV != 'production' ? {
-		Workplace: {
-			Id: 'lspd',
-			Name: 'Los Santos Police Department',
-		},
-		Name: 'Police',
-		Grade: {
-			Id: 'cheif',
-			Name: 'Cheif',
-		},
-		Id: 'police',
-	} : null,
-	govJobPermissions: process.env.NODE_ENV != 'production' ? {
-		ems_alerts: true,
-		police_alerts: true,
-		police_doors: true,
-		ems_doors: true,
-		generic_doors: true,
-		FLEET_VEHICLES_0: true,
-		FLEET_VEHICLES_1: true,
-		FLEET_VEHICLES_2: true,
-		FLEET_VEHICLES_3: true,
-		FLEET_VEHICLES_4: true,
-		police_investigation: true,
-		leo_hc: true,
-		//MDT_INCIDENT_REPORT: true,
-	} : null,
-	// govJob: process.env.NODE_ENV != 'production' ? {
-	// 	// Workplace: {
-	// 	// 	Id: 'lspd',
-	// 	// 	Name: 'LSPD',
-	// 	// },
-	// 	Name: 'Premium Deluxe Motors',
-	// 	Grade: {
-	// 		Id: 'owner',
-	// 		Name: 'Owner',
-	// 	},
-	// 	Id: 'pdm',
-	// } : null,
+
 	// govJobPermissions: process.env.NODE_ENV != 'production' ? {
 	// 	ems_alerts: true,
 	// 	police_alerts: true,
 	// 	police_doors: true,
 	// 	ems_doors: true,
 	// 	generic_doors: true,
-	// 	TABLET_CREATE_NOTICE: true,
-	// 	TABLET_DELETE_NOTICE: true,
-	// 	TABLET_CREATE_DOCUMENT: true,
-	// 	TABLET_VIEW_DOCUMENT: true,
-	// 	TABLET_PIN_DOCUMENT: true,
-	// 	TABLET_DELETE_DOCUMENT: true,
+	// 	FLEET_VEHICLES_0: true,
 	// 	FLEET_VEHICLES_1: true,
 	// 	FLEET_VEHICLES_2: true,
 	// 	FLEET_VEHICLES_3: true,
@@ -211,6 +210,36 @@ export const initialState = {
 	// 	leo_hc: true,
 	// 	//MDT_INCIDENT_REPORT: true,
 	// } : null,
+
+	// govJob: process.env.NODE_ENV != 'production' ? {
+	// 	Name: 'Premium Deluxe Motors',
+	// 	Grade: {
+	// 		Id: 'owner',
+	// 		Name: 'Owner',
+	// 	},
+	// 	Id: 'pdm',
+	// } : null,
+
+	govJobPermissions: process.env.NODE_ENV != 'production' ? {
+		ems_alerts: true,
+		police_alerts: true,
+		police_doors: true,
+		ems_doors: true,
+		generic_doors: true,
+		TABLET_CREATE_NOTICE: true,
+		TABLET_DELETE_NOTICE: true,
+		TABLET_CREATE_DOCUMENT: true,
+		TABLET_VIEW_DOCUMENT: true,
+		TABLET_PIN_DOCUMENT: true,
+		TABLET_DELETE_DOCUMENT: true,
+		FLEET_VEHICLES_1: true,
+		FLEET_VEHICLES_2: true,
+		FLEET_VEHICLES_3: true,
+		FLEET_VEHICLES_4: true,
+		police_investigation: true,
+		leo_hc: true,
+		//MDT_INCIDENT_REPORT: true,
+	} : null,
 };
 
 const appReducer = (state = initialState, action) => {

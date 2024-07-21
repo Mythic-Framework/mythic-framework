@@ -4,8 +4,16 @@ export const GetDeptPalette = (workplace, theme) => {
 			return LSPDPalette(theme);
 		case 'lscso':
 			return LSCSOPalette(theme);
+		case 'bcso':
+			return BCSOPalette(theme);
+		case 'sasp':
+			return SAHPPalette(theme);
+		case 'fib':
+			return LSPDPalette(theme);
 		case 'doj':
+			return DOJPalette(theme);
 		case 'dattorney':
+			return DOJPalette(theme);
 		case 'mayoroffice':
 			return DOJPalette(theme);
 		case 'safd':
@@ -29,7 +37,7 @@ export const LSPDPalette = (theme) => {
 		secondary: {
 			main: theme === 'dark' ? '#172c42' : '#ffffff',
 			light: theme === 'dark' ? '#233e5a' : '#F5F6F4',
-			dark: theme === 'dark' ? '#0d1721' : '#EBEBEB',
+			dark: theme === 'dark' ? '#151515' : '#EBEBEB',
 			contrastText: theme === 'dark' ? '#ffffff' : '#2e2e2e',
 		},
 	};
@@ -47,6 +55,42 @@ export const LSCSOPalette = (theme) => {
 		secondary: {
 			main: theme === 'dark' ? '#2e2e2e' : '#ffffff',
 			light: theme === 'dark' ? '#121212' : '#F5F6F4',
+			dark: theme === 'dark' ? '#151515' : '#EBEBEB',
+			contrastText: theme === 'dark' ? '#ffffff' : '#2e2e2e',
+		},
+	};
+};
+
+export const BCSOPalette = (theme) => {
+	return {
+		...StandardPalette(theme),
+		primary: {
+			main: '#4a93b7',
+			light: '#7ec3e9',
+			dark: '#016587',
+			contrastText: theme === 'dark' ? '#ffffff' : '#26292d',
+		},
+		secondary: {
+			main: theme === 'dark' ? '#2e2e2e' : '#ffffff',
+			light: theme === 'dark' ? '#121212' : '#F5F6F4',
+			dark: theme === 'dark' ? '#151515' : '#EBEBEB',
+			contrastText: theme === 'dark' ? '#ffffff' : '#2e2e2e',
+		},
+	};
+};
+
+export const SAHPPalette = (theme) => {
+	return {
+		...StandardPalette(theme),
+		primary: {
+			main: '#8f7c3f',
+			light: '#9c9485',
+			dark: '#8F741B',
+			contrastText: theme === 'dark' ? '#ffffff' : '#26292d',
+		},
+		secondary: {
+			main: theme === 'dark' ? '#423f39' : '#ffffff',
+			light: theme === 'dark' ? '#9c9485' : '#F5F6F4',
 			dark: theme === 'dark' ? '#151515' : '#EBEBEB',
 			contrastText: theme === 'dark' ? '#ffffff' : '#2e2e2e',
 		},

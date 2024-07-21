@@ -12,17 +12,26 @@ const DepartmentData = {
         color: '#2a4179',
     },
     lscso: {
+        name: 'Los Santos\n Sheriff\'s Department',
+        color: '#755613',
+    },
+    bcso: {
         name: 'Blaine County\n Sheriff\'s Office',
         color: '#755613',
     },
     sasp: {
         name: 'San Andreas Highway Patrol',
-        color: '#C0C0C0',
+        color: '#8F741B',
     },
-    safd: {
-        name: 'San Andreas Medical Services',
-        color: '#5271ff',
+    ranger: {
+        name: 'Federal Investigation Bureau',
+        color: '#3b4c3a',
     },
+    fib: {
+        name: 'Federal Investigation Bureau',
+        color: '#2a4179',
+    },
+
     doj: {
         name: 'San Andreas\n Department of Justice',
         color: '#452f00',
@@ -35,6 +44,43 @@ const DepartmentData = {
         name: 'Public Defenders Office',
         color: '#452f00',
     },
+
+    safd: {
+        name: 'San Andreas Medical Services',
+        color: '#5271ff',
+    },
+    paleto: {
+        name: 'The Bay Care Centre',
+        color: '#4d8aa8',
+    }, 
+    pillbox: {
+        name: 'Pillbox Medical Centre',
+        color: '#ce0303',
+    }, 
+    sandy: {
+        name: 'Sandy Shores Medical Centre',
+        color: '#5271ff',
+    }, 
+    mrsa: {
+        name: 'Medical Response San Andreas',
+        color: '#5271ff',
+    }, 
+    clsmd: {
+        name: 'Central Los Santos Medical',
+        color: '#195b25',
+    }, 
+    fiacre: {
+        name: 'St Fiacre Hospital',
+        color: '#a5417e',
+    }, 
+    zonah: {
+        name: 'Mount Zonah Medical Centre',
+        color: '#5271ff',
+    }, 
+    groan: {
+        name: 'McGroan Medical Services',
+        color: '#5271ff',
+    }, 
 }
 
 export default ({ data }) => {

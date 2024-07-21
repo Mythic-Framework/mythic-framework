@@ -1,8 +1,8 @@
 export const initialState = {
+    // showing: process.env.NODE_ENV != 'production',
 	showing: false,
 	onDuty: Array(),
 	alerts: Array(),
-	//showing: true,
 	// onDuty: [
 	// 	{
 	// 		job: 'police',
@@ -19,7 +19,7 @@ export const initialState = {
 	// 	{
 	// 		job: 'ems',
 	// 		type: 'bus',
-	// 		primary: 80,
+	// 		primary: 122,
 	// 		units: [],
 	// 	},
 	// 	{
@@ -82,6 +82,7 @@ export const initialState = {
 	// 		},
 	// 		onScreen: true,
 	// 		panic: true,
+	// 		style: 2
 	// 	},
 	// 	{
 	// 		id: 3,
@@ -103,50 +104,52 @@ export const initialState = {
 	// 		},
 	// 		onScreen: true,
 	// 		panic: true,
+	// 		style: 1
 	// 	},
 	// ],
-	emergencyMembers: [
-		{
-			Job: 'police',
-			Callsign: 400,
-			First: 'John',
-			Last: 'Cena',
-			SID: 1,
-		},
-		{
-			Job: 'police',
-			Callsign: 300,
-			First: 'Bob',
-			Last: 'Cena',
-			SID: 2,
-		},
-		{
-			Job: 'police',
-			Callsign: 500,
-			First: 'Bob',
-			Last: 'Cena',
-			SID: 3,
-		},
-		{
-			Job: 'ems',
-			Callsign: 101,
-			First: 'Bob',
-			Last: 'Cena',
-			SID: 3,
-		},
-		{
-			Callsign: 122,
-			First: 'Fuck',
-			Last: 'Cena',
-			SID: 3,
-		},
-		{
-			//Callsign: 122,
-			First: 'Fuck',
-			Last: 'Cena',
-			SID: 3,
-		},
-	],
+	// emergencyMembers: [
+	// 	{
+	// 		Job: 'police',
+	// 		Callsign: 400,
+	// 		First: 'John',
+	// 		Last: 'Cena',
+	// 		SID: 1,
+	// 	},
+	// 	{
+	// 		Job: 'police',
+	// 		Callsign: 300,
+	// 		First: 'Bob',
+	// 		Last: 'Cena',
+	// 		SID: 2,
+	// 	},
+	// 	{
+	// 		Job: 'police',
+	// 		Callsign: 500,
+	// 		First: 'Bob',
+	// 		Last: 'Cena',
+	// 		SID: 3,
+	// 	},
+	// 	{
+	// 		Job: 'ems',
+	// 		Callsign: 101,
+	// 		First: 'Bob',
+	// 		Last: 'Cena',
+	// 		SID: 16,
+	// 	},
+	// 	{
+	// 		Job: 'ems',
+	// 		Callsign: 122,
+	// 		First: 'Fuck',
+	// 		Last: 'Cena',
+	// 		SID: 4,
+	// 	},
+	// 	{
+	// 		Callsign: 122,
+	// 		First: 'Fuck',
+	// 		Last: 'Cena',
+	// 		SID: 85,
+	// 	},
+	// ],
 };
 
 export default (state = initialState, action) => {

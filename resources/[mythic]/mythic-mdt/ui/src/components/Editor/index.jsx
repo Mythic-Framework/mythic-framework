@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from 'mythic-ckeditor';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -166,6 +166,7 @@ export default ({
 			onUpdate: (stats) => {
 				setCurrChars(stats.characters);
 				setCurrWords(stats.words);
+                console.log( `Characters: ${ stats.characters }\nWords: ${ stats.words }` );
 			},
 		},
 	};
@@ -184,7 +185,7 @@ export default ({
 				onChange={onEditorChange}
 			/>
 			<div className={classes.wordCount}>
-				{wordCount > 0 ? (
+				{/* {wordCount > 0 ? (
 					<span>
 						{`${currChars} Characters ${currWords}/${wordCount} Words`}
 						{currWords >= wordCount ? (
@@ -193,9 +194,9 @@ export default ({
 							<FontAwesomeIcon className={classes.negative} icon={['fas', 'x']} />
 						)}
 					</span>
-				) : (
+				) : ( */}
 					<span>{`${currChars} Characters ${currWords} Words`}</span>
-				)}
+				{/* )} */}
 			</div>
 			{Boolean(error) && <div className={classes.errorText}>{error}</div>}
 		</div>
