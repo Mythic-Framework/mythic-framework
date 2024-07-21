@@ -97,7 +97,7 @@ AddEventHandler("Labor:Client:Setup", function()
 		100.0,
 		{
 			{
-				icon = "face-surprise"
+				icon = "face-surprise",
 				text = "Let's Have Some Fun ($100,000)",
 				event = "Coke:Client:StartWork",
 				isEnabled = function()
@@ -188,7 +188,7 @@ RegisterNetEvent("Coke:Client:OnDuty", function(joiner, time)
                         end,
                     },
                 },
-                "block-question",
+                "question",
                 "WORLD_HUMAN_AA_SMOKE"
             )
         end
@@ -247,7 +247,7 @@ RegisterNetEvent("Coke:Client:OnDuty", function(joiner, time)
                     end,
                 },
             },
-            "block-question",
+            " question",
             "WORLD_HUMAN_AA_SMOKE"
         )
     end)

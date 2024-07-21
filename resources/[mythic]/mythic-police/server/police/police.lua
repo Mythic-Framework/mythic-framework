@@ -363,24 +363,24 @@ RegisterNetEvent("Police:Server:Panic", function(isAlpha)
 		local coords = GetEntityCoords(GetPlayerPed(src))
 		Callbacks:ClientCallback(src, "EmergencyAlerts:GetStreetName", coords, function(location)
 			if isAlpha then
-				EmergencyAlerts:Create("13-A", "Officer Down", 2, location, string.format(
+				EmergencyAlerts:Create("13-A", "Officer Down", 2, location, {icon = "user", details = string.format(
 					"%s - %s %s",
 					char:GetData("Callsign"),
 					char:GetData("First"),
 					char:GetData("Last")
-				), true, {
+				)}, true, {
 					icon = 303,
 					size = 1.2,
 					color = 26,
 					duration = (60 * 10),
 				}, 1)
 			else
-				EmergencyAlerts:Create("13-B", "Officer Down", 2, location, string.format(
+				EmergencyAlerts:Create("13-B", "Officer Down", 2, location, {icon = "user", details = string.format(
 					"%s - %s %s",
 					char:GetData("Callsign"),
 					char:GetData("First"),
 					char:GetData("Last")
-				), false, {
+				)}, false, {
 					icon = 303,
 					size = 0.9,
 					color = 26,

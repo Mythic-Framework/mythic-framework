@@ -298,7 +298,12 @@ RegisterNetEvent("EMS:Server:Panic", function(isAlpha)
 					"Medic Down",
 					2,
 					location,
-					string.format("%s - %s %s", char:GetData("Callsign"), char:GetData("First"), char:GetData("Last")),
+					{icon = "user", details = string.format(
+					"%s - %s %s",
+					char:GetData("Callsign"),
+					char:GetData("First"),
+					char:GetData("Last")
+				)},
 					true,
 					{
 						icon = 303,
@@ -314,7 +319,12 @@ RegisterNetEvent("EMS:Server:Panic", function(isAlpha)
 					"Medic Down",
 					2,
 					location,
-					string.format("%s - %s %s", char:GetData("Callsign"), char:GetData("First"), char:GetData("Last")),
+					{icon = "user", details = string.format(
+					"%s - %s %s",
+					char:GetData("Callsign"),
+					char:GetData("First"),
+					char:GetData("Last")
+				)},
 					false,
 					{
 						icon = 303,

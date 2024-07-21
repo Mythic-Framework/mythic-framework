@@ -257,16 +257,16 @@ AddEventHandler('Vehicles:Client:StartFueling', function(entityData)
 			disableMouse = false,
 			disableCombat = true,
 		},
-		animation = {
-			animDict = "weapons@misc@jerrycan@",
-			anim = "fire",
-			flags = 49,
+	    	animation = {
+		    animDict = "timetable@gardener@filling_can",
+		    anim = "gar_ig_5_filling_can",
+		    flags = 49,
 		},
 		prop = {
-			model = "prop_jerrycan_01a",
-			bone = 60309,
-			coords = { x = 0.0, y = 0.1, z = 0.5 },
-			rotation = { x = 364.0, y = 180.0, z = 90.0 },
+		    model = "prop_cs_fuel_nozle",
+		    bone = 18905,
+		    coords = { x = 0.13, y = 0.04, z = 0.01 },
+		    rotation = { x = -42.0, y = -115.0, z = -63.42 },
 		},
 		disarm = true
 	}, function()

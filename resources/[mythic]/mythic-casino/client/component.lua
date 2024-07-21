@@ -212,7 +212,7 @@ AddEventHandler("Casino:Client:Startup", function()
 
     PedInteraction:Add("CasinoCashier", `s_m_y_casino_01`, vector3(990.372, 31.271, 70.466), 56.249, 25.0, {}, "seal-question")
 
-    Targeting.Zones:AddBox("casino-cashier", "cards", vector3(990.35, 31.18, 71.47), 5.4, 2, {
+    Targeting.Zones:AddBox("casino-cashier", "credit-card", vector3(990.35, 31.18, 71.47), 5.4, 2, {
         heading = 330,
         --debugPoly=true,
         minZ = 70.47,

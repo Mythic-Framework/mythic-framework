@@ -642,7 +642,7 @@ RegisterNetEvent("Restaurant:Client:CreatePoly", function(pickups, warmersList, 
 		for k2, v2 in ipairs(v) do
 			local data = GlobalState[string.format("Restaurant:Warmers:%s", v2)]
 			if data ~= nil then
-				local icon = data.fridge and "refrigerator" or "oven"
+				local icon = data.fridge and "dolly" or "temperature-high"
 				Targeting.Zones:AddBox(data.id, icon, data.coords, data.width, data.length, data.options, {
 					{
 						icon = icon,

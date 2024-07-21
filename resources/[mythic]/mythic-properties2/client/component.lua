@@ -325,7 +325,7 @@ function CreatePropertyDoor(isBackdoor)
 
 		if not isBackdoor then
 			table.insert(pMenu, {
-				icon = "bells",
+				icon = "bell",
 				label = "Ring Doorbell",
 				action = function()
 					Callbacks:ServerCallback("Properties:RingDoorbell", data.propertyId, function()

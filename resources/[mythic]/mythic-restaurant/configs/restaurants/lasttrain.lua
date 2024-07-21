@@ -75,7 +75,7 @@ table.insert(Config.Restaurants, 		{
             label = "Food",
             targeting = {
                 actionString = "Cooking",
-                icon = "burger-fries",
+                icon = "fire-burner",
                 poly = {
                     coords = vector3(-383.88, 262.59, 86.46),
                     w = 2.6,
