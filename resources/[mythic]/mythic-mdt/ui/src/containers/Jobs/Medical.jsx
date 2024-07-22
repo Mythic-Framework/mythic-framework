@@ -29,7 +29,8 @@ import {
 
 import { AdminMetrics, AdminCharges, AdminTags, AdminRoster, AdminNotice } from '../../pages/Admin';
 
-import Comms from '../../pages/Police/Comms';
+import SOPs from '../../pages/Medical/SOPs';
+import Comms from '../../pages/Medical/Comms';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -70,6 +71,7 @@ export default () => {
 								<Route exact path="/search/reports/:id" element={<ViewReport />} />
 								<Route exact path="/roster" element={<RosterIndex />} />
 								<Route exact path="/penal-code" element={<PenalCode />} />
+								<Route exact path="/sops" element={<SOPs />} />
 								<Route exact path="/comms" element={<Comms />} />
 
 								<Route path="/system" element={<AdminRoute permission={true} />}>

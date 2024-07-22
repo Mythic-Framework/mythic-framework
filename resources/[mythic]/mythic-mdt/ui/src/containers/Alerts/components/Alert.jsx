@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Slide, Chip, IconButton, Grid } from '@mui/material';
+import { Slide, Chip, IconButton, Grid, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'react-moment';
@@ -8,6 +8,7 @@ import Truncate from '@nosferatu500/react-truncate';
 
 import Nui from '../../../util/Nui';
 import { usePermissions } from '../../../hooks';
+// import { Tooltip } from 'chart.js';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -46,12 +47,14 @@ const useStyles = makeStyles((theme) => ({
 		'&.code': {
 			backgroundColor: theme.palette.warning.main,
 		},
+		userSelect: 'none'
 	},
 	icon: {
 		marginRight: 5,
 	},
 	minor: {
 		fontSize: 14,
+		userSelect: 'none'
 	},
 }));
 
@@ -118,7 +121,7 @@ export default ({ alert }) => {
 						<div style={{ display: 'flex', alignItems: 'center' }}>
 							{getIcon()}
 							<Chip className={`${classes.chip} code`} size="small" label={alert.code} />
-							<Truncate lines={1}>{alert.title}</Truncate>
+							<Truncate lines={1} style={{ userSelect: 'none' }}>{alert.title}</Truncate>
 						</div>
 						{Boolean(alert.description) && (
 							<div className={classes.minor}>
@@ -152,9 +155,11 @@ export default ({ alert }) => {
 					{(Boolean(alert.location) || Boolean(alert.camera)) && (
 						<Grid item xs={1} style={{ textAlign: 'right' }}>
 							{Boolean(alert.location) && (
-								<IconButton onClick={onRoute}>
-									<FontAwesomeIcon icon={['fas', 'location-question']} />
-								</IconButton>
+								<Tooltip title="Set GPS Location" >
+									<IconButton onClick={onRoute}>
+										<FontAwesomeIcon icon={['fas', 'location-dot']} />
+									</IconButton>
+								</Tooltip>
 							)}
 							{Boolean(alert.camera) && (
 								<IconButton onClick={onCamera}>

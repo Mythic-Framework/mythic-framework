@@ -6,6 +6,7 @@ import {
 	List,
 	ListItem,
 	IconButton,
+	Tooltip
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 32,
 		width: 32,
 		position: 'absolute',
-		top: 0,
+		top: -6,
 		right: 0,
 	},
 }));
@@ -49,13 +50,15 @@ export default () => {
 			<div className={classes.block}>
 				<div className={classes.header}>
 					Active Warrants
-					<IconButton
-						component={Link}
-						to="/warrants"
-						className={classes.create}
-					>
-						<FontAwesomeIcon icon={['fas', 'eye']} />
-					</IconButton>
+					<Tooltip title="View Warrants">
+						<IconButton
+							component={Link}
+							to="/warrants"
+							className={classes.create}
+						>
+							<FontAwesomeIcon icon={['fas', 'eye']} />
+						</IconButton>
+					</Tooltip>
 				</div>
 				<List>
 					{warrants.filter(w => w.state == 'active').length > 0 ? (

@@ -6,12 +6,14 @@ import {
 	List,
 	ListItem,
 	IconButton,
+	Tooltip
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Item from './components/WarrantItem';
+import { Tooltip } from 'chart.js';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 32,
 		width: 32,
 		position: 'absolute',
-		top: 0,
+		top: -6,
 		right: 0,
 	},
 }));
@@ -48,13 +50,15 @@ export default () => {
 			<div className={classes.block}>
 				<div className={classes.header}>
 					Active Warrants
-					<IconButton
-						component={Link}
-						to=""
-						className={classes.create}
-					>
-						<FontAwesomeIcon icon={['fas', 'plus']} />
-					</IconButton>
+					<Tooltip title="Create Notice">
+						<IconButton
+							component={Link}
+							to=""
+							className={classes.create}
+						>
+							<FontAwesomeIcon icon={['fas', 'plus']} />
+						</IconButton>
+					</Tooltip>
 				</div>
 				<List>
 					{warrants.length > 0 ? (

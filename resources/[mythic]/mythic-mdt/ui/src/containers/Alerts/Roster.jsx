@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		overflowY: 'hidden',
 		overflowX: 'auto',
+		borderRadius: '0.375rem',
 		background: theme.palette.secondary.dark,
 	},
 	wrapper: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 				color: theme.palette.text.alt,
 			},
 		},
+		// marginInlineStart: 10,
 	},
 	list: {
 		maxHeight: '85%',
@@ -58,7 +60,7 @@ export default () => {
 		<Grid className={classes.container} container>
 			{job.Id != 'tow' && (
 				<Grid item xs={4} className={classes.wrapper}>
-					<h3>
+					<h3 style={{ userSelect: 'none' }}>
 						Police
 						{policeOnDuty.length > 0 && (
 							<small>
@@ -78,7 +80,7 @@ export default () => {
 						</List>
 					) : (
 						<List className={classes.list}>
-							<Alert className={classes.alert} variant="outlined" severity="info">
+							<Alert className={classes.alert} variant="outlined" severity="info" style={{ userSelect: 'none' }}>
 								No Police On Duty
 							</Alert>
 						</List>
@@ -87,7 +89,7 @@ export default () => {
 			)}
 			{job.Id != 'tow' && (
 				<Grid item xs={4} className={classes.wrapper}>
-					<h3>
+					<h3 style={{ userSelect: 'none' }}>
 						EMS
 						{emsOnDuty.length > 0 && (
 							<small>
@@ -107,7 +109,7 @@ export default () => {
 						</List>
 					) : (
 						<List className={classes.list}>
-							<Alert className={classes.alert} variant="outlined" severity="info">
+							<Alert className={classes.alert} variant="outlined" severity="info" style={{ userSelect: 'none' }}>
 								No EMS On Duty
 							</Alert>
 						</List>
@@ -115,7 +117,7 @@ export default () => {
 				</Grid>
 			)}
 			<Grid item xs={job.Id != 'tow' ? 4 : 12} className={classes.wrapper}>
-				<h3>
+				<h3 style={{ userSelect: 'none' }}>
 					Tow
 					{towOnDuty.length > 0 && (
 						<small>
@@ -132,7 +134,7 @@ export default () => {
 					</List>
 				) : (
 					<List className={classes.list}>
-						<Alert className={classes.alert} variant="outlined" severity="info">
+						<Alert className={classes.alert} variant="outlined" severity="info" style={{ userSelect: 'none' }}>
 							No Tow On Duty
 						</Alert>
 					</List>

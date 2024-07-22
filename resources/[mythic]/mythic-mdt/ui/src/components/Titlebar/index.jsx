@@ -19,13 +19,15 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 100,
 	},
 	cityLogo: {
+		marginTop: 5,
 		width: 80,
-		padding: 4,
+		padding: 5,
+		userSelect: 'none'
 	},
 	cityLogoLink: {
 		background: theme.palette.secondary.main,
 		'&:hover': {
-			background: theme.palette.secondary.light,
+			background: `${theme.palette.secondary.light}a2`,
 			transition: 'background ease-in 0.15s',
 		},
 	},
@@ -38,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 			fontSize: 14,
 			color: theme.palette.text.alt,
 		},
+		userSelect: 'none'
 	},
 	navLinks: {
 		display: 'inline-flex',
@@ -64,10 +67,12 @@ const useStyles = makeStyles((theme) => ({
 			display: 'block',
 			color: theme.palette.text.alt,
 		},
+		userSelect: 'none'
 	},
 	callsign: {
 		fontSize: 14,
 		color: theme.palette.primary.main,
+		userSelect: 'none'
 	},
 }));
 

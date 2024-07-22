@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Alert, Grid, List, ListItem, IconButton, Pagination } from '@mui/material';
+import { Alert, Grid, List, ListItem, IconButton, Pagination, Tooltip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 		height: 32,
 		width: 32,
 		position: 'absolute',
-		top: 0,
+		top: -6,
 		right: 0,
 	},
 }));
@@ -77,9 +77,11 @@ export default ({ boardTitle = 'Notice Board', perPage = 3 }) => {
 				<div className={classes.header}>
 					{boardTitle}
 					{isHighCommand && (
-						<IconButton component={Link} to="create/notice" className={classes.create}>
-							<FontAwesomeIcon icon={['fas', 'plus']} />
-						</IconButton>
+						<Tooltip title="Create Notice">
+							<IconButton component={Link} to="create/notice" className={classes.create}>
+								<FontAwesomeIcon icon={['fas', 'plus']} />
+							</IconButton>
+						</Tooltip>
 					)}
 				</div>
 				<List>

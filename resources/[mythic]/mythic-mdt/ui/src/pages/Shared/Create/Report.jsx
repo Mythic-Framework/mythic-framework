@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 22,
 		color: theme.palette.text.main,
 		textAlign: 'center',
+		userSelect: 'none'
 	},
 	option: {
 		transition: 'background ease-in 0.15s',

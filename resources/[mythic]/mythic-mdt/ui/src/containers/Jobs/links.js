@@ -38,7 +38,7 @@ const base = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'handcuffs'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -62,7 +62,7 @@ const attorney = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'handcuffs'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -88,7 +88,7 @@ const attorney = [
 const systemAdmin = [
 	{
 		name: 'system-admin',
-		icon: ['fas', 'square-terminal'],
+		icon: ['fas', 'terminal'],
 		label: 'System Admin',
 		path: '/system',
 		exact: false,
@@ -103,7 +103,7 @@ const systemAdmin = [
 				exact: true,
 			},
 			{
-				icon: ['fas', 'screen-users'],
+				icon: ['fas', 'users-rectangle'],
 				label: 'Full Roster',
 				path: '/system/gov-roster',
 				exact: true,
@@ -140,7 +140,7 @@ const police = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-signature'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -161,19 +161,19 @@ const police = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'cars'],
+				icon: ['fas', 'car-side'],
 				label: 'Vehicles',
 				path: '/search/vehicles',
 				exact: false,
 			},
 			{
-				icon: ['fas', 'house-chimney'],
+				icon: ['fas', 'house-chimney-window'],
 				label: 'Properties',
 				path: '/search/properties',
 				exact: false,
 			},
 			{
-				icon: ['fas', 'raygun'],
+				icon: ['fas', 'person-rifle'],
 				label: 'Firearms',
 				path: '/search/firearms',
 				exact: false,
@@ -194,14 +194,14 @@ const police = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'handcuffs'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
 	},
 	{
 		name: 'roster',
-		icon: ['fas', 'user-police-tie'],
+		icon: ['fas', 'clipboard-user'],
 		label: 'Roster',
 		path: '/roster',
 		exact: false,
@@ -215,21 +215,21 @@ const police = [
 	},
 	{
 		name: 'sops',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'book-bookmark'],
 		label: 'SOP\'s',
 		path: '/sops',
 		exact: true,
 	},
 	{
 		name: 'comms',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'book-bookmark'],
 		label: 'Communication Guide',
 		path: '/comms',
 		exact: true,
 	},
 	{
 		name: 'admin',
-		icon: ['fas', 'user-crown'],
+		icon: ['fas', 'user-shield'],
 		label: 'High Command',
 		path: '/admin',
 		exact: false,
@@ -277,19 +277,19 @@ const doj = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'cars'],
+				icon: ['fas', 'car-side'],
 				label: 'Vehicles',
 				path: '/search/vehicles',
 				exact: false,
 			},
 			{
-				icon: ['fas', 'house-chimney'],
+				icon: ['fas', 'house-chimney-window'],
 				label: 'Properties',
 				path: '/search/properties',
 				exact: false,
 			},
 			{
-				icon: ['fas', 'raygun'],
+				icon: ['fas', 'gun'],
 				label: 'Firearms',
 				path: '/search/firearms',
 				exact: false,
@@ -310,7 +310,7 @@ const doj = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-signature'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -318,7 +318,7 @@ const doj = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'handcuffs'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -396,7 +396,7 @@ const districtattorney = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-signature'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -404,7 +404,7 @@ const districtattorney = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'handcuffs'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -438,7 +438,7 @@ const medical = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-signature'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -460,7 +460,7 @@ const medical = [
 	},
 	{
 		name: 'comms',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'book-bookmark'],
 		label: 'Communication Guide',
 		path: '/comms',
 		exact: true,
@@ -474,7 +474,7 @@ const medical = [
 	// },
 	{
 		name: 'admin',
-		icon: ['fas', 'user-crown'],
+		icon: ['fas', 'user-shield'],
 		label: 'Management',
 		path: '/admin',
 		exact: false,
