@@ -163,6 +163,7 @@ AddEventHandler("MDT:Client:ToggleBodyCam", function()
 	})
 
 	_bodycam = not _bodycam
+	TriggerEvent("HUD:Client:BodycamToggled", _bodycam)
 	if _bodycam then
 		Sounds.Play:Distance(15, "bodycam.ogg", 0.05)
 	end

@@ -12,12 +12,12 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         padding: 10,
         right: 0,
-        top: 0,
     },
 }));
 
 export default () => {
     const classes = useStyles();
+    const bodyCamActive = useSelector((state) => state.app.bodycamActive);
 
     const pers = useSelector((state) =>
         state.notification.notifications.filter((n) => n.duration <= 0),
@@ -27,7 +27,7 @@ export default () => {
     );
 
     return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper} style={{top: bodyCamActive? '13vh' : 0}}>
             {pers.length > 0 &&
                 pers
                     .sort((a, b) => b.created - a.created)
