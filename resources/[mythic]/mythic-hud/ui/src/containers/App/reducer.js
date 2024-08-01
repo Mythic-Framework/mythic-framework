@@ -15,6 +15,8 @@ export const initialState = {
     releaseKey: false,
     helpKey: false,
     medicalPrice: false,
+
+    bodycamActive: false,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -89,6 +91,12 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 flashbanged: false,
             };
+        case 'BODYCAM_TOGGLED': {
+            return {
+                ...state,
+                bodycamActive: action.payload.state
+            }
+        }
         default:
             return state;
     }
