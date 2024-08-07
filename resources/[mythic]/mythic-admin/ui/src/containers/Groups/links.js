@@ -1,15 +1,14 @@
 export default (type) => {
 	switch (type) {
-		case 4:
-        case 7:
-            return developer;
-		case 8:
-			return admin;
-        case 6:
-        default:
-            return staff;
+	  case "Owner":
+	  case "Admin":
+		return admin;
+	  case "Developer":
+		return developer;
+	  default:
+		return staff;
 	}
-};
+  };
 
 const staff = [
 	{

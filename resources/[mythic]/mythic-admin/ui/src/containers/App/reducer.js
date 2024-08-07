@@ -10,8 +10,8 @@ export const initialState = {
 		Groups: [7],
 		Level: 99,
 	} : null,
-	permission: 7,
-	permissionName: 'Developer',
+	permission: "Owner",
+	permissionName: 'Owner',
 	permissionLevel: 100,
 };
 

@@ -69,7 +69,7 @@ end)
 
 RegisterNetEvent("Characters:Client:Spawned", function()
     StartThreads()
-    Hud:RegisterStatus("godmode", 0, 100, "shield-quartered", "#FFBB04", false, false, {
+    Hud:RegisterStatus("godmode", 0, 100, "shield-virus", "#FFBB04", false, false, {
         hideZero = true,
     })
 end)

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
 	const classes = useStyles();
-	const permission = useSelector((state) => state.app.permission);
+	const permissionName = useSelector((state) => state.app.permissionName);
 
 	return (
 		<div className={classes.container}>
@@ -55,7 +55,7 @@ export default () => {
                     <Titlebar />
                 </Grid>
                 <Grid item xs={3} className={classes.wrapper}>
-                    <Navbar links={links(permission)} />
+                    <Navbar links={links(permissionName)} />
                 </Grid>
                 <Grid item xs={9} className={classes.wrapper}>
                     <div className={classes.content}>

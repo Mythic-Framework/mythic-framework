@@ -4,7 +4,7 @@ _inPursuitVehicleMode = 1
 
 AddEventHandler("Characters:Client:Spawn", function()
     Wait(500)
-    Hud:RegisterStatus("pursuit-modes", 0, 100, "gauge-circle-bolt", "#892020", true, false, {
+    Hud:RegisterStatus("pursuit-modes", 0, 100, "gauge", "#892020", true, false, {
         hideZero = true,
     })
 end)

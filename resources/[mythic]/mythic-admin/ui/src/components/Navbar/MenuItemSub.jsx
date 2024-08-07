@@ -1,91 +1,71 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import {
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	Collapse,
-} from '@material-ui/core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
+import { useMediaQuery, List } from '@material-ui/core';
+import { useTheme } from '@material-ui/core/styles';
 
 import MenuItem from './MenuItem';
+import MenuItemSub from './MenuItemSub';
 
 const useStyles = makeStyles((theme) => ({
-	link: {
-		color: theme.palette.text.main,
-		height: 60,
-		transition: 'color ease-in 0.15s, background-color ease-in 0.15s',
-		'& svg': {
-			fontSize: 20,
-			transition: 'color ease-in 0.15s',
-		},
-		'&:hover': {
-			color: `${theme.palette.primary.main}`,
-			cursor: 'pointer',
-			'& svg': {
-				color: `${theme.palette.primary.main}`,
-			},
-		},
-		'&.active': {
-			color: theme.palette.primary.main,
-			'& svg': {
-				color: theme.palette.primary.main,
-				'--fa-secondary-opacity': 1.0,
-			},
+	mainNav: {
+		borderRight: `1px solid ${theme.palette.border.divider}`,
+		background: theme.palette.secondary.main,
+		width: '100%',
+		display: 'inline-block',
+		verticalAlign: 'top',
+		height: '97.5%',
+		overflow: 'auto',
+		'&::-webkit-scrollbar': {
+			width: 0,
 		},
 	},
-	icon: {
-        fontSize: '0.75vh',
-        transition: '.5s',
-        color: theme.palette.primary.main,
+	menu: {
+		background: theme.palette.secondary.dark,
+		borderRadius: 0,
+		zIndex: 100,
 	},
 }));
 
 export default (props) => {
 	const classes = useStyles();
+	const theme = useTheme();
+	const user = useSelector(state => state.app.user);
+	const permissionLevel = useSelector(state => state.app.permissionLevel);
+	const isMobile = !useMediaQuery(theme.breakpoints.up('lg'));
 
 	return (
-		<>
-			<ListItem
-				className={classes.link}
-				component={NavLink}
-				exact={props.link.exact}
-				to={props.link.path}
-				name={props.link.name}
-				onClick={props.onClick}
-				button
-			>
-				<ListItemIcon>
-					<FontAwesomeIcon icon={props.link.icon} />
-				</ListItemIcon>
-				<ListItemText primary={props.link.label} />
-				{Boolean(props.link.items) && props.link.items.length > 0 ? (
-					<FontAwesomeIcon
-						className={classes.icon}
-						icon={
-							props.open === props.link.name
-								? 'chevron-up'
-								: 'chevron-down'
-						}
-					/>
-				) : null}
-			</ListItem>
-			<Collapse in={props.open === props.link.name}>
-				<List component="div" disablePadding>
-					{props.link.items.map((sublink, j) => {
-						return (
-							<MenuItem
-								key={`sub-${props.link.name}-${j}`}
-								link={sublink}
-								onClick={props.handleMenuClose}
-								nested
+		<List className={!isMobile ? classes.mainNav : ''}>
+			{props.links.map((link, i) => {
+				if (
+					link.restrict &&
+					(!Boolean(user) || (permissionLevel < link.restrict.permission))
+				)
+					return null;
+				if (Boolean(link.items) && link.items.length > 0) {
+					return (
+						<div key={`${link.path}-${i}`}>
+							<MenuItemSub
+								compress={props.compress}
+								link={link}
+								open={props.open}
+								onClick={props.onClick}
+								handleMenuClose={props.handleMenuClose}
 							/>
-						);
-					})}
-				</List>
-			</Collapse>
-		</>
+						</div>
+					);
+				} else {
+					return (
+						<div key={`${link.path}-${i}`}>
+							<MenuItem
+								compress={props.compress}
+								link={link}
+								onClick={props.handleMenuClose}
+							/>
+						</div>
+					);
+				}
+			})}
+		</List>
 	);
 };
