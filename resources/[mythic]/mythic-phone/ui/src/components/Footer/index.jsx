@@ -47,7 +47,7 @@ export default (props => {
     return (
         <Grid container className={classes.footer}>
             <Grid item xs={4} className={classes.fButton} onClick={ToggleExpando}>
-                <FontAwesomeIcon icon={['fas', expanded ? 'arrows-minimize' : 'arrows-maximize']} />
+                <FontAwesomeIcon icon={['fas', expanded ? 'minimize' : 'maximize']} />
             </Grid>
             <Grid item xs={4} className={classes.fButton} onClick={GoHome}>
                 <FontAwesomeIcon icon={['fas', 'house']} />

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		height: '100%',
 		background: theme.palette.secondary.main,
-		position: 'relative',
+		//position: 'relative',
 	},
 	content: {
 		height: '90%',
