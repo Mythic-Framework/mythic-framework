@@ -1,71 +1,91 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { useMediaQuery, List } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import {
+	List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Collapse,
+} from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';
-import MenuItemSub from './MenuItemSub';
 
 const useStyles = makeStyles((theme) => ({
-	mainNav: {
-		borderRight: `1px solid ${theme.palette.border.divider}`,
-		background: theme.palette.secondary.main,
-		width: '100%',
-		display: 'inline-block',
-		verticalAlign: 'top',
-		height: '97.5%',
-		overflow: 'auto',
-		'&::-webkit-scrollbar': {
-			width: 0,
+	link: {
+		color: theme.palette.text.main,
+		height: 60,
+		transition: 'color ease-in 0.15s, background-color ease-in 0.15s',
+		'& svg': {
+			fontSize: 20,
+			transition: 'color ease-in 0.15s',
+		},
+		'&:hover': {
+			color: `${theme.palette.primary.main}`,
+			cursor: 'pointer',
+			'& svg': {
+				color: `${theme.palette.primary.main}`,
+			},
+		},
+		'&.active': {
+			color: theme.palette.primary.main,
+			'& svg': {
+				color: theme.palette.primary.main,
+				'--fa-secondary-opacity': 1.0,
+			},
 		},
 	},
-	menu: {
-		background: theme.palette.secondary.dark,
-		borderRadius: 0,
-		zIndex: 100,
+	icon: {
+        fontSize: '0.75vh',
+        transition: '.5s',
+        color: theme.palette.primary.main,
 	},
 }));
 
 export default (props) => {
 	const classes = useStyles();
-	const theme = useTheme();
-	const user = useSelector(state => state.app.user);
-	const permissionLevel = useSelector(state => state.app.permissionLevel);
-	const isMobile = !useMediaQuery(theme.breakpoints.up('lg'));
 
 	return (
-		<List className={!isMobile ? classes.mainNav : ''}>
-			{props.links.map((link, i) => {
-				if (
-					link.restrict &&
-					(!Boolean(user) || (permissionLevel < link.restrict.permission))
-				)
-					return null;
-				if (Boolean(link.items) && link.items.length > 0) {
-					return (
-						<div key={`${link.path}-${i}`}>
-							<MenuItemSub
-								compress={props.compress}
-								link={link}
-								open={props.open}
-								onClick={props.onClick}
-								handleMenuClose={props.handleMenuClose}
-							/>
-						</div>
-					);
-				} else {
-					return (
-						<div key={`${link.path}-${i}`}>
+		<>
+			<ListItem
+				className={classes.link}
+				component={NavLink}
+				exact={props.link.exact}
+				to={props.link.path}
+				name={props.link.name}
+				onClick={props.onClick}
+				button
+			>
+				<ListItemIcon>
+					<FontAwesomeIcon icon={props.link.icon} />
+				</ListItemIcon>
+				<ListItemText primary={props.link.label} />
+				{Boolean(props.link.items) && props.link.items.length > 0 ? (
+					<FontAwesomeIcon
+						className={classes.icon}
+						icon={
+							props.open === props.link.name
+								? 'chevron-up'
+								: 'chevron-down'
+						}
+					/>
+				) : null}
+			</ListItem>
+			<Collapse in={props.open === props.link.name}>
+				<List component="div" disablePadding>
+					{props.link.items.map((sublink, j) => {
+						return (
 							<MenuItem
-								compress={props.compress}
-								link={link}
+								key={`sub-${props.link.name}-${j}`}
+								link={sublink}
 								onClick={props.handleMenuClose}
+								nested
 							/>
-						</div>
-					);
-				}
-			})}
-		</List>
+						);
+					})}
+				</List>
+			</Collapse>
+		</>
 	);
 };
