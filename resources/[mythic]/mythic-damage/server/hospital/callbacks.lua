@@ -104,7 +104,7 @@ function HospitalCallbacks()
 
 	Callbacks:RegisterServerCallback("Hospital:Respawn", function(source, data, cb)
 		local char = Fetch:Source(source):GetData("Character")
-		if Damage:CanRespawn(char) then
+		if os.time() >= Player(source).state.releaseTime then
 			Pwnzor.Players:TempPosIgnore(source)
 			local bed = Hospital:RequestBed(source)
 
@@ -161,8 +161,12 @@ function HospitalCallbacks()
 			if t ~= nil and t.isDead then
 				if Crypto.Exchange:Remove("PLEB", char:GetData("CryptoWallet"), 20) then
 					cb(true)
-					local tChar = Fetch:Source(p.isEscorting):GetData("Character")
-					Execute:Client(tChar:GetData("Source"), "Damage", "Heal")
+					local tPlyr = Fetch:Source(p.isEscorting)
+					if tPlyr ~= nil then
+						Callbacks:ClientCallback(tPlyr:GetData("Source"), "Damage:Heal", true)
+					else
+						Execute:Client(source, "Notification", "Error", "Invalid Target")
+					end
 				else
 					cb(false)
 					Execute:Client(source, "Notification", "Error", "Not Enough Crypto")

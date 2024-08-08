@@ -5,7 +5,7 @@ _itemsSource["beanmachine"] = {
 		price = 50,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 12,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -33,8 +33,9 @@ _itemsSource["beanmachine"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		energyModifier = {
-			modifier = 1.2,
+			modifier = 1.1,
 			duration = 6, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
@@ -47,7 +48,7 @@ _itemsSource["beanmachine"] = {
 		price = 240,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 1,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -79,6 +80,7 @@ _itemsSource["beanmachine"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 
 
@@ -89,7 +91,7 @@ _itemsSource["beanmachine"] = {
 		price = 240,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -120,13 +122,14 @@ _itemsSource["beanmachine"] = {
 			},
 		},
 		energyModifier = {
-			modifier = 1.3,
+			modifier = 1.2,
 			duration = 5, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 
 
@@ -136,13 +139,14 @@ _itemsSource["beanmachine"] = {
 		price = 200,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 8,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		animConfig = {
 			anim = "coffee",
 			time = 7500,
@@ -165,7 +169,7 @@ _itemsSource["beanmachine"] = {
 			},
 		},
 		progressModifier = {
-			modifier = 40,
+			modifier = 50,
 			min = 6,
 			max = 10,
 		}
@@ -177,13 +181,14 @@ _itemsSource["beanmachine"] = {
 		price = 200,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 8,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		animConfig = {
 			anim = "coffee",
 			time = 7500,

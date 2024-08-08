@@ -23,6 +23,34 @@ function RetrieveComponents()
 	Chat.Refresh:Themes()
 end
 
+AddEventHandler("Characters:Client:Spawn", function()
+	CreateThread(function()
+		SetTextChatEnabled(false)
+		SetNuiFocus(false)
+
+		while LocalPlayer.state.loggedIn do
+			Wait(1)
+
+			if not chatInputActive then
+				if IsControlPressed(0, 245) then
+					chatInputActive = true
+					chatInputActivating = true
+					SendNUIMessage({
+						type = "ON_OPEN",
+					})
+				end
+			end
+
+			if chatInputActivating then
+				if not IsControlPressed(0, 245) then
+					SetNuiFocus(true)
+					chatInputActivating = false
+				end
+			end
+		end
+	end)
+end)
+
 AddEventHandler("Core:Shared:Ready", function()
 	exports["mythic-base"]:RequestDependencies("CarPark", {
 		"Chat",
@@ -34,7 +62,32 @@ AddEventHandler("Core:Shared:Ready", function()
 	end)
 end)
 
+RegisterNetEvent("Characters:Client:Logout", function()
+	SendNUIMessage({
+		type = "ON_SCREEN_STATE_CHANGE",
+		data = {
+			shouldHide = true,
+			inputting = false,
+		},
+	})
+end)
+
+RegisterNetEvent("UI:Client:Reset", function(apps)
+	SendNUIMessage({
+		type = "ON_SCREEN_STATE_CHANGE",
+		data = {
+			shouldHide = true,
+			inputting = false,
+		},
+	})
+	SendNUIMessage({
+		type = "ON_CLEAR",
+	})
+end)
+
 CHAT = {
+	Open = function(self) end,
+	Close = function(self) end,
 	Refresh = {
 		Commands = function(self)
 			if GetRegisteredCommands then
@@ -90,19 +143,25 @@ AddEventHandler("chatMessage", function(author, color, text)
 	end
 	SendNUIMessage({
 		type = "ON_MESSAGE",
-		message = {
-			color = color,
-			args = args,
+		data = {
+			message = {
+				color = color,
+				args = args,
+			},
 		},
 	})
 end)
 
 AddEventHandler("__cfx_internal:serverPrint", function(msg)
-	if msg == "" then return end
+	if msg == "" then
+		return
+	end
 	SendNUIMessage({
 		type = "ON_MESSAGE",
-		message = {
-			args = { msg },
+		data = {
+			message = {
+				args = { msg },
+			},
 		},
 	})
 end)
@@ -110,17 +169,21 @@ end)
 AddEventHandler("chat:addMessage", function(message)
 	SendNUIMessage({
 		type = "ON_MESSAGE",
-		message = message,
+		data = {
+			message = message,
+		},
 	})
 end)
 
 AddEventHandler("chat:addSuggestion", function(name, help, params)
 	SendNUIMessage({
 		type = "ON_SUGGESTION_ADD",
-		suggestion = {
-			name = name,
-			help = help,
-			params = params or nil,
+		data = {
+			suggestion = {
+				name = name,
+				help = help,
+				params = params or nil,
+			},
 		},
 	})
 end)
@@ -129,7 +192,9 @@ AddEventHandler("chat:addSuggestions", function(suggestions)
 	for _, suggestion in ipairs(suggestions) do
 		SendNUIMessage({
 			type = "ON_SUGGESTION_ADD",
-			suggestion = suggestion,
+			data = {
+				suggestion = suggestion,
+			},
 		})
 	end
 end)
@@ -137,7 +202,9 @@ end)
 AddEventHandler("chat:removeSuggestion", function(name)
 	SendNUIMessage({
 		type = "ON_SUGGESTION_REMOVE",
-		name = name,
+		data = {
+			name = name,
+		},
 	})
 end)
 
@@ -151,9 +218,11 @@ end)
 AddEventHandler("chat:addTemplate", function(id, html)
 	SendNUIMessage({
 		type = "ON_TEMPLATE_ADD",
-		template = {
-			id = id,
-			html = html,
+		data = {
+			template = {
+				id = id,
+				html = html,
+			},
 		},
 	})
 end)
@@ -167,8 +236,8 @@ end)
 RegisterNUICallback("chatResult", function(data, cb)
 	chatInputActive = false
 	SetNuiFocus(false)
-
-	if not data.canceled then
+	
+	if not data.cancelled then
 		local id = PlayerId()
 
 		--deprecated
@@ -210,54 +279,9 @@ RegisterNUICallback("loaded", function(data, cb)
 		Chat.Refresh:Themes()
 	end
 
-	chatLoaded = true
-
 	cb("ok")
-end)
 
-CreateThread(function()
-	SetTextChatEnabled(false)
-	SetNuiFocus(false)
-
-	while true do
-		Wait(0)
-
-		if not chatInputActive then
-			if
-				IsControlPressed(0, 245) --[[ INPUT_MP_TEXT_CHAT_ALL ]]
-			then
-				chatInputActive = true
-				chatInputActivating = true
-
-				SendNUIMessage({
-					type = "ON_OPEN",
-				})
-			end
-		end
-
-		if chatInputActivating then
-			if not IsControlPressed(0, 245) then
-				SetNuiFocus(true)
-
-				chatInputActivating = false
-			end
-		end
-
-		if chatLoaded then
-			local shouldBeHidden = false
-
-			if IsScreenFadedOut() or IsPauseMenuActive() then
-				shouldBeHidden = true
-			end
-
-			if (shouldBeHidden and not chatHidden) or (not shouldBeHidden and chatHidden) then
-				chatHidden = shouldBeHidden
-
-				SendNUIMessage({
-					type = "ON_SCREEN_STATE_CHANGE",
-					shouldHide = shouldBeHidden,
-				})
-			end
-		end
-	end
+	SetTimeout(5000, function()
+		chatLoaded = true
+	end)
 end)

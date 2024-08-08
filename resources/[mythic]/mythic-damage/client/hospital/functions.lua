@@ -16,6 +16,8 @@ function SetBedCam(bed)
 		end
 	end
 
+    FreezeEntityPosition(player, false)
+
 	if IsPedDeadOrDying(player) then
 		local playerPos = GetEntityCoords(player, true)
 		NetworkResurrectLocalPlayer(playerPos, true, true, false)
@@ -30,6 +32,8 @@ function SetBedCam(bed)
     end
 
     SetEntityHeading(player, _curBed.h + 180)
+
+    Wait(150)
 
     TaskPlayAnim(player, inBedDict , inBedAnim, 8.0, 1.0, -1, 1, 0, 0, 0, 0 )
     CreateThread(function()
@@ -63,7 +67,7 @@ function LeaveBed()
     local player = PlayerPedId()
 
     if LocalPlayer.state.isDead then
-        DoDeadStuff()
+        DoDeadEvent()
     else
         RequestAnimDict(getOutDict)
         while not HasAnimDictLoaded(getOutDict) do
@@ -90,6 +94,7 @@ function LeaveBed()
 
     RenderScriptCams(0, true, 200, true, true)
     DestroyCam(cam, false)
+    Hud.DeathTexts:Hide()
     _curBed = nil
     _leavingBed = false
     LocalPlayer.state:set("isHospitalized", false, true)

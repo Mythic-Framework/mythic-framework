@@ -3,6 +3,14 @@ export const initialState = {
 	showHotbar: false,
 	showing: null,
 	mode: 'inventory',
+
+	settings: {
+		muted: false,
+		useBank: false,
+	},
+
+	hotbarItems: [],
+	equipped: null,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -17,6 +25,15 @@ const appReducer = (state = initialState, action) => {
 				...state,
 				hidden: true,
 			};
+		case 'UPDATE_SETTINGS': {
+			return {
+				...state,
+				settings: {
+					...state.settings,
+					...action.payload.settings,
+				},
+			};
+		}
 		case 'SET_MODE': {
 			return {
 				...state,
@@ -33,6 +50,12 @@ const appReducer = (state = initialState, action) => {
 				...state,
 				showHotbar: true,
 				showing: action.payload.hotkey,
+				hotbarItems: action.payload.items,
+			};
+		case 'SET_EQUIPPED':
+			return {
+				...state,
+				equipped: action.payload.item,
 			};
 		case 'RESET_SLOT':
 			return {

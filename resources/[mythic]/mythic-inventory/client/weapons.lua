@@ -11,6 +11,9 @@ function WeaponsComponents()
 	Weapons = exports["mythic-base"]:FetchComponent("Weapons")
 	Progress = exports["mythic-base"]:FetchComponent("Progress")
 	Hud = exports["mythic-base"]:FetchComponent("Hud")
+	Interaction = exports["mythic-base"]:FetchComponent("Interaction")
+	Inventory = exports["mythic-base"]:FetchComponent("Inventory")
+	Sounds = exports["mythic-base"]:FetchComponent("Sounds")
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -20,17 +23,42 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Weapons",
 		"Progress",
 		"Hud",
+		"Interaction",
+		"Inventory",
+		"Sounds",
 	}, function(error)
 		if #error > 0 then
 			return
 		end
 		WeaponsComponents()
 
+		Interaction:RegisterMenu("weapon-attachments", false, "gun", function(data)
+			local menu = {}
+
+			if _equipped ~= nil and _equipped.MetaData?.WeaponComponents ~= nil then
+				for k, v in pairs(_equipped.MetaData.WeaponComponents) do
+					local itemData = Inventory.Items:GetData(v.item)
+					table.insert(menu, {
+						icon = "xmark",
+						label = string.format("Remove %s", itemData.label),
+						action = function()
+							Interaction:Hide()
+							TriggerEvent("Weapons:Client:RemoveAttachment", k)
+						end,
+					})
+				end
+			end
+
+			Interaction:ShowMenu(menu)
+		end, function()
+			return _equipped ~= nil and _equipped.MetaData?.WeaponComponents ~= nil
+		end)
+
 		Callbacks:RegisterClientCallback("Weapons:Check", function(data, cb)
 			if _equipped ~= nil then
 				cb({
+					id = _equipped.id,
 					item = _equipped.Name,
-					slot = _equipped.Slot,
 				})
 			else
 				cb(false)
@@ -85,6 +113,12 @@ AddEventHandler("Core:Shared:Ready", function()
 				_equipped = nil
 				_equippedData = nil
 				TriggerEvent("Weapons:Client:SwitchedWeapon", false)
+				SendNUIMessage({
+					type = "SET_EQUIPPED",
+					data = {
+						item = _equipped,
+					}
+				})
 				cb(data)
 				_interacting = true
 			else
@@ -129,6 +163,38 @@ AddEventHandler("Core:Shared:Ready", function()
 					Notification:Error("Wrong Ammo Type")
 				end
 
+				cb(false)
+			end
+		end)
+
+		Callbacks:RegisterClientCallback("Weapons:CanEquipParachute", function(data, cb)
+			if not IsPedInParachuteFreeFall(LocalPlayer.state.ped) and not IsPedFalling(LocalPlayer.state.ped) and (GetPedParachuteState(LocalPlayer.state.ped) == -1 or GetPedParachuteState(LocalPlayer.state.ped) == 0) then
+				Progress:ProgressWithTickEvent({
+					name = 'equipping_parachute',
+					duration = 3000,
+					label = 'Equipping Parachute',
+					useWhileDead = false,
+					canCancel = true,
+					ignoreModifier = true,
+					controlDisables = {
+						disableMovement = false,
+						disableCarMovement = false,
+						disableMouse = false,
+						disableCombat = true,
+					},
+					animation = {
+						anim = 'adjusttie',
+					},
+				}, function()
+					if not IsPedInParachuteFreeFall(LocalPlayer.state.ped) and not IsPedFalling(LocalPlayer.state.ped) and (GetPedParachuteState(LocalPlayer.state.ped) == -1 or GetPedParachuteState(LocalPlayer.state.ped) == 0) then
+						return
+					end
+
+					Progress:Cancel()
+				end, function(cancelled)
+					cb(not cancelled)
+				end)
+			else
 				cb(false)
 			end
 		end)
@@ -225,6 +291,35 @@ end)
 -- 	end)
 -- end)
 
+AddEventHandler("Weapons:Client:RemoveAttachment", function(attachment)
+	if _equipped ~= nil then
+		Progress:Progress({
+			name = "attch_action",
+			duration = 5000,
+			label = "Removing Attachment",
+			useWhileDead = false,
+			canCancel = true,
+			ignoreModifier = true,
+			disarm = false,
+			controlDisables = {
+				disableMovement = false,
+				disableCarMovement = false,
+				disableMouse = false,
+				disableCombat = true,
+			},
+			-- animation = {
+			-- 	animDict = "weapons@rifle@lo@carbine_str",
+			-- 	anim = "reload_aim",
+			-- 	flags = 48,
+			-- },
+		}, function(status)
+			if not status then
+				TriggerServerEvent("Weapons:Server:RemoveAttachment", _equipped.Slot, attachment)
+			end
+		end)
+	end
+end)
+
 AddEventHandler("Ped:Client:Died", function()
 	if _equipped ~= nil then
 		_interacting = true
@@ -235,7 +330,14 @@ AddEventHandler("Ped:Client:Died", function()
 		_equipped = nil
 		_equippedData = nil
 		TriggerEvent("Weapons:Client:SwitchedWeapon", false)
+		SendNUIMessage({
+			type = "SET_EQUIPPED",
+			data = {
+				item = _equipped,
+			}
+		})
 		_interacting = false
+		TriggerEvent("Weapons:Client:Attach")
 	end
 end)
 
@@ -443,6 +545,9 @@ WEAPONS = {
 			return nil
 		end
 	end,
+	GetEquippedItem = function(self)
+		return _equipped
+	end,
 	IsEligible = function(self)
 		local licenses = LocalPlayer.state.Character:GetData("Licenses")
 		if licenses ~= nil and licenses.Weapons ~= nil then
@@ -473,6 +578,13 @@ WEAPONS = {
 		_equippedData = itemData
 		TriggerEvent("Weapons:Client:SwitchedWeapon", _equipped.Name, _equipped, _items[_equipped.Name])
 
+		SendNUIMessage({
+			type = "SET_EQUIPPED",
+			data = {
+				item = _equipped,
+			}
+		})
+
 		RunDegenThread()
 	end,
 	UnequipIfEquipped = function(self)
@@ -492,6 +604,12 @@ WEAPONS = {
 			_equipped = nil
 			_equippedData = nil
 			TriggerEvent("Weapons:Client:SwitchedWeapon", false)
+			SendNUIMessage({
+				type = "SET_EQUIPPED",
+				data = {
+					item = _equipped,
+				}
+			})
 			TriggerEvent('Weapons:Client:Attach')
 		end
 	end,
@@ -520,6 +638,12 @@ WEAPONS = {
 		_equipped = nil
 		_equippedData = nil
 		TriggerEvent("Weapons:Client:SwitchedWeapon", false)
+		SendNUIMessage({
+			type = "SET_EQUIPPED",
+			data = {
+				item = _equipped,
+			}
+		})
 	end,
 	Ammo = {
 		Add = function(self, item)
@@ -568,6 +692,12 @@ function WeaponsThread()
 						})
 						_disabled = false
 					end, GetGameTimer())
+
+					if _equippedData.name == "WEAPON_SMOKEGRENADE" then
+						TriggerEvent("Weapons:Client:SmokeGrenade")
+					elseif _equippedData.name == "WEAPON_FLASHBANG" then
+						TriggerEvent("Weapons:Client:Flashbang")
+					end
 				end
 			end
 			Wait(1)
@@ -600,7 +730,7 @@ function UpdateAmmo(item, isDiff)
 		TriggerServerEvent("Weapon:Server:UpdateAmmoDiff", isDiff, ammo, clip)
 	else
 		-- print(string.format("Save Ammo - Total: %s, Clip: %s (Before - Total: %s, Clip: %s)", ammo, clip, item.MetaData.ammo, item.MetaData.clip))
-		TriggerServerEvent("Weapon:Server:UpdateAmmo", item.Slot, ammo, clip)
+		TriggerServerEvent("Weapon:Server:UpdateAmmo", item.id, ammo, clip)
 	end
 end
 
@@ -639,3 +769,184 @@ function DoHolsterBlockers()
 		end
 	end)
 end
+
+local _parachuteThread = false
+
+function RunParachuteUpdate()
+	if LocalPlayer.state.loggedIn then
+		local hasChute = hasValue(LocalPlayer.state.Character:GetData("States") or {}, "SCRIPT_PARACHUTE")
+		if hasChute then
+			if not HasPedGotWeapon(LocalPlayer.state.ped, -72657034) then
+				GiveWeaponToPed(LocalPlayer.state.ped, -72657034, 1, 0, 1)
+				SetPlayerHasReserveParachute(PlayerId())
+
+				SetPedParachuteTintIndex(LocalPlayer.state.ped, 6)
+        		SetPlayerReserveParachuteTintIndex(PlayerId(), 6)
+			end
+
+			StartParachuteThread()
+		else
+			_parachuteThread = false
+			RemoveWeaponFromPed(LocalPlayer.state.ped, -72657034)
+		end
+
+		TriggerEvent("Status:Client:Update", "parachute", hasChute and 100 or 0)
+	end
+end
+
+function StartParachuteThread()
+	if not _parachuteThread then
+		_parachuteThread = true
+		CreateThread(function()
+			while _parachuteThread and LocalPlayer.state.loggedIn do
+				Wait(500)
+
+				if GetPedParachuteState(LocalPlayer.state.ped) >= 2 then
+					Wait(2500)
+					Callbacks:ServerCallback("Inventory:UsedParachute", {})
+					break
+				end
+			end
+		end)
+	end
+end
+
+RegisterNetEvent("Characters:Client:SetData", function()
+	Wait(1000)
+	RunParachuteUpdate()
+end)
+
+AddEventHandler("Weapons:Client:SwitchedWeapon", function()
+	RunParachuteUpdate()
+end)
+
+RegisterNetEvent("Characters:Client:Spawn")
+AddEventHandler("Characters:Client:Spawn", function()
+	Wait(1000)
+	Hud:RegisterStatus("parachute", 0, 100, "parachute-box", "#A72929", false, false, {
+        hideZero = true,
+    })
+end)
+
+local prevCoords = 0
+AddEventHandler("Weapons:Client:SmokeGrenade", function()
+	CreateThread(function()
+		local finalizingPosition = true
+		while finalizingPosition do
+			local outCoords = vector3(0, 0, 0)
+			local outProjectile = 0
+			local _, coords = GetProjectileNearPed(PlayerPedId(), `WEAPON_SMOKEGRENADE`, 1000.0, outCoords, outProjectile, 1)
+			if prevCoords ~= 0 and #(coords - prevCoords) < 0.5 then
+				finalizingPosition = false
+			end
+			prevCoords = coords
+			Wait(1000)
+		end
+		TriggerServerEvent("Particles:Server:DoFx", prevCoords, "smoke")
+	end)
+end)
+
+AddEventHandler("Weapons:Client:Flashbang", function()
+	SetTimeout(1500, function()
+		local _, coords, prop = GetProjectileNearPed(PlayerPedId(), `WEAPON_FLASHBANG`, 1000.0, false)
+		AddExplosion(coords.x, coords.y, coords.z, 25, 1.0, true, true, true)
+		TriggerServerEvent("Weapons:Server:DoFlashFx", coords, NetworkGetNetworkIdFromEntity(prop) or prop)
+		ClearAreaOfProjectiles(coords.x, coords.y, coords.z, 10.0)
+	end)
+end)
+
+local maxShakeAmp = 25.0
+local shakeCam = nil
+local shakeCamActive = false
+local totalFlashShakeAmp = 0.0
+local flashTimersRunning = 0
+
+local afterTimersRunning = 0.0
+local totalAfterShakeAmp = 0
+
+function DisableFiring(duration)
+	local finished = GetGameTimer() + duration
+	CreateThread(function()
+		while GetGameTimer() < finished do
+			DisablePlayerFiring(LocalPlayer.state.clientID, true)
+			Wait(1)
+		end
+	end)
+end
+
+function DoFlashFx(shakeAmp, time)
+	flashTimersRunning += 1
+	totalFlashShakeAmp += shakeAmp
+
+
+	AnimpostfxPlay("Dont_tazeme_bro", 0, true)
+	TaskPlayAnim(PlayerPedId(), "anim@heists@ornate_bank@thermal_charge", "cover_eyes_intro", 8.0, 8.0, time, 50, 8.0)
+	DisableFiring(time * 0.75)
+
+	Hud.Flashbang:Do(time, totalFlashShakeAmp)
+	Sounds.Loop:One("flashbang.ogg", 0.1 * totalFlashShakeAmp)
+
+	Wait(time)
+
+	flashTimersRunning -= 1
+	totalFlashShakeAmp -= shakeAmp
+
+	if flashTimersRunning == 0 then
+		ClearPedTasks(PlayerPedId())
+		AnimpostfxStop("Dont_tazeme_bro")
+		Sounds.Fade:One("flashbang.ogg")
+	else
+		Sounds.Loop:One("flashbang.ogg", 0.1 * totalFlashShakeAmp)
+	end
+end
+
+RegisterNetEvent("Weapons:Client:DoFlashFx", function(x, y, z, stunTime, afterTime, radius, netId, damage, lethalRange)
+	if #(vector3(x, y, z) - GetEntityCoords(PlayerPedId())) < 100 then
+		loadAnimDict("anim@heists@ornate_bank@thermal_charge")
+
+		local prop = NetworkGetEntityFromNetworkId(netId)
+		local ped = PlayerPedId()
+	
+		local headPos = GetPedBoneCoords(ped, `SKEL_Head`, 0, 0, 0)
+		local pos = vector3(x, y, z)
+		local hitreg = vector3(headPos.x - x, headPos.y - y, headPos.z - z)
+	
+		local dist = #(GetEntityCoords(ped) - pos)
+		local fDist = #(headPos - pos)
+		local dSq = dist * dist
+	
+		local falloutMulti = 0.02 / (radius / 8.0)
+		local stunMulti = falloutMulti * dSq
+		local shakeCamAmp = 15.0
+	
+		local effectFalloffStunTime = math.round(stunTime * stunMulti)
+		local effectFalloffAfterTime = math.round(afterTime * stunMulti)
+		local actualStunTime = (stunTime * effectFalloffStunTime) * 1000
+		local actualAfterTime = (afterTime * effectFalloffAfterTime) * 1000
+		local stunTimeFalloffMulti = actualStunTime / (stunTime * 1000)
+	
+		if actualStunTime <= 0 then
+			actualStunTime = 1
+		end
+	
+		if actualAfterTime <= 0 then
+			actualAfterTime = 1
+		end
+
+		local handle = StartShapeTestLosProbe(x, y, z, headPos.x, headPos.y, headPos.z, 293, 0, 4)
+		local result, hit, endCoords, surfNorm, entityHit = 1, nil, nil, nil, nil
+
+		while result == 1 do
+			result, hit, endCoords, surfNorm, entityHit = GetShapeTestResult(handle)
+			Wait(1)
+		end
+
+
+		playerHit = (result == 2) and (entityHit == PlayerPedId())
+
+		if fDist <= radius and playerHit then
+			local pct = (radius - fDist) / radius
+			DoFlashFx(pct, stunTime * pct)
+		end
+	end
+end)

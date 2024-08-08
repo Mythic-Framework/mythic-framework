@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	insideDiv: {
 		width: '90%',
-		height: '80%',
+		height: '60vh',
 	},
 	dialog: {
 		display: 'flex',

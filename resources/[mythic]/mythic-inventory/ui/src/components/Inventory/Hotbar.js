@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Slide } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+
 import Slot from './Slot';
+import { getItemImage } from './item';
 
 const useStyles = makeStyles((theme) => ({
 	slide: {
@@ -12,12 +14,10 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		display: 'flex',
 		justifyContent: 'center',
+		gap: 6,
 	},
-	wrapper: {
-		margin: '1% auto',
-		color: '#000000',
-		width: '85%',
-		display: 'flex',
+	equipped: {
+		marginRight: 20,
 	},
 }));
 
@@ -25,6 +25,8 @@ export default connect()((props) => {
 	const classes = useStyles();
 	const hidden = useSelector((state) => state.app.showHotbar);
 	const showing = useSelector((state) => state.app.showing);
+	const hbItems = useSelector((state) => state.app.hotbarItems);
+	const equipped = useSelector((state) => state.app.equipped);
 	const items = useSelector((state) => state.inventory.items);
 	const itemsLoaded = useSelector((state) => state.inventory.itemsLoaded);
 	const playerInventory = useSelector((state) => state.inventory.player);
@@ -50,30 +52,47 @@ export default connect()((props) => {
 		return null;
 	}
 
-	if (!itemsLoaded || Object.keys(items).length == 0) return null;
+	if (!itemsLoaded || !Boolean(hbItems) || Object.keys(items).length == 0)
+		return null;
 	return (
 		<Slide direction="up" in={hidden} className={classes.slide}>
-			<div className={classes.wrapper}>
-				<div>
-					{[...Array(4).keys()].map((value) => {
-						return (
-							<Slot
-								inHotbar={true}
-								showing={showing}
-								key={value + 1}
-								slot={value + 1}
-								owner={playerInventory.owner}
-								invType={playerInventory.invType}
-								hotkeys={true}
-								data={
-									playerInventory.inventory[value + 1]
-										? playerInventory.inventory[value + 1]
-										: {}
-								}
-							/>
-						);
-					})}
-				</div>
+			<div>
+				{[...Array(4).keys()].map((value) => {
+					return (
+						<Slot
+							mini
+							solid
+							inHotbar={true}
+							showing={showing}
+							key={value + 1}
+							slot={value + 1}
+							owner={playerInventory.owner}
+							invType={playerInventory.invType}
+							hotkeys={true}
+							data={
+								hbItems.filter((s) => s.Slot == value + 1)
+									? hbItems.filter(
+											(s) => s.Slot == value + 1,
+									  )[0]
+									: {}
+							}
+						/>
+					);
+				})}
+				{Boolean(equipped) && (
+					<Slot
+						mini
+						solid
+						equipped
+						inHotbar={true}
+						showing={showing}
+						owner={playerInventory.owner}
+						invType={playerInventory.invType}
+						slot={equipped.Slot}
+						hotkeys={false}
+						data={equipped}
+					/>
+				)}
 			</div>
 		</Slide>
 	);

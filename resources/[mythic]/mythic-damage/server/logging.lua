@@ -12,7 +12,7 @@ RegisterNetEvent('Damage:Server:LogDeath', function(killer, reason)
                     end
                 end
 
-                Logger:Info("Base", string.format("%s %s (%s) [%s] Killed By %s. Reason: %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), player:GetData("AccountID"), killer, reason), {
+                Logger:Info("Damage", string.format("%s %s (%s) [%s] Killed By %s. Method: %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), player:GetData("AccountID"), killer, reason), {
                     console = true,
                     file = true,
                     database = true,
@@ -23,7 +23,7 @@ RegisterNetEvent('Damage:Server:LogDeath', function(killer, reason)
                     }
                 })
             else
-                Logger:Info("Base", string.format("%s %s (%s) [%s] Killed Themself. Reason: %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), player:GetData("AccountID"), reason), {
+                Logger:Info("Damage", string.format("%s %s (%s) [%s] Killed Themself. Method: %s", char:GetData("First"), char:GetData("Last"), char:GetData("SID"), player:GetData("AccountID"), reason), {
                     console = true,
                     file = true,
                     database = true,

@@ -5,15 +5,14 @@ _itemsSource["sandwich"] = {
 		price = 3,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
-		durability = (60 * 60 * 24 * 5),
 		statusChange = {
 			Add = {
-				PLAYER_HUNGER = 35,
+				PLAYER_HUNGER = 15,
 			},
 		},
 		animConfig = {
@@ -34,6 +33,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_turkey",
@@ -41,12 +41,11 @@ _itemsSource["sandwich"] = {
 		price = 4,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
-		durability = (60 * 60 * 24 * 5),
 		statusChange = {
 			Add = {
 				PLAYER_HUNGER = 40,
@@ -70,6 +69,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_beef",
@@ -77,7 +77,7 @@ _itemsSource["sandwich"] = {
 		price = 6,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -105,6 +105,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_blt",
@@ -112,12 +113,11 @@ _itemsSource["sandwich"] = {
 		price = 5,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
-		durability = (60 * 60 * 24 * 5),
 		statusChange = {
 			Add = {
 				PLAYER_HUNGER = 45,
@@ -141,6 +141,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_egg",
@@ -148,12 +149,11 @@ _itemsSource["sandwich"] = {
 		price = 3,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
 		weight = 0.25,
-		durability = (60 * 60 * 24 * 5),
 		statusChange = {
 			Add = {
 				PLAYER_HUNGER = 35,
@@ -177,6 +177,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_chips",
@@ -184,7 +185,7 @@ _itemsSource["sandwich"] = {
 		price = 3,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -212,6 +213,7 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "sandwich_crisp",
@@ -219,7 +221,7 @@ _itemsSource["sandwich"] = {
 		price = 3,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 6,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -247,5 +249,6 @@ _itemsSource["sandwich"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 }

@@ -1,3 +1,5 @@
+dIds = 1
+dropzones = {}
 local closerDrops = {}
 local closerDropsIds = {}
 
@@ -5,15 +7,14 @@ function runDropsUpdate(checkRemovals)
 	if LocalPlayer.state.position ~= nil then
 		closerDrops = {}
 		closerDropsIds = {}
-		local dropZones = GlobalState["Dropzones"]
-		if #dropZones > 0 then
-			for k, v in ipairs(dropZones) do
+		if #dropzones > 0 then
+			for k, v in ipairs(dropzones) do
 				local distance = #(LocalPlayer.state.position - vector3(v.coords.x, v.coords.y, v.coords.z))
 				if distance <= 25.0 then
 					if not closerDrops[k] then
 						table.insert(
 							closerDrops,
-							{ coords = vector3(v.coords.x, v.coords.y, v.coords.z), route = v.route }
+							{ coords = vector3(v.coords.x, v.coords.y, v.coords.z + 0.35), route = v.route }
 						)
 						closerDropsIds[k] = #closerDrops
 					end
@@ -40,7 +41,7 @@ function startDropsTick()
 				for k, v in ipairs(closerDrops) do
 					if v.route == LocalPlayer.state.currentRoute then
 						DrawMarker(
-							25,
+							2,
 							v.coords,
 							0,
 							0,
@@ -48,17 +49,17 @@ function startDropsTick()
 							0,
 							0,
 							0,
-							0.4,
-							0.4,
-							1.0,
+							0.25,
+							0.25,
+							0.25,
 							139,
 							16,
 							20,
-							250,
+							175,
 							false,
 							false,
 							2,
-							false,
+							true,
 							false,
 							false,
 							false
@@ -73,7 +74,19 @@ function startDropsTick()
 	end)
 end
 
-RegisterNetEvent("Inventory:Client:DropzoneForceUpdate", function()
-	Wait(100)
-	runDropsUpdate(true)
+RegisterNetEvent("Inventory:Client:DropzoneForceUpdate", function(dzs)
+	dropzones = dzs
+end)
+
+RegisterNetEvent("Inventory:Client:AddDropzone", function(data)
+	table.insert(dropzones, data)
+end)
+
+RegisterNetEvent("Inventory:Client:RemoveDropzone", function(id)
+	for k, v in ipairs(dropzones) do
+		if v.id == id then
+			table.remove(dropzones, k)
+			break
+		end
+	end
 end)

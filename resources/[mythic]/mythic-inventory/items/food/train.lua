@@ -5,7 +5,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 3,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -20,7 +20,7 @@ _itemsSource["last_train"] = {
 			}
 		},
 		animConfig = {
-			anim = "drink",
+			anim = "cup",
 			time = 10000,
 			pbConfig = {
 				label = "Drinking",
@@ -37,6 +37,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
     {
 		name = "milkshake",
@@ -44,7 +45,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -56,7 +57,7 @@ _itemsSource["last_train"] = {
 			},
 		},
 		animConfig = {
-			anim = "drink",
+			anim = "cup",
 			time = 10000,
 			pbConfig = {
 				label = "Drinking",
@@ -73,8 +74,9 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
         energyModifier = {
-			modifier = 1.2,
+			modifier = 1.15,
 			duration = 6, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
@@ -87,7 +89,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -100,7 +102,7 @@ _itemsSource["last_train"] = {
 		},
         stressTicks = { "3", "3", "3", "5", "5", "5", },
 		animConfig = {
-			anim = "drink",
+			anim = "cup",
 			time = 10000,
 			pbConfig = {
 				label = "Drinking",
@@ -117,8 +119,9 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
         energyModifier = {
-			modifier = 1.2,
+			modifier = 1.15,
 			duration = 6, -- not seconds?
 			cooldown = 60, -- seconds
 			skipScreenEffects = true,
@@ -131,7 +134,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -160,6 +163,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		healthModifier = 15,
 	},
     {
@@ -168,7 +172,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -199,6 +203,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
     {
 		name = "salisbury_steak",
@@ -206,7 +211,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -235,6 +240,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		healthModifier = 15,
 	},
     {
@@ -243,7 +249,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -274,6 +280,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		armourModifier = 15,
 	},
     {
@@ -282,7 +289,7 @@ _itemsSource["last_train"] = {
 		price = 0,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 2,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -313,6 +320,7 @@ _itemsSource["last_train"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		armourModifier = 10,
 	},
 }

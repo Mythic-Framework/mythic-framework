@@ -5,7 +5,7 @@ _itemsSource["food_prison"] = {
 		price = 5,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = false,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -34,7 +34,6 @@ _itemsSource["food_prison"] = {
 			},
 		},
 		metalic = false,
-		isDestroyed = true,
 	},
 	{
 		name = "prison_drink",
@@ -42,7 +41,7 @@ _itemsSource["food_prison"] = {
 		price = 5,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = false,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -71,7 +70,5 @@ _itemsSource["food_prison"] = {
 			},
 		},
 		metalic = false,
-		
-		isDestroyed = true,
 	},
 }
