@@ -32,7 +32,7 @@ AddEventHandler("Labor:Client:Setup", function()
                 return not hasValue(LocalPlayer.state.Character:GetData("States") or {}, "SCRIPT_OXY_RUN") and LocalPlayer.state.onDuty ~= "police"
             end,
 		},
-	}, 'seal-question', 'WORLD_HUMAN_HUMAN_STATUE')
+	}, 'question', 'WORLD_HUMAN_HUMAN_STATUE')
 
     Callbacks:RegisterClientCallback("OxyRun:GetSpawn", function(data, cb)
         if not LocalPlayer.state.inOxySell then

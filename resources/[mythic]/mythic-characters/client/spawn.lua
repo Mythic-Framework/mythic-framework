@@ -5,14 +5,14 @@ Spawn = {
     InitCamera = function(self)
         TransitionToBlurred(500)
         DoScreenFadeOut(500)
-        cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 600.1, 507.49, 644.86, 10.76, 0.00, 0.00, 100.00, false, 0)
+        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', 600.1, 507.49, 644.86, 10.76, 0.00, 0.00, 100.00, false, 0)
         SetCamActiveWithInterp(cam, true, 900, true, true)
         RenderScriptCams(true, false, 1, true, true)
         DisplayRadar(false)
     end,
     Init = function(self)
         local ped = PlayerPedId()
---        ShutdownLoadingScreenNui()
+--      ShutdownLoadingScreenNui()
         SetEntityCoords(ped, 600.1, 507.49, 644.86)
         FreezeEntityPosition(ped, true)
         SetEntityVisible(ped, false)
@@ -26,17 +26,17 @@ Spawn = {
         while not IsScreenFadedOut() do
             Wait(10)
         end
-    
+
         local player = PlayerPedId()
         SetTimecycleModifier('default')
-    
+
         local model = `mp_f_freemode_01`
         if tonumber(data.Gender) == 0 then
             model = `mp_m_freemode_01`
         end
-    
+
         RequestModel(model)
-    
+
         while not HasModelLoaded(model) do
           Wait(500)
         end
@@ -45,27 +45,27 @@ Spawn = {
         SetPedDefaultComponentVariation(player)
         SetEntityAsMissionEntity(player, true, true)
         SetModelAsNoLongerNeeded(model)
-    
+
         Wait(300)
 
         DestroyAllCams(true)
         RenderScriptCams(false, true, 1, true, true)
         FreezeEntityPosition(player, false)
-    
+
         NetworkSetEntityInvisibleToNetwork(player, false)
         SetEntityVisible(player, true)
         FreezeEntityPosition(player, false)
-    
+
         cam = nil
-    
+
         SetPlayerInvincible(PlayerId(), false)
         SetCanAttackFriendly(player, true, true)
         NetworkSetFriendlyFireOption(true)
-    
+
         SetEntityMaxHealth(PlayerPedId(), 200)
         SetEntityHealth(PlayerPedId(), data.HP > 100 and data.HP or 200)
         DisplayHud(true)
-        
+
         if data.action ~= nil then
             TriggerEvent(data.action, data.data)
         else
@@ -74,11 +74,11 @@ Spawn = {
         end
 
         SetFocusEntity(PlayerPedId())
-        
+
         LocalPlayer.state:set('ped', player, true)
 
         SetNuiFocus(false)
-    
+
         TransitionFromBlurred(500)
         cb()
     end

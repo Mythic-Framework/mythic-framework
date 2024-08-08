@@ -52,7 +52,7 @@ AddEventHandler("Labor:Client:Setup", function()
                 return not hasValue(LocalPlayer.state.Character:GetData("States") or {}, "SCRIPT_HOUSE_ROBBERY") and LocalPlayer.state.onDuty ~= "police"
             end,
 		},
-	}, 'seal-question', 'WORLD_HUMAN_SMOKING')
+	}, 'question', 'WORLD_HUMAN_SMOKING')
 
 	Callbacks:RegisterClientCallback("HouseRobbery:Lockpick", function(data, cb)
 		_lpStage = 0

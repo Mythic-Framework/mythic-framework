@@ -1,10 +1,10 @@
 local _tempLastLocation = {}
 local _lastSpawnLocations = {}
 
-RegisterNetEvent("characters:Server:StoreUpdate")
-AddEventHandler("characters:Server:StoreUpdate", function()
+RegisterNetEvent('characters:Server:StoreUpdate')
+AddEventHandler('characters:Server:StoreUpdate', function()
 	local src = source
-	local char = Fetch:Source(src):GetData("Character")
+	local char = Fetch:Source(src):GetData('Character')
 
 	if char ~= nil then
 		local data = char:GetData()
@@ -12,14 +12,14 @@ AddEventHandler("characters:Server:StoreUpdate", function()
 end)
 
 function RegisterCallbacks()
-	Callbacks:RegisterServerCallback("Characters:GetServerData", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:GetServerData', function(source, data, cb)
 		while Fetch:Source(source) == nil do
 			Wait(100)
 		end
 
-		local motd = GetConvar("motd", "Welcome to Mythic RP")
+		local motd = GetConvar('motd', 'Welcome to Mythic RP')
 		Database.Game:find({
-			collection = "changelogs",
+			collection = 'changelogs',
 			options = {
 				sort = {
 					date = -1,
@@ -28,7 +28,7 @@ function RegisterCallbacks()
 			limit = 1,
 		}, function(success, results)
 			if not success then
-				cb({ changelog = nil, motd = "" })
+				cb({ changelog = nil, motd = '' })
 				return
 			end
 
@@ -40,14 +40,14 @@ function RegisterCallbacks()
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:GetCharacters", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:GetCharacters', function(source, data, cb)
 		local player = Fetch:Source(source)
 		Database.Game:find({
-			collection = "characters",
+			collection = 'characters',
 			query = {
-				User = player:GetData("AccountID"),
+				User = player:GetData('AccountID'),
 				Deleted = {
-					["$ne"] = true,
+					['$ne'] = true,
 				},
 			},
 		}, function(success, results)
@@ -60,7 +60,7 @@ function RegisterCallbacks()
 				local p = promise.new()
 
 				Database.Game:findOne({
-					collection = "peds",
+					collection = 'peds',
 					query = {
 						Char = v._id
 					}
@@ -83,12 +83,12 @@ function RegisterCallbacks()
 
 				Citizen.Await(p)
 			end
-			player:SetData("Characters", cData)
+			player:SetData('Characters', cData)
 			cb(cData)
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:CreateCharacter", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:CreateCharacter', function(source, data, cb)
 		local player = Fetch:Source(source)
 		local pNumber = GeneratePhoneNumber()
 		while IsNumberInUse(pNumber) do
@@ -96,7 +96,7 @@ function RegisterCallbacks()
 		end
 
 		local doc = {
-			User = player:GetData("AccountID"),
+			User = player:GetData('AccountID'),
 			First = data.first,
 			Last = data.last,
 			Phone = pNumber,
@@ -106,7 +106,7 @@ function RegisterCallbacks()
 			DOB = data.dob,
 			LastPlayed = -1,
 			Jobs = {},
-			SID = Sequence:Get("Character"),
+			SID = Sequence:Get('Character'),
 			Cash = 5000,
 			New = true,
 			Licenses = {
@@ -134,17 +134,17 @@ function RegisterCallbacks()
 			},
 		}
 
-		local extra = Middleware:TriggerEventWithData("Characters:Creating", source, doc)
-		for k, v in ipairs(extra) do
+		local extra = Middleware:TriggerEventWithData('Characters:Creating', source, doc)
+		for _, v in ipairs(extra) do
 			for k2, v2 in pairs(v) do
-				if k2 ~= "ID" then
+				if k2 ~= 'ID' then
 					doc[k2] = v2
 				end
 			end
 		end
 
 		Database.Game:insertOne({
-			collection = "characters",
+			collection = 'characters',
 			document = doc,
 		}, function(success, result, insertedIds)
 			if not success then
@@ -152,16 +152,16 @@ function RegisterCallbacks()
 				return nil
 			end
 			doc.ID = insertedIds[1]
-			TriggerEvent("Characters:Server:CharacterCreated", doc)
-			Middleware:TriggerEvent("Characters:Created", source, doc)
+			TriggerEvent('Characters:Server:CharacterCreated', doc)
+			Middleware:TriggerEvent('Characters:Created', source, doc)
 			cb(doc)
 
 			Logger:Info(
-				"Characters",
+				'Characters',
 				string.format(
-					"%s [%s] Created a New Character %s %s (%s)",
-					player:GetData("Name"),
-					player:GetData("AccountID"),
+					'%s [%s] Created a New Character %s %s (%s)',
+					player:GetData('Name'),
+					player:GetData('AccountID'),
 					doc.First,
 					doc.Last,
 					doc.SID
@@ -175,12 +175,12 @@ function RegisterCallbacks()
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:DeleteCharacter", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:DeleteCharacter', function(source, data, cb)
 		local player = Fetch:Source(source)
 		Database.Game:findOne({
-			collection = "characters",
+			collection = 'characters',
 			query = {
-				User = player:GetData("AccountID"),
+				User = player:GetData('AccountID'),
 				_id = data,
 			},
 		}, function(success, results)
@@ -190,27 +190,27 @@ function RegisterCallbacks()
 			end
 			local deletingChar = results[1]
 			Database.Game:updateOne({
-				collection = "characters",
+				collection = 'characters',
 				query = {
-					User = player:GetData("AccountID"),
+					User = player:GetData('AccountID'),
 					_id = data,
 				},
 				update = {
-					["$set"] = {
+					['$set'] = {
 						Deleted = true,
 					},
 				},
 			}, function(success, results)
-				TriggerEvent("Characters:Server:CharacterDeleted", data)
+				TriggerEvent('Characters:Server:CharacterDeleted', data)
 				cb(success)
 
 				if success then
 					Logger:Warn(
-						"Characters",
+						'Characters',
 						string.format(
-							"%s [%s] Deleted Character %s %s (%s)",
-							player:GetData("Name"),
-							player:GetData("AccountID"),
+							'%s [%s] Deleted Character %s %s (%s)',
+							player:GetData('Name'),
+							player:GetData('AccountID'),
 							deletingChar.First,
 							deletingChar.Last,
 							deletingChar.SID
@@ -229,12 +229,12 @@ function RegisterCallbacks()
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:GetSpawnPoints", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:GetSpawnPoints', function(source, data, cb)
 		local player = Fetch:Source(source)
 		Database.Game:findOne({
-			collection = "characters",
+			collection = 'characters',
 			query = {
-				User = player:GetData("AccountID"),
+				User = player:GetData('AccountID'),
 				_id = data,
 			},
 			options = {
@@ -256,7 +256,7 @@ function RegisterCallbacks()
 				cb({
 					{
 						id = 1,
-						label = "Character Creation",
+						label = 'Character Creation',
 						location = Apartment:GetInteriorLocation(results[1].Apartment or 1),
 					},
 				})
@@ -265,18 +265,18 @@ function RegisterCallbacks()
 			elseif results[1].ICU and not results[1].ICU.Released then
 				cb({ Config.ICUSpawn })
 			else
-				local spawns = Middleware:TriggerEventWithData("Characters:GetSpawnPoints", source, data, results[1])
+				local spawns = Middleware:TriggerEventWithData('Characters:GetSpawnPoints', source, data, results[1])
 				cb(spawns)
 			end
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:GetCharacterData", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:GetCharacterData', function(source, data, cb)
 		local player = Fetch:Source(source)
 		Database.Game:findOne({
-			collection = "characters",
+			collection = 'characters',
 			query = {
-				User = player:GetData("AccountID"),
+				User = player:GetData('AccountID'),
 				_id = data,
 			},
 		}, function(success, results)
@@ -290,30 +290,30 @@ function RegisterCallbacks()
 			cData.ID = results[1]._id
 			cData._id = nil
 
-			local store = DataStore:CreateStore(source, "Character", cData)
+			local store = DataStore:CreateStore(source, 'Character', cData)
 
-			player:SetData("Character", store)
-			GlobalState[string.format("SID:%s", source)] = cData.SID
-			GlobalState[string.format("Account:%s", source)] = player:GetData("AccountID")
+			player:SetData('Character', store)
+			GlobalState[string.format('SID:%s', source)] = cData.SID
+			GlobalState[string.format('Account:%s', source)] = player:GetData('AccountID')
 
-			Middleware:TriggerEvent("Characters:CharacterSelected", source)
+			Middleware:TriggerEvent('Characters:CharacterSelected', source)
 
 			cb(cData)
 		end)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:Logout", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:Logout', function(source, data, cb)
 		local player = Fetch:Source(source)
-		Middleware:TriggerEvent("Characters:Logout", source)
-		player:SetData("Character", nil)
-		GlobalState[string.format("SID:%s", source)] = nil
-		GlobalState[string.format("Account:%s", source)] = nil
-		cb("ok")
-		TriggerClientEvent("Characters:Client:Logout", source)
+		Middleware:TriggerEvent('Characters:Logout', source)
+		player:SetData('Character', nil)
+		GlobalState[string.format('SID:%s', source)] = nil
+		GlobalState[string.format('Account:%s', source)] = nil
+		cb('ok')
+		TriggerClientEvent('Characters:Client:Logout', source)
 		Routing:RoutePlayerToHiddenRoute(source)
 	end)
 
-	Callbacks:RegisterServerCallback("Characters:GlobalSpawn", function(source, data, cb)
+	Callbacks:RegisterServerCallback('Characters:GlobalSpawn', function(source, data, cb)
 		Routing:RoutePlayerToGlobalRoute(source)
 		cb()
 	end)
@@ -322,11 +322,11 @@ end
 function HandleLastLocation(source)
 	local player = Fetch:Source(source)
 	if player ~= nil then
-		local char = player:GetData("Character")
+		local char = player:GetData('Character')
 		if char ~= nil then
 			local lastLocation = _tempLastLocation[source]
-			if lastLocation and type(lastLocation) == "vector3" then
-				_lastSpawnLocations[char:GetData("ID")] = {
+			if lastLocation and type(lastLocation) == 'vector3' then
+				_lastSpawnLocations[char:GetData('ID')] = {
 					coords = lastLocation,
 					time = os.time(),
 				}
@@ -338,44 +338,44 @@ function HandleLastLocation(source)
 end
 
 function RegisterMiddleware()
-	Middleware:Add("Characters:Spawning", function(source)
-		TriggerClientEvent("Characters:Client:Spawned", source)
+	Middleware:Add('Characters:Spawning', function(source)
+		TriggerClientEvent('Characters:Client:Spawned', source)
 	end, 100000)
-	Middleware:Add("Characters:ForceStore", function(source)
+	Middleware:Add('Characters:ForceStore', function(source)
 		local player = Fetch:Source(source)
 		if player ~= nil then
-			local char = player:GetData("Character")
+			local char = player:GetData('Character')
 			if char ~= nil then
 				StoreData(source)
 			end
 		end
 	end, 100000)
-	Middleware:Add("Characters:Logout", function(source)
+	Middleware:Add('Characters:Logout', function(source)
 		local player = Fetch:Source(source)
 		if player ~= nil then
-			local char = player:GetData("Character")
+			local char = player:GetData('Character')
 			if char ~= nil then
 				StoreData(source)
 			end
 		end
 	end, 10000)
 
-	Middleware:Add("Characters:GetSpawnPoints", function(source, id)
+	Middleware:Add('Characters:GetSpawnPoints', function(source, id)
 		if id then
 			local hasLastLocation = _lastSpawnLocations[id]
 			if hasLastLocation and hasLastLocation.time and (os.time() - hasLastLocation.time) <= (60 * 5) then
 				return {
 					{
-						id = "LastLocation",
-						label = "Last Location",
+						id = 'LastLocation',
+						label = 'Last Location',
 						location = {
 							x = hasLastLocation.coords.x,
 							y = hasLastLocation.coords.y,
 							z = hasLastLocation.coords.z,
 							h = 0.0,
 						},
-						icon = "location-dot",
-						event = "Characters:GlobalSpawn",
+						icon = 'location-dot',
+						event = 'Characters:GlobalSpawn',
 					},
 				}
 			end
@@ -383,33 +383,33 @@ function RegisterMiddleware()
 		return {}
 	end, 1)
 
-	Middleware:Add("Characters:GetSpawnPoints", function(source)
+	Middleware:Add('Characters:GetSpawnPoints', function(source)
 		local spawns = {}
-		for k, v in ipairs(Spawns) do
-			v.event = "Characters:GlobalSpawn"
+		for _, v in ipairs(Spawns) do
+			v.event = 'Characters:GlobalSpawn'
 			table.insert(spawns, v)
 		end
 		return spawns
 	end, 5)
 
-	Middleware:Add("playerDropped", function(source, message)
+	Middleware:Add('playerDropped', function(source, message)
 		local player = Fetch:Source(source)
 		if player ~= nil then
-			local char = player:GetData("Character")
+			local char = player:GetData('Character')
 			if char ~= nil then
 				StoreData(source)
 			end
 		end
 	end, 10000)
 
-	Middleware:Add("Characters:Logout", HandleLastLocation, 6)
-	Middleware:Add("playerDropped", HandleLastLocation, 6)
+	Middleware:Add('Characters:Logout', HandleLastLocation, 6)
+	Middleware:Add('playerDropped', HandleLastLocation, 6)
 end
 
 function IsNumberInUse(number)
 	local var = nil
 	Database.Game:findOne({
-		collection = "characters",
+		collection = 'characters',
 		query = {
 			phone = number,
 		},
@@ -427,24 +427,21 @@ function IsNumberInUse(number)
 end
 
 function GeneratePhoneNumber()
-	local phone = ""
+	local phone = ''
 
 	for i = 1, 10, 1 do
 		local d = math.random(0, 9)
 		phone = phone .. d
 
 		if i == 3 or i == 6 then
-			phone = phone .. "-"
+			phone = phone .. '-'
 		end
 	end
 
 	return phone
 end
 
-RegisterNetEvent(
-	"Characters:Server:LastLocation",
-	function(coords) -- Probably Going to make the server explode but ¯\_(ツ)_/¯
-		local src = source
-		_tempLastLocation[src] = coords
-	end
-)
+RegisterNetEvent('Characters:Server:LastLocation',function(coords) -- Probably Going to make the server explode but ¯\_(ツ)_/¯
+	local src = source
+	_tempLastLocation[src] = coords
+end)
