@@ -137,7 +137,7 @@ AddEventHandler("Labor:Client:Setup", function()
 				id = "CornerDealer",
 			}
 		},
-	}, "seal-question", "WORLD_HUMAN_SMOKING")
+	}, "question", "WORLD_HUMAN_SMOKING")
 end)
 
 RegisterNetEvent("CornerDealing:Client:DoSequence", function(seqType, netId, arg2)
