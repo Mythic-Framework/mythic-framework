@@ -29,12 +29,11 @@ export default withRouter(() => {
 
 	const getPanel = () => {
 		switch (permission) {
-			case 4:
-			case 7:
-				return <Developer />;
-			case 8:
+			case "Owner":
+			case "Admin":
 				return <Admin />;
-			case 6:
+			case "Developer":
+				return <Developer />;
 			default:
 				return <Staff />;
 		};
@@ -42,9 +41,9 @@ export default withRouter(() => {
 
 	return (
 		<Slide direction="up" in={!hidden}>
-			<Paper 
+			<Paper
 				elevation={20}
-				className={classes.wrapper} 
+				className={classes.wrapper}
 				style={{ opacity: opacityMode ? '60%' : null }}>
 				<div className={classes.inner}>
 					<ToastContainer

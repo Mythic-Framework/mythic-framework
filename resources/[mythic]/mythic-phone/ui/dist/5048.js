@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmythic_phone=self.webpackChunkmythic_phone||[]).push([[5048],{65048:(e,l,o)=>{o.r(l),o.d(l,{Categories:()=>h});var a=o(85077),c=o(8901),r=o(65412),t=o(25384),h=[{label:"Services",color:a.A[500]},{label:"Want-To-Buy",color:c.A[500]},{label:"Want-To-Sell",color:r.A[500]},{label:"Help Wanted",color:t.A[500]}]}}]);

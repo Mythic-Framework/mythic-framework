@@ -20,56 +20,56 @@ CraftingTables = {
 		},
 		recipes = {
 			{
-				result = { name = "ironbar", count = 1 },
+				result = { name = "ironbar", count = 10 },
 				items = {
 					{ name = "salvagedparts", count = 25 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "scrapmetal", count = 1 },
+				result = { name = "scrapmetal", count = 20 },
 				items = {
 					{ name = "salvagedparts", count = 10 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "heavy_glue", count = 1 },
+				result = { name = "heavy_glue", count = 20 },
 				items = {
 					{ name = "salvagedparts", count = 10 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "rubber", count = 1 },
+				result = { name = "rubber", count = 16 },
 				items = {
 					{ name = "salvagedparts", count = 8 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "plastic", count = 1 },
+				result = { name = "plastic", count = 6 },
 				items = {
 					{ name = "salvagedparts", count = 3 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "copperwire", count = 1 },
+				result = { name = "copperwire", count = 4 },
 				items = {
 					{ name = "salvagedparts", count = 2 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "glue", count = 1 },
+				result = { name = "glue", count = 4 },
 				items = {
 					{ name = "salvagedparts", count = 2 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "electronic_parts", count = 1 },
+				result = { name = "electronic_parts", count = 32 },
 				items = {
 					{ name = "salvagedparts", count = 8 },
 				},
@@ -98,49 +98,49 @@ CraftingTables = {
 		},
 		recipes = {
 			{
-				result = { name = "ironbar", count = 1 },
+				result = { name = "ironbar", count = 10 },
 				items = {
 					{ name = "recycledgoods", count = 25 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "scrapmetal", count = 1 },
+				result = { name = "scrapmetal", count = 20 },
 				items = {
 					{ name = "recycledgoods", count = 10 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "heavy_glue", count = 1 },
+				result = { name = "heavy_glue", count = 20 },
 				items = {
 					{ name = "recycledgoods", count = 10 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "rubber", count = 1 },
+				result = { name = "rubber", count = 16 },
 				items = {
 					{ name = "recycledgoods", count = 8 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "plastic", count = 1 },
+				result = { name = "plastic", count = 6 },
 				items = {
 					{ name = "recycledgoods", count = 3 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "copperwire", count = 1 },
+				result = { name = "copperwire", count = 4 },
 				items = {
 					{ name = "recycledgoods", count = 2 },
 				},
 				time = 0,
 			},
 			{
-				result = { name = "glue", count = 1 },
+				result = { name = "glue", count = 4 },
 				items = {
 					{ name = "recycledgoods", count = 2 },
 				},
@@ -170,7 +170,7 @@ CraftingTables = {
 				items = {
 					{ name = "goldore", count = 1 },
 				},
-				time = 10000,
+				time = 5000,
 				animation = "mechanic",
 			},
 			{
@@ -178,7 +178,7 @@ CraftingTables = {
 				items = {
 					{ name = "silverore", count = 1 },
 				},
-				time = 10000,
+				time = 5000,
 				animation = "mechanic",
 			},
 			{
@@ -186,7 +186,7 @@ CraftingTables = {
 				items = {
 					{ name = "ironore", count = 1 },
 				},
-				time = 10000,
+				time = 5000,
 				animation = "mechanic",
 			},
 		},

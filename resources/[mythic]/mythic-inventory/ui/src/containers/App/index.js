@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/pro-solid-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
 	CssBaseline,
@@ -18,13 +18,18 @@ import HoverSlot from '../../components/Inventory/HoverSlot';
 import Hotbar from '../../components/Inventory/Hotbar';
 import Crafting from '../../components/Crafting';
 import ChangeAlerts from '../../components/Changes';
+import StaticTooltip from '../../components/Inventory/StaticTooltip';
 
 library.add(fab, fas);
 
 export default () => {
+	const dispatch = useDispatch();
 	const hidden = useSelector((state) => state.app.hidden);
 	const mode = useSelector((state) => state.app.mode);
 	const crafting = useSelector((state) => state.crafting.crafting);
+	const itemsLoaded = useSelector((state) => state.inventory.itemsLoaded);
+	const items = useSelector((state) => state.inventory.items);
+	const staticTooltip = useSelector((state) => state.inventory.staticTooltip);
 
 	const muiTheme = createTheme({
 		typography: {
@@ -106,15 +111,34 @@ export default () => {
 					},
 				},
 			},
+			MuiTooltip: {
+				styleOverrides: {
+					tooltip: {
+						fontSize: 16,
+						backgroundColor: '#151515',
+						border: '1px solid rgba(255, 255, 255, 0.23)',
+						boxShadow: `0 0 10px #000`,
+					},
+				},
+			},
 			MuiPaper: {
 				styleOverrides: {
 					root: {
-                        background: '#0f0f0f',
+						background: '#0f0f0f',
 					},
 				},
 			},
 		},
 	});
+
+	const onHide = () => {
+		dispatch({
+			type: 'HIDE_SECONDARY_INVENTORY',
+		});
+		dispatch({
+			type: 'RESET_INVENTORY',
+		});
+	};
 
 	return (
 		<StyledEngineProvider injectFirst>
@@ -122,7 +146,13 @@ export default () => {
 				<CssBaseline />
 				<Hotbar />
 				<ChangeAlerts />
-				<Fade in={!hidden}>
+				{Boolean(itemsLoaded) && Boolean(staticTooltip) && (
+					<StaticTooltip
+						item={items[staticTooltip.Name]}
+						instance={staticTooltip}
+					/>
+				)}
+				<Fade in={!hidden} timeout={500} onExited={onHide}>
 					<div>
 						{mode === 'inventory' && (
 							<Fragment>

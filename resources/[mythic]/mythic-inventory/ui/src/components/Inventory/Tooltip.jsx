@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'react-moment';
 
-import { FormatThousands } from '../../util/Parser';
+import { FormatThousands, Sanitize } from '../../util/Parser';
 import { getItemLabel } from './item';
 import { List, ListItem, ListItemText } from '@mui/material';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,16 @@ const ignoredFields = [
 	'Scratched',
 	'PoliceWeaponId',
 	'Mugshot',
+	'MethTable',
+	'CustomAmt',
 ];
+
+const lua2json = (lua) =>
+	JSON.parse(
+		lua
+			.replace(/\[([^\[\]]+)\]\s*=/g, (s, k) => `${k} :`)
+			.replace(/,(\s*)\}/gm, (s, k) => `${k}}`),
+	);
 
 export default ({
 	item,
@@ -45,96 +54,59 @@ export default ({
 	isEligible = false,
 	isQualified = false,
 }) => {
+	const metadata = Boolean(instance?.MetaData)
+		? typeof instance?.MetaData == 'string'
+			? lua2json(instance.MetaData)
+			: instance.MetaData
+		: Object();
+
 	const items = useSelector((state) => state.inventory.items);
 	const useStyles = makeStyles((theme) => ({
 		body: {
-			minWidth: 150,
+			minWidth: 250,
 		},
 		itemName: {
-			fontSize: 18,
-			color: theme.palette.rarities[`rare${item.rarity}`]
-				? theme.palette.rarities[`rare${item.rarity}`]
-				: theme.palette.text.main,
-		},
-		rarity: {
-			fontSize: 14,
-			color: theme.palette.rarities[`rare${item.rarity}`]
-				? theme.palette.rarities[`rare${item.rarity}`]
-				: theme.palette.text.main,
-		},
-		count: {
-			fontSize: 14,
+			fontSize: 24,
 			color: theme.palette.text.main,
-			'&::before': {
-				content: '"x"',
-				marginLeft: 2,
-			},
 		},
 		itemType: {
-			fontSize: 14,
-			color: theme.palette.text.alt,
+			fontSize: 16,
+			color: Boolean(theme.palette.rarities[`rare${item.rarity}`])
+				? theme.palette.rarities[`rare${item.rarity}`]
+				: theme.palette.text.main,
 		},
 		usable: {
-			fontSize: 14,
+			fontSize: 16,
 			color: theme.palette.success.light,
-		},
-		stackData: {
-			fontSize: 12,
-		},
-		itemWeight: {
-			fontSize: 14,
-			color: theme.palette.info.light,
-			'&::after': {
-				color: theme.palette.text.alt,
-				content: `"${(item?.weight || 0) > 1 ? 'lbs' : 'lb'}"`,
-				marginLeft: 5,
-			},
-		},
-		itemPrice: {
-			fontSize: 14,
-			color: theme.palette.success.main,
 			'&::before': {
-				content: '"$"',
-				marginRight: 2,
 				color: theme.palette.text.main,
+				content: '" - "',
 			},
 		},
-		description: {
-			paddingLeft: 20,
+		tooltipDetails: {
+			marginTop: 4,
+			paddingTop: 4,
+			borderTop: `1px solid ${theme.palette.border.input}`,
+		},
+		tooltipValue: {
 			fontSize: 14,
 			color: theme.palette.text.alt,
 		},
-		metadata: {
-			marginTop: 10,
-			paddingTop: 10,
-			borderTop: `1px solid ${theme.palette.border.input}`,
-			fontSize: 12,
-			color: theme.palette.text.alt,
+		stackable: {
+			fontSize: 10,
+			marginLeft: 2,
 		},
-		inelig: {
-			marginTop: 10,
-			paddingTop: 10,
-			borderTop: `1px solid ${theme.palette.border.input}`,
+		quality: {
 			fontSize: 14,
-			color: theme.palette.error.light,
-			'& svg': {
-				marginRight: 10,
-			},
-		},
-		elig: {
-			marginTop: 10,
-			paddingTop: 10,
-			borderTop: `1px solid ${theme.palette.border.input}`,
-			fontSize: 14,
-			color: theme.palette.success.light,
-			'& svg': {
-				marginRight: 10,
-			},
-		},
-		attachFitment: {
-			fontSize: 14,
-			'& li': {
-				fontSize: 12,
+			color: isNaN(instance?.Quality)
+				? theme.palette.text.alt
+				: instance?.Quality >= 75
+				? theme.palette.success.light
+				: instance?.Quality >= 50
+				? theme.palette.warning.light
+				: theme.palette.error.light,
+			'&::after': {
+				content: '"%"',
 			},
 		},
 		durability: {
@@ -146,11 +118,6 @@ export default ({
 				: durability >= 50
 				? theme.palette.warning.light
 				: theme.palette.error.light,
-			'&::before': {
-				content: '"Durability: "',
-				marginRight: 2,
-				color: theme.palette.text.alt,
-			},
 			'&::after': {
 				content: '"%"',
 			},
@@ -158,6 +125,54 @@ export default ({
 		broken: {
 			fontSize: 14,
 			color: theme.palette.error.light,
+		},
+		itemPrice: {
+			fontSize: 14,
+			color: theme.palette.success.main,
+			'&::before': {
+				content: '"$"',
+				marginRight: 2,
+				marginLeft: 8,
+				color: theme.palette.text.main,
+			},
+		},
+		description: {
+			paddingLeft: 20,
+			fontSize: 16,
+			color: theme.palette.text.alt,
+		},
+		metadata: {
+			marginTop: 10,
+			paddingTop: 10,
+			borderTop: `1px solid ${theme.palette.border.input}`,
+			fontSize: 14,
+			color: theme.palette.text.alt,
+		},
+		metafield: {
+			'& b': {
+				fontSize: 16,
+			},
+		},
+		qualifications: {
+			fontSize: 14,
+			marginTop: 4,
+			paddingTop: 4,
+			borderTop: `1px solid ${theme.palette.border.input}`,
+			'& svg': {
+				marginRight: 10,
+			},
+		},
+		inelig: {
+			color: theme.palette.error.light,
+		},
+		elig: {
+			color: theme.palette.success.light,
+		},
+		attachFitment: {
+			fontSize: 14,
+			'& li': {
+				fontSize: 12,
+			},
 		},
 		title: {
 			'& svg': {
@@ -385,18 +400,19 @@ export default ({
 						</ul>
 					</span>
 				);
-			case 'FleecaSchedule':
+			case 'AccessCodes':
+				if (value.length == 0) return null;
 				return (
 					<span className={classes.metafield}>
-						<b>Pickup Schedule</b>:{' '}
+						<b>Access Codes</b>:{' '}
 						<ul className={classes.attchList}>
-							{value.map((branch) => {
+							{value.map((code) => {
 								return (
 									<li>
 										<b className={classes.attchSlot}>
-											{branch.time}:{' '}
+											{code.label}:{' '}
 										</b>
-										{branch.name}
+										{code.code}
 									</li>
 								);
 							})}
@@ -412,73 +428,77 @@ export default ({
 		}
 	};
 
-	if (!Boolean(item)) return null;
+	if (!Boolean(item) || !Boolean(instance)) return null;
 	return (
 		<div className={classes.body}>
 			<div className={classes.itemName}>
 				{getItemLabel(instance, item)}
-				{Boolean(item.isStackable) && (
-					<span className={classes.count}>{instance.Count}</span>
+				{shop && !free && (
+					<span className={classes.itemPrice}>
+						{FormatThousands(item.price)}
+					</span>
 				)}
 			</div>
-			{rarity && <div className={classes.rarity}>{getRarityLabel()}</div>}
-			<div className={classes.itemType}>{getTypeLabel()}</div>
-			{item.isUsable && <div className={classes.usable}>Usable</div>}
-			{(Boolean(item.isStackable) || item.isStackable == -1) && (
-				<div className={classes.stackData}>
-					{item.isStackable > 0 ? (
-						<span>Stackable ({item.isStackable})</span>
-					) : (
-						<span>Stackable</span>
-					)}
-				</div>
-			)}
-			{(item?.weight || 0) > 0 && (
+			<div className={classes.itemType}>
+				{`${getRarityLabel()} ${getTypeLabel()}`}
+				{item.isUsable && (
+					<span className={classes.usable}>Usable</span>
+				)}
+			</div>
+			{Boolean(instance?.id) && (
 				<div>
-					<span className={classes.itemWeight}>
-						{((item?.weight || 0) * instance.Count).toFixed(2)}
-					</span>
-					(
-					<span className={classes.itemWeight}>
-						{item?.weight || 0}
-					</span>
-					)
+					ID:{' '}
+					<span className={classes.tooltipValue}>{instance?.id}</span>
 				</div>
 			)}
-			{!isNaN(durability) &&
-				(durability > 0 ? (
-					<div className={classes.durability}>{durability}</div>
-				) : (
-					<div className={classes.broken}>Broken</div>
-				))}
-			{shop && !free && (
-				<div className={classes.itemPrice}>
-					{FormatThousands(item.price)}
-				</div>
-			)}
+
 			{Boolean(item.description) && (
-				<div className={classes.description}>{item.description}</div>
+				<div
+					className={classes.description}
+					dangerouslySetInnerHTML={{
+						__html: Sanitize(item.description),
+					}}
+				></div>
 			)}
-			{item.type == 2 && item.requiresLicense && shop && (
-				<div className={isEligible ? classes.elig : classes.inelig}>
-					{isEligible ? (
-						<FontAwesomeIcon icon={['fas', 'circle-check']} />
-					) : (
-						<FontAwesomeIcon icon={['fas', 'x']} />
-					)}
-					Requires Weapons Permit
-				</div>
-			)}
-			{shop && Boolean(item.qualification) && (
-				<div className={isQualified ? classes.elig : classes.inelig}>
-					{isQualified ? (
-						<FontAwesomeIcon icon={['fas', 'circle-check']} />
-					) : (
-						<FontAwesomeIcon icon={['fas', 'x']} />
-					)}
-					Requires Additional Qualification
-				</div>
-			)}
+			{shop &&
+				((item.type == 2 && item.requiresLicense) ||
+					Boolean(item.qualification)) && (
+					<div className={classes.qualifications}>
+						{item.type == 2 && item.requiresLicense && shop && (
+							<div
+								className={
+									isEligible ? classes.elig : classes.inelig
+								}
+							>
+								{isEligible ? (
+									<FontAwesomeIcon
+										icon={['fas', 'circle-check']}
+									/>
+								) : (
+									<FontAwesomeIcon icon={['fas', 'x']} />
+								)}
+								Requires Weapons Permit
+							</div>
+						)}
+						{shop && Boolean(item.qualification) && (
+							<div
+								className={
+									isQualified ? classes.elig : classes.inelig
+								}
+							>
+								{isQualified ? (
+									<FontAwesomeIcon
+										icon={['fas', 'circle-check']}
+									/>
+								) : (
+									<FontAwesomeIcon icon={['fas', 'x']} />
+								)}
+								Requires Additional Qualification
+							</div>
+						)}
+					</div>
+				)}
+
 			{Boolean(item?.component) && (
 				<div className={classes.attachFitment}>
 					<span className={classes.metafield}>
@@ -511,24 +531,65 @@ export default ({
 						</span>
 					</div>
 				)}
-			{Boolean(instance.MetaData) &&
-				Object.keys(instance.MetaData).length > 0 &&
-				Object.keys(instance.MetaData).filter(
-					(k) => !isDataBlacklisted(k),
-				).length > 0 && (
+			{Boolean(metadata) &&
+				Object.keys(metadata).length > 0 &&
+				Object.keys(metadata).filter((k) => !isDataBlacklisted(k))
+					.length > 0 && (
 					<div className={classes.metadata}>
-						{Object.keys(instance.MetaData)
+						{Object.keys(metadata)
 							.filter((k) => !isDataBlacklisted(k))
 							.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
 							.map((k) => {
 								return (
-									<div key={`${instance.Slot}-${k}`}>
-										{getDataLabel(k, instance.MetaData[k])}
+									<div key={`${instance?.Slot}-${k}`}>
+										{getDataLabel(k, metadata[k])}
 									</div>
 								);
 							})}
 					</div>
 				)}
+			<div className={classes.tooltipDetails}>
+				Weight:{' '}
+				<span className={classes.tooltipValue}>
+					{item?.weight || 0} lbs
+					{instance.Count > 1 && (
+						<span className={classes.stackable}>
+							(Total: {(item?.weight || 0) * instance.Count} lbs)
+						</span>
+					)}
+				</span>
+				{' | '}Count:{' '}
+				<span className={classes.tooltipValue}>
+					{instance.Count}
+					{Boolean(item.isStackable) && item.isStackable > 0 && (
+						<span className={classes.stackable}>
+							(Max Stack: {item.isStackable})
+						</span>
+					)}
+				</span>
+				{!isNaN(durability) &&
+					(durability > 0 ? (
+						<span>
+							{' | '}Durability:{' '}
+							<span className={classes.durability}>
+								{durability}
+							</span>
+						</span>
+					) : (
+						<span>
+							{' | '}Durability:{' '}
+							<span className={classes.broken}>Broken</span>
+						</span>
+					))}
+				{!isNaN(instance?.Quality) && instance?.Quality > 0 && (
+					<span>
+						{' | '}Quality:{' '}
+						<span className={classes.quality}>
+							{instance?.Quality}
+						</span>
+					</span>
+				)}
+			</div>
 		</div>
 	);
 };

@@ -30,26 +30,26 @@ const useStyles = makeStyles((theme) => ({
 		whiteSpace: 'nowrap',
 		color: theme.palette.text.main,
 		background: theme.palette.secondary.light,
-		borderTop: `1px solid ${theme.palette.border.divider}`,
+		borderTop: `1px solid rgb(255 255 255 / 4%)`,
 		zIndex: 4,
 	},
 	slot: {
 		width: 132,
 		height: 152,
-		backgroundColor: `${theme.palette.secondary.dark}61`,
-		border: `1px solid ${theme.palette.border.divider}`,
+		backgroundColor: `${theme.palette.secondary.light}61`,
+		border: `1px solid rgba(255, 255, 255, 0.04)`,
 		position: 'relative',
 		zIndex: 2,
-		borderRadius: 5,
-		'&.add': {
-			borderColor: theme.palette.success.main,
-		},
-		'&.removed': {
-			borderColor: theme.palette.error.main,
-		},
-		'&.used': {
-			borderColor: theme.palette.info.main,
-		},
+		// border: `1px solid ${theme.palette.border.divider}`,
+		// '&.add': {
+		// 	borderColor: theme.palette.success.main,
+		// },
+		// '&.removed': {
+		// 	borderColor: theme.palette.error.main,
+		// },
+		// '&.used': {
+		// 	borderColor: theme.palette.info.main,
+		// },
 	},
 	count: {
 		top: 0,
@@ -121,7 +121,10 @@ export default ({ alert }) => {
 					<div
 						className={classes.img}
 						style={{
-							backgroundImage: `url(${getItemImage(alert.item, itemData)})`,
+							backgroundImage: `url(${getItemImage(
+								alert.item,
+								itemData,
+							)})`,
 						}}
 					></div>
 					{Boolean(itemData) && (

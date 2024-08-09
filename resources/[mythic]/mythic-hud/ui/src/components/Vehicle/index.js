@@ -191,7 +191,7 @@ export default () => {
                                 <FontAwesomeIcon
                                     className={classes.checkEngine}
                                     style={{ gridColumn: 1 }}
-                                    icon={['fas', 'engine-warning']}
+                                    icon={['fas', 'screwdriver-wrench']}
                                 />
                             </span>
                         </Fade>

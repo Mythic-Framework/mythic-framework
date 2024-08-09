@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmythic_phone=self.webpackChunkmythic_phone||[]).push([[1456],{91456:(e,n,a)=>{a.r(n),a.d(n,{default:()=>c});var r=a(55429),t=(a(15647),(0,a(45942).A)((function(e){return{wrapper:{height:"100%",background:e.palette.secondary.main}}})));const c=function(e){var n=t();return r.createElement("div",{className:n.wrapper},"Coming ... Someday")}}}]);

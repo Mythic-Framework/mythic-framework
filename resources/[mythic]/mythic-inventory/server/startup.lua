@@ -1,5 +1,7 @@
 STORE_SHARE_AMOUNT = 0.8
 
+repairWindow = (60 * 60 * 24) * 7 -- Give 7 day period before we completely delete item
+
 itemsDatabase = {}
 itemClasses = {}
 itemsWithState = {}
@@ -7,6 +9,7 @@ itemsWithState = {}
 _schematics = _schematics or {}
 
 itemsLoaded = false
+_started = false
 
 function LoadSchematics()
 	Database.Game:find({
@@ -28,92 +31,103 @@ function LoadSchematics()
 	end)
 end
 
+local tmpItems = { '"paleto_access_codes"' }
 function ClearDropZones()
-	Database.Game:find({
-		collection = "dropzones",
-		query = {},
-	}, function(success, dropzones)
-		if not success then
-			return
-		end
-		local totalDeleted = 0
-		if dropzones[1] then
-			for i = 1, #dropzones do
-				local done = false
-				Database.Game:delete({
-					collection = "inventory",
-					query = {
-						invType = 10,
-						Owner = dropzones[i].randomIdent,
-					},
-				}, function(delsuccess, deleted)
-					if not delsuccess then
-						return
-					end
+	local f = MySQL.query.await("DELETE FROM inventory WHERE dropped = ?", { 1 })
 
-					Database.Game:deleteOne({
-						collection = "dropzones",
-						query = {
-							randomIdent = dropzones[i].randomIdent,
-						},
-					}, function(successdr, dropdelete)
-						if not successdr then
-							return
-						end
-						totalDeleted = totalDeleted + 1
-						done = true
-					end)
-				end)
-				while not done do
-					Wait(0)
-				end
-			end
+	Logger:Info("Inventory", string.format("Cleaned Up ^2%s^7 Items In Dropzones", f.affectedRows))
 
-			if totalDeleted > 0 then
-				Logger:Trace("Inventory", totalDeleted .. " Dropzones have been deleted from the server")
-			end
-		end
-
-		Database.Game:delete({
-			collection = "inventory",
-			query = {
-				invType = 16,
-			},
-		}, function(delsuccess, deleted)
-			if not delsuccess then
-				return
-			end
-			if deleted > 0 then
-				Logger:Trace("Inventory", deleted .. " Items have been collected from trash containers.")
-			end
-		end)
-	end)
-end
-
-function ClearGarbage()
-	local garbageIds = {}
-	for k, v in ipairs(_entityTypes) do
+	local trash = 0
+	for k, v in pairs(LoadedEntitys) do
 		if v.trash then
-			table.insert(garbageIds, v.id)
+			local f2 = MySQL.query.await("DELETE FROM inventory WHERE name LIKE '%-?'", { v.id })
+			trash += f2.affectedRows
 		end
 	end
 
-	Database.Game:delete({
-		collection = "inventory",
-		query = {
-			invType = {
-				["$in"] = garbageIds,
-			},
-		},
-	}, function(delsuccess, deleted)
-		if not delsuccess then
-			return
-		end
-		if deleted > 0 then
-			Logger:Trace("Inventory", deleted .. " Items have been collected from trash cans.")
+	Logger:Info("Inventory", string.format("Cleaned Up ^2%s^7 Items In Trash Inventories", trash))
+	local delTmp =
+		MySQL.query.await(string.format("DELETE FROM inventory WHERE item_id IN (%s)", table.concat(tmpItems, ",")))
+	Logger:Info("Inventory", string.format("Cleaned Up ^2%s^7 Temporary Items", delTmp.affectedRows))
+end
+
+function countTable(t)
+	local c = 0
+	for k, v in pairs(t) do
+		c += 1
+	end
+	return c
+end
+
+function ClearBrokenItems()
+	if _started then
+		return
+	end
+	_started = true
+
+	-- local count = 0
+	-- Logger:Warn("Inventory", "^1DELETING EXPIRED ITEMS, THIS WILL LIKELY TAKE A MINUTE^7")
+	-- local total = countTable(itemsDatabase)
+	-- local checked = 0
+	-- CreateThread(function()
+	-- 	for k, v in pairs(itemsDatabase) do
+	-- 		if v.durability ~= nil and v.isDestroyed then
+	-- 			MySQL.single("SELECT COUNT(*) as Count FROM inventory WHERE item_id = ? and expiryDate = -1", {
+	-- 				v.name,
+	-- 			}, function(c)
+	-- 				if c.Count > 0 then
+	-- 					local expiredTime = os.time() - v.durability
+	-- 					local deleteTime = expiredTime - repairWindow
+	-- 					MySQL.query(
+	-- 						"UPDATE inventory SET expiryDate = creationDate + ? WHERE item_id = ? and expiryDate = -1",
+	-- 						{
+	-- 							v.durability + repairWindow,
+	-- 							v.name,
+	-- 						}
+	-- 					)
+	-- 				end
+
+	-- 				checked += 1
+	-- 			end)
+	-- 			-- MySQL.single('SELECT COUNT(*) as Count FROM inventory WHERE item_id = ? AND creationDate <= ?', {
+	-- 			-- 	v.name, deleteTime
+	-- 			-- }, function(c)
+	-- 			-- 	if c.Count > 0 then
+	-- 			-- 		MySQL.query('DELETE FROM inventory WHERE item_id = ? AND creationDate <= ?', {
+	-- 			-- 			v.name, deleteTime
+	-- 			-- 		}, function(d)
+	-- 			-- 			if d.affectedRows > 0 then
+	-- 			-- 				Logger:Info("Inventory", string.format("^1Cleaned Up ^2%s^1 Degraded ^2%s^7", d.affectedRows, v.name))
+	-- 			-- 			end
+	-- 			-- 			checked += 1
+	-- 			-- 		end)
+	-- 			-- 	else
+	-- 			-- 		checked += 1
+	-- 			-- 	end
+	-- 			-- end)
+	-- 		else
+	-- 			checked += 1
+	-- 		end
+	-- 	end
+	-- end)
+
+	-- while checked < total do
+	-- 	Wait(100)
+	-- end
+
+	-- Logger:Warn("Inventory", "^1FINISHED DELETING EXPIRED ITEMS^7")
+
+	CreateThread(function()
+		while _started do
+			MySQL.query("DELETE FROM inventory WHERE expiryDate < ? AND expiryDate != -1", { os.time() }, function(d)
+				Logger:Info("Inventory", string.format("Cleaned Up ^2%s^7 Degraded Items", d.affectedRows))
+			end)
+			Wait((1000 * 60) * 30)
 		end
 	end)
+end
 
+function SetupGarbage()
 	if _trashCans then
 		for storageId, storage in ipairs(_trashCans) do
 			Inventory.Poly:Create(storage)
@@ -134,14 +148,14 @@ function LoadItems()
 				itemsWithState[v.name] = v.state
 
 				Inventory.Items:RegisterUse(v.name, "CharacterState", function(source, item)
-					UpdateCharacterItemStates(source, true)
+					refreshShit(Fetch:Source(source):GetData("Character"):GetData("SID"))
 				end)
 			end
 
 			if v.type == 1 and itemsDatabase[v.name].statusChange ~= nil then
 				Inventory.Items:RegisterUse(v.name, "StatusConsumable", function(source, item) -- Foodies
 					local char = Fetch:Source(source):GetData("Character")
-					Inventory:RemoveItem(char:GetData("ID"), item.Name, 1, item.Slot, 1)
+					Inventory.Items:RemoveSlot(item.Owner, item.Name, 1, item.Slot, 1)
 
 					if itemsDatabase[item.Name].statusChange.Add ~= nil then
 						for k, v in pairs(itemsDatabase[item.Name].statusChange.Add) do
@@ -212,9 +226,8 @@ function LoadItems()
 			elseif v.type == 9 then
 				Inventory.Items:RegisterUse(v.name, "Ammo", function(source, item)
 					Callbacks:ClientCallback(source, "Weapons:AddAmmo", itemsDatabase[item.Name], function(state)
-						local char = Fetch:Source(source):GetData("Character")
 						if state then
-							Inventory:RemoveItem(char:GetData("ID"), item.Name, 1, item.Slot, 1)
+							Inventory.Items:RemoveSlot(item.Owner, item.Name, 1, item.Slot, 1)
 						end
 					end)
 				end)
@@ -282,35 +295,39 @@ shopLocations = {}
 storeBankAccounts = {}
 pendingShopDeposits = {}
 function LoadShops()
-	local f = Banking.Accounts:GetOrganization("dgang")
+	CreateThread(function()
+		Wait(10000)
 
-	for k, v in ipairs(_shops) do
-		local id = k
-		if v.id ~= nil then
-			id = v.id
-		else
-			v.id = k
-		end
+		local f = Banking.Accounts:GetOrganization("dgang")
 
-		v.restriction = LoadedEntitys[v.entityId].restriction
-		shopLocations[string.format("shop:%s", id)] = v
-	end
-
-	for k, v in pairs(_entityTypes) do
-		storeBankAccounts[v.id] = f.Account
-	end
-
-	Database.Game:find({
-		collection = "store_bank_accounts",
-	}, function(success, results)
-		if success and #results > 0 then
-			for k, v in ipairs(results) do
-				storeBankAccounts[v.Shop] = v.Account
+		for k, v in ipairs(_shops) do
+			local id = k
+			if v.id ~= nil then
+				id = v.id
+			else
+				v.id = k
 			end
-		end
-	end)
 
-	Logger:Trace("Inventory", string.format("Loaded ^2%s^7 Shop Locations", #_shops))
+			v.restriction = LoadedEntitys[v.entityId].restriction
+			shopLocations[string.format("shop:%s", id)] = v
+		end
+
+		for k, v in pairs(_entityTypes) do
+			storeBankAccounts[v.id] = f.Account
+		end
+
+		Database.Game:find({
+			collection = "store_bank_accounts",
+		}, function(success, results)
+			if success and #results > 0 then
+				for k, v in ipairs(results) do
+					storeBankAccounts[v.Shop] = v.Account
+				end
+			end
+		end)
+
+		Logger:Trace("Inventory", string.format("Loaded ^2%s^7 Shop Locations", #_shops))
+	end)
 end
 
 function RegisterCommands()
@@ -348,52 +365,28 @@ function RegisterCommands()
 		},
 	}, 2)
 
-	Chat:RegisterAdminCommand("printinv", function(source, args, rawCommand)
-		local plyr = Fetch:SID(tonumber(args[1]))
-		if plyr ~= nil then
-			local char = plyr:GetData("Character")
-			if char ~= nil then
-				Inventory:PrintSlots(char:GetData("ID"), 1)
-			else
-			end
-		else
-		end
-	end, {
-		help = "Print Inventory Slots To Console",
-		params = {
-			{
-				name = "State ID",
-				help = "State ID of the inventory you want to print",
-			},
-		},
-	}, 1)
-
-	Chat:RegisterAdminCommand("printinv2", function(source, args, rawCommand)
-		local plyr = Fetch:SID(tonumber(args[1]))
-		if plyr ~= nil then
-			local char = plyr:GetData("Character")
-			if char ~= nil then
-				Inventory:PrintSlots2(char:GetData("ID"), 1)
-			else
-			end
-		else
-		end
-	end, {
-		help = "Print Inventory Slots To Console",
-		params = {
-			{
-				name = "State ID",
-				help = "State ID of the inventory you want to print",
-			},
-		},
-	}, 1)
-
 	Chat:RegisterAdminCommand("closeinv", function(source, args, rawCommand)
 		Logger:Info("Inventory", "Closing all inventories")
 		_openInvs = {}
 	end, {
 		help = "Close All Inventories",
 	}, 0)
+
+	Chat:RegisterAdminCommand("removecd", function(source, args, rawCommand)
+		RemoveCraftingCooldown(source, args[1], args[2])
+	end, {
+		help = "Remove Crafting Cooldown From A Bench",
+		params = {
+			{
+				name = "Bench ID",
+				help = "Unique ID of the bench to interact with",
+			},
+			{
+				name = "Craft Key",
+				help = "Unique key for the craft item",
+			},
+		},
+	}, 2)
 
 	Chat:RegisterAdminCommand("clearinventory", function(source, args, rawCommand)
 		local player = exports["mythic-base"]:FetchComponent("Fetch"):SID(tonumber(args[1]))
@@ -402,15 +395,20 @@ function RegisterCommands()
 			return
 		end
 		local char = player:GetData("Character")
-		Inventory:Delete(char:GetData("ID"), 1, function(success)
-			Execute:Client(
-				char:GetData("Source"),
-				"Notification",
-				"Error",
-				"Your inventory was cleared by " .. tostring(source)
-			)
-			Execute:Client(source, "Notification", "Success", "You cleared the inventory of " .. tostring(src))
-		end, true)
+		MySQL.query.await("DELETE * FROM inventory WHERE Owner = ?", { string.format("%s:%s", char:GetData("SID"), 1) })
+		Execute:Client(
+			char:GetData("Source"),
+			"Notification",
+			"Error",
+			"Your inventory was cleared by " .. tostring(Fetch:Source(source):GetData("Character"):GetData("SID"))
+		)
+		Execute:Client(
+			source,
+			"Notification",
+			"Success",
+			"You cleared the inventory of " .. tostring(char:GetData("SID"))
+		)
+		refreshShit(char:GetData("SID"), true)
 	end, {
 		help = "Clear Player Inventory",
 		params = {
@@ -425,9 +423,13 @@ function RegisterCommands()
 		local Owner, Type = args[1], tonumber(args[2])
 
 		if Owner and Type then
-			Inventory:Delete(Owner, Type, function(success)
-				Execute:Client(source, "Notification", "Success", string.format("You cleared inventory of %s:%s", Owner, Type))
-			end, true)
+			MySQL.query.await("DELETE * FROM inventory WHERE Owner = ?", { string.format("%s:%s", Owner, Type) })
+			Execute:Client(
+				source,
+				"Notification",
+				"Success",
+				string.format("You cleared inventory of %s:%s", Owner, Type)
+			)
 		end
 	end, {
 		help = "Clear Inventory",
@@ -450,7 +452,7 @@ function RegisterCommands()
 			local itemExist = itemsDatabase[args[1]]
 			if itemExist then
 				if itemExist.type ~= 2 then
-					Inventory:AddItem(char:GetData("ID"), args[1], tonumber(args[2]), {}, 1)
+					Inventory:AddItem(char:GetData("SID"), args[1], tonumber(args[2]), {}, 1)
 				else
 					Execute:Client(
 						source,
@@ -486,7 +488,7 @@ function RegisterCommands()
 			if itemExist then
 				if itemExist.type == 2 then
 					if itemExist.isThrowable then
-						Inventory:AddItem(char:GetData("ID"), weapon, tonumber(args[2]), { ammo = 1, clip = 0 }, 1)
+						Inventory:AddItem(char:GetData("SID"), weapon, tonumber(args[2]), { ammo = 1, clip = 0 }, 1)
 					else
 						local ammo = 0
 						if args[2] ~= nil then
@@ -494,7 +496,7 @@ function RegisterCommands()
 						end
 
 						Inventory:AddItem(
-							char:GetData("ID"),
+							char:GetData("SID"),
 							weapon,
 							1,
 							{ ammo = ammo, clip = 0, Scratched = args[3] == "1" or nil },
@@ -537,7 +539,7 @@ function RegisterCommands()
 		if player and player.Permissions:GetLevel() >= 100 then
 			local char = player:GetData("Character")
 			if char and label and image and amount and amount > 0 then
-				Inventory:AddItem(char:GetData("ID"), "vanityitem", amount, {
+				Inventory:AddItem(char:GetData("SID"), "vanityitem", amount, {
 					CustomItemLabel = label,
 					CustomItemImage = image,
 					CustomItemText = text or "",
@@ -572,4 +574,10 @@ function RegisterCommands()
 			},
 		},
 	}, -1)
+
+	Chat:RegisterCommand("reloaditems", function(source, args, rawCommand)
+		TriggerClientEvent("Inventory:Client:ReloadItems", source)
+	end, {
+		help = "Attempts To Force Reload Inventory Items",
+	}, 0)
 end

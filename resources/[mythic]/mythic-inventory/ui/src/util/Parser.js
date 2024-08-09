@@ -1,4 +1,34 @@
 import parse from 'parse-duration';
+import sanitizeHtml from 'sanitize-html';
+
+export const Sanitize = (dirty) => {
+    return sanitizeHtml(dirty, {
+        allowedTags: [
+            'b',
+            'i',
+            'em',
+            'strong',
+            'img',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'blockquote',
+            'pre',
+            'ol',
+            'ul',
+            'li',
+            'p',
+            'div',
+            'br',
+        ],
+        allowedAttributes: {
+            img: ['src', 'alt', 'height', 'width'],
+        },
+    });
+};
 
 const zeroPad = (nr, base) => {
 	var len = String(base).length - String(nr).length + 1;
@@ -16,10 +46,10 @@ const HOUR_MS = 1000 * 60 * 60;
 const MIN_MS = 1000 * 60;
 
 export const DurationToTime = (ms) => {
-	let days = (ms / DAY_MS).toFixed(0);
-	let hours = ((ms - (DAY_MS * days)) / HOUR_MS).toFixed(0);
-	let minutes = ((ms - ((DAY_MS * days) + (HOUR_MS * hours))) / MIN_MS).toFixed(0);
-	let seconds = (ms % 1000).toFixed(0);
+	let days = Math.floor(ms / DAY_MS);
+	let hours = Math.floor((ms - (DAY_MS * days)) / HOUR_MS);
+	let minutes = Math.floor((ms - ((DAY_MS * days) + (HOUR_MS * hours))) / MIN_MS);
+	let seconds = Math.floor(ms % 1000);
 
 	let str = Array();
 

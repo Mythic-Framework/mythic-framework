@@ -5,7 +5,7 @@ _itemsSource["prego"] = {
 		price = 100,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -36,6 +36,7 @@ _itemsSource["prego"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "ravioli",
@@ -43,7 +44,7 @@ _itemsSource["prego"] = {
 		price = 100,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -73,6 +74,7 @@ _itemsSource["prego"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
         armourModifier = 10,
 	},
 	{
@@ -81,7 +83,7 @@ _itemsSource["prego"] = {
 		price = 100,
 		isUsable = true,
 		isRemoved = true,
-		isStackable = 5,
+		isStackable = 15,
 		type = 1,
 		rarity = 1,
 		closeUi = true,
@@ -109,6 +111,7 @@ _itemsSource["prego"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 	},
 	{
 		name = "tiramisu",
@@ -148,6 +151,7 @@ _itemsSource["prego"] = {
 		},
 		metalic = false,
 		isDestroyed = true,
+		durability = (60 * 60 * 24 * 5),
 		energyModifier = {
 			modifier = 1.1,
 			duration = 2, -- not seconds?

@@ -6,11 +6,14 @@ game 'gta5'
 lua54 'yes'
 
 client_scripts {
+    'interiors/**/*.lua',
+    'shared/**/*.lua',
     'client/**/*.lua',
 }
-shared_script 'config.lua'
 
 server_scripts {
+    'interiors/**/*.lua',
+    'shared/**/*.lua',
     'sv_config.lua',
     'server/**/*.lua',
 }

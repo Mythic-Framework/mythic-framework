@@ -39,8 +39,8 @@ export default React.forwardRef((props, ref) => {
 	const onChange = (e) => {
 		setVal(
 			e.target.value > props.data.item.Count
-				? props.data.item.Count
-				: Math.floor(e.target.value),
+				? Math.max(1, Math.min(props.data.item.Count, 10000))
+				: Math.max(1, Math.min(Math.floor(e.target.value), 10000)),
 		);
 	};
 
@@ -84,7 +84,10 @@ export default React.forwardRef((props, ref) => {
 					value={val}
 					inputProps={{
 						min: 0,
-						max: props.data.item.Count,
+						max:
+							props.data.item.Count > 10000
+								? 10000
+								: props.data.item.Count,
 					}}
 					onChange={onChange}
 				/>
@@ -99,9 +102,10 @@ export default React.forwardRef((props, ref) => {
 						onClick={(e) =>
 							drag(
 								e,
-								props.data.item.Count / 4 < 1
-									? 1
-									: props.data.item.Count / 4,
+								Math.max(
+									1,
+									Math.min(props.data.item.Count / 4, 10000),
+								),
 							)
 						}
 					>
@@ -112,9 +116,10 @@ export default React.forwardRef((props, ref) => {
 						onClick={(e) =>
 							drag(
 								e,
-								props.data.item.Count / 2 < 1
-									? 1
-									: props.data.item.Count / 2,
+								Math.max(
+									1,
+									Math.min(props.data.item.Count / 2, 10000),
+								),
 							)
 						}
 					>
@@ -122,7 +127,15 @@ export default React.forwardRef((props, ref) => {
 					</Button>
 					<Button
 						className={classes.btn}
-						onClick={(e) => drag(e, props.data.item.Count)}
+						onClick={(e) =>
+							drag(
+								e,
+								Math.max(
+									1,
+									Math.min(props.data.item.Count, 10000),
+								),
+							)
+						}
 					>
 						Max
 					</Button>

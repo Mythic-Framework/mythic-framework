@@ -282,7 +282,7 @@ _propertyCrafting = {
 		},
 		canUseSchematics = true,
 	},
-	{ -- King Abuse's Bench
+	{ -- Alzars Bench
 		id = "62e9a59083fb7e252cb98e77",
 		recipies = {
 			_propertyCraftingRecipies.lockpick,
@@ -458,7 +458,7 @@ _propertyCrafting = {
 		canUseSchematics = true,
 	},
 	{ -- Jakes Bench
-		id = "62b65bf362671bd935530e9a",
+		id = "62ec823174ffdb7079d6885b",
 		recipies = {
 			_propertyCraftingRecipies.WEAPON_PISTOL,
 			_propertyCraftingRecipies.WEAPON_FNX,

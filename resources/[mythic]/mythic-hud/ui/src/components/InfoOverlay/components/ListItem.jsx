@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import Nui from '../../../util/Nui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Sanitize } from '../../../util/Parser';
-import { faBullseye } from '@fortawesome/pro-solid-svg-icons';
+import { faBullseye } from '@fortawesome/free-solid-svg-icons';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {

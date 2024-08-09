@@ -36,7 +36,7 @@ local _NOSUsage = 0
 
 AddEventHandler("Characters:Client:Spawn", function()
     Wait(500)
-    Hud:RegisterStatus("nos", 0, 100, "gauge-circle-plus", "#892020", true, false, {
+    Hud:RegisterStatus("nos", 0, 100, "gauge-high", "#892020", true, false, {
         hideZero = true,
     })
 end)

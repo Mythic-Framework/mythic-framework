@@ -144,9 +144,9 @@ export default () => {
 					{permissionLevel >= 100 && <IconButton onClick={goInvisible}>
 						<FontAwesomeIcon icon={['fas', 'eye-slash']} />
 					</IconButton>}
-					{permissionLevel >= 100 && <IconButton onClick={toggleIds}>
+					<IconButton onClick={toggleIds}>
 						<FontAwesomeIcon icon={['fas', 'id-badge']} />
-					</IconButton>}
+					</IconButton>
 					<IconButton onClick={viewSelf}>
 						<FontAwesomeIcon icon={['fas', 'user-large']} />
 					</IconButton>

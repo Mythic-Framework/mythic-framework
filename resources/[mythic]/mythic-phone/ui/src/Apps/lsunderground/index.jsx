@@ -189,7 +189,7 @@ export default (props) => {
 					/>
 					<YPTab
 						icon={
-							<FontAwesomeIcon icon={['fas', 'list-timeline']} />
+							<FontAwesomeIcon icon={['fas', 'list']} />
 						}
 					/>
 				</YPTabs>

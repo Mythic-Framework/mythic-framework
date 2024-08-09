@@ -1,7 +1,3 @@
-RegisterNetEvent("Damage:Client:RecieveUpdate", function(h)
-	Damage:Heal(h)
-end)
-
 AddEventHandler("Damage:Shared:DependencyUpdate", RetrieveComponents)
 function RetrieveComponents()
 	Callbacks = exports["mythic-base"]:FetchComponent("Callbacks")
@@ -11,7 +7,7 @@ function RetrieveComponents()
 	Hud = exports["mythic-base"]:FetchComponent("Hud")
 	Targeting = exports["mythic-base"]:FetchComponent("Targeting")
 	Status = exports["mythic-base"]:FetchComponent("Status")
-	Hospital = exports["mythic-base"]:FetchComponent("Hospital")
+	--Hospital = exports["mythic-base"]:FetchComponent("Hospital")
 	Progress = exports["mythic-base"]:FetchComponent("Progress")
 	EmergencyAlerts = exports["mythic-base"]:FetchComponent("EmergencyAlerts")
 	PedInteraction = exports["mythic-base"]:FetchComponent("PedInteraction")
@@ -19,6 +15,7 @@ function RetrieveComponents()
 	Jail = exports["mythic-base"]:FetchComponent("Jail")
 	Sounds = exports["mythic-base"]:FetchComponent("Sounds")
 	Animations = exports["mythic-base"]:FetchComponent("Animations")
+	Weapons = exports["mythic-base"]:FetchComponent("Weapons")
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -30,7 +27,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Hud",
 		"Targeting",
 		"Status",
-		"Hospital",
+		--"Hospital",
 		"Progress",
 		"EmergencyAlerts",
 		"PedInteraction",
@@ -38,21 +35,31 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Jail",
 		"Sounds",
 		"Animations",
+        "Weapons",
 	}, function(error)
 		if #error > 0 then
 			return
 		end
 		RetrieveComponents()
 
-		Callbacks:RegisterClientCallback("Damage:ApplyPainkiller", function(data, cb)
-			LocalPlayer.state.onPainKillers = data
-			LocalPlayer.state.wasOnPainKillers = true
-		end)
+        Callbacks:RegisterClientCallback("Damage:Heal", function(s)
+            if s then
+                LocalPlayer.state.deadData = {}
+            end
+            Damage:Revive()
+        end)
 
-		Callbacks:RegisterClientCallback("Damage:ApplyAdrenaline", function(data, cb)
-			LocalPlayer.state.onDrugs = data
-			LocalPlayer.state.wasOnDrugs = true
-		end)
+        Callbacks:RegisterClientCallback("Damage:FieldStabalize", function(s)
+            Damage:Revive(true)
+        end)
+
+        Callbacks:RegisterClientCallback("Damage:Kill", function()
+            ApplyDamageToPed(LocalPlayer.state.ped, 10000)
+        end)
+
+        Callbacks:RegisterClientCallback("Damage:Admin:Godmode", function(s)
+            TriggerEvent("Status:Client:Update", "godmode", s and 100 or 0)
+        end)
 	end)
 end)
 
@@ -60,45 +67,86 @@ AddEventHandler("Proxy:Shared:RegisterReady", function()
 	exports["mythic-base"]:RegisterComponent("Damage", DAMAGE)
 end)
 
+RegisterNetEvent("Characters:Client:Spawned", function()
+    StartThreads()
+    Hud:RegisterStatus("godmode", 0, 100, "shield-virus", "#FFBB04", false, false, {
+        hideZero = true,
+    })
+end)
+
 RegisterNetEvent("Characters:Client:Logout", function()
-	Hud:Dead(false)
+    Damage:Revive()
 end)
 
-AddEventHandler("Characters:Client:Updated", function(key)
-	if key == "Damage" then
-		LocalDamage = LocalPlayer.state.Character:GetData("Damage")
-		local t = {}
-		for k, v in pairs(LocalDamage.Limbs) do
-			if v.severity > 0 then
-				t[k] = {
-					label = v.label,
-					severity = v.severity,
-				}
-			end
-		end
-		_damagedLimbs = t
-	end
+RegisterNetEvent("Damage:Client:Heal", function()
+    Damage:Revive()
 end)
 
-AddEventHandler("Characters:Client:Spawn", function()
-	LocalDamage = LocalPlayer.state.Character:GetData("Damage")
-	Callbacks:ServerCallback("Damage:CheckDead", {}, function(isDead)
-		local p = PlayerPedId()
-		if isDead or GetEntityHealth(p) <= GetEntityMaxHealth(p) / 2 then
-			diecunt(p)
-		end
-	end)
-	
-	local t = {}
-	for k, v in pairs(LocalDamage.Limbs) do
-		if v.severity > 0 then
-			t[k] = {
-				label = v.label,
-				severity = v.severity,
-			}
-		end
-	end
-	_damagedLimbs = t
-
-	StartTracking()
+RegisterNetEvent('UI:Client:Reset', function(apps)
+    if not LocalPlayer.state.isDead and not LocalPlayer.state.isHospitalized then
+        Hud.DeathTexts:Hide()
+        Hud:Dead(false)
+    end
 end)
+
+DAMAGE = {
+    Revive = function(self, fieldTreat)
+        local player = PlayerPedId()
+
+        if LocalPlayer.state.isDead then
+            DoScreenFadeOut(1000)
+            while not IsScreenFadedOut() do
+                Wait(10)
+            end
+        end
+
+        local wasDead = LocalPlayer.state.isDead
+        local wasMinor = LocalPlayer.state.deadData?.isMinor
+
+        LocalPlayer.state:set("isDead", false, true)
+        LocalPlayer.state:set("deadData", false, true)
+        LocalPlayer.state:set("isDeadTime", false, true)
+        LocalPlayer.state:set("releaseTime", false, true)
+
+        if IsPedDeadOrDying(player) then
+            local playerPos = GetEntityCoords(player, true)
+            NetworkResurrectLocalPlayer(playerPos, true, true, false)
+        end
+
+        TriggerServerEvent("Damage:Server:Revived", wasMinor, fieldTreat)
+        Hud:Dead(false)
+
+        if not LocalPlayer.state.isHospitalized and wasDead then
+            Hud.DeathTexts:Hide()
+            ClearPedTasksImmediately(player)
+            SetEntityInvincible(player, LocalPlayer.state.isAdmin and LocalPlayer.state.isGodmode or false)
+        end
+
+        if wasMinor or fieldTreat then
+            SetEntityHealth(player, 125)
+        else
+            SetEntityHealth(player, GetEntityMaxHealth(player))
+        end
+        SetPlayerSprint(PlayerId(), true)
+        ClearPedBloodDamage(player)
+        Status:Reset()
+
+        DoScreenFadeIn(1000)
+
+        if not LocalPlayer.state.isHospitalized and wasDead then
+            Animations.Emotes:Play("reviveshit", false, 1750, true)
+        end
+    end,
+	Died = function(self)
+
+	end,
+	Apply = {
+		StandardDamage = function(self, value, armorFirst, forceKill)
+            if forceKill and not _hasKO then
+                _hasKO = true
+            end
+            
+			ApplyDamageToPed(LocalPlayer.state.ped, value, armorFirst)
+		end,
+    }
+}

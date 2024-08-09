@@ -103,7 +103,7 @@ export default ({ match }) => {
 	const classes = useStyles();
 	const history = useHistory();
 	const user = useSelector(state => state.app.user);
-	const permission = useSelector(state => state.app.permission);
+	const permissionName = useSelector(state => state.app.permissionName);
 	const permissionLevel = useSelector(state => state.app.permissionLevel);
 
 	const [err, setErr] = useState(false);

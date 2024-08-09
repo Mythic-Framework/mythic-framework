@@ -15,6 +15,10 @@ function RetrieveComponents()
 	Police = exports["mythic-base"]:FetchComponent("Police")
 	Crafting = exports["mythic-base"]:FetchComponent("Crafting")
 	Pwnzor = exports["mythic-base"]:FetchComponent("Pwnzor")
+	Banking = exports["mythic-base"]:FetchComponent("Banking")
+	Loans = exports["mythic-base"]:FetchComponent("Loans")
+	Billing = exports["mythic-base"]:FetchComponent("Billing")
+	Utils = exports["mythic-base"]:FetchComponent("Utils")
 	RegisterChatCommands()
 end
 
@@ -35,151 +39,83 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Police",
 		"Crafting",
 		"Pwnzor",
+		"Banking",
+		"Loans",
+		"Billing",
+		"Utils",
 	}, function(error)
 		if #error > 0 then
 			return
 		end -- Do something to handle if not all dependencies loaded
 		RetrieveComponents()
 		RegisterCallbacks()
+		RegisterMiddleware()
 		DefaultData()
 		Startup()
-		RegisterSpawnFunction()
+
+		CreateFurnitureCallbacks()
 
 		SetupPropertyCrafting()
 	end)
 end)
 
-function RegisterSpawnFunction()
-	Middleware:Add("Characters:Logout", function(source)
-		local char = Fetch:Source(source):GetData("Character")
-		if char ~= nil then
-			GlobalState[string.format("Char:Properties:%s", charId)] = nil
-		end
-		TriggerClientEvent("Properties:Client:Cleanup", source, GlobalState[string.format("%s:Property", source)])
-		GlobalState[string.format("%s:Property", source)] = nil
-
-		if Player(source)?.state?.tpLocation then
-			Player(source).state.tpLocation = nil
-		end
-	end)
-	Middleware:Add("Characters:GetSpawnPoints", function(source, charId)
-		local p = promise.new()
-
-		Database.Game:find({
-			collection = "properties",
-			query = {
-				[string.format("keys.%s", charId)] = {
-					["$exists"] = true,
-				},
-				foreclosed = {
-					["$ne"] = true,
-				},
-				type = {
-					["$nin"] = {
-						"container",
-						"warehouse",
-					}
-				}
-			},
-		}, function(success, results)
-			if not success or not #results then
-				p:resolve({})
-				return
-			end
-			local spawns = {}
-
-			local keys = {}
-
-			for k, v in pairs(results) do
-				table.insert(keys, v._id)
-				local property = GlobalState[string.format("Property:%s", v._id)]
-				if property ~= nil then
-					local prop = GlobalState[string.format("Properties:Interior:%s", property.interior)]
-					local icon = "house"
-					if prop.type == "warehouse" then
-						icon = "warehouse"
-					elseif prop.type == "office" then
-						icon = "building"
-					end
-
-					if prop ~= nil then
-						table.insert(spawns, {
-							id = property.id,
-							label = property.label,
-							location = {
-								x = prop.x,
-								y = prop.y,
-								z = prop.z,
-								h = prop.h,
-							},
-							icon = icon,
-							event = "Properties:SpawnInside",
-						})
-					end
-				end
-			end
-			GlobalState[string.format("Char:Properties:%s", charId)] = keys
-			p:resolve(spawns)
-		end)
-
-		return Citizen.Await(p)
-	end, 3)
-end
 
 PROPERTIES = {
 	Manage = {
 		Add = function(self, source, type, interior, price, label, pos)
 			if PropertyTypes[type] then
-				local p = promise.new()
-				local doc = {
-					type = type,
-					label = label,
-					price = price,
-					sold = false,
-					owner = false,
-					interior = interior,
-					location = {
-						front = pos,
-					},
-				}
+				if PropertyInteriors[interior] and PropertyInteriors[interior].type == type then
+					local p = promise.new()
+					local doc = {
+						type = type,
+						label = label,
+						price = price,
+						sold = false,
+						owner = false,
+						location = {
+							front = pos,
+						},
+						upgrades = {
+							interior = interior,
+						}
+					}
 	
-				Database.Game:insertOne({
-					collection = "properties",
-					document = doc,
-				}, function(success, result, insertedIds)
-					if success then
-						doc.id = insertedIds[1]
-						doc.interior = interior
-						doc.locked = true
-
-						for k, v in pairs(doc.location) do
-							for k2, v2 in pairs(v) do
-								doc.location[k][k2] = doc.location[k][k2] + 0.0
+					Database.Game:insertOne({
+						collection = "properties",
+						document = doc,
+					}, function(success, result, insertedIds)
+						if success then
+							doc.id = insertedIds[1]
+							doc.interior = interior
+							doc.locked = true
+	
+							for k, v in pairs(doc.location) do
+								for k2, v2 in pairs(v) do
+									doc.location[k][k2] = doc.location[k][k2] + 0.0
+								end
 							end
-						end
-
-						table.insert(_props, doc.id)
-						GlobalState["Properties"] = _props
-						GlobalState[string.format("Property:%s", doc.id)] = doc
 	
-						while GlobalState[string.format("Property:%s", doc.id)] == nil do
-							Wait(5)
+							_properties[doc.id] = doc
+	
+							Chat.Send.Server:Single(source, "Property Added, Property ID: " .. doc.id)
+	
+							TriggerClientEvent("Properties:Client:Update", -1, doc.id, doc)
 						end
 	
-						Chat.Send.Server:Single(source, "Property Added, Property ID: " .. doc.id)
-						TriggerClientEvent("Properties:Client:Add", -1, doc.id)
-					end
-	
-					p:resolve(success)
-				end)
-				return Citizen.Await(p)
+						p:resolve(success)
+					end)
+					return Citizen.Await(p)
+				else
+					Chat.Send.Server:Single(source, "Invalid Interior Combination")
+					return false
+				end
 			else
 				Chat.Send.Server:Single(source, "Invalid Property Type")
 				return false
 			end
 		end,
 		AddFrontdoor = function(self, id, pos)
-			if not GlobalState[string.format("Property:%s", id)] or not pos then
+			if not _properties[id] or not pos then
 				return false
 			end
 
@@ -196,11 +132,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.location then
-						p.location.front = pos
+					if _properties[id] and _properties[id].location then
+						_properties[id].location.front = pos
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -208,7 +144,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		AddBackdoor = function(self, id, pos)
-			if not GlobalState[string.format("Property:%s", id)] or not pos then
+			if not _properties[id] or not pos then
 				return false
 			end
 
@@ -225,11 +161,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.location then
-						p.location.backdoor = pos
+					if _properties[id] and _properties[id].location then
+						_properties[id].location.backdoor = pos
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -237,7 +173,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		AddGarage = function(self, id, pos)
-			if not GlobalState[string.format("Property:%s", id)] or pos == nil then
+			if not _properties[id] or pos == nil then
 				return false
 			end
 
@@ -254,40 +190,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.location then
-						p.location.garage = pos
-					end
-					GlobalState[string.format("Property:%s", id)] = p
-				end
+					if _properties[id] and _properties[id].location then
+						_properties[id].location.garage = pos
 
-				p:resolve(success)
-			end)
-			return Citizen.Await(p)
-		end,
-		SetInterior = function(self, id, interior)
-			if not GlobalState[string.format("Property:%s", id)] or not interior then
-				return false
-			end
-
-			local p = promise.new()
-			Database.Game:updateOne({
-				collection = "properties",
-				query = {
-					_id = id,
-				},
-				update = {
-					["$set"] = {
-						interior = interior,
-					},
-				},
-			}, function(success, results)
-				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.interior then
-						p.interior = interior
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -295,7 +202,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		SetLabel = function(self, id, label)
-			if not GlobalState[string.format("Property:%s", id)] or not label then
+			if not _properties[id] or not label then
 				return false
 			end
 
@@ -312,11 +219,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.label then
-						p.label = label
+					if _properties[id] and _properties[id].label then
+						_properties[id].label = label
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -324,7 +231,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		SetPrice = function(self, id, price)
-			if not GlobalState[string.format("Property:%s", id)] or not price then
+			if not _properties[id] or not price then
 				return false
 			end
 
@@ -341,11 +248,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p and p.price then
-						p.price = price
+					if _properties[id] and _properties[id].price then
+						_properties[id].price = price
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -353,7 +260,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		SetData = function(self, id, key, value)
-			if not key or not GlobalState[string.format("Property:%s", id)] then
+			if not key or not _properties[id] then
 				return false
 			end
 
@@ -370,12 +277,12 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p then
-						if not p.data then p.data = {} end
-						p.data[key] = value
+					if _properties[id] then
+						if not _properties[id].data then _properties[id].data = {} end
+						_properties[id].data[key] = value
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -391,27 +298,127 @@ PROPERTIES = {
 				},
 			}, function(success, result)
 				if success then
-					for k, v in ipairs(_props) do
-						if v == id then
-							table.remove(_props, k)
-						end
-					end
+					_properties[id] = nil
 
-					GlobalState["Properties"] = _props
-					GlobalState[string.format("Property:%s", id)] = nil
+					TriggerClientEvent("Properties:Client:Update", -1, id, nil)
 				end
 				p:resolve(success)
 			end)
 			return Citizen.Await(p)
 		end,
 	},
+	Upgrades = {
+		Set = function(self, id, upgrade, level)
+			local property = _properties[id]
+			if property then
+				local upgradeData = PropertyUpgrades[property.type][upgrade]
+				if upgradeData and upgrade ~= "interior" then
+
+					if level < 1 then
+						level = 1
+					end
+
+					if level > #upgradeData.levels then
+						level = #upgradeData.levels
+					end
+
+					local p = promise.new()
+					Database.Game:updateOne({
+						collection = "properties",
+						query = {
+							_id = id,
+						},
+						update = {
+							["$set"] = {
+								[string.format('upgrades.%s', upgrade)] = level,
+							},
+						},
+					}, function(success, results)
+						if success then
+							if _properties[id] then
+								if not _properties[id].upgrades then _properties[id].upgrades = {} end
+								_properties[id].upgrades[upgrade] = level
+
+								TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
+							end
+						end
+
+						p:resolve(success)
+					end)
+					return Citizen.Await(p)
+				end
+			end
+
+			return false
+		end,
+		Get = function(self, id, upgrade)
+			local property = _properties[id]
+			if property and property.upgrades and property.upgrades[upgrade] then
+				return property.upgrades[upgrade]
+			end
+			return 1
+		end,
+		Increase = function(self, id, upgrade)
+			local property = _properties[id]
+			if property then
+				local currentLevel = Properties.Upgrades:Get(id, upgrade)
+				local success = Properties.Upgrades:Set(id, upgrade, currentLevel + 1)
+
+				return success
+			end
+			return false
+		end,
+		Decrease = function(self, id, upgrade)
+			local property = _properties[id]
+			if property then
+				local currentLevel = Properties.Upgrades:Get(id, upgrade)
+				local success = Properties.Upgrades:Set(id, upgrade, currentLevel - 1)
+
+				return success
+			end
+			return false
+		end,
+		SetInterior = function(self, id, interior)
+			local property = _properties[id]
+			if property then
+				local intData = PropertyInteriors[interior]
+
+				if intData and intData.type == property.type then
+					local p = promise.new()
+					Database.Game:updateOne({
+						collection = "properties",
+						query = {
+							_id = id,
+						},
+						update = {
+							["$set"] = {
+								["upgrades.interior"] = interior,
+							},
+						},
+					}, function(success, results)
+						if success then
+							if _properties[id] then
+								if not _properties[id].upgrades then _properties[id].upgrades = {} end
+								_properties[id].upgrades["interior"] = interior
+
+								TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
+							end
+						end
+
+						p:resolve(success)
+					end)
+					return Citizen.Await(p)
+				end
+			end
+		end,
+	},
 	Commerce = {
-		Sell = function(self, propertyId)
+		Sell = function(self, id)
 			local p = promise.new()
 			Database.Game:updateOne({
 				collection = "properties",
 				query = {
-					_id = propertyId,
+					_id = id,
 				},
 				update = {
 					["$set"] = {
@@ -423,16 +430,15 @@ PROPERTIES = {
 					},
 				},
 			}, function(success, results)
-				if success then
-					local p = GlobalState[string.format("Property:%s", propertyId)]
-					p.sold = false
+				if success and _properties[id] then
+					_properties[id].sold = false
 
-					if p.keys then
-						for k, v in pairs(p.keys) do
+					if _properties[id].keys then
+						for k, v in pairs(_properties[id].keys) do
 							local t = GlobalState[string.format("Char:Properties:%s", v.Char)]
 							if t ~= nil then
 								for k2, v2 in ipairs(t) do
-									if v2 == propertyId then
+									if v2 == id then
 										table.remove(t, k2)
 										GlobalState[string.format("Char:Properties:%s", v.Char)] = t
 										break
@@ -442,20 +448,19 @@ PROPERTIES = {
 						end
 					end
 
-					p.keys = nil
-
-					GlobalState[string.format("Property:%s", propertyId)] = p
+					_properties[id].keys = nil
+					TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 				end
 				p:resolve(success)
 			end)
 			return Citizen.Await(p)
 		end,
-		Buy = function(self, propertyId, owner, payment)
+		Buy = function(self, id, owner, payment)
 			local p = promise.new()
 			Database.Game:updateOne({
 				collection = "properties",
 				query = {
-					_id = propertyId,
+					_id = id,
 				},
 				update = {
 					["$set"] = {
@@ -469,15 +474,15 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", propertyId)]
-					p.sold = true
-					p.keys = {
+					_properties[id].sold = true
+					_properties[id].keys = {
 						[owner.Char] = owner,
 					}
-					p.soldAt = os.time()
+					_properties[id].soldAt = os.time()
 
-					GlobalState[string.format("Property:%s", propertyId)] = p
 					table.insert(GlobalState[string.format("Char:Properties:%s", owner.Char)], propertyId)
+
+					TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 				end
 				p:resolve(success)
 			end)
@@ -485,7 +490,7 @@ PROPERTIES = {
 			return Citizen.Await(p)
 		end,
 		Foreclose = function(self, id, state)
-			if not GlobalState[string.format("Property:%s", id)] and state ~= nil then
+			if not _properties[propertyId] and state ~= nil then
 				return false
 			end
 
@@ -503,11 +508,11 @@ PROPERTIES = {
 				},
 			}, function(success, results)
 				if success then
-					local p = GlobalState[string.format("Property:%s", id)]
-					if p then
-						p.foreclosed = state
+					if _properties[id] then
+						_properties[id].foreclosed = state
+
+						TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
 					end
-					GlobalState[string.format("Property:%s", id)] = p
 				end
 
 				p:resolve(success)
@@ -517,83 +522,32 @@ PROPERTIES = {
 	},
 	Utils = {
 		IsNearProperty = function(self, source)
-			local mypos = GetEntityCoords(GetPlayerPed(source))
-
-			if GlobalState["Properties"] == nil then
-				return false
-			else
-				local closest = nil
-				for k, v in ipairs(GlobalState["Properties"]) do
-					local prop = GlobalState[string.format("Property:%s", v)]
-					local dist = #(
-							vector3(mypos.x, mypos.y, mypos.z)
-							- vector3(prop.location.front.x, prop.location.front.y, prop.location.front.z)
-						)
-					if dist < 3.0 and (not closest or dist < closest.dist) then
-						closest = {
-							dist = dist,
-							propertyId = prop.id,
-						}
-					end
+			local myPos = GetEntityCoords(GetPlayerPed(source))
+			local closest = nil
+			for k, v in pairs(_properties) do
+				local dist = #(myPos - vector3(v.location.front.x, v.location.front.y, v.location.front.z))
+				if dist < 3.0 and (not closest or dist < closest.dist) then
+					closest = {
+						dist = dist,
+						propertyId = v.id,
+					}
 				end
-				return closest
 			end
-		end,
-		GetConfig = function(self, interior)
-			if interior then
-				return PropertyConfig[interior]
-			else
-				return PropertyConfig
-			end
-		end,
-		GetRandomHouseUpToTier = function(self, tier)
-			local r = nil
-			while r == nil do
-				local rand = _props[math.random(#_props)]
-				local prop = GlobalState[string.format("Property:%s", rand)]
-
-				if prop.type == 'house' and tier >= prop.interior then
-					r = rand
-				end
-
-				Wait(1)
-			end
-			return r
-		end,
-		GetRandomHouseWithinTiers = function(self, low, high)
-			local r = nil
-			while r == nil do
-				local rand = _props[math.random(#_props)]
-				local prop = GlobalState[string.format("Property:%s", rand)]
-				local giveUp = 0
-
-				if prop.type == 'house' and (high >= prop.interior) and (prop.interior >= low) then
-					if not prop.sold or giveUp >= 5 then
-						r = rand
-					else
-						giveUp += 1
-					end
-				end
-
-				Wait(1)
-			end
-			return r
+			return closest
 		end,
 		SetLock = function(self, id, locked)
-			local property = GlobalState[string.format("Property:%s", id)]
-			if property ~= nil then
-				property.locked = locked
-				GlobalState[string.format("Property:%s", id)] = property
+			if _properties[id] then
+				_properties[id].locked = locked
+				TriggerClientEvent("Properties:Client:SetLocks", -1, id, _properties[id].locked)
 				return true
 			else
 				return false
 			end
 		end,
 		ToggleLock = function(self, id)
-			local property = GlobalState[string.format("Property:%s", id)]
-			if property ~= nil then
-				property.locked = not property.locked
-				GlobalState[string.format("Property:%s", id)] = property
+			if _properties[id] then
+				_properties[id].locked = not _properties[id].locked
+				TriggerClientEvent("Properties:Client:SetLocks", -1, id, _properties[id].locked)
 				return true
 			else
 				return false
@@ -601,7 +555,7 @@ PROPERTIES = {
 		end,
 	},
 	Keys = {
-		Give = function(self, char, id, isOwner)
+		Give = function(self, charData, id, isOwner, permissions, updating)
 			local p = promise.new()
 
 			Database.Game:findOneAndUpdate({
@@ -611,12 +565,13 @@ PROPERTIES = {
 				},
 				update = {
 					["$set"] = {
-						[string.format("keys.%s", char:GetData("ID"))] = {
-							Char = char:GetData("ID"),
-							First = char:GetData("First"),
-							Last = char:GetData("Last"),
-							SID = char:GetData("SID"),
+						[string.format("keys.%s", charData.ID)] = {
+							Char = charData.ID,
+							First = charData.First,
+							Last = charData.Last,
+							SID = charData.SID,
 							Owner = isOwner,
+							Permissions = permissions,
 						},
 					},
 				},
@@ -625,19 +580,28 @@ PROPERTIES = {
 				},
 			}, function(success, result)
 				if success then
-					GlobalState[string.format("Property:%s", id)] = doPropertyThings(result)
-					if GlobalState[string.format("Char:Properties:%s", char:GetData("ID"))] ~= nil then
-						table.insert(GlobalState[string.format("Char:Properties:%s", char:GetData("ID"))], id)
-					else
-						GlobalState[string.format("Char:Properties:%s", char:GetData("ID"))] = {
-							id,
-						}
+					_properties[id] = doPropertyThings(result)
+
+					TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
+
+					if not updating then
+						if GlobalState[string.format("Char:Properties:%s", charData.ID)] ~= nil then
+							local t = GlobalState[string.format("Char:Properties:%s", charData.ID)]
+							table.insert(t, id)
+							GlobalState[string.format("Char:Properties:%s", charData.ID)] = t
+						else
+							GlobalState[string.format("Char:Properties:%s", charData.ID)] = {
+								id,
+							}
+						end
 					end
 				end
 				p:resolve(success)
-			end)
 
-			TriggerClientEvent("Properties:Client:AddBlips", char:GetData('Source'))
+				if charData.Source then
+					TriggerClientEvent("Properties:Client:AddBlips", charData.Source)
+				end
+			end)
 
 			return Citizen.Await(p)
 		end,
@@ -659,33 +623,35 @@ PROPERTIES = {
 				},
 			}, function(success, result)
 				if success then
-					GlobalState[string.format("Property:%s", id)] = doPropertyThings(result)
-					if GlobalState[string.format("Char:Properties:%s", target)] ~= nil then
-						for k, v in ipairs(GlobalState[string.format("Char:Properties:%s", target)]) do
+					_properties[id] = doPropertyThings(result)
+
+					TriggerClientEvent("Properties:Client:Update", -1, id, _properties[id])
+
+					local t = GlobalState[string.format("Char:Properties:%s", target)]
+					if t ~= nil then
+						for k, v in ipairs(t) do
 							if v == id then
-								table.remove(GlobalState[string.format("Char:Properties:%s", target)], k)
+								table.remove(t, k)
 								break
 							end
 						end
+
+						GlobalState[string.format("Char:Properties:%s", target)] = t
 					end
 				end
 				p:resolve(success)
 			end)
 			return Citizen.Await(p)
 		end,
-		Has = function(self, propId, charId)
-			local property = GlobalState[string.format("Property:%s", propId)]
-
-			if property and property.keys ~= nil then
-				return property.keys[charId]
+		Has = function(self, id, charId)
+			if _properties[id] and _properties[id].keys ~= nil then
+				return _properties[id].keys[charId]
 			end
 			return false
 		end,
-		HasBySID = function(self, propId, stateId)
-			local property = GlobalState[string.format("Property:%s", propId)]
-
-			if property and property.keys ~= nil then
-				for k, v in pairs(property.keys) do
+		HasBySID = function(self, id, stateId)
+			if _properties[id] and _properties[id].keys ~= nil then
+				for k, v in pairs(_properties[id].keys) do
 					if v.SID == stateId then
 						return true
 					end
@@ -699,7 +665,7 @@ PROPERTIES = {
 				local propertyKeys = GlobalState[string.format("Char:Properties:%s", char:GetData("ID"))]
 
 				for _, propertyId in ipairs(propertyKeys) do
-					local property = GlobalState[string.format("Property:%s", propertyId)]
+					local property = _properties[propertyId]
 					if property and property.data and ((value == nil and property.data[key]) or property.data[key] == value) then
 						return property.id
 					end
@@ -709,8 +675,28 @@ PROPERTIES = {
 		end,
 	},
 	Get = function(self, propertyId)
-		return GlobalState[string.format("Property:%s", propertyId)]
+		return _properties[propertyId]
 	end,
+	ForceEveryoneLeave = function(self, propertyId)
+		local property = _properties[propertyId]
+		if property then
+			if _insideProperties[property.id] then
+				for k, v in pairs(_insideProperties[property.id]) do
+					TriggerClientEvent("Properties:Client:ForceExitProperty", k, property.id)
+				end
+			end
+		end
+	end,
+	GetMaxParkingSpaces = function(self, propertyId)
+		local property = _properties[propertyId]
+		if property then
+			local garageLevel = property?.upgrades?.garage or 1
+
+			if garageLevel and garageLevel >= 1 and PropertyGarage[property.type] and PropertyGarage[property.type][garageLevel] then
+				return PropertyGarage[property.type][garageLevel].parking
+			end
+		end
+	end
 }
 
 AddEventHandler("Proxy:Shared:RegisterReady", function()
