@@ -585,7 +585,7 @@ export default ({ game }) => {
                     <div className={classes.countdown}>
                         <small>Attempting Security Bypass</small>
                         <span>
-                            <FontAwesomeIcon icon={['fas', 'loader']} spin />
+                            <FontAwesomeIcon icon={['fas', 'spinner']} spin />
                         </span>
                     </div>
                 ) : process == 1 ? (
@@ -594,7 +594,7 @@ export default ({ game }) => {
                         <span>
                             <FontAwesomeIcon
                                 style={{ color: 'red' }}
-                                icon={['fas', 'hexagon-exclamation']}
+                                icon={['fas', 'circle-exclamation']}
                             />
                         </span>
                     </div>
@@ -633,7 +633,7 @@ export default ({ game }) => {
                                 <span>
                                     <FontAwesomeIcon
                                         color="red"
-                                        icon={['fas', 'circle-x']}
+                                        icon={['fas', 'circle-xmark']}
                                     />
                                 </span>
                             </div>
