@@ -373,7 +373,7 @@ export default ({ game }) => {
                     <div className={classes.countdown}>
                         <small>Manual Input Required</small>
                         <span>
-                            <FontAwesomeIcon icon={['fas', 'grid-4']} />
+                            <FontAwesomeIcon icon={['fas', 'table-cells']} />
                         </span>
                     </div>
                 ) : count >= 0 ? (
