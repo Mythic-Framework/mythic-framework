@@ -15,11 +15,9 @@
 - Yarn - Maintainer & Community Owner
 - Tyh - Maintainer & Community Owner
 - Nex - Maintainer
-- TheCasual420Gamer - Maintainer
 
 ## Credits
 - Alzar & Dr Nick - Original Maintainers and Creators
-- Greve - Creator of the txAdminRecipe for mythic framework
 
 
 
