@@ -9,7 +9,6 @@ import usePermissions from './usePermissions';
 import useJobPermissions from './useJobPermissions';
 import useMyStates from './useMyStates';
 import useMyJob from './useMyJob';
-import useCompanyUpgrades from './useCompanyUpgrades';
 import useReputation from './useReputation';
 
 export {
@@ -24,6 +23,5 @@ export {
 	useJobPermissions,
 	useMyStates,
 	useMyJob,
-	useCompanyUpgrades,
 	useReputation,
 };

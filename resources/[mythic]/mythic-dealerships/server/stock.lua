@@ -54,7 +54,7 @@ DEALERSHIPS.Stock = {
             return false
         end
     end,
-    Add = function(self, dealerId, vehModel, quantity, vehData)
+    Add = function(self, dealerId, vehModel, modelType, quantity, vehData)
         vehData = ValidateVehicleData(vehData)
         if _dealerships[dealerId] and vehModel and vehData and quantity > 0 then
             local isStocked = Dealerships.Stock:FetchDealerVehicle(dealerId, vehModel)
@@ -91,6 +91,7 @@ DEALERSHIPS.Stock = {
                     document = {
                         dealership = dealerId,
                         vehicle = vehModel,
+                        modelType = modelType,
                         data = vehData,
                         quantity = quantity,
                         lastStocked = os.time(),
@@ -142,6 +143,34 @@ DEALERSHIPS.Stock = {
             end
         end
         return false
+    end,
+    Update = function(self, dealerId, vehModel, setting)
+        if _dealerships[dealerId] and vehModel and type(setting) == "table" then
+            local isStocked = Dealerships.Stock:FetchDealerVehicle(dealerId, vehModel)
+            if isStocked then -- The vehicle is already stocked
+                local p = promise.new()
+                Database.Game:updateOne({
+                    collection = 'dealer_stock',
+                    query = {
+                        dealership = dealerId,
+                        vehicle = vehModel,
+                    },
+                    update = {
+                        ['$set'] = setting
+                    }
+                }, function(success, result)
+                    if success and result > 0 then
+                        p:resolve({ success = true })
+                    else
+                        p:resolve(false)
+                    end
+                end)
+                return Citizen.Await(p)
+            else
+                return false
+            end
+        end
+        return false 
     end,
     Ensure = function(self, dealerId, vehModel, quantity, vehData)
         if _dealerships[dealerId] and vehModel then
@@ -196,7 +225,7 @@ local requiredAttributes = {
     make = 'string',
     model = 'string',
     class = 'string',
-    --category = 'string',
+    category = 'string',
     price = 'number'
 }
 

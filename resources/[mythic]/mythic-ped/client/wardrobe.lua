@@ -8,6 +8,7 @@ function RetrieveWardrobeComponents()
 	Confirm = exports["mythic-base"]:FetchComponent("Confirm")
 	Sounds = exports["mythic-base"]:FetchComponent("Sounds")
 	Wardrobe = exports["mythic-base"]:FetchComponent("Wardrobe")
+	Admin = exports['mythic-base']:FetchComponent('Admin')
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -20,6 +21,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Confirm",
 		"Sounds",
 		"Wardrobe",
+		"Admin",
 	}, function(error)
 		if #error > 0 then
 			return
@@ -98,6 +100,52 @@ AddEventHandler("Wardrobe:Client:Equip", function(data)
 	end)
 end)
 
+AddEventHandler("Wardrobe:Client:shareOutfit", function(data)
+	Callbacks:ServerCallback("Wardrobe:getOutfitById", data.index, function(outfit)
+
+		if not outfit then
+			Notification:Error('Outfit cannot be shared.')
+			return
+		end
+
+		Callbacks:ServerCallback('Wardrobe:ExportClothing', outfit, function(exported, errorMsg)
+			if not exported then
+				Notification:Error(errorMsg or 'Something bad happened, please try again.')
+				return
+			end
+
+			Notification:Success('Exported clothing outfit, the code was copied to the clipboard.')
+
+			Admin:CopyClipboard(tostring(exported))
+		end)
+	end)
+end)
+
+AddEventHandler("Wardrobe:Client:ApplySharedOutfit", function(Label, Code)
+	Callbacks:ServerCallback("Wardrobe:GetExportClothingByCode", Code, function(outfit)
+
+		if not outfit then
+			Notification:Error('Code does not exist')
+			return
+		end
+		
+		local data = {
+			label = Label,
+			outfitdata = outfit,
+		}
+
+		Callbacks:ServerCallback("Wardrobe:SaveFromExportedOutfit", data, function(done)
+			if not done then
+				Notification:Error('Fail to add outfit to wardrobe , try again.')
+				return
+			end
+		end)
+
+		Notification:Success('Outfit Added to wardrobe.')
+	end)
+end)
+
+
 RegisterNetEvent("Wardrobe:Client:ShowBitch", function(eventRoutine)
 	Wardrobe:Show()
 end)
@@ -113,12 +161,16 @@ WARDROBE = {
 						description = string.format("Outfit #%s", k),
 						actions = {
 							{
-								icon = "floppy-disk",
+								icon = "rotate",
 								event = "Wardrobe:Client:SaveExisting",
 							},
 							{
 								icon = "shirt",
 								event = "Wardrobe:Client:Equip",
+							},
+							{
+								icon = "upload",
+								event = "Wardrobe:Client:shareOutfit",
 							},
 							{
 								icon = "x",

@@ -1,49 +1,65 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { LinearProgress, Popover } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-
 import { getItemLabel } from '../Inventory/item';
+import { Sanitize } from '../../util/Parser';
 
-export default ({ item, count }) => {
-	const items = useSelector((state) => state.inventory.items);
+export default ({ item, count, rarity = false }) => {
 	const useStyles = makeStyles((theme) => ({
 		body: {
-			minWidth: 250,
+			minWidth: 150,
 		},
 		itemName: {
-			fontSize: 24,
-			color: theme.palette.text.main,
-		},
-		itemType: {
-			fontSize: 16,
-			color: Boolean(theme.palette.rarities[`rare${item.rarity}`])
+			fontSize: 18,
+			color: theme.palette.rarities[`rare${item.rarity}`]
 				? theme.palette.rarities[`rare${item.rarity}`]
 				: theme.palette.text.main,
 		},
-		usable: {
-			fontSize: 16,
-			color: theme.palette.success.light,
+		rarity: {
+			fontSize: 14,
+			color: theme.palette.rarities[`rare${item.rarity}`]
+				? theme.palette.rarities[`rare${item.rarity}`]
+				: theme.palette.text.main,
+		},
+		count: {
+			fontSize: 14,
+			color: theme.palette.text.main,
 			'&::before': {
-				color: theme.palette.text.main,
-				content: '" - "',
+				content: '"x"',
+				marginLeft: 2,
 			},
 		},
-		tooltipDetails: {
-			marginTop: 4,
-			paddingTop: 4,
-			borderTop: `1px solid ${theme.palette.border.input}`,
-		},
-		tooltipValue: {
+		itemType: {
 			fontSize: 14,
 			color: theme.palette.text.alt,
 		},
-		stackable: {
-			fontSize: 10,
-			marginLeft: 2,
+		usable: {
+			fontSize: 14,
+			color: theme.palette.success.main,
+		},
+		stackData: {
+			fontSize: 12,
+		},
+		itemWeight: {
+			fontSize: 14,
+			color: theme.palette.text.alt,
+			'&::after': {
+				content: `"${(item?.weight || 0) > 1 ? 'lbs' : 'lb'}"`,
+				marginLeft: 5,
+			},
+		},
+		itemPrice: {
+			fontSize: 14,
+			color: theme.palette.success.main,
+			'&::before': {
+				content: '"$"',
+				marginRight: 2,
+				color: theme.palette.text.main,
+			},
 		},
 		description: {
 			paddingLeft: 20,
-			fontSize: 16,
+			fontSize: 14,
 			color: theme.palette.text.alt,
 		},
 	}));
@@ -83,8 +99,10 @@ export default ({ item, count }) => {
 				return 'Weapon Attachment';
 			case 17:
 				return 'Crafting Schematic';
+			case 18:
+				return 'Equipment';
 			default:
-				return 'Unknown';
+				return 'Unknown Item';
 		}
 	};
 
@@ -108,70 +126,31 @@ export default ({ item, count }) => {
 	if (!Boolean(item)) return null;
 	return (
 		<div className={classes.body}>
-			<div className={classes.itemName}>{getItemLabel(null, item)}</div>
-			<div className={classes.itemType}>
-				{`${getRarityLabel()} ${getTypeLabel()}`}
-				{item.isUsable && (
-					<span className={classes.usable}>Usable</span>
-				)}
+			<div className={classes.itemName}>
+				{getItemLabel(null, item)}
+				<span className={classes.count}>{count}</span>
 			</div>
-
-			{Boolean(item.description) && (
-				<div className={classes.description}>{item.description}</div>
-			)}
-
-			{Boolean(item?.component) && (
-				<div className={classes.attachFitment}>
-					<span className={classes.metafield}>
-						<b>Attachment Fits On</b>:{' '}
-						<ul className={classes.attchList}>
-							{Object.keys(item.component.strings).length <=
-							10 ? (
-								Object.keys(item.component.strings).map(
-									(weapon) => {
-										let wepItem = items[weapon];
-										if (!Boolean(wepItem)) return null;
-										return <li>{wepItem.label}</li>;
-									},
-								)
-							) : (
-								<span>Fits On Most Weapons</span>
-							)}
-						</ul>
-					</span>
+			{rarity && <div className={classes.rarity}>{getRarityLabel()}</div>}
+			<div className={classes.itemType}>{getTypeLabel()}</div>
+			{item.isUsable && <div className={classes.usable}>Usable</div>}
+			{Boolean(item.isStackable) && (
+				<div className={classes.stackData}>
+					Stackable ({item.isStackable})
 				</div>
 			)}
-			{Boolean(item.schematic) &&
-				Boolean(items[item.schematic.result.name]) && (
-					<div className={classes.attachFitment}>
-						<span className={classes.metafield}>
-							<b>Teaches</b>:
-							{` Crafting x${item.schematic.result.count} ${
-								items[item.schematic.result.name].label
-							}`}
-						</span>
-					</div>
-				)}
-			<div className={classes.tooltipDetails}>
-				Weight:{' '}
-				<span className={classes.tooltipValue}>
-					{item?.weight || 0} lbs
-					{count > 1 && (
-						<span className={classes.stackable}>
-							(Total: {(item?.weight || 0) * count} lbs)
-						</span>
-					)}
-				</span>
-				{' | '}Count:{' '}
-				<span className={classes.tooltipValue}>
-					{count}
-					{Boolean(item.isStackable) && item.isStackable > 0 && (
-						<span className={classes.stackable}>
-							(Max Stack: {item.isStackable})
-						</span>
-					)}
-				</span>
-			</div>
+			{(item?.weight || 0) > 0 && (
+				<div className={classes.itemWeight}>
+					{item.weight.toFixed(2)}
+				</div>
+			)}
+			{Boolean(item.description) && (
+				<div
+					className={classes.description}
+					dangerouslySetInnerHTML={{
+						__html: Sanitize(item.description),
+					}}
+				></div>
+			)}
 		</div>
 	);
 };

@@ -5,7 +5,6 @@ import DA from './DA';
 import Medical from './Medical';
 import Attorney from './Attorney';
 import PublicDefenders from './PublicDefenders';
-import Business from './Business';
 
 export {
 	Public,
@@ -15,5 +14,4 @@ export {
 	Medical,
 	Attorney,
 	PublicDefenders,
-	Business,
 };

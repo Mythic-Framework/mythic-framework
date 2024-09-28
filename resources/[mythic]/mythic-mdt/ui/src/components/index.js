@@ -7,13 +7,10 @@ import Error from './Error';
 import Modal from './Modal';
 import ChargeCalculator from './ChargeCalculator';
 import OfficerSearch from './OfficerSearch';
-import BusinessSearch from './BusinessSearch';
 import PersonSearch from './PersonSearch';
 import AdminRoute from './AdminRoute';
 import UserContent from './UserContent';
 import NoticeBoard from './NoticeBoard';
-
-import BusinessNotices from './BusinessNotices';
 
 import { ErrorBoundary } from './ErrorBoundary';
 
@@ -26,11 +23,9 @@ export {
 	Modal,
 	ChargeCalculator,
 	OfficerSearch,
-	BusinessSearch,
 	PersonSearch,
 	AdminRoute,
 	UserContent,
 	NoticeBoard,
 	ErrorBoundary,
-	BusinessNotices,
 }

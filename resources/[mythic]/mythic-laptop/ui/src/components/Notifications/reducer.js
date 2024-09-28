@@ -9,8 +9,8 @@ export const initialState = {
 		// 		'This is a test description. This is a test description. This is a test description. This is a test description. This is a test description. This is a test description.',
 		// 	time: Date.now(),
 		// 	show: true,
-		// 	duration: -1,
-		// 	app: 'messages',
+		// 	duration: 10000,
+		// 	app: 'teams',
 		// 	action: {
 		// 		accept: 'EventName',
 		// 		cancel: 'EventName',

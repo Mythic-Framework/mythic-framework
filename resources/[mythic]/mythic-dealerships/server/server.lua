@@ -52,12 +52,12 @@ AddEventHandler('Core:Shared:Ready', function()
         LoadDealershipShit()
 
         Chat:RegisterAdminCommand("setstock", function(source, args, rawCommand)
-            local dealership, vehicle, amount, price, class, make, model, category = table.unpack(args)
+            local dealership, vehicle, modelType, amount, price, class, make, model, category = table.unpack(args)
             amount = tonumber(amount)
             price = tonumber(price)
 
             if amount and (price and price > 0) then
-                local res = Dealerships.Stock:Add(dealership, vehicle, amount, {
+                local res = Dealerships.Stock:Add(dealership, vehicle, modelType, amount, {
                     class = class,
                     price = price,
                     make = make,
@@ -82,11 +82,15 @@ AddEventHandler('Core:Shared:Ready', function()
             params = {
                 {
                     name = "Dealership ID",
-                    help = "ID of the Dealership e.g pdm or tuna",
+                    help = "ID of the Dealership e.g pdm, tuna or redline",
                 },
                 {
                     name = "Vehicle ID",
                     help = "ID of the Vehicle e.g faggio",
+                },
+                {
+                    name = "Model Type",
+                    help = "E.g automobile, bike, boat, heli, plane, submarine, trailer",
                 },
                 {
                     name = "Amount",
@@ -110,10 +114,10 @@ AddEventHandler('Core:Shared:Ready', function()
                 },
                 {
                     name = "Data - Category",
-                    help = "Category e.g. import, compact, suv, sedans, muscle, sport, sportclassic, super, motorcycles, offroad, rally, van, utility, misc",
+                    help = "Category e.g. import, drift, coupe, tuner, compact, suv, sedans, muscle, sport, sportclassic, super, motorcycles, offroad, rally, van, utility, misc",
                 },
             },
-        }, 8)
+        }, 9)
 
         Chat:RegisterAdminCommand("incstock", function(source, args, rawCommand)
             local dealership, vehicle, amount = table.unpack(args)
@@ -131,7 +135,7 @@ AddEventHandler('Core:Shared:Ready', function()
                 Chat.Send.System:Single(source, "Invalid Arguments")
             end
         end, {
-            help = "[Admin] Set Stock in a Vehicle Dealership. Use \" for multiple words",
+            help = "[Admin] Set stock for specific vehicle at Dealership. Use \" for multiple words",
             params = {
                 {
                     name = "Dealership ID",
@@ -144,6 +148,114 @@ AddEventHandler('Core:Shared:Ready', function()
                 {
                     name = "Amount",
                     help = "Quantity of Vehicle To Add",
+                },
+            },
+        }, 3)
+
+        Chat:RegisterAdminCommand("setstockprice", function(source, args, rawCommand)
+            local dealership, vehicle, price = table.unpack(args)
+            price = tonumber(price)
+
+            if price and price > 0 then
+                local res = Dealerships.Stock:Update(dealership, vehicle, {
+                    ["data.price"] = price
+                })
+
+                if res and res.success then
+                    Chat.Send.System:Single(source, "Successfully Set Price to $" .. price)
+                else
+                    Chat.Send.System:Single(source, "Not In Stock")
+                end
+            else
+                Chat.Send.System:Single(source, "Invalid Arguments")
+            end
+        end, {
+            help = "[Admin] Set price for specific vehicle at Dealership.",
+            params = {
+                {
+                    name = "Dealership ID",
+                    help = "ID of the Dealership e.g pdm or tuna",
+                },
+                {
+                    name = "Vehicle ID",
+                    help = "ID of the Vehicle e.g faggio",
+                },
+                {
+                    name = "Price",
+                    help = "The updated price",
+                },
+            },
+        }, 3)
+
+        Chat:RegisterAdminCommand("setstockname", function(source, args, rawCommand)
+            local dealership, vehicle, make, model = table.unpack(args)
+
+            if make and model then
+                local res = Dealerships.Stock:Update(dealership, vehicle, {
+                    ["data.make"] = make,
+                    ["data.model"] = model,
+                })
+
+                if res and res.success then
+                    Chat.Send.System:Single(source, "Successfully Set Name to " .. make .. " " .. model)
+                else
+                    Chat.Send.System:Single(source, "Not In Stock")
+                end
+            else
+                Chat.Send.System:Single(source, "Invalid Arguments")
+            end
+        end, {
+            help = "[Admin] Set make and model name for specific vehicle at Dealership.",
+            params = {
+                {
+                    name = "Dealership ID",
+                    help = "ID of the Dealership e.g pdm or tuna",
+                },
+                {
+                    name = "Vehicle ID",
+                    help = "ID of the Vehicle e.g faggio",
+                },
+                {
+                    name = "Make Name",
+                    help = "",
+                },
+                {
+                    name = "Model Name",
+                    help = "",
+                },
+            },
+        }, 4)
+
+        Chat:RegisterAdminCommand("setstockclass", function(source, args, rawCommand)
+            local dealership, vehicle, class = table.unpack(args)
+
+            if class then
+                local res = Dealerships.Stock:Update(dealership, vehicle, {
+                    ["data.class"] = class
+                })
+
+                if res and res.success then
+                    Chat.Send.System:Single(source, "Successfully Set Class to " .. class)
+                else
+                    Chat.Send.System:Single(source, "Not In Stock")
+                end
+            else
+                Chat.Send.System:Single(source, "Invalid Arguments")
+            end
+        end, {
+            help = "[Admin] Set class for specific vehicle at Dealership.",
+            params = {
+                {
+                    name = "Dealership ID",
+                    help = "ID of the Dealership e.g pdm or tuna",
+                },
+                {
+                    name = "Vehicle ID",
+                    help = "ID of the Vehicle e.g faggio",
+                },
+                {
+                    name = "Class",
+                    help = "The updated class",
                 },
             },
         }, 3)
@@ -211,11 +323,11 @@ function RegisterCallbacks()
 
     Callbacks:RegisterServerCallback('BikeStand:Purchase', function(source, data, cb)
         if type(data.vehicleHash) == 'number' and type(data.price) == 'number' and data.price > 100 then
-            local char = Fetch:Source(source):GetData('Character')
+            local char = Fetch:Source(source):GetData("Character")
             if char and char:GetData('SID') then
                 -- TODO: Charge Money
                 if Wallet:Modify(source, -data.price) then
-                    Vehicles.Owned:AddToCharacter(char:GetData('SID'), data.vehicleHash, 0, { make = 'Bicycle', model = data.name, class = 'Bicycle', value = data.price }, function(success, vehicleData)
+                    Vehicles.Owned:AddToCharacter(char:GetData('SID'), data.vehicleHash, 0, 'bike', { make = 'Bicycle', model = data.name, class = 'Bicycle', value = data.price }, function(success, vehicleData)
                         if success and vehicleData then
                             Vehicles.Owned:Spawn(source, vehicleData.VIN, data.spawnCoords, data.spawnHeading, function(success)
                                 Vehicles.Keys:Add(source, vehicleData.VIN)
@@ -241,15 +353,12 @@ function RegisterCallbacks()
 
         if data and data.dealerId and stateId and Jobs.Permissions:HasPermissionInJob(source, data.dealerId, 'dealership_sell') then
             local target = Fetch:SID(stateId)
-            if target then
-                target = target:GetData('Character')
-            end
 
             if target then
                 local loanData = Loans:GetAllowedLoanAmount(stateId)
                 if loanData and loanData.maxBorrowable and loanData.maxBorrowable > 0 then
                     local charVehicleLoans = Loans:GetPlayerLoans(stateId, 'vehicle')
-                    if not charVehicleLoans or #charVehicleLoans <= 1 then
+                    if not charVehicleLoans or #charVehicleLoans < loanData.limit then
                         cb({
                             SID = stateId,
                             price = loanData.maxBorrowable,
@@ -299,9 +408,9 @@ function RegisterCallbacks()
         end
     end)
 
-    Callbacks:RegisterServerCallback('Dealerships:FetchHistory', function(source, dealerId, cb)
-        if dealerId and _dealerships[dealerId] and Jobs.Permissions:HasPermissionInJob(source, dealerId, 'dealership_manage') then
-            cb(Dealerships.Records:Get(dealerId))
+    Callbacks:RegisterServerCallback('Dealerships:FetchHistory', function(source, data, cb)
+        if data.dealership and _dealerships[data.dealership] and Jobs.Permissions:HasPermissionInJob(source, data.dealership, 'dealership_manage') then
+            cb(Dealerships.Records:GetPage(data.category, data.term, data.dealership, data.page, 6))
         else
             cb(false)
         end
@@ -349,27 +458,31 @@ function RegisterCallbacks()
             if veh and DoesEntityExist(veh) then
                 local vehEnt = Entity(veh)
                 if vehEnt.state.VIN and vehEnt.state.Owned and vehEnt.state.Make then
-                    local vehModel = GetVehicleModelFromHash(data.dealerId, GetEntityModel(veh))
-                    if vehModel then
-                        local stockInfo = Dealerships.Stock:FetchDealerVehicle(data.dealerId, vehModel)
-                        local vehStrikes = MDT.Vehicles:GetStrikes(vehEnt.state.VIN) or 0
-                        local remainingLoan = Loans:HasRemainingPayments("vehicle", vehEnt.state.VIN)
-
-                        if not remainingLoan then
-                            if stockInfo and stockInfo.data and vehStrikes then
-                                local strikeLoss = (vehStrikes * 0.02)
-                                local pricePercent = 0.75 - strikeLoss
-                                local buybackPrice = math.floor(stockInfo.data.price * pricePercent)
-
-                                cb(true, stockInfo.data, vehStrikes, buybackPrice, math.floor(stockInfo.data.price * strikeLoss))
+                    if not vehEnt.state.Donator and vehEnt.state.Value and type(vehEnt.state.Value) == "number" and vehEnt.state.Value > 0 then
+                        local vehModel = GetVehicleModelFromHash(data.dealerId, GetEntityModel(veh))
+                        if vehModel then
+                            local stockInfo = Dealerships.Stock:FetchDealerVehicle(data.dealerId, vehModel)
+                            local vehStrikes = MDT.Vehicles:GetStrikes(vehEnt.state.VIN) or 0
+                            local remainingLoan = Loans:HasRemainingPayments("vehicle", vehEnt.state.VIN, 14)
+    
+                            if not remainingLoan then
+                                if stockInfo and stockInfo.data and vehStrikes then
+                                    local strikeLoss = (vehStrikes * 0.02)
+                                    local pricePercent = 0.75 - strikeLoss
+                                    local buybackPrice = math.floor(vehEnt.state.Value * pricePercent)
+    
+                                    cb(true, stockInfo.data, vehStrikes, buybackPrice, math.floor(vehEnt.state.Value * strikeLoss))
+                                else
+                                    cb(false)
+                                end
                             else
-                                cb(false)
+                                cb(false, "Vehicle Still Has Remaining Loan Payments or Has Not Been Held for Longer than 14 Days")
                             end
                         else
-                            cb(false, "Vehicle Still Has Remaining Loan Payments")
+                            cb(false, "We Don't Sell That Vehicle")
                         end
                     else
-                        cb(false, "We Don't Sell That Vehicle")
+                        cb(false, "Cannot Buy This Vehicle Back")
                     end
                 else
                     cb(false, "Vehicle Isn't Owned!")
@@ -389,37 +502,93 @@ function RegisterCallbacks()
 
             if veh and DoesEntityExist(veh) then
                 local vehEnt = Entity(veh)
-                if vehEnt.state.VIN and vehEnt.state.Owned and vehEnt.state.Make then
+                if vehEnt.state.VIN and vehEnt.state.Owned and vehEnt.state.Make and vehEnt.state.Value and type(vehEnt.state.Value) == "number" and vehEnt.state.Value > 0 then
                     local vehModel = GetVehicleModelFromHash(data.dealerId, GetEntityModel(veh))
                     if vehModel then
                         local stockInfo = Dealerships.Stock:FetchDealerVehicle(data.dealerId, vehModel)
                         local vehStrikes = MDT.Vehicles:GetStrikes(vehEnt.state.VIN) or 0
-                        local remainingLoan = Loans:HasRemainingPayments("vehicle", vehEnt.state.VIN)
+                        local remainingLoan = Loans:HasRemainingPayments("vehicle", vehEnt.state.VIN, 14)
 
                         if stockInfo and stockInfo.data and vehStrikes and not remainingLoan then
                             local vehicle = Vehicles.Owned:GetActive(vehEnt.state.VIN)
 
                             local pricePercent = 0.75 - (vehStrikes * 0.02)
-                            local buybackPrice = math.floor(stockInfo.data.price * pricePercent)
+                            local buybackPrice = math.floor(vehEnt.state.Value * pricePercent)
 
                             if vehicle and vehicle:GetData('Owner')?.Type == 0 then
                                 local owner = Fetch:SID(vehicle:GetData('Owner').Id)
                                 if owner then
-                                    owner = owner:GetData('Character')
-                                    if owner then
-                                        local ownerPed = GetPlayerPed(owner:GetData('Source'))
-                                        local myPed = GetPlayerPed(source)
+                                    local ownerPed = GetPlayerPed(owner:GetData('Source'))
+                                    local myPed = GetPlayerPed(source)
 
-                                        if #(GetEntityCoords(ownerPed) - GetEntityCoords(myPed)) <= 5.0 then
-                                            local d = Banking.Accounts:GetOrganization(data.dealerId)
-                                            local p = Banking.Accounts:GetPersonal(owner:GetData('SID'))
+                                    if #(GetEntityCoords(ownerPed) - GetEntityCoords(myPed)) <= 5.0 then
+                                        local d = Banking.Accounts:GetOrganization(data.dealerId)
+                                        local p = Banking.Accounts:GetPersonal(owner:GetData('SID'))
 
-                                            if d and d.Account and p and p.Account then
-                                                local success = Banking.Balance:Charge(d.Account, buybackPrice, {
-                                                    type = 'bill',
-                                                    transactionAccount = p.Account,
+                                        if d and d.Account and p and p.Account then
+                                            local success = Banking.Balance:Charge(d.Account, buybackPrice, {
+                                                type = 'bill',
+                                                transactionAccount = p.Account,
+                                                title = 'Vehicle Buyback',
+                                                description = string.format('Vehicle Buyback of a %s %s (%s) From %s %s (%s)', vehEnt.state.Make, vehEnt.state.Model, vehEnt.state.VIN, owner:GetData("First"), owner:GetData("Last"), owner:GetData("SID")),
+                                                data = {
+                                                    buyer = {
+                                                        ID = char:GetData('ID'),
+                                                        SID = char:GetData('SID'),
+                                                        First = char:GetData('First'),
+                                                        Last = char:GetData('Last'),
+                                                    }
+                                                }
+                                            })
+
+                                            if success then
+                                                local ownerHistory = vehicle:GetData('OwnerHistory') or {}
+                                                local oldOwner = vehicle:GetData('Owner')
+                                                table.insert(ownerHistory, {
+                                                    Type = oldOwner.Type,
+                                                    Id = oldOwner.Id,
+                                                    First = owner:GetData('First'),
+                                                    Last = owner:GetData('Last'),
+                                                    Time = os.time(),
+                                                })
+
+                                                vehicle:SetData('Owner', {
+                                                    Type = 2,
+                                                    Id = data.dealerId,
+                                                })
+
+                                                vehicle:SetData('OwnerHistory', ownerHistory)
+                                                vehicle:SetData('Storage', _dealerships[data.dealerId].storage)
+
+                                                Vehicles.Owned:ForceSave(vehEnt.state.VIN)
+                                                Vehicles.Keys:Remove(owner:GetData('Source'), VIN)
+
+                                                Dealerships.Records:CreateBuyBack(data.dealerId, {
+                                                    time = os.time(),
+                                                    vehicle = {
+                                                        VIN = vehEnt.state.VIN,
+                                                        plate = vehEnt.state.RegisteredPlate,
+                                                        data = stockInfo.data,
+                                                    },
+                                                    previousOwner = {
+                                                        ID = owner:GetData('ID'),
+                                                        SID = owner:GetData('SID'),
+                                                        First = owner:GetData('First'),
+                                                        Last = owner:GetData('Last'),
+                                                    },
+                                                    buyer = {
+                                                        ID = char:GetData('ID'),
+                                                        SID = char:GetData('SID'),
+                                                        First = char:GetData('First'),
+                                                        Last = char:GetData('Last'),
+                                                    },
+                                                })
+
+                                                Banking.Balance:Deposit(p.Account, buybackPrice, {
+                                                    type = 'transfer',
+                                                    transactionAccount = d.Account,
                                                     title = 'Vehicle Buyback',
-                                                    description = string.format('Vehicle Buyback of a %s %s (%s) From %s %s (%s)', vehEnt.state.Make, vehEnt.state.Model, vehEnt.state.VIN, owner:GetData("First"), owner:GetData("Last"), owner:GetData("SID")),
+                                                    description = string.format('%s Vehicle Buyback of a %s %s (%s)', _dealerships[data.dealerId].abbreviation, vehEnt.state.Make, vehEnt.state.Model, vehEnt.state.VIN),
                                                     data = {
                                                         buyer = {
                                                             ID = char:GetData('ID'),
@@ -427,83 +596,22 @@ function RegisterCallbacks()
                                                             First = char:GetData('First'),
                                                             Last = char:GetData('Last'),
                                                         }
-                                                    }
+                                                    },
                                                 })
 
-                                                if success then
-                                                    local ownerHistory = vehicle:GetData('OwnerHistory') or {}
-                                                    local oldOwner = vehicle:GetData('Owner')
-                                                    table.insert(ownerHistory, {
-                                                        Type = oldOwner.Type,
-                                                        Id = oldOwner.Id,
-                                                        First = owner:GetData('First'),
-                                                        Last = owner:GetData('Last'),
-                                                        Time = os.time(),
-                                                    })
+                                                Vehicles:Delete(veh, function() end)
 
-                                                    vehicle:SetData('Owner', {
-                                                        Type = 2,
-                                                        Id = data.dealerId,
-                                                    })
+                                                Dealerships.Stock:Increase(data.dealerId, vehModel, 1)
 
-                                                    vehicle:SetData('OwnerHistory', ownerHistory)
-                                                    vehicle:SetData('Storage', _dealerships[data.dealerId].storage)
-
-                                                    Vehicles.Owned:ForceSave(vehEnt.state.VIN)
-                                                    Vehicles.Keys:Remove(owner:GetData('Source'), VIN)
-
-                                                    Dealerships.Records:CreateBuyBack(data.dealerId, {
-                                                        time = os.time(),
-                                                        vehicle = {
-                                                            VIN = vehEnt.state.VIN,
-                                                            plate = vehEnt.state.RegisteredPlate,
-                                                            data = stockInfo.data,
-                                                        },
-                                                        previousOwner = {
-                                                            ID = owner:GetData('ID'),
-                                                            SID = owner:GetData('SID'),
-                                                            First = owner:GetData('First'),
-                                                            Last = owner:GetData('Last'),
-                                                        },
-                                                        buyer = {
-                                                            ID = char:GetData('ID'),
-                                                            SID = char:GetData('SID'),
-                                                            First = char:GetData('First'),
-                                                            Last = char:GetData('Last'),
-                                                        },
-                                                    })
-
-                                                    Banking.Balance:Deposit(p.Account, buybackPrice, {
-                                                        type = 'transfer',
-                                                        transactionAccount = d.Account,
-                                                        title = 'Vehicle Buyback',
-                                                        description = string.format('%s Vehicle Buyback of a %s %s (%s)', _dealerships[data.dealerId].abbreviation, vehEnt.state.Make, vehEnt.state.Model, vehEnt.state.VIN),
-                                                        data = {
-                                                            buyer = {
-                                                                ID = char:GetData('ID'),
-                                                                SID = char:GetData('SID'),
-                                                                First = char:GetData('First'),
-                                                                Last = char:GetData('Last'),
-                                                            }
-                                                        },
-                                                    })
-
-                                                    Vehicles:Delete(veh, function() end)
-
-                                                    Dealerships.Stock:Increase(data.dealerId, vehModel, 1)
-
-                                                    cb(true)
-                                                else
-                                                    cb(false, "Dealership Cannot Afford This Vehicle")
-                                                end
+                                                cb(true)
                                             else
-                                                cb(false)
+                                                cb(false, "Dealership Cannot Afford This Vehicle")
                                             end
                                         else
-                                            cb(false, "Too Far Away")
+                                            cb(false)
                                         end
                                     else
-                                        cb(false)
+                                        cb(false, "Too Far Away")
                                     end
                                 else
                                     cb(false)

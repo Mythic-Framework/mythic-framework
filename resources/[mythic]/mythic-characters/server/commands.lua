@@ -103,4 +103,51 @@ function RegisterCommands()
 			},
 		},
 	}, 3)
+
+	Chat:RegisterAdminCommand("laptopperm", function(source, args, rawCommand)
+		local player = Fetch:SID(tonumber(args[1]))
+		local app, perm = args[2], args[3]
+
+		if player ~= nil then
+			local char = player:GetData("Character")
+			if char ~= nil then
+				local laptopPermissions = char:GetData("LaptopPermissions")
+				if laptopPermissions[app] then
+					if laptopPermissions[app][perm] ~= nil then
+						if laptopPermissions[app][perm] then
+							laptopPermissions[app][perm] = false
+							Chat.Send.System:Single(source, "Disabled Permission")
+						else
+							laptopPermissions[app][perm] = true
+							Chat.Send.System:Single(source, "Enabled Permission")
+						end
+
+						char:SetData("LaptopPermissions", laptopPermissions)
+					else
+						Chat.Send.System:Single(source, "Permission Doesn't Exist")
+					end
+				else
+					Chat.Send.System:Single(source, "App Doesn't Exist")
+				end
+			end
+		else
+			Chat.Send.System:Single(source, "Invalid Target")
+		end
+	end, {
+		help = "Add Specified App Permission",
+		params = {
+			{
+				name = "Target",
+				help = "State ID",
+			},
+			{
+				name = "App ID",
+				help = "ID of the app",
+			},
+			{
+				name = "Perm ID",
+				help = "Permission",
+			},
+		},
+	}, 3)
 end

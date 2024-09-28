@@ -21,34 +21,34 @@ const MAX_PROCESS_STAGES = 3;
 
 const _icons = [
     'server',
-    'computer-classic',
+    'computer',
     'atom',
     'terminal',
-    'binary',
+    'arrow-up-9-1',
     'code',
     'code-branch',
     'code-commit',
     'diagram-project',
     'circle-nodes',
-    'merge',
+    'code-merge',
     'microchip',
-    'wrench-simple',
-    'split',
+    'wrench',
+    'arrows-split-up-and-left',
     'sitemap',
     'shield',
     'network-wired',
     'file-code',
-    'code-pull-request-closed',
+    'code-pull-request',
     'notdef',
     'cubes',
-    'brain-circuit',
+    'brain',
     'bug',
     'barcode',
     'keyboard',
     'laptop-code',
     'bluetooth',
     'satellite-dish',
-    'signal-stream',
+    'tower-cell',
     'poop',
 ];
 
@@ -367,23 +367,19 @@ export default ({ game }) => {
     };
 
     const generateGrid = () => {
-        let grid = Array();
-
-        icons.map((icon, i) => {
-            grid.push(
-                <Grid
-                    key={`icon-${i}`}
-                    className={classes.icon}
-                    item
-                    xs={3}
-                    style={{ color: icon.color.color }}
-                >
-                    <FontAwesomeIcon icon={['fas', icon.icon]} />
-                </Grid>,
-            );
-        });
-
-        return grid;
+        return icons.map((icon, i) => (
+            <Grid
+                key={`icon-${i}`}
+                className={classes.icon}
+                item
+                xs={3}
+                style={{ color: icon.color.color }}
+            >
+                <FontAwesomeIcon 
+                    icon={[icon.icon === 'bluetooth' ? 'fab' : 'fas', icon.icon]} 
+                />
+            </Grid>
+        ));
     };
 
     const hide = () => {
@@ -413,7 +409,7 @@ export default ({ game }) => {
                             <small>Attempting Security Bypass</small>
                             <span>
                                 <FontAwesomeIcon
-                                    icon={['fas', 'loader']}
+                                    icon={['fas', 'spinner']}
                                     spin
                                 />
                             </span>
@@ -424,7 +420,7 @@ export default ({ game }) => {
                             <span>
                                 <FontAwesomeIcon
                                     style={{ color: 'red' }}
-                                    icon={['fas', 'hexagon-exclamation']}
+                                    icon={['fas', 'circle-exclamation']}
                                 />
                             </span>
                         </div>
@@ -463,7 +459,7 @@ export default ({ game }) => {
                                     <span>
                                         <FontAwesomeIcon
                                             color="red"
-                                            icon={['fas', 'circle-x']}
+                                            icon={['fas', 'circle-xmark']}
                                         />
                                     </span>
                                 </div>

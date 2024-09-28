@@ -1,15 +1,8 @@
-export default (cJob, isAttorney, tabletData) => {
+export default (cJob, isAttorney) => {
 	if (isAttorney && !cJob) {
 		return {
 			primary: 'Electronic Records System',
 			secondary: 'San Andreas Department of Justice',
-		};
-	};
-
-	if (tabletData) {
-		return {
-			primary: cJob?.Name,
-			secondary: 'Business Management System',
 		};
 	};
 

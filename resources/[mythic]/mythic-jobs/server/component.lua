@@ -508,15 +508,23 @@ _JOBS = {
 		end,
 		HasJob = function(self, source, jobId, workplaceId, gradeId, gradeLevel, checkDuty, permissionKey)
 			local jobs = Jobs.Permissions:GetJobs(source)
-			if not jobs then return false end
+			if not jobs then
+				return false
+			end
 			if jobId then
 				for k, v in ipairs(jobs) do
 					if v.Id == jobId then
-						if (not workplaceId or (v.Workplace and v.Workplace.Id == workplaceId)) then
-							if (not gradeId or (v.Grade.Id == gradeId)) then
-								if (not gradeLevel or (v.Grade.Level and v.Grade.Level >= gradeLevel)) then
+						if not workplaceId or (v.Workplace and v.Workplace.Id == workplaceId) then
+							if not gradeId or (v.Grade.Id == gradeId) then
+								if not gradeLevel or (v.Grade.Level and v.Grade.Level >= gradeLevel) then
 									if not checkDuty or (checkDuty and Jobs.Duty:Get(source, jobId)) then
-										if not permissionKey or (permissionKey and Jobs.Permissions:HasPermissionInJob(source, jobId, permissionKey)) then
+										if
+											not permissionKey
+											or (
+												permissionKey
+												and Jobs.Permissions:HasPermissionInJob(source, jobId, permissionKey)
+											)
+										then
 											return v
 										end
 									end
@@ -1305,6 +1313,48 @@ _JOBS = {
 				end
 			end,
 		}
+	},
+	Data = {
+		Set = function(self, jobId, key, val)
+			if Jobs:DoesExist(jobId) and key then
+				local p = promise.new()
+				Database.Game:updateOne({
+					collection = "jobs",
+					query = {
+						Id = jobId,
+					},
+					update = {
+						["$set"] = {
+							[string.format("Data.%s", key)] = val,
+						},
+					},
+				}, function(success, res)
+					if success then
+						RefreshAllJobData(jobId)
+
+						p:resolve(true)
+					else
+						p:resolve(false)
+					end
+				end)
+
+				local res = Citizen.Await(p)
+				return {
+					success = res,
+					code = "ERROR",
+				}
+			else
+				return {
+					success = false,
+					code = "MISSING_JOB",
+				}
+			end
+		end,
+		Get = function(self, jobId, key)
+			if key and JOB_CACHE[jobId] and JOB_CACHE[jobId].Data then
+				return JOB_CACHE[jobId].Data[key]
+			end
+		end,
 	},
 }
 

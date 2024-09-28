@@ -157,16 +157,22 @@ RegisterNUICallback("Close", function(data, cb)
 	inBank = false
 end)
 
-RegisterNetEvent("Finance:Client:OpenUI", function()
-	inBank = true
-	SetNuiFocus(true, true)
-	SendNUIMessage({
-		type = "SET_APP",
-		data = {
-			brand = "fleeca",
-			app = "BANK",
-		},
-	})
+RegisterNetEvent("Finance:Client:OpenUI")
+AddEventHandler("Finance:Client:OpenUI", function(branchId)
+
+    local bankBranch = _bankBranches[branchId]
+
+    if bankBranch then
+        inBank = true
+        SetNuiFocus(true, true)
+        SendNUIMessage({
+            type = "SET_APP",
+            data = {
+                brand = bankBranch.brand or "fleeca",
+                app = "BANK",
+            },
+        })
+    end
 end)
 
 AddEventHandler("Characters:Client:Updated", function(key)

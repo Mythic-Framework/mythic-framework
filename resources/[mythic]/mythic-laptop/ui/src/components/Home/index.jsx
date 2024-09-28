@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Menu, MenuItem, Avatar, Badge } from '@mui/material';
 import { makeStyles, withStyles } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,16 +52,16 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: 10,
 		position: 'relative',
 		zIndex: 5,
-		'&:hover': {
+		'&:hover:not(.fake)': {
 			transition: 'background ease-in 0.15s',
 			background: `${theme.palette.primary.main}40`,
 			cursor: 'pointer',
 		},
 	},
 	appIcon: {
-		fontSize: 35,
-		width: 60,
-		height: 60,
+		fontSize: 30,
+		width: 50,
+		height: 50,
 		margin: 'auto',
 		color: '#fff',
 	},
@@ -94,6 +93,8 @@ export default (props) => {
 	const dispatch = useDispatch();
 	const apps = useMyApps();
 
+	const homeApps = useSelector((state) => state.data.data.player?.LaptopApps?.home);
+
 	useEffect(() => {
 		dispatch({
 			type: 'NOTIF_RESET_APP',
@@ -103,28 +104,22 @@ export default (props) => {
 	const onClick = (e, app) => {
 		e.preventDefault();
 
-		openedApp(app);
-		dispatch({
-			type: 'OPEN_APP',
-			payload: {
-				state: {
-					app,
-				},
-			},
-		});
+		if (!apps?.[app]?.fake) {
+			openedApp(app);
+		}
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.grid}>
 				{Object.keys(apps).length > 0
-					? Object.keys(apps).map((app, i) => {
+					? homeApps.map((app, i) => {
 							let data = apps[app];
 							if (data) {
 								return (
 									<div
 										key={i}
-										className={classes.appBtn}
+										className={`${classes.appBtn} ${data.fake ? 'fake' : null}`}
 										title={data.label}
 										onClick={(e) => onClick(e, app)}
 									>

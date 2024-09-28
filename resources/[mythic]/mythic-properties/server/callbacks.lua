@@ -485,7 +485,7 @@ function RegisterCallbacks()
 											Last = targetChar:GetData("Last"),
 										})
 
-										if prop.price >= 50000 then
+										if prop.price >= 250000 then
 											local creditIncrease = math.floor(prop.price / 1500)
 											if creditIncrease > 300 then
 												creditIncrease = 300
@@ -500,7 +500,7 @@ function RegisterCallbacks()
 								end)
 							end
 	
-							SetTimeout(5 * (60 * 1000), function()
+							Citizen.SetTimeout(5 * (60 * 1000), function()
 								if _selling[data.property] then
 									_selling[data.property] = nil
 								end
@@ -671,7 +671,7 @@ function SendPendingLoanEmail(charData, propertyLabel, downPaymentPercent, downP
             }
         )
 
-        SetTimeout(60000 * 5, function()
+        Citizen.SetTimeout(60000 * 5, function()
             _pendingLoanAccept[charData.SID] = nil
         end)
     else

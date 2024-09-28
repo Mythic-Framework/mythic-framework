@@ -205,9 +205,9 @@ function CreateDealerships()
                             }
                         },
                     },
-                    { 
-                        icon = 'business-time', 
-                        text = 'Go Off Duty', 
+                    {
+                        icon = 'business-time',
+                        text = 'Go Off Duty',
                         event = 'Dealerships:Client:ToggleDuty',
                         data = { dealerId = dealerId, state = false }, 
                         jobPerms = {
@@ -217,9 +217,10 @@ function CreateDealerships()
                             }
                         },
                     },
-                    { 
-                        icon = 'tablet-screen-button', 
-                        text = 'Open Tablet', 
+                    --[[
+                    {
+                        icon = 'tablet-screen-button',
+                        text = 'Open Tablet',
                         event = 'MDT:Client:Toggle',
                         data = {}, 
                         jobPerms = {
@@ -228,7 +229,7 @@ function CreateDealerships()
                                 reqDuty = true,
                             }
                         },
-                    },
+                    },]]
                 }, 3.5)
             end
         end

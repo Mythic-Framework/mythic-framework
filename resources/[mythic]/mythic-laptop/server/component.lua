@@ -7,7 +7,12 @@ LAPTOP = {
 		local jobData = {}
 		if charJobs and #charJobs > 0 then
 			for k, v in ipairs(charJobs) do
-				local perms = GlobalState[string.format('JobPerms:%s:%s:%s', v.Id, (v.Workplace and v.Workplace.Id or false), v.Grade.Id)]
+				local perms = GlobalState[string.format(
+					"JobPerms:%s:%s:%s",
+					v.Id,
+					(v.Workplace and v.Workplace.Id or false),
+					v.Grade.Id
+				)]
 				if perms then
 					charJobPerms[v.Id] = perms
 				end
@@ -53,8 +58,8 @@ LAPTOP = {
 				notifData
 			)
 		end,
-		Update = function(self, source, id, title, description)
-			TriggerClientEvent("Laptop:Client:Notifications:Update", source, id, title, description)
+		Update = function(self, source, id, title, description, skipSound)
+			TriggerClientEvent("Laptop:Client:Notifications:Update", source, id, title, description, skipSound)
 		end,
 		RemoveById = function(self, source, id)
 			TriggerClientEvent("Laptop:Client:Notifications:Remove", source, id)

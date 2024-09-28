@@ -229,7 +229,7 @@ export default connect(null, { UpdateSetting })((props) => {
 								>
 									<FontAwesomeIcon
 										className={classes.avatarIcon}
-										icon={['fas', 'bell-on']}
+										icon={['fas', 'bell']}
 									/>
 								</Avatar>
 							</Grid>
@@ -265,7 +265,7 @@ export default connect(null, { UpdateSetting })((props) => {
 								>
 									<FontAwesomeIcon
 										className={classes.avatarIcon}
-										icon={['fas', 'bell-on']}
+										icon={['fas', 'bell']}
 									/>
 								</Avatar>
 							</Grid>
@@ -359,7 +359,7 @@ export default connect(null, { UpdateSetting })((props) => {
 								>
 									<FontAwesomeIcon
 										className={classes.avatarIcon}
-										icon={['fas', 'waveform-lines']}
+										icon={['fas', 'music']}
 									/>
 								</Avatar>
 							</Grid>
@@ -394,7 +394,7 @@ export default connect(null, { UpdateSetting })((props) => {
 								>
 									<FontAwesomeIcon
 										className={classes.avatarIcon}
-										icon={['fas', 'image-polaroid']}
+										icon={['fas', 'images']}
 									/>
 								</Avatar>
 							</Grid>

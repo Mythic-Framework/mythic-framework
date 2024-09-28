@@ -5,6 +5,7 @@ _propertiesLoaded = false
 _insideProperty = false
 _insideInterior = false
 _insideFurniture = {}
+_AllHousesBlips = {}
 
 _furnitureCategory = {}
 _furnitureCategoryCurrent = 1
@@ -407,6 +408,52 @@ RegisterNetEvent("Properties:Client:SetLocks", function(id, state)
 	end
 end)
 
+local showingAllPropsBlips = false
+RegisterNetEvent("Properties:Client:ShowAllPropertyBlips", function(show)
+	if showingAllPropsBlips then
+		Notification:Info("Property Blips Hidden")
+		for k, v in ipairs(_AllHousesBlips) do
+			RemoveBlip(v)
+		end
+		_AllHousesBlips = {}
+		showingAllPropsBlips = false
+	else
+		Notification:Info("Property Blips Enabled")
+		showingAllPropsBlips = true
+		AddTextEntry("PROPERTYBLIP", "Properties Available")
+		AddTextEntry("PROPERTYBLIPS", "Properties Sold")
+
+		for k, v in pairs(_properties) do
+			local coords = v.location
+			if v.sold then
+				local HouseBlip = AddBlipForCoord(coords.front.x, coords.front.y, coords.front.z)
+				SetBlipSprite(HouseBlip, 375)
+				SetBlipColour(HouseBlip, 1)
+				SetBlipScale(HouseBlip, 0.45)
+				SetBlipAsShortRange(HouseBlip, true)
+				BeginTextCommandSetBlipName("PROPERTYBLIPS")
+				EndTextCommandSetBlipName(HouseBlip)
+				table.insert(_AllHousesBlips, HouseBlip)
+			else
+				local HouseBlip = AddBlipForCoord(coords.front.x, coords.front.y, coords.front.z)
+				SetBlipSprite(HouseBlip, 375)
+				SetBlipColour(HouseBlip, 2)
+				SetBlipScale(HouseBlip, 0.65)
+				SetBlipAsShortRange(HouseBlip, true)
+				BeginTextCommandSetBlipName("PROPERTYBLIP")
+				EndTextCommandSetBlipName(HouseBlip)
+
+				table.insert(_AllHousesBlips, HouseBlip)
+			end
+		end
+	end
+	if show then
+		
+	else
+
+	end
+end)
+
 RegisterNetEvent('Characters:Client:Logout')
 AddEventHandler('Characters:Client:Logout', function()
 	_propertiesLoaded = false
@@ -422,6 +469,14 @@ AddEventHandler('Characters:Client:Logout', function()
 	_placingFurniture = false
 	LocalPlayer.state.placingFurniture = false
 	LocalPlayer.state.furnitureEdit = false
+
+	if #_AllHousesBlips > 0 then
+		for k, v in ipairs(_AllHousesBlips) do
+			RemoveBlip(v)
+		end
+
+		_AllHousesBlips = {}
+	end
 end)
 
 PROPERTIES = {

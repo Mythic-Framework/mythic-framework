@@ -5,10 +5,16 @@
 
 ## Description
 
-- Custom written framework that was used for Mythic RP
+- Custom written framework 
+
+- Partnered With FiveForge Studios
+## https://discord.gg/qFeUfUCCbW
 
 ## Official Discord
-- [Discord Link](https://discord.gg/N2JARAe8Rp) - Offical Discord for community-driven support forum!
+- [Discord Link](https://discord.gg/N2JARAe8Rp) - Offical Discord for Mythic Framework community-driven support forum!
+
+## Get Started
+- [mythic-framework](http://repos.mythic-framework.org/Mythic-Framework/mythic-framework) - Get started with the official repository!
 
 ## Project Maintainers
 - Treyyyy - Maintainer & Community Owner
@@ -16,45 +22,23 @@
 - Tyh - Maintainer & Community Owner
 - Nex - Maintainer
 
+
 ## Credits
 - Alzar & Dr Nick - Original Maintainers and Creators
-
-
-
 
 ## Information
 
 # 🚧DISCLAIMER🚧
-We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework, which you can find by following the [original repository](https://github.com/Alzar/mythic-framework) 
-
-## DO NOT FORGET TO CHANGE THE LICENSE KEYS in `environment.cfg`
-Rename `example.environment.cfg` to `environment.cfg`
-```cfg
-# License Key
-sv_licenseKey setme
-set steam_webApiKey "setme"
-```
+We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework and allowing Treyyyy (Vegeta) and team To Maintain it. You can Alzars orignal repo here [original repository](https://github.com/Alzar/mythic-framework) 
 
 # Requirements 
 | Packages          | Link                                                                |
 | ----------------- | ------------------------------------------------------------------ |
-| PNPM | [Download Here](https://pnpm.io/installation) |
 | NodeJS | [Download Here](https://nodejs.org/en/download?text=+) |
+| PNPM | [Download Here](https://pnpm.io/installation) |
 | MongoDB | [Download Here](https://www.mongodb.com/try/download/community) (v6.0.5) |
 | MariaDB | [Download Here](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.12&os=windows&cpu=x86_64&pkg=msi&m=acorn) (v10.6.12)
 | HeidiSQL | [Download Here](https://www.heidisql.com/download.php) (*can be installed via MariaDB)
-  
-# SQL Instaliation
-Run the SQL provided in HeidiSQL, the mongo will build itself as the server starts
-
-# NOTE:
-This will not work out of the box, you will need to make modifications to the base to replace the WebAPI calls with whatever authentication source you're wanting to do. 
-
-## Using Admin
-
-In the MongoDB Compass, inside of the "auth" database under users, find yourself (or whoever you want to give admin too) and add a new dataset under the groups array called either admin, owner, or staff. If you're already in the server, soft or hard relog to retrieve the new permissions.
-
-To use the admin tool, run `/admin` or `/staff`.
 
 ## Map Dependencies
 This is a map list used by **Mythic Framework** for business, government ect.
@@ -81,4 +65,3 @@ Most of these maps are automatically started by the server (the ones that are no
 - **nutt_sagma** he shut down his tebex :|
 - **tobii-mineshaft** he shut down his patreon :|
 - **tobii-fightclub** he shut down his patreon :|
-

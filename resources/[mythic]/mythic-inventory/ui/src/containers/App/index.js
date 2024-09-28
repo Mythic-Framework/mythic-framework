@@ -33,19 +33,19 @@ export default () => {
 
 	const muiTheme = createTheme({
 		typography: {
-			fontFamily: ['Oswald'],
+			fontFamily: ['Noto Sans', 'Exo', 'sans-serif'].join(','),
 		},
 		palette: {
 			primary: {
-				main: '#8a0000',
-				light: '#ff2100',
-				dark: '#560000',
+				main: '#000000',
+				light: '#3483ebce',
+				dark: '#023373 ',
 				contrastText: '#ffffff',
 			},
 			secondary: {
 				main: '#141414',
-				light: '#1c1c1c',
-				dark: '#0f0f0f',
+				light: '#000000',
+				dark: '#000000',
 				contrastText: '#ffffff',
 			},
 			error: {
@@ -54,7 +54,7 @@ export default () => {
 				dark: '#430b0b',
 			},
 			success: {
-				main: '#52984a',
+				main: '#9CE60D',
 				light: '#60eb50',
 				dark: '#244a20',
 			},
@@ -77,14 +77,14 @@ export default () => {
 			},
 			rarities: {
 				rare1: '#ffffff',
-				rare2: '#52984a',
+				rare2: '#9CE60D',
 				rare3: '#247ba5',
 				rare4: '#8e3bb8',
 				rare5: '#f2d411',
 			},
 			border: {
 				main: '#e0e0e008',
-				light: '#ffffff',
+				light: '#1d75a8c7',
 				dark: '#26292d',
 				input: 'rgba(255, 255, 255, 0.23)',
 				divider: 'rgba(255, 255, 255, 0.12)',
@@ -92,6 +92,11 @@ export default () => {
 			mode: 'dark',
 		},
 		components: {
+			MuiButton: {
+				root: {
+                    color: 'rgba(0, 0, 0, 1.0)',
+                },
+			},
 			MuiCssBaseline: {
 				styleOverrides: {
 					'.fade-enter': {
@@ -115,7 +120,8 @@ export default () => {
 				styleOverrides: {
 					tooltip: {
 						fontSize: 16,
-						backgroundColor: '#151515',
+						background: 'rgb(18,18,28)',
+						background: 'rgb(18,18,28)',
 						border: '1px solid rgba(255, 255, 255, 0.23)',
 						boxShadow: `0 0 10px #000`,
 					},
@@ -124,7 +130,7 @@ export default () => {
 			MuiPaper: {
 				styleOverrides: {
 					root: {
-						background: '#0f0f0f',
+						background: 'rgb(18,18,28)',
 					},
 				},
 			},

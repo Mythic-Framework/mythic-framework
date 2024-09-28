@@ -13,59 +13,64 @@ import { FormatThousands } from '../../util/Parser';
 const useStyles = makeStyles((theme) => ({
 	slotWrap: {
 		display: 'inline-block',
+		margin: 1,
+		opacity: '144%',
 		boxSizing: 'border-box',
+		background: 'rgba(17, 49, 80, 0.330)',
+		borderRadius: '6px', // Added a border radious
 		flexGrow: 0,
-		width: 165,
-		flexBasis: 165,
+		width: 125,
+		flexBasis: 125,
 		zIndex: 1,
-		position: 'relative',
-		'&.mini': {
-			width: 132,
-			flexBasis: 132,
-		},
-		'&.equipped': {
-			marginLeft: 40,
-		},
 	},
 	slot: {
 		width: '100%',
-		height: 190,
-		backgroundColor: `${theme.palette.secondary.light}61`,
+		height: 125,
+		// background: `#0302166b`,
+		border: `0.15px solid #0101064b`,
 		position: 'relative',
 		zIndex: 2,
-		'&.mini': {
-			width: 132,
-			height: 152,
-		},
-		'&.solid': {
-			backgroundColor: `${theme.palette.secondary.light}c4`,
-		},
+		borderRadius: 5,
 		'&:not(.disabled):not(.empty)': {
 			transition: 'background ease-in 0.15s',
 			'&:hover': {
-				backgroundColor: `${theme.palette.secondary.dark}9e`,
+				background: `${theme.palette.secondary.dark}9e`,
 			},
+		},
+		'&.rarity-1': {
+			// borderColor: `${theme.palette.rarities.rare1}40`,
+		},
+		'&.rarity-2': {
+			// borderColor: `${theme.palette.rarities.rare2}80`,
+		},
+		'&.rarity-3': {
+			// borderColor: `${theme.palette.rarities.rare3}80`,
+		},
+		'&.rarity-4': {
+			// borderColor: `${theme.palette.rarities.rare4}80`,
+		},
+		'&.rarity-5': {
+			// borderColor: `${theme.palette.rarities.rare5}80`,
+		},
+		'&.disabled': {
+			// borderColor: `${theme.palette.error.main}`,
 		},
 	},
 	slotDrag: {
 		width: '100%',
-		height: 190,
-		border: `1px solid ${theme.palette.border.divider}9e`,
+		height: 125,
 		position: 'relative',
 		zIndex: 2,
 		opacity: 0.35,
 		transition: 'opacity ease-in 0.15s, border ease-in 0.15s',
 	},
 	img: {
-		height: 190,
+		height: 125,
 		width: '100%',
 		zIndex: 3,
-		backgroundSize: '70%',
+		backgroundSize: '55%',
 		backgroundRepeat: 'no-repeat',
 		backgroundPosition: 'center center',
-		'&.mini': {
-			height: 152,
-		},
 	},
 	count: {
 		top: 0,
@@ -73,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
 		position: 'absolute',
 		textAlign: 'right',
 		padding: '0 5px',
-		textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
 		color: theme.palette.text.main,
 		zIndex: 4,
 	},
@@ -84,14 +88,17 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		height: 30,
 		lineHeight: '30px',
-		fontSize: 16,
+		fontSize: 14,
 		width: '100%',
 		maxWidth: '100%',
 		overflow: 'hidden',
+		background: 'rgb(9 19 32)',
 		whiteSpace: 'nowrap',
-		color: theme.palette.text.main,
-		background: theme.palette.secondary.light,
-		borderTop: `1px solid rgb(255 255 255 / 4%)`,
+		color: 'white',
+		background: 'rgb(9 19 32)',
+		borderTop: '1px solid rgb(9 19 32)',
+		borderBottomLeftRadius: 6,
+		borderBottomRightRadius: 6,
 		zIndex: 4,
 	},
 	equipped: {
@@ -100,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 		position: 'absolute',
 		padding: '0 5px',
 		color: theme.palette.primary.alt,
-		background: theme.palette.secondary.light,
+		background: 'rgba(12,24,38, 0.733)',
 		borderRight: `1px solid rgb(255 255 255 / 4%)`,
 		borderBottom: `1px solid rgb(255 255 255 / 4%)`,
 		borderBottomRightRadius: 4,
@@ -112,11 +119,12 @@ const useStyles = makeStyles((theme) => ({
 		position: 'absolute',
 		padding: '0 5px',
 		width: '20px',
-		color: theme.palette.primary.alt,
-		background: theme.palette.secondary.light,
-		borderRight: `1px solid rgb(255 255 255 / 4%)`,
-		borderBottom: `1px solid rgb(255 255 255 / 4%)`,
-		borderBottomRightRadius: 4,
+		color: '#9CE60D',
+		background: 'rgba(12,24,38, 0.733)',
+		borderRight: `1px solid ${theme.palette.border.divider}`,
+		borderBottom: `1px solid ${theme.palette.border.divider}`,
+		borderBottomRightRadius: 5,
+		borderTopLeftRadius: 5,
 		zIndex: 4,
 	},
 	price: {
@@ -124,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
 		left: 0,
 		position: 'absolute',
 		padding: '0 5px',
-		textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
+		// textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
 		color: theme.palette.success.main,
 		zIndex: 4,
 		'&::before': {
@@ -151,13 +159,12 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 		maxWidth: '100%',
 		overflow: 'hidden',
-		height: 7,
+		height: 5,
 		background: 'transparent',
 		zIndex: 4,
 	},
 	broken: {
-		backgroundColor: theme.palette.text.alt,
-		transition: 'none !important',
+		background: theme.palette.text.alt,
 	},
 	progressbar: {
 		transition: 'none !important',
@@ -166,8 +173,24 @@ const useStyles = makeStyles((theme) => ({
 		pointerEvents: 'none',
 	},
 	paper: {
-		padding: 20,
-		border: `1px solid ${theme.palette.border.divider}`,
+		padding: 10,
+		border: `0.3px solid ${theme.palette.primary.dark}`,
+		borderRadius: 5,
+		'&.rarity-1': {
+			borderColor: theme.palette.rarities.rare1,
+		},
+		'&.rarity-2': {
+			borderColor: theme.palette.rarities.rare2,
+		},
+		'&.rarity-3': {
+			borderColor: theme.palette.rarities.rare3,
+		},
+		'&.rarity-4': {
+			borderColor: theme.palette.rarities.rare4,
+		},
+		'&.rarity-5': {
+			borderColor: theme.palette.rarities.rare5,
+		},
 	},
 	loader: {
 		height: 'fit-content',

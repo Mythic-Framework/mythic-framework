@@ -10,20 +10,13 @@ import SheriffBadge from '../assets/img/seals/bcso_seal.webp';
 //import StarOfLife from '../assets/img/seals/StarOfLife.webp';
 import MedicalServices from '../assets/img/seals/MedicalServices.webp';
 
-import Business from '../assets/img/seals/business.webp';
-
 export default () => {
 	const govJob = useSelector(state => state.app.govJob);
 	const attorney = useSelector(state => state.app.attorney);
-	const tabletData = useSelector((state) => state.app.tabletData);
 
 	return () => {
 		if (attorney && !govJob) {
 			return DOJSeal;
-		};
-
-		if (tabletData) {
-			return tabletData?.logo ?? Business;
 		};
 
 		switch (govJob?.Id) {

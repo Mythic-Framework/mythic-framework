@@ -278,7 +278,7 @@ GlobalState["Ped:Pricing"] = {
 	BARBER = 100,
 	SHOP = 100,
 	TATTOO = 100,
-	SURGERY = 10000,
+	SURGERY = 2500,
 }
 
 AddEventHandler("Ped:Shared:DependencyUpdate", RetrieveComponents)
@@ -324,7 +324,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					local ped = char:GetData("Ped")
 					if ped.customization.components.mask.drawableId ~= 0 then
 						TriggerClientEvent("Ped:Client:MaskAnim", source)
-						Wait(300)
+						Citizen.Wait(300)
 						Ped.Mask:Unequip(source)
 					end
 				end
@@ -341,7 +341,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					local ped = char:GetData("Ped")
 					if not ped.customization.props.hat.disabled then
 						TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-						Wait(300)
+						Citizen.Wait(300)
 						Ped.Hat:Unequip(source)
 					end
 				end
@@ -358,7 +358,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					local ped = char:GetData("Ped")
 					if not ped.customization.props.hat.disabled then
 						TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-						Wait(300)
+						Citizen.Wait(300)
 						TriggerClientEvent("Ped:Client:Hat", source)
 					end
 				end
@@ -375,7 +375,7 @@ AddEventHandler("Core:Shared:Ready", function()
 					local ped = char:GetData("Ped")
 					if not ped.customization.props.glass.disabled then
 						TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-						Wait(300)
+						Citizen.Wait(300)
 						TriggerClientEvent("Ped:Client:Glasses", source)
 					end
 				end
@@ -439,10 +439,18 @@ PED = {
 			local char = plyr:GetData("Character")
 			if char ~= nil then
 				local ped = char:GetData("Ped")
+
+				local OldHair = ped.customization.components.hair
+				local OldFace = ped.customization.components.face
+				
 				ped.customization.components = outfit.data.components or ped.customization.components
 				ped.customization.props = outfit.data.props or ped.customization.props
-				ped.customization.colors = outfit.data.colors or ped.customization.colors
-				ped.customization.overlay = outfit.data.overlay or ped.customization.overlay
+
+				ped.customization.components.face = OldFace
+				ped.customization.components.hair = OldHair
+
+				--ped.customization.colors = outfit.data.colors or ped.customization.colors
+				--ped.customization.overlay = outfit.data.overlay or ped.customization.overlay
 				Ped:Save(char, ped)
 			end
 		end
@@ -501,6 +509,134 @@ PED = {
 						TriggerClientEvent("Ped:Client:MaskAnim", source)
 						ped.customization.components.mask = {
 							componentId = 1,
+							drawableId = 0,
+							textureId = 0,
+							paletteId = 0,
+						}
+						Ped:Save(char, ped)
+					end
+				end
+			end
+		end,
+	},
+	Vest = {
+		Equip = function(self, source, data)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+					ped.customization.components.kevlar = data
+					Ped:Save(char, ped)
+				end
+			end
+		end,
+		Unequip = function(self, source)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+
+					local itemId = Inventory.Items:GetWithStaticMetadata(
+						"kevlar",
+						"drawableId",
+						"textureId",
+						char:GetData("Gender"),
+						ped.customization.components.kevlar
+					) or "kevlar"
+
+					local md = { kevlar = ped.customization.components.kevlar }
+					if itemId ~= "kevlar" then
+						md = {}
+					end
+
+					if Inventory:AddItem(char:GetData("SID"), itemId, 1, md, 1) then
+						ped.customization.components.kevlar = {
+							componentId = 9,
+							drawableId = 0,
+							textureId = 0,
+							paletteId = 0,
+						}
+						Ped:Save(char, ped)
+					end
+				end
+			end
+		end,
+		UnequipNoItem = function(self, source)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+					if ped.customization.components.kevlar.drawableId ~= 0 then
+						TriggerClientEvent("Ped:Client:VestAnim", source)
+						ped.customization.components.kevlar = {
+							componentId = 9,
+							drawableId = 0,
+							textureId = 0,
+							paletteId = 0,
+						}
+						Ped:Save(char, ped)
+					end
+				end
+			end
+		end,
+	},
+	Gloves = {
+		Equip = function(self, source, data)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+					ped.customization.components.torso = data
+					Ped:Save(char, ped)
+				end
+			end
+		end,
+		Unequip = function(self, source)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+
+					local itemId = Inventory.Items:GetWithStaticMetadata(
+						"torso",
+						"drawableId",
+						"textureId",
+						char:GetData("Gender"),
+						ped.customization.components.torso
+					) or "torso"
+
+					local md = { torso = ped.customization.components.torso }
+					if itemId ~= "torso" then
+						md = {}
+					end
+
+					if Inventory:AddItem(char:GetData("SID"), itemId, 1, md, 1) then
+						ped.customization.components.torso = {
+							componentId = 3,
+							drawableId = 0,
+							textureId = 0,
+							paletteId = 0,
+						}
+						Ped:Save(char, ped)
+					end
+				end
+			end
+		end,
+		UnequipNoItem = function(self, source)
+			local plyr = Fetch:Source(source)
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					local ped = char:GetData("Ped")
+					if ped.customization.components.torso.drawableId ~= 0 then
+						TriggerClientEvent("Ped:Client:VestAnim", source)
+						ped.customization.components.torso = {
+							componentId = 3,
 							drawableId = 0,
 							textureId = 0,
 							paletteId = 0,
@@ -707,13 +843,43 @@ function RegisterCallbacks()
 				local ped = char:GetData("Ped")
 				if ped.customization.components.mask.drawableId ~= 0 then
 					TriggerClientEvent("Ped:Client:MaskAnim", source)
-					Wait(500)
+					Citizen.Wait(500)
 					Ped.Mask:Unequip(source)
 				end
 			end
 		end
 	end)
 
+	Callbacks:RegisterServerCallback("Ped:RemoveGloves", function(source, data, cb)
+		local plyr = Fetch:Source(source)
+		if plyr ~= nil then
+			local char = plyr:GetData("Character")
+			if char ~= nil then
+				local ped = char:GetData("Ped")
+				if ped.customization.components.torso.drawableId ~= 0 then
+					TriggerClientEvent("Ped:Client:GlovesAnim", source)
+					Citizen.Wait(800)
+					Ped.Gloves:Unequip(source)
+				end
+			end
+		end
+	end)
+
+	Callbacks:RegisterServerCallback("Ped:RemoveVest", function(source, data, cb)
+		local plyr = Fetch:Source(source)
+		if plyr ~= nil then
+			local char = plyr:GetData("Character")
+			if char ~= nil then
+				local ped = char:GetData("Ped")
+				if ped.customization.components.kevlar.drawableId ~= 0 then
+					TriggerClientEvent("Ped:Client:VestAnim", source)
+					Citizen.Wait(4000)
+					Ped.Vest:Unequip(source)
+				end
+			end
+		end
+	end)
+	
 	Callbacks:RegisterServerCallback("Ped:RemoveHat", function(source, data, cb)
 		local plyr = Fetch:Source(source)
 		if plyr ~= nil then
@@ -722,7 +888,7 @@ function RegisterCallbacks()
 				local ped = char:GetData("Ped")
 				if not ped.customization.props.hat.disabled then
 					TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-					Wait(500)
+					Citizen.Wait(500)
 					Ped.Hat:Unequip(source)
 				end
 			end
@@ -737,7 +903,7 @@ function RegisterCallbacks()
 				local ped = char:GetData("Ped")
 				if ped.customization.components.accessory.drawableId ~= 0 then
 					TriggerClientEvent("Ped:Client:HatGlassAnim", source)
-					Wait(500)
+					Citizen.Wait(500)
 					Ped.Necklace:Unequip(source)
 				end
 			end

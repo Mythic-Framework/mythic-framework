@@ -114,7 +114,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 			isEnabled = PaletoNeedsReset,
 		},
 		{
-			icon = "bell-on",
+			icon = "bell",
 			text = "Disable Alarm",
 			event = "Robbery:Client:Paleto:DisableAlarm",
 			jobPerms = {
@@ -137,7 +137,7 @@ AddEventHandler("Robbery:Client:Setup", function()
 		maxZ = 32.43,
 	}, {
 		{
-			icon = "bell-on",
+			icon = "bell",
 			text = "Access Door Controls",
 			event = "Robbery:Client:Paleto:Doors",
 			data = {},

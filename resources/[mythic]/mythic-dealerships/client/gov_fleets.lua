@@ -16,7 +16,7 @@ function CreateGovermentFleetShops()
                         },
                     }
                 },
-            }, 'cars', v.interactionPed.scenario)
+            }, 'car-side', v.interactionPed.scenario)
         end
     end
 end

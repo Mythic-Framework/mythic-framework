@@ -4,92 +4,6 @@ export const initialState = {
 	//hidden: true,
 	opacity: false,
 	attorney: false,
-	tabletData: process.env.NODE_ENV != 'production' ? {
-		links: [
-			{
-				name: 'home',
-				icon: ['fas', 'house'],
-				label: 'Home',
-				path: '/',
-				exact: true,
-			},
-			{
-				name: 'documents',
-				icon: ['fas', 'file-lines'],
-				label: 'Documents',
-				path: '/business/search/document',
-				exact: true,
-			},
-			{
-				name: 'receipts',
-				icon: ['fas', 'money-check-dollar'],
-				label: 'Receipts',
-				path: '/business/search/receipt',
-				exact: true,
-			},
-			// {
-			// 	name: 'employees',
-			// 	icon: ['fas', 'person'],
-			// 	label: 'Employees',
-			// 	path: '/business/search/documents',
-			// 	exact: true,
-			// },
-			{
-				name: 'pdm-stocks',
-				icon: ['fas', 'cars'],
-				label: 'Vehicle Stock',
-				path: '/business/pdm-sales',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'pdm-credit-check',
-				icon: ['fas', 'magnifying-glass-dollar'],
-				label: 'Run Credit Check',
-				path: '/business/pdm-credit',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'pdm-licence-check',
-				icon: ['fas', 'id-card'],
-				label: 'Run License Check',
-				path: '/business/search/documents',
-				exact: true,
-			},
-			{
-				name: 'pdm-manage',
-				icon: ['fas', 'list-check'],
-				label: 'Manage Dealership',
-				path: '/business/pdm-manage',
-				exact: true,
-			},
-			{
-				name: 'pdm-history',
-				icon: ['fas', 'clock-rotate-left'],
-				label: 'Sales History',
-				path: '/business/pdm-saleshistory',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'dyn8-properties',
-				icon: ['fas', 'house-building'],
-				label: 'Properties',
-				path: '/business/dyn8-properties',
-				exact: true,
-				//permission: 'LOL',
-			},
-			{
-				name: 'dyn8-credit',
-				icon: ['fas', 'magnifying-glass-dollar'],
-				label: 'Run Credit Check',
-				path: '/business/dyn8-credit',
-				exact: true,
-				//permission: 'LOL',
-			},
-		]
-	} : null,
 	pointBreakpoints: {
 		reduction: 25,
 		license: 12,
@@ -197,12 +111,12 @@ export const initialState = {
 	// 	police_doors: true,
 	// 	ems_doors: true,
 	// 	generic_doors: true,
-	// 	TABLET_CREATE_NOTICE: true,
-	// 	TABLET_DELETE_NOTICE: true,
-	// 	TABLET_CREATE_DOCUMENT: true,
-	// 	TABLET_VIEW_DOCUMENT: true,
-	// 	TABLET_PIN_DOCUMENT: true,
-	// 	TABLET_DELETE_DOCUMENT: true,
+	// 	LAPTOP_CREATE_NOTICE: true,
+	// 	LAPTOP_DELETE_NOTICE: true,
+	// 	LAPTOP_CREATE_DOCUMENT: true,
+	// 	LAPTOP_VIEW_DOCUMENT: true,
+	// 	LAPTOP_PIN_DOCUMENT: true,
+	// 	LAPTOP_DELETE_DOCUMENT: true,
 	// 	FLEET_VEHICLES_1: true,
 	// 	FLEET_VEHICLES_2: true,
 	// 	FLEET_VEHICLES_3: true,
@@ -230,7 +144,6 @@ const appReducer = (state = initialState, action) => {
 				govJob: action.payload.job,
 				govJobPermissions: action.payload.jobPermissions,
 				attorney: action.payload.attorney,
-				tabletData: action.payload.tabletData,
 			};
 		case 'JOB_UPDATE':
 			return {
@@ -251,7 +164,6 @@ const appReducer = (state = initialState, action) => {
 				govJob: initialState.govJob,
 				govJobPermissions: initialState.govJobPermissions,
 				attorney: false,
-				tabletData: false,
 			};
 		case 'ADD_DRAFT':
 			let id =

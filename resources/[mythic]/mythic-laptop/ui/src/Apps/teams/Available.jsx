@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
 import {
 	Grid,
 	IconButton,
@@ -12,11 +11,11 @@ import {
 	Tooltip,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { throttle } from 'lodash';
 import Nui from '../../util/Nui';
 
 import Window from '../../components/Window';
 import { Loader } from '../../components';
+import { useAlert } from '../../hooks';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -33,42 +32,86 @@ const useStyles = makeStyles((theme) => ({
 			marginLeft: 10,
 		},
 	},
+	bold: {
+		'& span': {
+			fontWeight: 700,
+		}
+	}
 }));
 
 export default (props) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const history = useHistory();
+	const alert = useAlert();
 
 	const myGroup = useSelector((state) => state.data.data.myGroup);
 
+	const timer = useRef(null);
+	const interval = useRef(null);
 	const [loading, setLoading] = useState(false);
 	const [teams, setTeams] = useState(Array());
+	const [cooldown, setCooldown] = useState(false);
 
 	useEffect(() => {
 		onRefresh();
+
+		interval.current = setInterval(() => {
+			onRefresh();
+		}, 120000);
+
+		return () => {
+			if (timer?.current) clearTimeout(timer.current);
+			if (interval?.current) clearInterval(interval.current);
+		}
 	}, []);
 
 	const onRefresh = async () => {
 		try {
 			setLoading(true);
-			let res = await Nui.send('GetTeams');
+			let res = await (await Nui.send('GetTeams')).json();
+
 			setTeams(res);
+		} catch (err) {
 			setTeams([
 				{
-					Owner: {
-						SID: 1,
-						First: 'Testy',
-						Last: 'McTest',
-					},
-					Members: Array(),
+					Name: 'Dick',
+					ID: 1,
+					Members: Array(
+						{
+							Leader: true,
+							SID: 1,
+							First: 'Testy',
+							Last: 'McTest',
+						},
+					),
 					State: 0,
 				},
 			]);
-			setLoading(false);
+
+			console.log(err);
+		}
+
+		setLoading(false);
+	};
+
+	const onRequestInvite = async (team) => {
+		try {
+			setLoading(true);
+			setCooldown(true);
+			let res = await (await Nui.send('RequestTeamInvite', team)).json();
+
+			if (res) {
+				alert('Invite Requested');
+			} else {
+				alert('Invite Request Failed');
+			}
+
 		} catch (err) {
 			console.log(err);
 		}
+
+		timer.current = setTimeout(() => setCooldown(false), 20000);
+		setLoading(false);
 	};
 
 	return (
@@ -85,27 +128,30 @@ export default (props) => {
 									return (
 										<ListItem
 											divider
-											key={`actv-team-${team.Owner.SID}`}
+											key={`actv-team-${team.ID}`}
 										>
 											<ListItemText
-												primary={`${team.Owner.First} ${team.Owner.Last}`}
+												className={myGroup?.ID == team?.ID ? classes.bold : null}
+												primary={team.Name}
 											/>
 											<ListItemSecondaryAction>
 												{!Boolean(myGroup) && (
 													<Tooltip title="Request To Join">
-														<IconButton
-															edge="end"
-															className={
-																classes.actionBtn
-															}
-														>
-															<FontAwesomeIcon
-																icon={[
-																	'fas',
-																	'user-plus',
-																]}
-															/>
-														</IconButton>
+														<span>
+															<IconButton
+																edge="end"
+																onClick={() => onRequestInvite(team.ID)}
+																disabled={cooldown || team.Members?.length >= 5}
+																className={classes.actionBtn}
+															>
+																<FontAwesomeIcon
+																	icon={[
+																		'fas',
+																		'user-plus',
+																	]}
+																/>
+															</IconButton>
+														</span>
 													</Tooltip>
 												)}
 											</ListItemSecondaryAction>

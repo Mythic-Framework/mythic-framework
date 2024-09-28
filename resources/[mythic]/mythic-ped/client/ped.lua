@@ -1033,3 +1033,13 @@ RegisterNetEvent('Ped:Client:ChangedPed', function(model)
         Notification:Success("Ped saved successfully!")
     end)
 end)
+
+RegisterNetEvent('Ped:Client:Clearprops', function()
+    for _, v in pairs(GetGamePool("CObject")) do
+      if IsEntityAttachedToEntity(LocalPlayer.state.ped, v) then
+        SetEntityAsMissionEntity(v, true, true)
+        DeleteObject(v)
+        DeleteEntity(v)
+      end
+    end
+end)

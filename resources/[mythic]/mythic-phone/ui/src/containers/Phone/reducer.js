@@ -414,6 +414,19 @@ export const initialState = {
 						unread: 0,
 						params: '',
 					},
+					// Add the app itself					
+					camera: {
+						storeLabel: 'Camera',
+						label: 'Camera',
+						name: 'camera',
+						icon: 'camera',
+						color: '#007494',
+						hidden: false,
+						store: false,
+						canUninstall: false,
+						unread: 0,
+						params: '',
+					},
 					calculator: {
 						storeLabel: 'Calculator',
 						label: 'Calculator',
@@ -425,21 +438,6 @@ export const initialState = {
 						canUninstall: true,
 						unread: 0,
 						params: '',
-					},
-					lsunderground: {
-						storeLabel: 'LS UGND',
-						label: 'LS UGND',
-						name: 'lsunderground',
-						icon: 'user-secret',
-						color: '#E95200',
-						hidden: true,
-						store: true,
-						canUninstall: false,
-						unread: 0,
-						params: '',
-						restricted: {
-							state: 'ACCESS_LSUNDERGROUND',
-						},
 					},
 			  },
 };

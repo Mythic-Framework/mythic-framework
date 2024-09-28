@@ -56,7 +56,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		RetrieveComponents()
 
 		Keybinds:Add('voip_radio_power', '', 'keyboard', 'Voice - Radio - Toggle Power On/Off', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and not radioChannelCycle then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and not radioChannelCycle and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				radioChannelCycle = true
 				ToggleRadioPower(false)
 				SetTimeout(1000, function()
@@ -66,31 +66,31 @@ AddEventHandler("Core:Shared:Ready", function()
 		end)
 
 		Keybinds:Add('voip_radio_open', '', 'keyboard', 'Voice - Radio - Open Radio', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and not LocalPlayer.state.doingAction then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and not LocalPlayer.state.doingAction and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				OpenRadio()
 			end
 		end)
 
 		Keybinds:Add('voip_radio_vol_down', '', 'keyboard', 'Voice - Radio - Volume Down', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				RadioVolumeDown(true)
 			end
 		end)
 
 		Keybinds:Add('voip_radio_vol_up', '', 'keyboard', 'Voice - Radio - Volume Up', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				RadioVolumeUp(true)
 			end
 		end)
 
 		Keybinds:Add('voip_radio_next', '', 'keyboard', 'Voice - Radio - Channel Next', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				CycleRadioChannel(true)
 			end
 		end)
 
 		Keybinds:Add('voip_radio_prev', '', 'keyboard', 'Voice - Radio - Channel Prev.', function()
-			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER then
+			if LocalPlayer.state.loggedIn and HAS_RADIO and RADIO_POWER and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				CycleRadioChannel(false)
 			end
 		end)

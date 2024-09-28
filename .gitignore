@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/lua,csharp,intellij+iml,visualstudio
 # Edit at https://www.gitignore.io/?templates=lua,csharp,intellij+iml,visualstudio
 
@@ -482,7 +481,6 @@ configs/environment.cfg
 *.rest
 
 resources/\[assets\]
-resources/\[mythic-assets\]
 resources/\[ignored\]
 
 imgui.ini
@@ -491,8 +489,4 @@ polyzone_created_zones.txt
 created_doors_data.txt
 
 start.bat
-start_8412_default.bat
 resources/mythic-pwnzor2/onlineTime.json
-artifacts/
-txData/*
-.replxx_history

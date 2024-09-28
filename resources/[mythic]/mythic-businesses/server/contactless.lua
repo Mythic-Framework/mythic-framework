@@ -94,7 +94,7 @@ AddEventHandler("Businesses:Server:Startup", function()
 
                 Phone.Notification:Add(source, "Contactless Payment Accepted", string.format("Paid $%s to %s", math.floor(pData.amount), pData.jobName), os.time() * 1000, 8000, "bank", {})
 
-                MDT.BusinessReceipts:Create(pData.job, {
+                Laptop.BizWiz.Receipts:Create(pData.job, {
                     type = "Contactless Terminal",
                     time = os.time() * 1000,
                     author = pData.biller,

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		zIndex: -1,
-		background: 'rgba(0,0,0,0.75)',
+		background: 'rgba(0,0,0,0.5)',
 		'@global': {
 			'*::-webkit-scrollbar': {
 				width: 0,
@@ -30,10 +30,14 @@ const useStyles = makeStyles((theme) => ({
 				background: theme.palette.secondary.main,
 			},
 		},
+		userSelect: 'none',
+		'-webkit-user-select': 'none',
 	},
 	insideDiv: {
-		width: '90%',
-		height: '60vh',
+		width: '100%',
+		height: '100%',
+		userSelect: 'none',
+		'-webkit-user-select': 'none',
 	},
 	dialog: {
 		display: 'flex',
@@ -94,7 +98,7 @@ export default (props) => {
 		});
 		closeInventory();
 	};
-
+	
 	return (
 		<>
 			{!props.hidden && itemsLoaded && (

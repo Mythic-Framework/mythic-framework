@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		position: 'absolute',
 		width: '75%',
-		top: '10%',
+		top: '15%',
 		left: 0,
 		right: 0,
 		margin: 'auto',

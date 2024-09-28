@@ -145,7 +145,7 @@ AddEventHandler("Polyzone:Enter", function(id, point, insideZones, data)
 	if id == "vangelico" then
 		Targeting:AddObject(GetHashKey("hei_prop_hei_keypad_03"), "calculator", {
 			-- {
-			-- 	icon = "bell-on",
+			-- 	icon = "bell",
 			-- 	text = "Disable Alarm",
 			-- 	event = "Robbery:Client:Vangelico:DisableAlarm",
 			-- 	jobs = { "police" },

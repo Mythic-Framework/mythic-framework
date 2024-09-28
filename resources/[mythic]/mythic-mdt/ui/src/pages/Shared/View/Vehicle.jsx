@@ -199,7 +199,7 @@ export default ({ match }) => {
 	const getOrganizationType = (jobId) => {
 		if (govJobs.includes(jobId)) {
 			return 'Government';
-		} else return 'Business';
+		};
 	};
 
 	return (

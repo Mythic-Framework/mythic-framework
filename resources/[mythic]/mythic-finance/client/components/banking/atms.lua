@@ -68,7 +68,7 @@ function AddBankingATMs()
         Targeting:AddObject(v, "credit-card", {
             {
                 text = "Use ATM",
-                icon = 'dollar-sign', 
+                icon = 'dollar-sign',
                 event = "Banking:Client:StartOpenATM",
                 data = {},
                 minDist = 3.0,
@@ -87,7 +87,7 @@ function AddBankingATMs()
             {
                 {
                     text = "Use ATM",
-                    icon = 'dollar-sign', 
+                    icon = 'dollar-sign',
                     event = "Banking:Client:StartOpenATM",
                     data = {},
                     minDist = 3.0,

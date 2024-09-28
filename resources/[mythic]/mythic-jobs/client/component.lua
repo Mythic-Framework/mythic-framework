@@ -12,13 +12,16 @@ _JOBS = {
 			local jobs = Jobs.Permissions:GetJobs()
 			for k, v in ipairs(jobs) do
 				if v.Id == jobId then
-					if (not workplaceId or (v.Workplace and v.Workplace.Id == workplaceId)) then
-						if (not gradeId or (v.Grade.Id == gradeId)) then
-							if (not gradeLevel or (v.Grade.Level and v.Grade.Level >= gradeLevel)) then
+					if not workplaceId or (v.Workplace and v.Workplace.Id == workplaceId) then
+						if not gradeId or (v.Grade.Id == gradeId) then
+							if not gradeLevel or (v.Grade.Level and v.Grade.Level >= gradeLevel) then
 								if not checkDuty or (checkDuty and Jobs.Duty:Get(jobId)) then
-                                    if not permissionKey or (permissionKey and Jobs.Permissions:HasPermissionInJob(jobId, permissionKey)) then
-                                        return v
-                                    end
+									if
+										not permissionKey
+										or (permissionKey and Jobs.Permissions:HasPermissionInJob(jobId, permissionKey))
+									then
+										return v
+									end
 								end
 							end
 						end

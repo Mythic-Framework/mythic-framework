@@ -48,7 +48,7 @@ AddEventHandler("Labor:Client:Setup", function()
 			end,
 		},
 		{
-			icon = "clipboard-check",
+			icon = "ballot-check",
 			text = "I've Finished",
 			event = "Salvaging:Client:TriggerDelivery",
 			tempjob = "Salvaging",
@@ -56,21 +56,21 @@ AddEventHandler("Labor:Client:Setup", function()
 				return _working and _state == 2
 			end,
 		},
-		{
-			icon = "box",
+		--[[{
+			icon = "box-open-full",
 			text = "Here For My Pickup",
-			event = "Phone:Client:LSUnderground:Chopping:Pickup",
+			event = "Laptop:Client:LSUnderground:Chopping:Pickup",
 			isEnabled = function()
 				return LocalPlayer.state.Character:GetData("ChopPickups") ~= nil and #LocalPlayer.state.Character:GetData("ChopPickups") > 0
 			end,
 		},
 		{
-			icon = "timeline",
+			icon = "list-timeline",
 			text = "View Current Requests",
-			event = "Phone:Client:LSUnderground:Chopping:GetPublicList",
+			event = "Laptop:Client:LSUnderground:Chopping:GetPublicList",
 			rep = { id = "Salvaging", level = 3 },
-		},
-	}, 'car-burst')
+		},]]
+	}, 'car-crash')
 end)
 
 RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
@@ -91,7 +91,7 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 				Targeting:RemoveObject(v)
 				Targeting:AddObject(v, "car", {
 					{
-						icon = "car",
+						icon = "engine",
 						text = "Scrap",
 						event = "Salvaging:Client:ScrapCar",
 						tempjob = "Salvaging",
@@ -122,7 +122,7 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 				Targeting:RemoveObject(v)
 				Targeting:AddObject(v, "car", {
 					{
-						icon = "car",
+						icon = "engine",
 						text = "Scrap",
 						event = "Salvaging:Client:ScrapCar",
 						tempjob = "Salvaging",
@@ -158,7 +158,7 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 
 		PedInteraction:Add("SalvagingDelivery", `mp_m_waremech_01`, point.coords, point.heading, 25.0, {
 			{
-				icon = "box",
+				icon = "box-circle-check",
 				text = "Deliver Goods",
 				event = "Salvaging:Client:EndDelivery",
 				tempjob = "Salvaging",
@@ -166,7 +166,7 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 					return _working and _state == 3
 				end,
 			},
-		}, 'box')
+		}, 'box-circle-check')
 	end)
 
 	eventHandlers["actions"] = RegisterNetEvent(string.format("Salvaging:Client:%s:Action", joiner), function(netid)

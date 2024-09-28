@@ -53,12 +53,20 @@ AddEventHandler("Polyzone:Exit", function(id, point, insideZone, data)
 	end
 end)
 
+function getCurrentBranchId()
+    for branchId in pairs(_bankBranches) do
+        if withinBranchZone == branchId then
+            return branchId
+        end
+    end
+    return nil
+end
+
 AddEventHandler("Keybinds:Client:KeyUp:primary_action", function()
-	if
-		withinBranchZone
-		and not LocalPlayer.state.doingAction
-		and not GlobalState[string.format("Fleeca:Disable:%s", withinBranchZone)]
-	then
-		TriggerEvent("Finance:Client:OpenUI")
-	end
+    if withinBranchZone then
+        local currentBranchId = getCurrentBranchId()
+        if currentBranchId then
+            TriggerEvent("Finance:Client:OpenUI", currentBranchId)
+        end
+    end
 end)

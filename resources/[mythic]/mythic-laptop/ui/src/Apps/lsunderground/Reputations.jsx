@@ -53,18 +53,20 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const lsuReps = ['Chopping', 'Racing'];
+const lsuReps = ['Racing'];
 
 export default ({ myReputations, loading, onRefresh }) => {
 	const classes = useStyles();
 
+	const theseReputions = myReputations?.filter(r => lsuReps.includes(r.id));
+
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.body}>
-				{!Boolean(myReputations) ? (
+				{!Boolean(theseReputions) ? (
 					<Loader static text="Loading" />
-				) : myReputations.length > 0 ? (
-					myReputations.map((rep) => {
+				) : theseReputions.length > 0 ? (
+					theseReputions.map((rep) => {
 						return (
 							<Reputation
 								key={`lsu-${rep.id}`}

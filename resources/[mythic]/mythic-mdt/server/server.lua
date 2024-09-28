@@ -196,7 +196,7 @@ RegisterNetEvent('MDT:Server:OpenPublicRecords', function()
 	local dutyData = Jobs.Duty:Get(src)
 	local dumbStuff = false
 
-	if dutyData?.Id and _businessTablets[dutyData.Id] then
+	if dutyData?.Id then
 		TriggerClientEvent("MDT:Client:Logout", source)
 		dumbStuff = true
 

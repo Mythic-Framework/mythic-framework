@@ -8,7 +8,6 @@ export const initialState = {
 const appReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case 'UPDATE_FOCUS':
-			console.log('UPDATE_FOCUS');
 			return {
 				...state,
 				focused: action.payload.app,
@@ -23,7 +22,7 @@ const appReducer = (state = initialState, action) => {
 					appStates: [
 						...state.appStates.map((a) => {
 							if (a.app == action.payload.state.app)
-								return { ...a, minimized: false };
+								return { ...a, minimized: false, };
 							else return a;
 						}),
 					],
@@ -40,7 +39,6 @@ const appReducer = (state = initialState, action) => {
 			let n = [
 				...state.appStates.filter((a) => a.app != action.payload.app),
 			];
-			console.log(n.length);
 			return {
 				...state,
 				appStates: n,

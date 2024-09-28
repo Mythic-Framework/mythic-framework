@@ -395,7 +395,7 @@ function RegisterCommands()
 			return
 		end
 		local char = player:GetData("Character")
-		MySQL.query.await("DELETE * FROM inventory WHERE Owner = ?", { string.format("%s:%s", char:GetData("SID"), 1) })
+		MySQL.query.await("DELETE FROM inventory WHERE name = ?", { string.format("%s-%s", char:GetData("SID"), 1) })
 		Execute:Client(
 			char:GetData("Source"),
 			"Notification",

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
 import {
 	Grid,
 	IconButton,
@@ -37,26 +36,40 @@ const useStyles = makeStyles((theme) => ({
 export default (props) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const history = useHistory();
 
 	const myData = useSelector((state) => state.data.data.player);
 	const myGroup = useSelector((state) => state.data.data.myGroup);
-
-	const isLeader = myGroup?.Owner?.SID == myData.SID;
+	const isLeader = myGroup?.Members?.find(m => m.Leader)?.SID == myData.SID;
 
 	const [loading, setLoading] = useState(false);
 	const [requests, setRequests] = useState(Array());
+	const [time, setTime] = useState(Date.now());
+
+	const newNotifs = useSelector((state) => state.notifications.notifications);
 
 	useEffect(() => {
 		onRefresh();
+
+		const interval = setInterval(() => setTime(Date.now()), 30000);
+		return () => {
+		  	clearInterval(interval);
+		};
 	}, []);
 
+	useEffect(() => {
+		if (newNotifs.filter(n => n?.data?.request).length > 0) {
+			onRefresh();
+		}
+	}, [newNotifs]);
+	
 	const onRefresh = async () => {
 		try {
 			setLoading(true);
-			let res = await Nui.send('GetRequests');
+			let res = await (await Nui.send('GetTeamRequests')).json();
 			setRequests(res);
-
+		} catch (err) {
+			console.log(err);
+			
 			setRequests([
 				{
 					id: 1,
@@ -79,11 +92,26 @@ export default (props) => {
 					},
 				},
 			]);
-			setLoading(false);
+		}
+		
+		setLoading(false);
+	};
+	
+	const onAction = async (request, action) => {
+		try {
+			setLoading(true);
+			let res = await (await Nui.send('TeamRequest', {
+				...request,
+				action,
+			})).json();
 		} catch (err) {
 			console.log(err);
 		}
+
+		onRefresh();
 	};
+
+	const availableRequests = requests?.filter(r => r.expires > (Date.now() / 1000));
 
 	return (
 		<Grid item xs={4} style={{ padding: 10 }}>
@@ -94,8 +122,8 @@ export default (props) => {
 				<Grid item xs={12}>
 					<List>
 						{!loading ? (
-							Boolean(requests) && requests.length > 0 ? (
-								requests.map((request) => {
+							Boolean(availableRequests) && availableRequests.length > 0 ? (
+								availableRequests.map((request) => {
 									return (
 										<ListItem
 											divider
@@ -106,9 +134,11 @@ export default (props) => {
 												secondary={request.description}
 											/>
 											<ListItemSecondaryAction>
-												{isLeader && (
+												{(isLeader || !request.team) && (
 													<IconButton
+														color="success"
 														edge="end"
+														onClick={() => onAction(request, "accept")}
 														className={
 															classes.actionBtn
 														}
@@ -121,9 +151,11 @@ export default (props) => {
 														/>
 													</IconButton>
 												)}
-												{isLeader && (
+												{(isLeader || !request.team) && (
 													<IconButton
+														color="error"
 														edge="end"
+														onClick={() => onAction(request, "deny")}
 														className={
 															classes.actionBtn
 														}

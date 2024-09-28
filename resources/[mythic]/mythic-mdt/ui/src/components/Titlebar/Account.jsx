@@ -13,7 +13,6 @@ export default () => {
 	const classes = useStyles();
 	const cData = useSelector((state) => state.app.user);
 	const job = useSelector(state => state.app.govJob);
-	const tabletData = useSelector(state => state.app.tabletData);
 
 	if (!cData || !job) {
 		return null;
@@ -72,19 +71,6 @@ export default () => {
 				</>
 			);
 		default:
-			if (tabletData) {
-				return (
-					<>
-						<small>
-							{job.Grade?.Name}
-						</small>
-						<span>
-							{cData.First} {cData.Last}
-						</span>
-					</>
-				);
-			} else {
-				return null;
-			}
+		return null;
 	}
 };

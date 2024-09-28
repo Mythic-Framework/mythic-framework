@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const lsuReps = ['Chopping', 'Racing'];
+const lsuReps = ['Racing'];
 
 export default ({ myReputations, loading, onRefresh }) => {
 	const classes = useStyles();

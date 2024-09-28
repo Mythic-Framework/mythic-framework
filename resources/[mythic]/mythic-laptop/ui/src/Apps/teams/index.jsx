@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles, withStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { throttle } from 'lodash';
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tabPanel: {
 		top: 0,
-		height: '94.5%',
+		height: '93.25%',
 	},
 	list: {
 		height: '100%',
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 export default (props) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const history = useHistory();
 
 	return (
 		<div className={classes.wrapper}>

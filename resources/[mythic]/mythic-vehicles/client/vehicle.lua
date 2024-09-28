@@ -277,28 +277,37 @@ VEHICLE = {
 		local vehEnt = Entity(vehicle)
 		local val = GetVehicleHandlingInt(vehicle, "CHandlingData", "nMonetaryValue")
 
-		if not vehEnt.state.towObjective and not Police:IsPdCar(vehicle) and not vehEnt.state.noLockpick then
+		local team = LocalPlayer.state.Character:GetData("Team")
+
+		if
+			not vehEnt.state.towObjective
+			and not Police:IsPdCar(vehicle)
+			and not vehEnt.state.noLockpick
+			and (not vehEnt.state.boostVehicle or vehEnt.state.boostVehicle == team)
+		then
 			if vehEnt and vehEnt.state and vehEnt.state.VIN then
 				local vVIN = vehEnt.state.VIN
 
 				if Vehicles.Keys:Has(vVIN, vehEnt.state.GroupKeys) then
 					return cb(false)
 				end
-	
+
 				if not vehEnt.state.Locked then
 					return cb(false)
 				end
-	
+
 				local alerted = false
 				local startCoords = GetEntityCoords(GLOBAL_PED)
 				TaskTurnPedToFaceEntity(GLOBAL_PED, vehicle, 500)
-	
+
 				local dumbAnim = true
 				RequestAnimDict("veh@break_in@0h@p_m_one@")
 				while not HasAnimDictLoaded("veh@break_in@0h@p_m_one@") do
 					Wait(5)
 				end
-	
+
+				TriggerEvent("Laptop:Client:LSUnderground:Boosting:AttemptExterior", vehicle)
+
 				CreateThread(function()
 					while dumbAnim do
 						TaskPlayAnim(
@@ -317,7 +326,7 @@ VEHICLE = {
 						Wait(1000)
 					end
 				end)
-	
+
 				local wasFailed = false
 				for k, v in ipairs(config.stages) do
 					local alarmRoll = math.random(100)
@@ -325,17 +334,17 @@ VEHICLE = {
 						SetVehicleAlarm(vehicle, true)
 						SetVehicleAlarmTimeLeft(vehicle, math.random(25, 40) * 100)
 						StartVehicleAlarm(vehicle)
-						if not alerted then
+						if not alerted and not Entity(vehicle).state.boostVehicle then
 							EmergencyAlerts:CreateIfReported(200.0, "lockpickext", true)
 							alerted = true
 						end
 					end
-	
+
 					local stageComplete = false
 					if wasFailed then
 						break
 					end
-	
+
 					Minigame.Play:RoundSkillbar(v, config.base - k, {
 						onSuccess = function()
 							Wait(400)
@@ -360,15 +369,15 @@ VEHICLE = {
 							flags = 16,
 						},
 					})
-	
+
 					while not stageComplete do
 						Wait(1)
 					end
 				end
-	
+
 				dumbAnim = false
 				ClearPedTasks(GLOBAL_PED)
-	
+
 				if not wasFailed then
 					if #(startCoords - GetEntityCoords(GLOBAL_PED)) <= 2.0 then
 						SetVehicleHasBeenOwnedByPlayer(vehicle, true)
@@ -377,7 +386,7 @@ VEHICLE = {
 							Notification:Error("It Was Too Hard", 3000, 'key')
 							return cb(true, false)
 						end
-	 
+
 						Callbacks:ServerCallback("Vehicles:BreakOpenLock", {
 							netId = VehToNet(vehicle),
 						}, function(success)
@@ -385,11 +394,11 @@ VEHICLE = {
 								Notification:Success("Vehicle Unlocked", 3000, "key")
 							end
 						end)
-	
+
 						cb(true, true)
 					else
 						Notification:Error("Too Far")
-	
+
 						cb(false, false)
 					end
 				else
@@ -402,15 +411,20 @@ VEHICLE = {
 	end,
 	Lockpick = function(self, config, canUnlockOwned, cb)
 		local vehEnt = Entity(VEHICLE_INSIDE)
+		local team = LocalPlayer.state.Character:GetData("Team")
 
-		if not vehEnt.state.towObjective and not vehEnt.state.noLockpick then
+		if 
+			not vehEnt.state.towObjective 
+			and not vehEnt.state.noLockpick 
+			and (not vehEnt.state.boostVehicle or vehEnt.state.boostVehicle == team)
+		then
 			if vehEnt and vehEnt.state and vehEnt.state.VIN then
 				local vVIN = vehEnt.state.VIN
 
 				if Vehicles.Keys:Has(vVIN, vehEnt.state.GroupKeys) then
 					return cb(false, false)
 				end
-	
+
 				local alerted = false
 				local wasFailed = false
 
@@ -420,19 +434,19 @@ VEHICLE = {
 						SetVehicleAlarm(VEHICLE_INSIDE, true)
 						SetVehicleAlarmTimeLeft(VEHICLE_INSIDE, math.random(15, 30) * 100)
 						StartVehicleAlarm(VEHICLE_INSIDE)
-						if not alerted then
+						if not alerted and not Entity(VEHICLE_INSIDE).state.boostVehicle then
 							if EmergencyAlerts:CreateIfReported(200.0, "lockpickint", true) then
 								TriggerServerEvent('Radar:Server:StolenVehicle', GetVehicleNumberPlateText(VEHICLE_INSIDE))
 							end
 							alerted = true
 						end
 					end
-	
+
 					local stageComplete = false
 					if wasFailed then
 						break
 					end
-	
+
 					Minigame.Play:RoundSkillbar(v, config.base - k, {
 						onSuccess = function()
 							Wait(400)
@@ -457,27 +471,29 @@ VEHICLE = {
 							flags = 16,
 						},
 					})
-	
+
 					while not stageComplete do
 						Wait(1)
 					end
 				end
-	
+
 				if not wasFailed then
 					if VEHICLE_INSIDE and VEHICLE_SEAT == -1 then
-						SetVehicleHasBeenOwnedByPlayer(vehicle, true)
-						SetEntityAsMissionEntity(vehicle, true, true)
+						SetVehicleHasBeenOwnedByPlayer(VEHICLE_INSIDE, true)
+						SetEntityAsMissionEntity(VEHICLE_INSIDE, true, true)
 						if vehEnt.state.Owned and not canUnlockOwned then
 							Notification:Error("It Was Too Hard", 3000, 'key')
 							return cb(true, false)
 						end
-	
+
 						Callbacks:ServerCallback("Vehicles:GetKeys", vehEnt.state.VIN, function(success)
 							Notification:Success("Lockpicked Vehicle Ignition", 3000, 'key')
 							Action:Show('{keybind}toggle_engine{/keybind} Turn Engine On')
 							_actionShowing = true
+
+							TriggerEvent("Laptop:Client:LSUnderground:Boosting:SuccessIgnition", VEHICLE_INSIDE)
 						end)
-	
+
 						cb(true, true)
 					else
 						cb(true, false)
@@ -493,12 +509,18 @@ VEHICLE = {
 	HackExterior = function(self, hackData, canUnlockOwned, vehicle, cb)
 		local vehEnt = Entity(vehicle)
 		local val = GetVehicleHandlingInt(vehicle, "CHandlingData", "nMonetaryValue")
+		local team = LocalPlayer.state.Character:GetData("Team")
 
-		if not vehEnt.state.towObjective and not vehEnt.state.noLockpick then
+		if
+			not vehEnt.state.towObjective
+			and not vehEnt.state.noLockpick
+			and (not vehEnt.state.boostVehicle or vehEnt.state.boostVehicle == team)
+		then
 			if vehEnt and vehEnt.state and vehEnt.state.VIN then
 				local startCoords = GetEntityCoords(GLOBAL_PED)
 				TaskTurnPedToFaceEntity(GLOBAL_PED, vehicle, 500)
-	
+				TriggerEvent("Laptop:Client:LSUnderground:Boosting:AttemptExterior", vehicle)
+
 				Minigame.Play:Pattern(
 					3,
 					hackData.duration,
@@ -518,11 +540,11 @@ VEHICLE = {
 									Notification:Success("Vehicle Unlocked", 3000, "key")
 								end
 							end)
-		
+
 							cb(true, true)
 						else
 							Notification:Error("Too Far")
-		
+
 							cb(false, false)
 						end
 					end,
@@ -552,12 +574,17 @@ VEHICLE = {
 	Hack = function(self, hackData, canUnlockOwned, cb)
 		local vehEnt = Entity(VEHICLE_INSIDE)
 		local val = GetVehicleHandlingInt(VEHICLE_INSIDE, "CHandlingData", "nMonetaryValue")
+		local team = LocalPlayer.state.Character:GetData("Team")
 
-		if not vehEnt.state.towObjective and not vehEnt.state.noLockpick then
+		if
+			not vehEnt.state.towObjective
+			and not vehEnt.state.noLockpick
+			and (not vehEnt.state.boostVehicle or vehEnt.state.boostVehicle == team)
+		then
 			if vehEnt and vehEnt.state and vehEnt.state.VIN then
 				local startCoords = GetEntityCoords(GLOBAL_PED)
 				TaskTurnPedToFaceEntity(GLOBAL_PED, VEHICLE_INSIDE, 500)
-	
+
 				Minigame.Play:Pattern(
 					3,
 					hackData.duration,
@@ -573,13 +600,15 @@ VEHICLE = {
 								Notification:Error("It Was Too Hard", 3000, 'key')
 								return cb(true, false)
 							end
-		
+
 							Callbacks:ServerCallback("Vehicles:GetKeys", vehEnt.state.VIN, function(success)
 								Notification:Success("Vehicle Ignition Bypassed", 3000, 'key')
 								Action:Show('{keybind}toggle_engine{/keybind} Turn Engine On')
 								_actionShowing = true
+
+								TriggerEvent("Laptop:Client:LSUnderground:Boosting:SuccessIgnition", VEHICLE_INSIDE)
 							end)
-		
+
 							cb(true, true)
 						else
 							cb(true, false)

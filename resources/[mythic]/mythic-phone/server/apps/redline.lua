@@ -8,7 +8,7 @@ local _reqForCrypto = 5
 local _races = {}
 local _tracks = nil
 
-local _raceItems = {
+--[[local _raceItems = {
 	{ item = "racing_crappy", coin = "PLEB", price = 10, qty = 100, vpn = false },
 	{ item = "racedongle", coin = "VRM", rep = "Racing", repLvl = 3, price = 15, qty = 25, vpn = false },
 	{ item = "harness", coin = "VRM", rep = "Racing", repLvl = 1, price = 20, qty = 25, vpn = false },
@@ -21,7 +21,7 @@ local _raceItems = {
 
 	{ item = "nitrous", coin = "VRM", price = 10, qty = -1, vpn = true },
 	{ item = "nitrous", coin = "PLEB", price = 50, qty = 10, vpn = true },
-}
+}]]
 
 function table.slice(tbl, first, last, step)
 	local sliced = {}
@@ -34,7 +34,7 @@ function table.slice(tbl, first, last, step)
 end
 
 AddEventHandler("Phone:Server:RegisterMiddleware", function()
-	Vendor:Create("RaceGear", "poly", "Race Gear", false, {
+	--[[Vendor:Create("RaceGear", "poly", "Race Gear", false, {
 		coords = vector3(725.49, -1063.3, 22.17),
 		length = 0.8,
 		width = 0.6,
@@ -44,7 +44,7 @@ AddEventHandler("Phone:Server:RegisterMiddleware", function()
 			minZ = 21.97,
 			maxZ = 22.97,
 		},
-	}, _raceItems, "flag-checkered", "View Items")
+	}, _raceItems, "flag-checkered", "View Items")]]
 
 	Middleware:Add("Characters:Spawning", function(source)
 		local char = Fetch:Source(source):GetData("Character")

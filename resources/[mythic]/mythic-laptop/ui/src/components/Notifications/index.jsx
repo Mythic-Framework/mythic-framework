@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { Grid, Slide } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Moment from 'react-moment';
@@ -85,7 +84,6 @@ export default () => {
 	const showAlert = useAlert();
 	const dismisser = useDismisser();
 	const classes = useStyles();
-	const history = useHistory();
 	const notifications = useSelector(
 		(state) => state.notifications.notifications,
 	);

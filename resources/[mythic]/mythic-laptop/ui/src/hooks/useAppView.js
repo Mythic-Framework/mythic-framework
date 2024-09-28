@@ -4,8 +4,12 @@ export default () => {
 	const dispatch = useDispatch();
 	return (app) => {
 		dispatch({
-			type: 'APP_OPEN',
-			payload: app,
+			type: 'OPEN_APP',
+			payload: {
+				state: {
+					app,
+				}
+			},
 		});
 		// dispatch({
 		// 	type: 'NOTIF_DISMISS_APP',

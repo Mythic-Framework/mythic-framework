@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmythic_phone=self.webpackChunkmythic_phone||[]).push([[5100],{35100:(e,n,t)=>{t.r(n),t.d(n,{default:()=>s});var u=t(55429),c=t(61541);const s=function(e){return(0,u.useEffect)((function(){c.A.send("OpenCamera")}),[]),null}}}]);

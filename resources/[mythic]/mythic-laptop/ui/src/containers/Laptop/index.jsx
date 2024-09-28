@@ -2,29 +2,25 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slide } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom';
 
-import { Footer, Home, Alerts } from '../../components';
+import { Footer, Home, Alerts, Notifications } from '../../components';
 import { Wallpapers } from '../../util/Wallpapers';
 
 import Popups from '../../components/Popups';
 import AppHandler from '../AppHandler';
 
-export default withRouter((props) => {
-	const history = useHistory();
+export default (props) => {
 	const dispatch = useDispatch();
 	const visible = useSelector((state) => state.laptop.visible);
 	const player = useSelector((state) => state.data.data.player);
 	const settings = useSelector(
-		(state) => state.data.data.player.LaptopSettings,
+		(state) => state.data.data.player?.LaptopSettings,
 	);
 
 	const clear = useSelector((state) => state.laptop.clear);
 	useEffect(() => {
 		if (clear) {
 			setTimeout(() => {
-				history.replace('/');
 				dispatch({ type: 'CLEARED_HISTORY' });
 			}, 2000);
 		}
@@ -32,9 +28,9 @@ export default withRouter((props) => {
 
 	const useStyles = makeStyles((theme) => ({
 		wrapper: {
-			maxHeight: 1100,
+			maxHeight: 918,
 			height: '100%',
-			maxWidth: 1600,
+			maxWidth: 1632,
 			width: '100%',
 			position: 'absolute',
 			top: 0,
@@ -74,9 +70,9 @@ export default withRouter((props) => {
 	}));
 	const classes = useStyles();
 
-	if (!Boolean(player)) return null;
+	if (!Boolean(player) || !Boolean(settings)) return null;
 	return (
-		<Slide direction="up" in={visible} mountOnEnter unmountOnExit>
+		<Slide direction="up" in={visible} mountOnEnter>
 			<div className={classes.wrapper}>
 				<div className={classes.laptop}>
 					<img
@@ -98,4 +94,4 @@ export default withRouter((props) => {
 			</div>
 		</Slide>
 	);
-});
+};

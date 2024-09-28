@@ -19,6 +19,7 @@ function RetrieveComponents()
 	Crafting = exports["mythic-base"]:FetchComponent("Crafting")
 	Banking = exports["mythic-base"]:FetchComponent("Banking")
 	MDT = exports["mythic-base"]:FetchComponent("MDT")
+	Laptop = exports["mythic-base"]:FetchComponent("Laptop")
 	StorageUnits = exports["mythic-base"]:FetchComponent("StorageUnits")
 end
 
@@ -42,6 +43,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Banking",
 		"MDT",
 		"StorageUnits",
+		"Laptop",
 	}, function(error)
 		if #error > 0 then 
             exports["mythic-base"]:FetchComponent("Logger"):Critical("Businesses", "Failed To Load All Dependencies")

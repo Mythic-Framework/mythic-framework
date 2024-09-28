@@ -351,6 +351,14 @@ function RegisterChatCommands()
             },
         }
     }, 1)
+
+    local _showAllProps = false
+	Chat:RegisterAdminCommand("showallprops", function(source, args, rawCommand)
+		TriggerClientEvent("Properties:Client:ShowAllPropertyBlips", source)
+	end, {
+		help = "Show all property blips",
+		params = {},
+	}, -1)
 end
 
 function ParseCommandData(cmd)

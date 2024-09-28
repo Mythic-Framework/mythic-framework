@@ -6,10 +6,10 @@ export default () => {
 		if (!Array.isArray(myPerms) && Boolean(permissionKey)) {
 			if (Boolean(job)) {
 				if (myPerms[job]) {
-					return myPerms[job][permissionKey]
+					return myPerms[job][permissionKey];
 				}
 			} else {
-				Object.values(myPerms).forEach(jobPerms => {
+				Object.values(myPerms).forEach((jobPerms) => {
 					return jobPerms[permissionKey];
 				});
 			}

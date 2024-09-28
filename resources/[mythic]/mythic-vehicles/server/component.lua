@@ -715,6 +715,42 @@ VEHICLE = {
                 return res
             end
         end,
+
+        Track = function(self, VIN)
+            local p = promise.new()
+
+            local active = Vehicles.Owned:GetActive(VIN)
+            if active then
+                local wasTracked = active:GetData("TrackedLast")
+                local vehLocation = GetEntityCoords(active:GetData("EntityId"))
+                if wasTracked and wasTracked.time > os.time() then
+                    p:resolve(wasTracked.coords)
+                else
+                    active:SetData("TrackedLast", {
+                        time = os.time() + 120,
+                        coords = vehLocation
+                    })
+                    p:resolve(vehLocation)
+                end
+            else
+                Vehicles.Owned:GetVIN(VIN, function(c)
+                    if c.Storage.Type == 0 then
+                        p:resolve(Vehicles.Garages:Impound().coords)
+                    elseif c.Storage.Type == 1 then
+                        p:resolve(Vehicles.Garages:Get(c.Storage.Id).coords)
+                    elseif c.Storage.Type == 2 then
+                        local prop = Properties:Get(c.Storage.Id)
+                        if prop?.location?.garage then
+                            p:resolve(vector3(prop?.location?.garage?.x, prop?.location?.garage?.y, prop?.location?.garage?.z))
+                        else
+                            p:resolve(false)
+                        end
+                    end
+                end)
+            end
+
+            return Citizen.Await(p)
+        end,
     },
 
     SpawnTemp = function(self, source, model, coords, heading, cb, vehicleInfoData, properties, preDamage, suppliedPlate, suppliedVIN)

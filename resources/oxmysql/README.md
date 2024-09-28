@@ -1,67 +1,34 @@
-<h1 align='center'><a href='https://overextended.github.io/docs/oxmysql/'>Documentation</a></h2>
+# oxmysql
 
-### Introduction
+A FiveM resource to communicate with a MySQL database using [node-mysql2](https://github.com/sidorares/node-mysql2).
 
-Oxmysql is an alternative to the unmaintained mysql-async/ghmattimysql resources, utilising [node-mysql2](https://github.com/sidorares/node-mysql2) rather than [mysqljs](https://github.com/mysqljs/mysql).
+![](https://img.shields.io/github/downloads/overextended/oxmysql/total?logo=github)
+![](https://img.shields.io/github/downloads/overextended/oxmysql/latest/total?logo=github)
+![](https://img.shields.io/github/contributors/overextended/oxmysql?logo=github)
+![](https://img.shields.io/github/v/release/overextended/oxmysql?logo=github) 
 
-As of v1.9.0 the preferred method of utilising oxmysql is via lib/MySQL, which can be loaded by adding `@oxmysql/lib/MySQL.lua` to your resource manifests. This resource should be 100% backwards compatible with mysql-async functionality on top of providing newer export wrappers and functionality.
+## 🔗 Links
+- 💾 [Download](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip)
+  - Download the latest release directly.
+- 📚 [Documentation](https://overextended.dev/oxmysql)
+  - For installation, setup, and everything else.
+- 📦 [npm](https://www.npmjs.com/package/@overextended/oxmysql)
+  - Use our npm package for enhanced functionality and TypeScript support.
 
-Refer to [issue #77](https://github.com/overextended/oxmysql/issues/77) for information on replacing your queries from older versions of oxmysql or ghmattimysql.
+## ✨ Features
 
-### Features
+- Support for mysql-async and ghmattimysql syntax.
+- Promises / async query handling allowing for non-blocking and awaitable responses.
+- Improved performance and stability compared to other options.
+- Support for named and unnamed placeholders, improving performance and security.
+- Support for URI connection strings and semicolon separated values.
+- Improved parameter checking and error handling.
 
-- Support for URI connection strings and semicolon separated values
-- Asynchronous queries utilising mysql2/promises connection pool
-- Javascript async_retval exports supports promises across resources and runtimes
-- Support for placeholder values (named and unnamed) to improve query speed and increase security against SQL injection
-- Improved error checking when placeholders and parameters do not match
-- Lua promises in `lib/MySQL.lua` files for improved performance when awaiting a response
-- Support mysql-async syntax while providing newer (more accurate) names
+## 🧾 Logging
 
-### Usage
+We have included a module for submitting error logs to [Fivemanage](https://fivemanage.com/?ref=overextended), a cloud management service tailored for game servers. Additional logging options and support for other services will be available in the future.
 
-```lua
--- Lua
-MySQL.query('SELECT * from users WHERE identifier = ?', {identifier}, function(result)
-    -- callback response
-    -- same as MySQL.Async.fetchAll
-end)
-CreateThread(function()
-    local result = MySQL.query.await('SELECT * from users WHERE identifier = ?', {identifier})
-    -- await a promise to resolve
-    -- same as MySQL.Sync.fetchAll
-end)
-```
+## Lua Language Server
 
-```js
-// JS
-exports.oxmysql.query('SELECT * from users WHERE identifier = ?', [identifier], (result) => {
-  // callback response
-})(async () => {
-  const result = await exports.oxmysql.query_async('SELECT * from users WHERE identifier = ?', [identifier]);
-  // await a promise to resolve
-})();
-exports.oxmysql.query_async('SELECT * from users WHERE identifier = ?', [identifier]).then((result) => {
-  // utilise .then to resolve a promise like a callback
-});
-```
-
-For more information regarding the use of queries, refer to the documentation linked above.
-
-### Placeholders
-
-This allows queries to be properly prepared and escaped; the following lines are equivalent.
-
-```
-"SELECT group FROM users WHERE identifier = ?", {identifier}
-"SELECT group FROM users WHERE identifier = :identifier", {identifier = identifier}
-"SELECT group FROM users WHERE identifier = @identifier", {['@identifier'] = identifier}
-```
-
-Named placeholders are deprecated and should be avoided as much as possible.
-
-<br><br><br><br><br>
-
-<hr>
-<p align='center'><a href='https://discord.gg/mEM6eYdXPm'>Discord</a></p>
-<hr>
+- Install [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua) to ease development with annotations, type checking, diagnostics, and more.
+- See [ox_types](https://github.com/overextended/ox_types) for our Lua type definitions.

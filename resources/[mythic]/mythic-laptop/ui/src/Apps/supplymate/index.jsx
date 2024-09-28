@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
 
 import User from './components/User';
 import Selector from './Screens/Selector';
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tabPanel: {
 		top: 0,
-		height: '94.5%',
+		height: '93.25%',
 	},
 	list: {
 		height: '100%',

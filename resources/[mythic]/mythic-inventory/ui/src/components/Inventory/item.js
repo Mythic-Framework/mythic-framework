@@ -6,18 +6,24 @@ const lua2json = (lua) =>
 	);
 
 const getItemImage = (item, itemData) => {
-	const metadata = Boolean(item?.MetaData)
-		? typeof item?.MetaData == 'string'
-			? lua2json(item.MetaData)
-			: item.MetaData
-		: Object();
-
-	if (metadata?.CustomItemImage) {
-		return metadata?.CustomItemImage;
+	//console.log(item, itemData);
+	if (item?.MetaData?.CustomItemImage) {
+		return item?.MetaData?.CustomItemImage;
 	} else if (Boolean(itemData) && Boolean(itemData.iconOverride)) {
-		return `../images/items/${itemData.iconOverride}.webp`;
+		try {
+			return require(`../../../images/items/${itemData.iconOverride}.webp`).default;
+		} catch (error) {
+			//console.log("Error 1");
+			return null; 
+		}
 	} else {
-		return `../images/items/${itemData.name}.webp`;
+		try {
+			return require(`../../../images/items/${itemData?.name || item?.Name || item?.name}.webp`).default;
+		} catch (error) {
+			//console.log("Error", error);
+			return null; 
+			   
+		}
 	}
 };
 

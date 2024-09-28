@@ -1,5 +1,7 @@
 export const initialState = {
-	alerts: [],
+	alerts: [
+		//"Test alert",
+	],
 };
 
 export default (state = initialState, action) => {

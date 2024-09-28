@@ -6,7 +6,7 @@ const KeyListener = (props) => {
 	const handleEvent = (event) => {
 		const { dispatch } = props;
 		if (event.keyCode === 114 || event.keyCode === 27) {
-			dispatch({ type: 'PHONE_NOT_VISIBLE' });
+			dispatch({ type: 'LAPTOP_NOT_VISIBLE' });
 		}
 	};
 

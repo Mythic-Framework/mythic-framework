@@ -42,9 +42,9 @@ AddEventHandler('Core:Shared:Ready', function()
 		RetrieveComponents()
 
 		Keybinds:Add("targeting_starts", "LMENU", "keyboard", "Targeting (Third Eye) (Hold)", function()
-			if IS_SPAWNED then
-				StartTargeting()
-			end
+            if IS_SPAWNED then
+                StartTargeting()
+            end
 		end, function()
 			if not InTargetingMenu then
 				StopTargeting()

@@ -38,7 +38,7 @@ const base = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'file-shield'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -62,7 +62,7 @@ const attorney = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'file-shield'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -88,7 +88,7 @@ const attorney = [
 const systemAdmin = [
 	{
 		name: 'system-admin',
-		icon: ['fas', 'square-terminal'],
+		icon: ['fas', 'terminal'],
 		label: 'System Admin',
 		path: '/system',
 		exact: false,
@@ -103,7 +103,7 @@ const systemAdmin = [
 				exact: true,
 			},
 			{
-				icon: ['fas', 'screen-users'],
+				icon: ['fas', 'users-line'],
 				label: 'Full Roster',
 				path: '/system/gov-roster',
 				exact: true,
@@ -140,7 +140,7 @@ const police = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-contract'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -161,7 +161,7 @@ const police = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'cars'],
+				icon: ['fas', 'car'],
 				label: 'Vehicles',
 				path: '/search/vehicles',
 				exact: false,
@@ -173,7 +173,7 @@ const police = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'raygun'],
+				icon: ['fas', 'gun'],
 				label: 'Firearms',
 				path: '/search/firearms',
 				exact: false,
@@ -194,14 +194,14 @@ const police = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'file-shield'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
 	},
 	{
 		name: 'roster',
-		icon: ['fas', 'user-police-tie'],
+		icon: ['fas', 'users-line'],
 		label: 'Roster',
 		path: '/roster',
 		exact: false,
@@ -215,21 +215,21 @@ const police = [
 	},
 	{
 		name: 'sops',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'swatchbook'],
 		label: 'SOP\'s',
 		path: '/sops',
 		exact: true,
 	},
 	{
 		name: 'comms',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'book'],
 		label: 'Communication Guide',
 		path: '/comms',
 		exact: true,
 	},
 	{
 		name: 'admin',
-		icon: ['fas', 'user-crown'],
+		icon: ['fas', 'building-shield'],
 		label: 'High Command',
 		path: '/admin',
 		exact: false,
@@ -277,7 +277,7 @@ const doj = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'cars'],
+				icon: ['fas', 'car'],
 				label: 'Vehicles',
 				path: '/search/vehicles',
 				exact: false,
@@ -289,7 +289,7 @@ const doj = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'raygun'],
+				icon: ['fas', 'gun'],
 				label: 'Firearms',
 				path: '/search/firearms',
 				exact: false,
@@ -310,7 +310,7 @@ const doj = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-contract'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -318,7 +318,7 @@ const doj = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'file-shield'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -363,7 +363,7 @@ const districtattorney = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'cars'],
+				icon: ['fas', 'car'],
 				label: 'Vehicles',
 				path: '/search/vehicles',
 				exact: false,
@@ -375,7 +375,7 @@ const districtattorney = [
 				exact: false,
 			},
 			{
-				icon: ['fas', 'raygun'],
+				icon: ['fas', 'gun'],
 				label: 'Firearms',
 				path: '/search/firearms',
 				exact: false,
@@ -396,7 +396,7 @@ const districtattorney = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-contract'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -404,7 +404,7 @@ const districtattorney = [
 	},
 	{
 		name: 'warrants',
-		icon: ['fas', 'file-certificate'],
+		icon: ['fas', 'file-shield'],
 		label: 'Warrants',
 		path: '/warrants',
 		exact: false,
@@ -438,7 +438,7 @@ const medical = [
 	},
 	{
 		name: 'report',
-		icon: ['fas', 'file-plus'],
+		icon: ['fas', 'file-contract'],
 		label: 'Create Report',
 		path: '/create/report',
 		submenu: false,
@@ -460,7 +460,7 @@ const medical = [
 	},
 	{
 		name: 'comms',
-		icon: ['fas', 'books'],
+		icon: ['fas', 'book'],
 		label: 'Communication Guide',
 		path: '/comms',
 		exact: true,
@@ -474,7 +474,7 @@ const medical = [
 	// },
 	{
 		name: 'admin',
-		icon: ['fas', 'user-crown'],
+		icon: ['fas', 'building-shield'],
 		label: 'Management',
 		path: '/admin',
 		exact: false,

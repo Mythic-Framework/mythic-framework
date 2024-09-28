@@ -39,6 +39,18 @@ _appData = {
 		requirements = {},
 	},
 	{
+		name = "camera",
+		storeLabel = "Camera",
+		label = "Camera",
+		icon = "camera",
+		color = "#007494",
+		params = "",
+		hidden = false,
+		canUninstall = false,
+		store = false,
+		unread = 0,
+	},
+	{
 		name = "contacts",
 		storeLabel = "Contacts",
 		label = "Contacts",

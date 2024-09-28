@@ -201,6 +201,7 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 
 		local list = Phone.LSUnderground.Chopping:FindList(source, data.vNet)
 		local isInProg = Phone.LSUnderground.Chopping:InProgress(source, list?.type, model, list?.listId)
+
 		if list ~= nil and not isInProg then
 			_pChopping[source] = entState.VIN
 			_inProgress[entState.VIN] = {
@@ -212,6 +213,7 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 			_chopped[entState.VIN] = {
 				parts = {},
 				tires = {},
+				wheels = {},
 				body = false,
 			}
 			cb(true)
@@ -268,6 +270,36 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 						if list ~= nil then
 							if not _chopped[entState.VIN].tires[data.index] then
 								_chopped[entState.VIN].tires[data.index] = true
+
+								local repLevel = Reputation:GetLevel(source, "Chopping") or 0
+								local calcLvl = repLevel
+								if calcLvl < 1 then calcLvl = 1 end
+								calcLvl = math.ceil(calcLvl / 2)
+								Loot:CustomWeightedSetWithCountAndModifier(_lootTables.materials, char:GetData("SID"), 1, calcLvl)
+								Inventory:AddItem(char:GetData("SID"), 'rubber', math.random(12, 78) * calcLvl, {}, 1)
+							end
+							return cb(true)
+						end
+					end
+				end
+			end
+		end
+		cb(false)
+	end)
+
+	Callbacks:RegisterServerCallback("Phone:LSUnderground:Chopping:ChopWheel", function(source, data, cb)
+		if data?.index ~= nil then
+			local plyr = Fetch:Source(source)
+			local pState = Player(source).state
+			local entState = Entity(NetworkGetEntityFromNetworkId(data.vNet)).state
+			if plyr ~= nil then
+				local char = plyr:GetData("Character")
+				if char ~= nil then
+					if not entState.Owned then
+						local list = Phone.LSUnderground.Chopping:FindList(source, data.vNet)
+						if list ~= nil then
+							if not _chopped[entState.VIN].wheels[data.index] then
+								_chopped[entState.VIN].wheels[data.index] = true
 
 								local repLevel = Reputation:GetLevel(source, "Chopping") or 0
 								local calcLvl = repLevel
@@ -622,7 +654,7 @@ PHONE.LSUnderground.Chopping = {
 						local personallists = char:GetData("ChopLists")
 						for k, v in pairs(personallists) do
 							local chopEntry = Phone.LSUnderground.Chopping:IsOnList(v, model)
-							if chopEntry ~= nil then
+							if chopEntry ~= nil and chopEntry then
 								return { listId = k, entry = chopEntry, type = 3, model = model }
 							end
 						end

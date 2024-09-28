@@ -1,4 +1,4 @@
-local _noUpdate = { 'Source', 'User', '_id', 'ID', 'First', 'Last', 'Phone', 'DOB', 'Gender', 'TempJob', 'Ped', 'MDTHistory', 'Parole', 'Preview' }
+local _noUpdate = { 'Source', 'User', '_id', 'ID', 'First', 'Last', 'Phone', 'DOB', 'Gender', 'TempJob', 'Ped', 'MDTHistory', 'Parole', 'Preview', 'Team', 'LSUNDGBan' }
 
 local _saving = {}
 

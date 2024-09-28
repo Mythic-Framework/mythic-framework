@@ -24,8 +24,8 @@ RegisterNetEvent('FleetDealers:Server:Purchase', function(shop, vehicle, livery)
                     Wait(200)
                     Vehicles.Owned:AddToFleet(
                         shopData.job,
-                        false,
-                        0,
+                        shopData.workplace or false,
+                        chosenVehicle.level or 0,
                         chosenVehicle.vehicle,
                         chosenVehicle.type or 0,
                         {
@@ -42,7 +42,8 @@ RegisterNetEvent('FleetDealers:Server:Purchase', function(shop, vehicle, livery)
                                 Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'cars')
                             end
                         end,
-                        properties
+                        properties,
+                        chosenVehicle.qaul or false
                     )
                 else
                     Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed - Not Enough Money in the Bank', 5000, 'cars')

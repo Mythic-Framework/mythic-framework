@@ -1,5 +1,5 @@
 local _blacklistedJobs = { "police", "ems", "government" }
-local _tabletJobs = { 
+local _laptopJobs = {
 	"pdm",
 	"realestate",
 	"redline",
@@ -175,41 +175,41 @@ local _jobPerms = {
 		}
 	},
 
-	TABLET_CREATE_NOTICE = {
-		name = "Tablet - Create Notice",
-		restricted = _tabletJobs,
+	LAPTOP_CREATE_NOTICE = {
+		name = "Laptop - Create Notice",
+		restricted = _laptopJobs,
 	},
-	TABLET_DELETE_NOTICE = {
-		name = "Tablet - Delete Notice",
-		restricted = _tabletJobs,
+	LAPTOP_DELETE_NOTICE = {
+		name = "Laptop - Delete Notice",
+		restricted = _laptopJobs,
 	},
-	TABLET_CREATE_DOCUMENT = {
-		name = "Tablet - Create Document",
-		restricted = _tabletJobs,
+	LAPTOP_CREATE_DOCUMENT = {
+		name = "Laptop - Create Document",
+		restricted = _laptopJobs,
 	},
-	TABLET_VIEW_DOCUMENT = {
-		name = "Tablet - View Document",
-		restricted = _tabletJobs,
+	LAPTOP_VIEW_DOCUMENT = {
+		name = "Laptop - View Document",
+		restricted = _laptopJobs,
 	},
-	TABLET_PIN_DOCUMENT = {
-		name = "Tablet - Pin Document",
-		restricted = _tabletJobs,
+	LAPTOP_PIN_DOCUMENT = {
+		name = "Laptop - Pin Document",
+		restricted = _laptopJobs,
 	},
-	TABLET_DELETE_DOCUMENT = {
-		name = "Tablet - Delete Document",
-		restricted = _tabletJobs,
+	LAPTOP_DELETE_DOCUMENT = {
+		name = "Laptop - Delete Document",
+		restricted = _laptopJobs,
 	},
-	TABLET_CREATE_RECEIPT = {
-		name = "Tablet - Create Receipt",
-		restricted = _tabletJobs,
+	LAPTOP_CREATE_RECEIPT = {
+		name = "Laptop - Create Receipt",
+		restricted = _laptopJobs,
 	},
-	TABLET_MANAGE_RECEIPT = {
-		name = "Tablet - Manage Receipts",
-		restricted = _tabletJobs,
+	LAPTOP_MANAGE_RECEIPT = {
+		name = "Laptop - Manage Receipts",
+		restricted = _laptopJobs,
 	},
-	TABLET_CLEAR_RECEIPT = {
-		name = "Tablet - Clear All Receipts",
-		restricted = _tabletJobs,
+	LAPTOP_CLEAR_RECEIPT = {
+		name = "Laptop - Clear All Receipts",
+		restricted = _laptopJobs,
 	},
 	CASINO_LOCK_DOORS = {
 		name = "Casino - Lock Doors",

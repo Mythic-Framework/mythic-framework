@@ -141,19 +141,6 @@ AddEventHandler("Core:Shared:Ready", function()
 			{ label = "Rank 9", value = 500000 },
 			{ label = "Rank 10", value = 1000000 },
 		}, true)
-
-		Reputation:Create("Chopping", "Vehicle Chopping", {
-			{ label = "Rank 1", value = 1000 },
-			{ label = "Rank 2", value = 2500 },
-			{ label = "Rank 3", value = 5000 },
-			{ label = "Rank 4", value = 10000 },
-			{ label = "Rank 5", value = 25000 },
-			{ label = "Rank 6", value = 50000 },
-			{ label = "Rank 7", value = 100000 },
-			{ label = "Rank 8", value = 250000 },
-			{ label = "Rank 9", value = 500000 },
-			{ label = "Rank 10", value = 1000000 },
-		}, true)
 	end)
 end)
 

@@ -34,6 +34,13 @@ RegisterNUICallback("Cancel", function(data, cb)
 	cb(Ped.Customization:Cancel())
 end)
 
+RegisterNUICallback("SaveImport", function(data, cb)
+	if data.Label == '' then return Notification:Error("Outfit Label can't be empty.") end
+	if data.Code == '' then return Notification:Error("Outfit Code can't be empty.") end
+
+    TriggerEvent("Wardrobe:Client:ApplySharedOutfit", data.Label, data.Code)
+end)
+
 function deepcopy(orig)
 	local orig_type = type(orig)
 	local copy
@@ -143,7 +150,7 @@ RegisterNUICallback("SetPed", function(data, cb)
 	RequestModel(model)
 	local c = 0
 	while not HasModelLoaded(model) do
-		Wait(1)
+		Citizen.Wait(1)
 		c = c + 1
 		if c >= 2000 then
 			cb(false)
@@ -164,7 +171,7 @@ RegisterNUICallback("SetPed", function(data, cb)
 	player = PlayerPedId()
 	SetEntityMaxHealth(player, 200)
 	SetEntityHealth(player, GetEntityMaxHealth(player))
-	LocalPlayer.state:set('ped', player, true)
+	LocalPlayer.state.ped = player
 	SetPedDefaultComponentVariation(player)
 	SetEntityAsMissionEntity(player, true, true)
 	SetModelAsNoLongerNeeded(model)

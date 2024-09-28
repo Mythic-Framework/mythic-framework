@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
 		zIndex: 1,
 	},
 	img: {
-		height: 190,
+		height: 125,
 		width: '100%',
 		overflow: 'hidden',
 		zIndex: 3,
-		backgroundSize: '70%',
+		backgroundSize: '55%',
 		backgroundRepeat: 'no-repeat',
 		backgroundPosition: 'center center',
 	},
@@ -36,19 +36,34 @@ const useStyles = makeStyles((theme) => ({
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		color: theme.palette.text.main,
-		background: theme.palette.secondary.light,
+		background: 'rgba(12,24,38, 0.933)',
 		borderTop: `1px solid ${theme.palette.border.divider}`,
+		borderBottomLeftRadius: 6,
+		borderBottomRightRadius: 6,
 		zIndex: 4,
 	},
 	slot: {
-		width: 165,
-		height: 190,
-		backgroundColor: `${theme.palette.secondary.light}61`,
+		width: 125,
+		height: 125,
+		background: `${theme.palette.secondary.dark}61`,
+		border: `1px solid ${theme.palette.border.divider}`,
 		position: 'relative',
 		zIndex: 2,
-		'&.mini': {
-			width: 132,
-			height: 152,
+		borderRadius: 5,
+		'&.rarity-1': {
+			// borderColor: `${theme.palette.rarities.rare1}40`,
+		},
+		'&.rarity-2': {
+			// borderColor: `${theme.palette.rarities.rare2}80`,
+		},
+		'&.rarity-3': {
+			// borderColor: `${theme.palette.rarities.rare3}80`,
+		},
+		'&.rarity-4': {
+			// borderColor: `${theme.palette.rarities.rare4}80`,
+		},
+		'&.rarity-5': {
+			// borderColor: `${theme.palette.rarities.rare5}80`,
 		},
 	},
 	count: {
@@ -57,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 		position: 'absolute',
 		textAlign: 'right',
 		padding: '0 5px',
-		textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
 		color: theme.palette.text.main,
 		zIndex: 4,
 	},
@@ -66,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 		left: 0,
 		position: 'absolute',
 		padding: '0 5px',
-		textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
+		// textShadow: `0 0 5px ${theme.palette.secondary.dark}`,
 		color: theme.palette.success.main,
 		zIndex: 4,
 		'&::before': {
@@ -85,9 +99,12 @@ const useStyles = makeStyles((theme) => ({
 		height: 7,
 		background: 'transparent',
 		zIndex: 4,
+		'&.broken': {
+		background: theme.palette.text.alt,
+		},
 	},
 	broken: {
-		backgroundColor: theme.palette.text.alt,
+		background: theme.palette.text.alt,
 		transition: 'none !important',
 	},
 	progressbar: {

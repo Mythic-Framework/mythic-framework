@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory } from 'react-router';
 import Draggable from 'react-draggable'; // The default
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,7 +16,6 @@ export default ({
 	width = '100%',
 	height = '100%',
 }) => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const focused = useSelector((state) => state.apps.focused);
 	const useStyles = makeStyles((theme) => ({

@@ -479,6 +479,7 @@ Config.VehicleMenu = {
 		icon = "screwdriver-wrench",
 		isEnabled = function(data, entity)
 			local entState = Entity(entity.entity).state
+			print("states", LocalPlayer.state.isDead, LocalPlayer.state.inChopZone, LocalPlayer.state.chopping, entState.Owned)
 			return not LocalPlayer.state.isDead and LocalPlayer.state.inChopZone ~= nil and LocalPlayer.state.chopping == nil and not entState.Owned
 		end,
 		text = "Start Chopping",
@@ -675,7 +676,7 @@ Config.PlayerMenu = {
 			{ item = "fluffyhandcuffs", count = 1 },
 		},
 		isEnabled = function(data, target)
-			return not Player(target.serverId).state.isCuffed
+			return not Player(target.serverId).state.isCuffed and not Player(target.serverId).state.isHardCuffed and not Player(target.serverId).state.isDead
 		end,
 	},
 	{

@@ -52,6 +52,19 @@ export const SavePed = (state) => {
 	};
 };
 
+export const SaveImport = (label, code) => {
+    return (dispatch) => {
+        Nui.send('Cancel');
+        Nui.send('SaveImport', {
+            Label: label,
+            Code: code
+        })
+        dispatch({
+            type: 'APP_HIDE',
+        });
+    };
+};
+
 export const CancelEdits = () => {
 	return (dispatch) => {
 		Nui.send('Cancel');

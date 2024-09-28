@@ -40,7 +40,7 @@ AddEventHandler("Phone:Server:RegisterCallbacks", function()
 				local hasVpn = hasValue(char:GetData("States"), "PHONE_VPN")
 				for k, v in ipairs(marketItems) do
 					if
-						(v.rep == nil or Reputation:GetLevel(source, v.rep) >= (v.repLvl or 1))
+						(v.rep == nil or Reputation:GetLevel(source, v.rep) and Reputation:GetLevel(source, v.rep) >= (v.repLvl or 1))
 						and (not v.vpn or hasVpn)
 						and (
 							not v.requireCurrency

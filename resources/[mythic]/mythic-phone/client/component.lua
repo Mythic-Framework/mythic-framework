@@ -246,6 +246,13 @@ RegisterNetEvent("Phone:Client:Close", function()
 	Phone:Close()
 end)
 
+RegisterNUICallback("OpenCamera", function(data, cb)
+	Phone:Close(true)
+	Wait(300)
+	TriggerEvent("Animations:Client:Selfie", true)
+end)
+
+-- Register it above this
 RegisterNUICallback("ClosePhone", function(data, cb)
 	cb("OK")
 	Phone:Close()

@@ -52,6 +52,7 @@ function RetrieveComponents()
 	Progress = exports["mythic-base"]:FetchComponent("Progress")
 	Jobs = exports["mythic-base"]:FetchComponent("Jobs")
 	Properties = exports["mythic-base"]:FetchComponent("Properties")
+	Action = exports["mythic-base"]:FetchComponent("Action")
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -79,6 +80,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Progress",
 		"Jobs",
 		"Properties",
+		"Action"
 	}, function(error)
 		if #error > 0 then
 			return

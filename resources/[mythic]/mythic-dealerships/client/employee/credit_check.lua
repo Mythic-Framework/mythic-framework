@@ -1,6 +1,6 @@
 AddEventHandler('Dealerships:Client:StartRunningCredit', function(hit, data)
     Input:Show(
-        "Run Credit Check & See Max Borrowable Amount", 
+        "Run Credit Check & See Max Borrowable Amount",
         "Customer State ID",
         {
             {
@@ -13,7 +13,7 @@ AddEventHandler('Dealerships:Client:StartRunningCredit', function(hit, data)
                 }
             },
         },
-        "Dealerships:Client:RecieveInput", 
+        "Dealerships:Client:RecieveInput",
         data
     )
 end)

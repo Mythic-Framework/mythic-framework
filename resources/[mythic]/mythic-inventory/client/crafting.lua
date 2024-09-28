@@ -9,6 +9,7 @@ CRAFTING = {
 					SendNUIMessage({
 						type = "SET_BENCH",
 						data = {
+							benchName = "Workbench",
 							bench = bench,
 							cooldowns = results.cooldowns,
 							actionString = results.string,

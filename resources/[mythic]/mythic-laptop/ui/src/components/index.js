@@ -11,7 +11,9 @@ import Editor from './Editor';
 import LightboxImage from './LightboxImage';
 import Loader from './Loader';
 import CurrencyInput from './CurrencyInput';
-
+import UserContent from './UserContent';
+import Error from './Error';
+import { ErrorBoundary } from './ErrorBoundary';
 export {
 	Header,
 	Footer,
@@ -26,4 +28,7 @@ export {
 	LightboxImage,
 	Loader,
 	CurrencyInput,
+	UserContent,
+	Error,
+	ErrorBoundary,
 };

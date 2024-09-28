@@ -1,14 +1,34 @@
 function defaultApps()
-	local defApps = {}
-	for k, v in pairs(LAPTOP_APPS) do
-		if not v.canUninstall then
-			table.insert(defApps, v.name)
-		end
-	end
+	-- local defApps = {}
+	-- for k, v in pairs(LAPTOP_APPS) do
+	-- 	if not v.canUninstall then
+	-- 		table.insert(defApps, v.name)
+	-- 	end
+	-- end
+	-- return {
+	-- 	installed = defApps,
+	-- 	home = defApps,
+	-- }
+
 	return {
-		installed = defApps,
-		home = defApps,
-		dock = dock,
+		installed = {
+			"recyclebin",
+			"settings",
+			"files",
+			"internet",
+			"bizwiz",
+			"teams",
+			"lsunderground",
+		},
+		home = {
+			"recyclebin",
+			"settings",
+			"files",
+			"internet",
+			"bizwiz",
+			"teams",
+			"lsunderground",
+		},
 	}
 end
 
@@ -29,22 +49,26 @@ function table.copy(t)
 	return setmetatable(u, getmetatable(t))
 end
 
-local defaultSettings = {
-	wallpaper = "wallpaper",
-	ringtone = "ringtone1.ogg",
-	texttone = "text1.ogg",
-	colors = {
-		accent = "#1a7cc1",
-	},
-	zoom = 75,
-	volume = 100,
-	notifications = true,
-	appNotifications = {},
-}
+function defaultSettings()
+	return {
+		wallpaper = "wallpaper",
+		texttone = "notification.ogg",
+		colors = {
+			accent = "#1a7cc1",
+		},
+		zoom = 75,
+		volume = 100,
+		notifications = true,
+		appNotifications = {},
+	}
+end
 
 local defaultPermissions = {
 	redline = {
 		create = false,
+	},
+	lsunderground = {
+		admin = false,
 	},
 }
 
@@ -83,6 +107,7 @@ function RetrieveComponents()
 	Robbery = exports["mythic-base"]:FetchComponent("Robbery")
 	Wallet = exports["mythic-base"]:FetchComponent("Wallet")
 	Sequence = exports["mythic-base"]:FetchComponent("Sequence")
+	Phone = exports["mythic-base"]:FetchComponent("Phone")
 	Laptop = exports["mythic-base"]:FetchComponent("Laptop")
 	RegisterChatCommands()
 end
@@ -116,6 +141,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Robbery",
 		"Wallet",
 		"Sequence",
+		"Phone",
 	}, function(error)
 		if #error > 0 then
 			return
@@ -125,6 +151,19 @@ AddEventHandler("Core:Shared:Ready", function()
 		Startup()
 		TriggerEvent("Laptop:Server:RegisterMiddleware")
 		TriggerEvent("Laptop:Server:RegisterCallbacks")
+
+		Inventory.Items:RegisterUse("laptop", "Laptop", function(source, itemData)
+			TriggerClientEvent("Laptop:Client:Open", source)
+		end)
+
+		Reputation:Create("Boosting", "Boosting", {
+			{ label = "D", value = 0 },
+			{ label = "C", value = 6000 },
+			{ label = "B", value = 15000 },
+			{ label = "A", value = 50000 },
+			{ label = "A+", value = 120000 }, -- Get Scratching
+			{ label = "S+", value = 150000 },
+		}, true)
 	end)
 end)
 
@@ -134,7 +173,7 @@ AddEventHandler("Laptop:Server:RegisterMiddleware", function()
 		TriggerClientEvent("Laptop:Client:SetApps", source, LAPTOP_APPS)
 
 		local char = Fetch:Source(source):GetData("Character")
-		local myPerms = char:GetData("LaptopPermissions")
+		local myPerms = char:GetData("LaptopPermissions") or {}
 		local modified = false
 		for app, perms in pairs(defaultPermissions) do
 			if myPerms[app] == nil then
@@ -153,6 +192,14 @@ AddEventHandler("Laptop:Server:RegisterMiddleware", function()
 		if modified then
 			char:SetData("LaptopPermissions", myPerms)
 		end
+
+		if not char:GetData("LaptopSettings") then
+			char:SetData("LaptopSettings", defaultSettings())
+		end
+
+		if not char:GetData("LaptopApps") then
+			char:SetData("LaptopApps", defaultApps())
+		end
 	end, 1)
 	Middleware:Add("Laptop:UIReset", function(source)
 		Laptop:UpdateJobData(source)
@@ -160,17 +207,11 @@ AddEventHandler("Laptop:Server:RegisterMiddleware", function()
 	end)
 	Middleware:Add("Characters:Creating", function(source, cData)
 		local t = Middleware:TriggerEventWithData("Laptop:CharacterCreated", source, cData)
-		local aliases = {}
-
-		for k, v in ipairs(t) do
-			aliases[v.app] = v.alias
-		end
 
 		return {
 			{
-				Alias = aliases,
-				Apps = defaultApps(),
-				LaptopSettings = defaultSettings,
+				LaptopApps = defaultApps(),
+				LaptopSettings = defaultSettings(),
 				LaptopPermissions = defaultPermissions,
 			},
 		}
@@ -182,79 +223,6 @@ RegisterNetEvent("Laptop:Server:UIReset", function()
 end)
 
 AddEventHandler("Laptop:Server:RegisterCallbacks", function()
-	Callbacks:RegisterServerCallback("Laptop:UpdateAlias", function(src, data, cb)
-		local char = Fetch:Source(src):GetData("Character")
-		local alias = char:GetData("Alias") or {}
-		if data.unique then
-			local query = {
-				["Alias." .. data.app] = data.alias,
-				Phone = {
-					["$ne"] = char:GetData("Phone"),
-				},
-				Deleted = {
-					["$ne"] = true,
-				},
-			}
-
-			if data?.alias?.name ~= nil then
-				query = {
-					["Alias." .. data.app .. ".name"] = data.alias.name,
-					Phone = {
-						["$ne"] = char:GetData("Phone"),
-					},
-					Deleted = {
-						["$ne"] = true,
-					},
-				}
-			end
-			Database.Game:find({
-				collection = "characters",
-				query = query,
-			}, function(success, results)
-				if #results > 0 then
-					cb(false)
-				else
-					local upd = {
-						["Alias." .. data.app] = data.alias,
-					}
-
-					if data?.alias?.name ~= nil then
-						upd = {
-							["Alias." .. data.app .. ".name"] = data.alias.name,
-						}
-					end
-
-					Database.Game:updateOne({
-						collection = "characters",
-						query = {
-							_id = char:GetData('ID'),
-						},
-						update = {
-							["$set"] = upd,
-						},
-					}, function(success, updated)
-						if success then
-							alias[data.app] = data.alias
-							char:SetData("Alias", alias)
-							cb(true)
-		
-							TriggerEvent("Phone:Server:AliasUpdated", src)
-							TriggerEvent("Laptop:Server:AliasUpdated", src)
-						else
-							cb(false)
-						end
-					end)
-				end
-			end)
-		else
-			alias[data.app] = data.alias
-			char:SetData("Alias", alias)
-			cb(true)
-			TriggerEvent("Phone:Server:AliasUpdated", src)
-			TriggerEvent("Laptop:Server:AliasUpdated", src)
-		end
-	end)
-
 	Callbacks:RegisterServerCallback("Laptop:Permissions", function(src, data, cb)
 		local char = Fetch:Source(src):GetData("Character")
 

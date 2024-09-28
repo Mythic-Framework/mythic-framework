@@ -1,5 +1,5 @@
-name 'AuthenticRP RP MDT'
-description 'Mobile Data Terminal Written For AuthenticRP RP'
+name 'Mythic Framework MDT'
+description 'Mobile Data Terminal Written For Mythic Framework'
 author 'Dr Nick'
 version 'v1.0.0'
 lua54 'yes'

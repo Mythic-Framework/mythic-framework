@@ -1,22 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
 import { Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Moment from 'react-moment';
 
 import { useMyApps, useMyStates } from '../../hooks';
-import mrpLogo from '../../assets/imgs/mrp.png';
+import mfwLogo from '../../assets/imgs/mythic_logo_laptop.png';
 
 export default (props) => {
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const hasState = useMyStates();
 	const apps = useMyApps();
 	const time = useSelector((state) => state.laptop.time);
 	const focused = useSelector((state) => state.apps.focused);
 	const openApps = useSelector((state) => state.apps.appStates);
+	const myGroup = useSelector((state) => state.data.data.myGroup);
 
 	const useStyles = makeStyles((theme) => ({
 		taskbar: {
@@ -77,13 +76,16 @@ export default (props) => {
 			'&:first-of-type': {
 				marginLeft: 0,
 			},
-			'&.wifi': {
+			'&.signal': {
 				color: hasState('PHONE_VPN')
 					? theme.palette.error.main
 					: theme.palette.text.main,
 			},
 			'&.race': {
 				color: theme.palette.info.main,
+			},
+			'&.team': {
+				color: '#00FF8A',
 			},
 		},
 		sysTime: {
@@ -130,13 +132,13 @@ export default (props) => {
 	};
 
 	const GoHome = () => {
-		//history.push('/');
+		history.push('/');
 	};
 
 	return (
 		<div className={classes.taskbar}>
 			<div className={classes.startBtn} onClick={GoHome}>
-				<img src={mrpLogo} className={classes.startIcon} />
+				<img src={mfwLogo} className={classes.startIcon} />
 			</div>
 			<div className={classes.appIcons}>
 				{openApps.map((appState) => {
@@ -161,6 +163,14 @@ export default (props) => {
 				})}
 			</div>
 			<div className={classes.systemInfo}>
+				{myGroup && (
+					<div className={classes.sysTime}>
+						<FontAwesomeIcon
+							className={`${classes.headerIcon} team`}
+							icon="people-group"
+						/>
+					</div>
+				)}
 				{hasState('RACE_DONGLE') && (
 					<div className={classes.sysTime}>
 						<FontAwesomeIcon
@@ -171,8 +181,8 @@ export default (props) => {
 				)}
 				<div className={classes.sysTime}>
 					<FontAwesomeIcon
-						className={`${classes.headerIcon} wifi`}
-						icon={'wifi'}
+						className={`${classes.headerIcon} signal`}
+						icon="signal"
 					/>
 				</div>
 				<div className={classes.sysTime}>
@@ -184,17 +194,17 @@ export default (props) => {
 				<div className={classes.sysTime}>
 					<FontAwesomeIcon
 						className={classes.headerIcon}
-						icon="signal"
+						icon="wifi"
 					/>
 				</div>
-				<div className={classes.sysTime} style={{ width: 90 }}>
+				<div className={classes.sysTime} style={{ width: '90px' }}>
 					<div className={classes.dateWrapper}>
 						<div className={classes.dateDetails}>
-							{(time?.hour ?? 0).toString().padStart(2, '0')}:
-							{(time?.minute ?? 0).toString().padStart(2, '0')}
+						{String(time?.hour ?? 0).padStart(2, '0')}:
+						{String(time?.minute ?? 0).padStart(2, '0')}
 						</div>
 						<div className={classes.dateDetails}>
-							<Moment format="YYYY/MM/DD" />
+						<Moment format="MM/DD/YYYY" />
 						</div>
 					</div>
 				</div>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import {
 	Menu,
 	MenuItem,
@@ -74,14 +73,14 @@ const useStyles = makeStyles((theme) => ({
 		background: `${theme.palette.primary.main}40`,
 	},
 	appIcon: {
-		fontSize: 35,
-		width: 60,
-		height: 60,
+		fontSize: 30,
+		width: 50,
+		height: 50,
 		margin: 'auto',
 		color: '#fff',
 	},
 	appLabel: {
-		fontSize: 16,
+		fontSize: 12,
 		overflow: 'hidden',
 		textOverflow: 'ellipsis',
 		textShadow: '0px 0px 5px #000000',
@@ -122,7 +121,6 @@ export default (props) => {
 	const showAlert = useAlert();
 	const appButton = useAppButton();
 	const classes = useStyles();
-	const history = useHistory();
 	const apps = useMyApps();
 	const installed = useSelector(
 		(state) => state.data.data.player?.Apps?.installed,

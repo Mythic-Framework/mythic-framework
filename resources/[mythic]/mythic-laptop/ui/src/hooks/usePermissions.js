@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 
 export default () => {
 	const myPermissions = useSelector(
-		(state) => state.data.data.player.PhonePermissions,
+		(state) => state.data.data.player.LaptopPermissions,
 	);
 	return (app, permission) => {
 		if (

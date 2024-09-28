@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		padding: 25,
+		backgroundColor: 'rgb(18,18,28)',
 	},
 	input: {
 		width: '100%',
@@ -16,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 	},
 	btn: {
-		background: theme.palette.secondary.light,
+		background: '#0b0a25b7',
+		color: 'rgb(165,210,74)',
 		transition: 'background ease-in 0.15s',
 		'&:hover': {
-			background: theme.palette.secondary.main,
+			background: 'rgb(18,18,28)',
 		},
 	},
 }));

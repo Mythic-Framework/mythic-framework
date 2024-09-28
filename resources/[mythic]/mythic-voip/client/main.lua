@@ -72,7 +72,7 @@ AddEventHandler("Core:Shared:Ready", function()
 		end)
 
 		Keybinds:Add("voip_radio", "CAPITAL", "keyboard", "Voice - Radio - Push to Talk", function()
-			if _characterLoaded and PLAYER_CONNECTED then
+			if _characterLoaded and PLAYER_CONNECTED and not LocalPlayer.state.isCuffed and not LocalPlayer.state.isHardCuffed and not LocalPlayer.state.isDead then
 				RadioKeyDown()
 			end
 		end, function()

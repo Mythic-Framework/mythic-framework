@@ -34,6 +34,7 @@ export default ({ crafting }) => {
 		if (!Boolean(crafting)) return;
 		setEnding(true)
 		try {
+			// console.log("Ending Crafting");
 			Nui.send('Crafting:End', crafting.recipe)
 		} catch (err) {}
 	};

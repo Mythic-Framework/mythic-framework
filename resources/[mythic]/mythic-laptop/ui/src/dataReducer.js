@@ -1,22 +1,19 @@
 export const initialState = {
 	data:
-		process.env.NODE_ENV == 'production'
-			? Object()
-			: {
+		process.env.NODE_ENV != 'production'
+			? {
 					externalJobs: ['police', 'ems'],
 					player: null,
 					playerJobPerms: null,
 					JobData: null,
 					externalJobs: [],
-					onDuty: null,
+					onDuty: 'realestate',
 					myGroup: {
-						Owner: {
-							SID: 1,
-							First: 'Testy',
-							Last: 'McTest',
-						},
+						ID: 1,
+						Name: 'Team Name',
 						Members: Array(
 							{
+								Leader: true,
 								SID: 1,
 								First: 'Testy',
 								Last: 'McTest',
@@ -29,6 +26,10 @@ export const initialState = {
 						),
 						State: 0,
 					},
+					myGroup: null,
+					// boostingQueue: {
+					// 	joined: 1673559272
+					// },
 					player: {
 						Source: 1,
 						_id: '6088b90c93a7b379e0c83ef2',
@@ -38,18 +39,20 @@ export const initialState = {
 						Phone: '121-195-9016',
 						Gender: 0,
 						Callsign: 404,
-						Job: {
-							Workplace: {
-								Id: 'dyn8',
-								Name: 'Dynasty 8',
+						Jobs: [
+							{
+								Workplace: {
+									Id: 'dyn8',
+									Name: 'Dynasty 8',
+								},
+								Name: 'Real Estate',
+								Grade: {
+									Id: 'owner',
+									Name: 'Owner',
+								},
+								Id: 'realestate',
 							},
-							Name: 'Real Estate',
-							Grade: {
-								Id: 'owner',
-								Name: 'Owner',
-							},
-							Id: 'realestate',
-						},
+						],
 						Origin: 'United States',
 						First: 'Testy',
 						Last: 'McTest',
@@ -75,6 +78,28 @@ export const initialState = {
 							expression: 'default',
 							walk: 'default',
 							emoteBinds: [],
+						},
+						LaptopApps: {
+							home: [
+								'recyclebin',
+								'settings',
+								'files',
+								'internet',
+								'bizwiz',
+								'teams',
+								'terminal',
+								'lsunderground',
+							],
+							installed: [
+								'recyclebin',
+								'settings',
+								'files',
+								'internet',
+								'bizwiz',
+								'teams',
+								'terminal',
+								'lsunderground',
+							],
 						},
 						Apps: {
 							home: [
@@ -136,7 +161,7 @@ export const initialState = {
 						},
 						Armor: 100,
 						HP: 200,
-						PhonePermissions: {
+						LaptopPermissions: {
 							redline: {
 								create: true,
 							},
@@ -164,9 +189,9 @@ export const initialState = {
 						LaptopSettings: {
 							texttone: 'text1.ogg',
 							ringtone: 'ringtone1.ogg',
-							wallpaper: 'wallpaper',
+							wallpaper: 'wallpaper9',
 							colors: {
-								accent: '#1a7cc1',
+								accent: '#D50000',
 							},
 							notifications: true,
 							zoom: 105,
@@ -884,6 +909,92 @@ export const initialState = {
 							members: [8, 9, 10],
 						},
 					],
+					disabledBoostingContracts: [],
+					businessPages: [
+						{
+							id: 'Dashboard',
+							icon: ['fas', 'file-lines'],
+							label: 'Dashboard',
+						},
+						{
+							id: 'Create/Document',
+							icon: ['fas', 'file-lines'],
+							label: 'New Document',
+						},
+						{
+							id: 'Search/Document',
+							icon: ['fas', 'file-lines'],
+							label: 'Documents',
+						},
+						{
+							id: 'Search/Receipt',
+							icon: ['fas', 'file-lines'],
+							label: 'Receipts',
+						},
+						{
+							id: 'Search/ReceiptCount',
+							icon: ['fas', 'file-lines'],
+							label: 'Receipts Count',
+						},
+						{
+							id: 'View/Document',
+							icon: ['fas', 'file-lines'],
+							label: 'Test',
+						},
+						{
+							id: 'Casino/BigWin',
+							icon: ['fas', 'file-lines'],
+							label: 'Dyn 8',
+							permission: 'LAPTOP_VIEW_DOCUMENT',
+						},
+						{
+							id: 'Dynasty/Properties',
+							icon: ['fas', 'house'],
+							label: 'Properties',
+							permission: 'JOB_SELL',
+						},
+						{
+							id: 'Create/Notice',
+							hidden: true,
+						},
+						{
+							id: 'Search/Receipt',
+							hidden: true,
+						},
+						{
+							id: 'Create/Receipt',
+							hidden: true,
+						},
+						{
+							id: 'Tweet',
+							icon: [ "fas", "face-smile-beam" ],
+							label: "Business Twitter",
+							//permission: 'LAPTOP_TWEET',
+						},
+						{
+							id: 'TweetSettings',
+							icon: [ "fas", "user" ],
+							label: "Twitter Profile",
+							//permission: 'LAPTOP_TWEET',
+						},
+						{
+							id: 'FleetManagement',
+							icon: ['fas', 'car-on'],
+							label: 'Fleet Management',
+							//permission: 'LAPTOP_TWEET',
+						},
+					],
+					businessNotices: [
+						{
+							time: 1629380840 * 1000,
+							title: 'Test',
+							description: 'Test Description <b>Bitch</b>',
+						},
+					],
+					businessLogo: 'https://i.imgur.com/EU7HQji.png',
+			  }
+			: {
+					disabledBoostingContracts: [],
 			  },
 };
 export default (state = initialState, action) => {

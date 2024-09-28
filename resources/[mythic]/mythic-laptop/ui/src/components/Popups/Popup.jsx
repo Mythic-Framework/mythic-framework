@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, Avatar, IconButton, Paper, Collapse } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Moment from 'react-moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { useDismisser, useMyApps } from '../../hooks';
+import { useAppView, useDismisser, useMyApps } from '../../hooks';
 import Nui from '../../util/Nui';
 import DOMPurify from 'dompurify';
 
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	notifTitle: {
 		display: 'block',
-		fontSize: 18,
+		fontSize: 20,
 		color: theme.palette.text.main,
 		whiteSpace: 'nowrap',
 		overflow: 'hidden',
@@ -91,26 +90,26 @@ const useStyles = makeStyles((theme) => ({
 	actionView: {
 		color: theme.palette.info.light,
 		fontSize: 18,
-		height: 32,
-		width: 32,
+		height: 28,
+		width: 28,
 	},
 	actionAccept: {
 		color: theme.palette.success.main,
 		fontSize: 18,
-		height: 32,
-		width: 32,
+		height: 28,
+		width: 28,
 	},
 	actionCancel: {
 		color: theme.palette.error.light,
 		fontSize: 18,
-		height: 32,
-		width: 32,
+		height: 28,
+		width: 28,
 	},
 	actionBtns: {
 		position: 'absolute',
 		height: 'fit-content',
 		width: 'fit-content',
-		top: -5,
+		top: -2,
 		right: '2%',
 		margin: 'auto',
 	},
@@ -122,8 +121,7 @@ export default ({ id, notification }) => {
 	const dismisser = useDismisser();
 	const laptopOpen = useSelector((state) => state.laptop.visible);
 	const apps = useMyApps();
-	const location = useLocation();
-	const history = useHistory();
+	const viewApp = useAppView();
 	let app =
 		typeof notification.app === 'object'
 			? notification.app
@@ -185,7 +183,7 @@ export default ({ id, notification }) => {
 				payload: {},
 			});
 		} else {
-			history.push(`/apps/${app.name}/${notification.action?.view}`);
+			viewApp(notification.app);
 		}
 	};
 
@@ -255,8 +253,7 @@ export default ({ id, notification }) => {
 							<Collapse
 								in={
 									!notification.collapsed ||
-									!laptopOpen ||
-									location.pathname == '/'
+									!laptopOpen
 								}
 								collapsedSize={0}
 							>

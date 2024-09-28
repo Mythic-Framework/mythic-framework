@@ -3,6 +3,7 @@ _tabletProp = nil
 LAPTOP = {
 	Open = function(self)
 		Inventory.Close:All()
+		Animations.Emotes:ForceCancel()
 		Interaction:Hide()
 		LocalPlayer.state.laptopOpen = true
 		DisplayRadar(true)
@@ -12,33 +13,75 @@ LAPTOP = {
 
 		CreateThread(function()
 			local playerPed = PlayerPedId()
-			LoadAnim('amb@code_human_in_bus_passenger_idles@female@tablet@base')
+			LoadAnim("amb@code_human_in_bus_passenger_idles@female@tablet@base")
 			LoadModel(`prop_cs_tablet`)
 
-			_tabletProp = CreateObject(`prop_cs_tablet`, GetEntityCoords(playerPed), 1, 1, 0)
-			AttachEntityToEntity(_tabletProp, playerPed, GetPedBoneIndex(playerPed, 60309), 0.02, -0.01, -0.03, 0.0, 0.0, -10.0, 1, 0, 0, 0, 2, 1)
+			local _tabletProp = CreateObject(`prop_cs_tablet`, GetEntityCoords(playerPed), 1, 1, 0)
+			AttachEntityToEntity(
+				_tabletProp,
+				playerPed,
+				GetPedBoneIndex(playerPed, 60309),
+				0.02,
+				-0.01,
+				-0.03,
+				0.0,
+				0.0,
+				-10.0,
+				1,
+				0,
+				0,
+				0,
+				2,
+				1
+			)
 
-			while LocalPlayer.state.tabletOpen and _loggedIn do
-				if not IsEntityPlayingAnim(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3) then
-					TaskPlayAnim(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3.0, 3.0, -1, 49, 0, false, false, false)
+			while LocalPlayer.state.laptopOpen and _loggedIn do
+				if
+					not IsEntityPlayingAnim(
+						playerPed,
+						"amb@code_human_in_bus_passenger_idles@female@tablet@base",
+						"base",
+						3
+					)
+				then
+					TaskPlayAnim(
+						playerPed,
+						"amb@code_human_in_bus_passenger_idles@female@tablet@base",
+						"base",
+						3.0,
+						3.0,
+						-1,
+						49,
+						0,
+						false,
+						false,
+						false
+					)
 				end
 				Wait(250)
 			end
 
-			StopAnimTask(playerPed, 'amb@code_human_in_bus_passenger_idles@female@tablet@base', 'base', 3.0)
+			StopAnimTask(playerPed, "amb@code_human_in_bus_passenger_idles@female@tablet@base", "base", 3.0)
 			DeleteEntity(_tabletProp)
 		end)
 	end,
-	Close = function(self)
+	Close = function(self, forced)
 		LocalPlayer.state.laptopOpen = false
 		Laptop:ResetRoute()
-		SendNUIMessage({ type = "ALERTS_RESET" })
-		if not IsPedInAnyVehicle(PlayerPedId(), true) then
-			DisplayRadar(false)
+
+		if forced then
+			SendNUIMessage({ type = "LAPTOP_NOT_VISIBLE_FORCED" })
 		end
-		Hud:ShiftLocation(false)
+
+		SendNUIMessage({ type = "ALERTS_RESET" })
+
+		if not IsPedInAnyVehicle(PlayerPedId(), true) then
+			DisplayRadar(LocalPlayer.state.Character and hasValue(LocalPlayer.state.Character:GetData("States"), "GPS"))
+		end
+
+		Hud:ShiftLocation(LocalPlayer.state.Character and hasValue(LocalPlayer.state.Character:GetData("States"), "GPS"))
 		SetNuiFocus(false, false)
-		TriggerEvent("UI:Client:Close", "laptop")
+		--TriggerEvent("UI:Client:Close", "laptop")
 	end,
 	IsOpen = function(self)
 		return LocalPlayer.state.laptopOpen
@@ -59,44 +102,44 @@ LAPTOP = {
 			return true
 		else
 			local appdata = LAPTOP_APPS[app]
-			return appdata ~= nil
-				and hasValue(LocalPlayer.state.Character:GetData("Apps").installed, app)
-				and (
-					not appdata.restricted
-					or (
-						(
-							appdata.restricted.job
-							and Jobs.Permissions:HasJob(
-								appdata.restricted.job,
-								appdata.restricted.workplace,
-								appdata.restricted.grade
-							)
-						)
-						or (appdata.restricted.state and hasValue(
-							LocalPlayer.state.Character:GetData("States"),
-							appdata.restricted.state
-						))
-						or (appData.restricted.jobPermission and Jobs.Permissions:HasJob(
-							appdata.restricted.job,
-							appdata.restricted.workplace,
-							appdata.restricted.grade,
-							nil,
-							false,
-							appdata.restricted.jobPermission
-						))
-						or (appdata.restricted.laptopPermission and Laptop.Permissions:HasPermission(
-							appdata.restricted.laptopPermission.app,
-							appdata.restricted.laptopPermission.permission
-						))
-						or (
-							appdata.restricted.repuation
-							and Reputation:HasLevel(
-								appdata.restricted.repuation,
-								appdata.restricted.repuationAmount or 0
-							)
-						)
-					)
-				)
+
+			if appdata and hasValue(LocalPlayer.state.Character:GetData("LaptopApps").installed, app) then
+				if appdata.restricted then
+					for k, v in pairs(appdata.restricted) do
+						if v then
+							if k == "state" then
+								if type(v) == "string" then
+									if not hasValue(LocalPlayer.state.Character:GetData("States"), v) then
+										return false
+									end
+								else
+									for j, b in ipairs(v) do
+										if not hasValue(LocalPlayer.state.Character:GetData("States"), b) then
+											return false
+										end
+									end
+								end
+							elseif k == "job" then
+								if not Jobs.Permissions:HasJob(v) then
+									return false
+								end
+							elseif k == "laptopPermission" then
+								if not Laptop.Permissions:HasPermission(v.app, v.permission) then
+									return false
+								end
+							elseif k == "reputation" then
+								if not Reputation:HasLevel(v.repuation, appdata.restricted.repuationAmount or 0) then
+									return false
+								end
+							end
+						end
+					end
+					return true
+				else
+					return true
+				end
+			end
+			return false
 		end
 	end,
 	Data = {
@@ -146,9 +189,7 @@ LAPTOP = {
 					},
 				})
 
-				if not LocalPlayer.state.laptopOpen and (Laptop:IsAppUsable(app)) then
-					Sounds.Play:One(_settings.texttone, 0.1 * (_settings.volume / 100))
-				end
+				Sounds.Play:One("notification1.ogg", 0.1 * (_settings.volume / 100))
 			end
 		end,
 		AddWithId = function(self, id, title, description, time, duration, app, actions, notifData)
@@ -168,8 +209,12 @@ LAPTOP = {
 					},
 				},
 			})
+
+			if not LocalPlayer.state.laptopOpen then
+				Sounds.Play:One("notification1.ogg", 0.1 * (_settings.volume / 100))
+			end
 		end,
-		Update = function(self, id, title, description)
+		Update = function(self, id, title, description, skipSound)
 			SendNUIMessage({
 				type = "NOTIF_UPDATE",
 				data = {
@@ -178,6 +223,10 @@ LAPTOP = {
 					description = description,
 				},
 			})
+
+			if not skipSound and not LocalPlayer.state.laptopOpen then
+				Sounds.Play:One("notification1.ogg", 0.1 * (_settings.volume / 100))
+			end
 		end,
 		Remove = function(self, id)
 			SendNUIMessage({
@@ -216,9 +265,12 @@ RegisterNUICallback("CloseLaptop", function(data, cb)
 	Laptop:Close()
 end)
 
-RegisterNetEvent("Laptop:Client:Notifications:Add", function(title, description, time, duration, app, actions, notifData)
-	Laptop.Notification:Add(title, description, time, duration, app, actions, notifData)
-end)
+RegisterNetEvent(
+	"Laptop:Client:Notifications:Add",
+	function(title, description, time, duration, app, actions, notifData)
+		Laptop.Notification:Add(title, description, time, duration, app, actions, notifData)
+	end
+)
 
 RegisterNetEvent(
 	"Laptop:Client:Notifications:AddWithId",
@@ -234,3 +286,17 @@ end)
 RegisterNetEvent("Laptop:Client:Notifications:Remove", function(id)
 	Laptop.Notification:Remove(id)
 end)
+
+function LoadAnim(dict)
+	while not HasAnimDictLoaded(dict) do
+		RequestAnimDict(dict)
+		Wait(10)
+	end
+end
+
+function LoadModel(hash)
+	while not HasModelLoaded(hash) do
+		RequestModel(hash)
+		Wait(10)
+	end
+end

@@ -32,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
 		height: '100%',
 		gap: 200,
 	},
-	gridBg: {
-		background: `#080808d6`,
-		padding: 25,
-		border: `1px solid rgba(255, 255, 255, 0.04)`,
-		height: 'fit-content',
-	},
+	// gridBg: {
+	// 	background: `#00643a1a`,
+	// 	padding: 25,
+	// 	border: `1px solid rgba(255, 255, 255, 0.04)`,
+	// 	height: 'fit-content',
+	// },
 	container: {
 		userSelect: 'none',
 		'-webkit-user-select': 'none',
@@ -46,44 +46,45 @@ const useStyles = makeStyles((theme) => ({
 	},
 	inventoryGrid: {
 		display: 'grid',
-		gridTemplateColumns: '1fr 1fr 1fr 1fr',
+		gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
 		overflowX: 'hidden',
 		overflowY: 'scroll',
 		maxHeight: 'calc(60vh - 90px)',
 		height: 'fit-content',
 		userSelect: 'none',
 		'-webkit-user-select': 'none',
-		minWidth: 678,
+		minWidth: 645,
 		gridAutoRows: 'max-content',
-		gap: 6,
+		gap: 1,
 		'&::-webkit-scrollbar': {
 			width: 6,
 		},
 		'&::-webkit-scrollbar-thumb': {
-			background: `${theme.palette.primary.dark}9e`,
+			background: `${theme.palette.primary.light}9e`,
 			transition: 'background ease-in 0.15s',
 		},
 		'&::-webkit-scrollbar-thumb:hover': {
-			background: `${theme.palette.primary.dark}61`,
+			background: `${theme.palette.primary.light}61`,
 		},
 		'&::-webkit-scrollbar-track': {
 			background: 'transparent',
 		},
 	},
 	inventoryWeight: {
-		padding: '0 0 5px 0',
+		padding: 5,
 		position: 'relative',
 	},
 	weightText: {
 		position: 'absolute',
 		height: 'fit-content',
 		width: 'fit-content',
-		bottom: 10,
-		right: '1%',
+		top: 0,
+		bottom: 0,
+		right: '2%',
 		margin: 'auto',
 		zIndex: 1,
-		fontSize: 16,
-		textShadow: `0 0 10px ${theme.palette.secondary.dark}`,
+		fontSize: 12,
+		textShadow: `0 0 10px ${'rgba(12,24,38, 0.733)'}`,
 		'&::after': {
 			content: '"lbs"',
 			marginLeft: 5,
@@ -91,21 +92,21 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 	inventoryWeightBar: {
-		height: 6,
-		borderRadius: 0,
+		height: 20,
+		borderRadius: 5,
 	},
 	inventoryHeader: {
 		paddingLeft: 5,
-		fontWeight: 'bold',
-		fontSize: 18,
+		// fontWeight: 'bold',
+		fontSize: 15,
 		userSelect: 'none',
 		'-webkit-user-select': 'none',
 	},
 	slot: {
 		width: '100%',
 		height: '120px',
-		backgroundColor: theme.palette.secondary.dark,
-		border: `1px solid ${theme.palette.secondary.light}`,
+		background: '0b0a25b7',
+		// border: `1px solid rgba(12,24,38, 0.733)`, -- Removed to be more 1:1
 		position: 'relative',
 		userSelect: 'none',
 		'-webkit-user-select': 'none',
@@ -120,23 +121,25 @@ const useStyles = makeStyles((theme) => ({
 		'-webkit-user-select': 'none',
 	},
 	useBtn: {
-		width: 150,
-		height: 175,
-		lineHeight: '175px',
+		width: 130,
+		height: 130,
+		lineHeight: '130px',
 		textAlign: 'center',
 		fontSize: 36,
 		position: 'absolute',
+		forceVisibility: 'visible',
+		visibility: 'visible',
 		top: 0,
 		bottom: 0,
 		left: 0,
 		right: 0,
 		margin: 'auto',
-		backgroundColor: `${theme.palette.secondary.light}`,
+		background: `rgb(13,22,37, 0.733)`,
 		border: `1px solid transparent`,
 		transition:
 			'background ease-in 0.15s, border ease-in 0.15s, color ease-in 0.15s',
 		'&:hover': {
-			backgroundColor: `${theme.palette.secondary.dark}9e`,
+			background: `${theme.palette.secondary.dark}9e`,
 			borderColor: theme.palette.primary.main,
 			color: theme.palette.primary.main,
 		},
@@ -185,11 +188,11 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: 15,
 		padding: 10,
 		color: theme.palette.text.main,
-		backgroundColor: `${theme.palette.secondary.light}61`,
+		background: `rgba(12,24,38, 0.733)`,
 		border: `1px solid transparent`,
 		transition: 'border ease-in 0.15s',
 		'&:hover': {
-			backgroundColor: `${theme.palette.secondary.light}61`,
+			background: `rgba(12,24,38, 0.733)`,
 			borderColor: theme.palette.primary.main,
 			cursor: 'pointer',
 		},
@@ -455,226 +458,243 @@ export default (props) => {
 							});
 						}}
 					>
-						<FontAwesomeIcon icon={['fas', 'bullseye-pointer']} />
+						<FontAwesomeIcon icon={['fas', 'fingerprint']} />
 					</div>
 				</Fade>
-				<div className={classes.root} onClick={cancelDrag}>
-					<div className={classes.gridBg} onClick={cancelDrag}>
-						<div className={classes.inventoryHeader}>
-							{playerInventory.name}
-						</div>
-						<div className={classes.container}>
-							<div className={classes.inventoryWeight}>
-								<div className={classes.weightText}>
-									{`${playerWeight.toFixed(
-										2,
-									)} / ${playerInventory.capacity.toFixed(
-										2,
-									)}`}
+				<div 
+					style ={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						width: '100%',
+						height: '100%',
+					}} 
+				>
+					<div
+						style ={{
+							width: '90%',
+							height: '60%',
+						}} 
+					>
+						<div className={classes.root} onClick={cancelDrag}>
+							<div className={classes.gridBg} onClick={cancelDrag}>
+								<div className={classes.inventoryHeader}>
+									{playerInventory.name}
 								</div>
-								<LinearProgress
-									className={classes.inventoryWeightBar}
-									color="inherit"
-									variant="determinate"
-									value={Math.floor(
-										(playerWeight /
-											playerInventory.capacity) *
-											100,
-									)}
-								/>
-							</div>
-							<div className={classes.inventoryGrid}>
-								{playerInventory.loaded &&
-									[...Array(playerInventory.size).keys()].map(
-										(value) => {
-											let slot =
-												playerInventory.inventory.filter(
-													(s) =>
-														Boolean(s) &&
-														s.Slot == value + 1,
-												)
-													? playerInventory.inventory.filter(
+								<div className={classes.container}>
+									<div className={classes.inventoryWeight}>
+										<div className={classes.weightText}>
+											{`${playerWeight.toFixed(
+												2,
+											)} / ${playerInventory.capacity.toFixed(
+												2,
+											)}`}
+										</div>
+										<LinearProgress
+											className={classes.inventoryWeightBar}
+											color="info"
+											variant="determinate"
+											value={Math.floor(
+												(playerWeight /
+													playerInventory.capacity) *
+													100,
+											)}
+										/>
+									</div>
+									<div className={classes.inventoryGrid}>
+										{playerInventory.loaded &&
+											[...Array(playerInventory.size).keys()].map(
+												(value) => {
+													let slot =
+														playerInventory.inventory.filter(
 															(s) =>
 																Boolean(s) &&
-																s.Slot ==
-																	value + 1,
-													  )[0]
-													: {};
-											return (
-												<Slot
-													key={value + 1}
-													onUse={useItem}
-													slot={value + 1}
-													data={slot}
-													owner={
-														playerInventory.owner
-													}
-													invType={
-														playerInventory.invType
-													}
-													shop={false}
-													free={false}
-													hotkeys={true}
-													onContextMenu={(e) => {
-														if (
-															playerInventory
-																.disabled[
-																value + 1
-															]
+																s.Slot == value + 1,
 														)
-															return;
-														onRightClick(
-															e,
-															playerInventory.owner,
-															playerInventory.invType,
-															false,
-															false,
-															slot,
-														);
-													}}
-													locked={
-														playerInventory
-															.disabled[value + 1]
-													}
-												/>
-											);
-										},
-									)}
+															? playerInventory.inventory.filter(
+																	(s) =>
+																		Boolean(s) &&
+																		s.Slot ==
+																			value + 1,
+															)[0]
+															: {};
+													return (
+														<Slot
+															key={value + 1}
+															onUse={useItem}
+															slot={value + 1}
+															data={slot}
+															owner={
+																playerInventory.owner
+															}
+															invType={
+																playerInventory.invType
+															}
+															shop={false}
+															free={false}
+															hotkeys={true}
+															onContextMenu={(e) => {
+																if (
+																	playerInventory
+																		.disabled[
+																		value + 1
+																	]
+																)
+																	return;
+																onRightClick(
+																	e,
+																	playerInventory.owner,
+																	playerInventory.invType,
+																	false,
+																	false,
+																	slot,
+																);
+															}}
+															locked={
+																playerInventory
+																	.disabled[value + 1]
+															}
+														/>
+													);
+												},
+											)}
+									</div>
+								</div>
 							</div>
+							<Fade in={showSecondary}>
+								<div className={classes.gridBg}>
+									<div className={classes.inventoryHeader}>
+										{secondaryInventory.name}
+									</div>
+									<div className={classes.container}>
+										<div className={classes.inventoryWeight}>
+											{!secondaryInventory.shop && (
+												<>
+													<div className={classes.weightText}>
+														{`${secondaryWeight.toFixed(
+															2,
+														)} / ${secondaryInventory.capacity.toFixed(
+															2,
+														)}`}
+													</div>
+													<LinearProgress
+														className={
+															classes.inventoryWeightBar
+														}
+														color="info"
+														variant="determinate"
+														value={
+															secondaryInventory.shop
+																? 0
+																: Math.floor(
+																		(secondaryWeight /
+																			secondaryInventory.capacity) *
+																			100,
+																)
+														}
+													/>
+												</>
+											)}
+										</div>
+										<div className={classes.inventoryGrid}>
+											{secondaryInventory.loaded &&
+												[
+													...Array(
+														secondaryInventory.size,
+													).keys(),
+												].map((value) => {
+													let slot =
+														secondaryInventory.inventory.filter(
+															(s) =>
+																Boolean(s) &&
+																s.Slot == value + 1,
+														)
+															? secondaryInventory.inventory.filter(
+																	(s) =>
+																		Boolean(s) &&
+																		s.Slot ==
+																			value + 1,
+															)[0]
+															: {};
+													return (
+														<Slot
+															slot={value + 1}
+															key={value + 1}
+															data={slot}
+															owner={
+																secondaryInventory.owner
+															}
+															invType={
+																secondaryInventory.invType
+															}
+															shop={
+																secondaryInventory.shop
+															}
+															free={
+																secondaryInventory.free
+															}
+															vehClass={
+																secondaryInventory.class
+															}
+															vehModel={
+																secondaryInventory.model
+															}
+															slotOverride={
+																secondaryInventory.slotOverride
+															}
+															capacityOverride = {
+																secondaryInventory.capacityOverride
+															}
+															hotkeys={false}
+															onContextMenu={(e) => {
+																if (
+																	secondaryInventory
+																		.disabled[
+																		value + 1
+																	]
+																)
+																	return;
+																onRightClick(
+																	e,
+																	secondaryInventory.owner,
+																	secondaryInventory.invType,
+																	secondaryInventory.shop,
+																	secondaryInventory.free,
+																	slot,
+																	secondaryInventory.class,
+																	secondaryInventory.model,
+																);
+															}}
+															locked={
+																secondaryInventory
+																	.disabled[value + 1]
+															}
+														/>
+													);
+												})}
+										</div>
+									</div>
+									{Boolean(secondaryInventory.action) && (
+										<Button
+											fullWidth
+											color="primary"
+											className={classes.actionBtn}
+											onClick={onAction}
+										>
+											{secondaryInventory.action.text}
+											<FontAwesomeIcon
+												icon={[
+													'fas',
+													secondaryInventory.action.icon ||
+														'right-from-line',
+												]}
+											/>
+										</Button>
+									)}
+								</div>
+							</Fade>
 						</div>
 					</div>
-					<Fade in={showSecondary}>
-						<div className={classes.gridBg}>
-							<div className={classes.inventoryHeader}>
-								{secondaryInventory.name}
-							</div>
-							<div className={classes.container}>
-								<div className={classes.inventoryWeight}>
-									{!secondaryInventory.shop && (
-										<>
-											<div className={classes.weightText}>
-												{`${secondaryWeight.toFixed(
-													2,
-												)} / ${secondaryInventory.capacity.toFixed(
-													2,
-												)}`}
-											</div>
-											<LinearProgress
-												className={
-													classes.inventoryWeightBar
-												}
-												color="inherit"
-												variant="determinate"
-												value={
-													secondaryInventory.shop
-														? 0
-														: Math.floor(
-																(secondaryWeight /
-																	secondaryInventory.capacity) *
-																	100,
-														  )
-												}
-											/>
-										</>
-									)}
-								</div>
-								<div className={classes.inventoryGrid}>
-									{secondaryInventory.loaded &&
-										[
-											...Array(
-												secondaryInventory.size,
-											).keys(),
-										].map((value) => {
-											let slot =
-												secondaryInventory.inventory.filter(
-													(s) =>
-														Boolean(s) &&
-														s.Slot == value + 1,
-												)
-													? secondaryInventory.inventory.filter(
-															(s) =>
-																Boolean(s) &&
-																s.Slot ==
-																	value + 1,
-													  )[0]
-													: {};
-											return (
-												<Slot
-													slot={value + 1}
-													key={value + 1}
-													data={slot}
-													owner={
-														secondaryInventory.owner
-													}
-													invType={
-														secondaryInventory.invType
-													}
-													shop={
-														secondaryInventory.shop
-													}
-													free={
-														secondaryInventory.free
-													}
-													vehClass={
-														secondaryInventory.class
-													}
-													vehModel={
-														secondaryInventory.model
-													}
-													slotOverride={
-														secondaryInventory.slotOverride
-													}
-													capacityOverride = {
-														secondaryInventory.capacityOverride
-													}
-													hotkeys={false}
-													onContextMenu={(e) => {
-														if (
-															secondaryInventory
-																.disabled[
-																value + 1
-															]
-														)
-															return;
-														onRightClick(
-															e,
-															secondaryInventory.owner,
-															secondaryInventory.invType,
-															secondaryInventory.shop,
-															secondaryInventory.free,
-															slot,
-															secondaryInventory.class,
-															secondaryInventory.model,
-														);
-													}}
-													locked={
-														secondaryInventory
-															.disabled[value + 1]
-													}
-												/>
-											);
-										})}
-								</div>
-							</div>
-							{Boolean(secondaryInventory.action) && (
-								<Button
-									fullWidth
-									color="primary"
-									className={classes.actionBtn}
-									onClick={onAction}
-								>
-									{secondaryInventory.action.text}
-									<FontAwesomeIcon
-										icon={[
-											'fas',
-											secondaryInventory.action.icon ||
-												'right-from-line',
-										]}
-									/>
-								</Button>
-							)}
-						</div>
-					</Fade>
 				</div>
 
 				<div className={classes.buttons}>

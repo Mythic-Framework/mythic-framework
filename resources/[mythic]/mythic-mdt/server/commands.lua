@@ -99,18 +99,6 @@ function RegisterChatCommands()
 		}
 	)
 
-	Chat:RegisterCommand(
-		"tablet",
-		function(source, args, rawCommand)
-			TriggerClientEvent("MDT:Client:Toggle", source)
-		end,
-		{
-			help = "Open Business Tablet",
-		},
-		0,
-		_businessesWithTablets
-	)
-
 	Chat:RegisterAdminCommand("addmdtsysadmin", function(source, args, rawCommand)
 		local targetStateId = math.tointeger(args[1])
 		local success = MDT.People:Update(-1, targetStateId, "MDTSystemAdmin", true)

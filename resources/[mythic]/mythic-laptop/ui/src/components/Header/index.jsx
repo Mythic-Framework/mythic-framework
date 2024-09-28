@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { compose } from 'redux';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory, withRouter } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import Moment from 'react-moment';
@@ -13,7 +12,6 @@ import { useAlert, useMyStates } from '../../hooks';
 import { DurationToTime } from '../../util/Parser';
 
 export default compose(
-	withRouter,
 	connect(null, {}),
 )((props) => {
 	const hasState = useMyStates();
@@ -50,7 +48,7 @@ export default compose(
 			'&:first-of-type': {
 				marginLeft: 0,
 			},
-			'&.wifi': {
+			'&.signal': {
 				color: hasState('PHONE_VPN')
 					? theme.palette.error.main
 					: theme.palette.text.main,
@@ -103,7 +101,6 @@ export default compose(
 	}));
 
 	const classes = useStyles();
-	const history = useHistory();
 	const dispatch = useDispatch();
 	const showAlert = useAlert();
 
@@ -122,12 +119,12 @@ export default compose(
 						/>
 					)}
 					<FontAwesomeIcon
-						className={`${classes.headerIcon} wifi`}
-						icon={'wifi'}
+						className={`${classes.headerIcon} signal`}
+						icon={'signal'}
 					/>
 					<FontAwesomeIcon
 						className={classes.headerIcon}
-						icon="signal"
+						icon="wifi"
 					/>
 				</Grid>
 			</Grid>

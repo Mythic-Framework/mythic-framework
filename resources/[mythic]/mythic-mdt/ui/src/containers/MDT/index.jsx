@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import { ToastContainer, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Public, Police, DOJ, Medical, DA, Attorney, PublicDefenders, Business } from '../Jobs';
+import { Public, Police, DOJ, Medical, DA, Attorney, PublicDefenders } from '../Jobs';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -26,7 +26,6 @@ export default () => {
 	const job = useSelector((state) => state.app.govJob);
 	const opacityMode = useSelector((state) => state.app.opacity);
 	const attorney = useSelector((state) => state.app.attorney);
-	const tabletData = useSelector((state) => state.app.tabletData);
 
 	const getPanel = () => {
 		switch (job?.Id) {
@@ -48,8 +47,6 @@ export default () => {
 			default:
 				if (attorney) {
 					return <Attorney />;
-				} else if (tabletData) {
-					return <Business />
 				} else {
 					return <Public />;
 				}

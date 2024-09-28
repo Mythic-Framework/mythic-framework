@@ -1,7 +1,7 @@
 import Nui from '../../util/Nui';
 
 export const initialState = {
-	visible: process.env.NODE_ENV != 'production',
+	visible: false,
 	clear: false,
 	expanded: true,
 	limited: false,
@@ -13,14 +13,56 @@ export const initialState = {
 		process.env.NODE_ENV == 'production'
 			? {}
 			: {
-					// internet: {
-					// 	label: 'Interwebz',
-					// 	name: 'internet',
-					// 	icon: ['fab', 'internet-explorer'],
-					// 	color: '#1db5e7',
-					// 	hidden: false,
-					// 	unread: 0,
-					// },
+					recyclebin: {
+						label: 'Recycle Bin',
+						name: 'recyclebin',
+						icon: ['fas', 'trash-can'],
+						color: '#303030',
+						hidden: false,
+						unread: 0,
+						fake: true,
+					},
+					settings: {
+						label: 'Settings',
+						name: 'settings',
+						icon: ['fas', 'gear'],
+						color: '#303030',
+						hidden: false,
+						unread: 0,
+					},
+					files: {
+						label: 'Files',
+						name: 'files',
+						icon: ['fas', 'folder-open'],
+						color: '#D8A71E',
+						hidden: false,
+						unread: 0,
+						fake: true,
+					},
+					internet: {
+						label: 'Interwebz',
+						name: 'internet',
+						icon: ['fas', 'globe'],
+						color: '#1db5e7',
+						hidden: false,
+						unread: 0,
+						fake: true,
+					},
+					bizwiz: {
+						label: 'BizWiz',
+						name: 'bizwiz',
+						icon: ['fas', 'business-time'],
+						color: '#135dd8',
+						hidden: false,
+						unread: 0,
+					},
+					teams: {
+						label: 'Teams',
+						name: 'teams',
+						icon: 'people-group',
+						color: '#00FF8A',
+						unread: 0,
+					},
 					// terminal: {
 					// 	label: 'Terminal',
 					// 	name: 'terminal',
@@ -33,18 +75,18 @@ export const initialState = {
 					// 	},
 					// 	unread: 0,
 					// },
-					// supplymate: {
-					// 	label: 'Supply Mate',
-					// 	name: 'supplymate',
-					// 	icon: 'parachute-box',
-					// 	color: '#9808c7',
-					// 	unread: 0,
-					// 	restricted: {
-					// 		state: 'PHONE_VPN',
-					// 	},
-					// },
+					supplymate: {
+						label: 'Supply Mate',
+						name: 'supplymate',
+						icon: 'parachute-box',
+						color: '#9808c7',
+						unread: 0,
+						restricted: {
+							state: 'PHONE_VPN',
+						},
+					},
 					lsunderground: {
-						label: 'LS UGND',
+						label: 'LS Underground',
 						name: 'lsunderground',
 						icon: 'user-secret',
 						color: '#E95200',
@@ -52,13 +94,6 @@ export const initialState = {
 						restricted: {
 							state: 'ACCESS_LSUNDERGROUND',
 						},
-					},
-					teams: {
-						label: 'Teams',
-						name: 'teams',
-						icon: 'people-group',
-						color: '#00FF8A',
-						unread: 0,
 					},
 			  },
 };
@@ -70,19 +105,25 @@ const appReducer = (state = initialState, action) => {
 				...state,
 				permissions: action.payload,
 			};
-		case 'TABLET_VISIBLE':
+		case 'LAPTOP_VISIBLE':
 			return {
 				...state,
 				visible: true,
 			};
-		case 'TABLET_NOT_VISIBLE':
-			Nui.send('CloseTablet', null);
+		case 'LAPTOP_NOT_VISIBLE':
+			Nui.send('CloseLaptop', null);
 			return {
 				...state,
 				visible: false,
 				limited: false,
 			};
-		case 'TABLET_VISIBLE_LIMITED':
+		case 'LAPTOP_NOT_VISIBLE_FORCED':
+			return {
+				...state,
+				visible: false,
+				limited: false,
+			}
+		case 'LAPTOP_VISIBLE_LIMITED':
 			return {
 				...state,
 				visible: true,

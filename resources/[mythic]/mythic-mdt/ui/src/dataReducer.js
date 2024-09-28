@@ -3,7 +3,6 @@ export const initialState = {
 		charges: [],
 		warrants: Array(),
 		notices: Array(),
-		businessNotices: Array(),
 		// notices: [
 		// 	{
 		// 		time: 1629380840 * 1000,
@@ -762,38 +761,6 @@ export const initialState = {
 		// 	{
 		// 		label: 'Tactical Response',
 		// 		value: 'swat',
-		// 	},
-		// ],
-		// businessNotices: [
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
-		// 	},
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
-		// 	},
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
-		// 	},
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
-		// 	},
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
-		// 	},
-		// 	{
-		// 		time: 1629380840 * 1000,
-		// 		title: 'Test',
-		// 		description: 'Test Description <b>Bitch</b>'
 		// 	},
 		// ],
 	},

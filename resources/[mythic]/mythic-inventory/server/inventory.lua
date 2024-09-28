@@ -122,6 +122,7 @@ function RetrieveComponents()
 	Banking = exports["mythic-base"]:FetchComponent("Banking")
 	Drugs = exports["mythic-base"]:FetchComponent("Drugs")
 	Robbery = exports["mythic-base"]:FetchComponent("Robbery")
+	Laptop = exports["mythic-base"]:FetchComponent("Laptop")
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -149,7 +150,8 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Phone",
 		"Banking",
 		"Drugs",
-		"Robbery"
+		"Robbery",
+		"Laptop"
 	}, function(error)
 		if #error > 0 then
 			return

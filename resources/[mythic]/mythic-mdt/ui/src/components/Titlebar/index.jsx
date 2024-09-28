@@ -80,9 +80,8 @@ export default ({ businessData }) => {
 	const job = useSelector((state) => state.app.govJob);
 	const attorney = useSelector((state) => state.app.attorney);
 	const hidden = useSelector((state) => state.app.hidden);
-	const tabletData = useSelector((state) => state.app.tabletData);
 
-	const branding = useBranding(job, attorney, tabletData);
+	const branding = useBranding(job, attorney);
 
 
 	const onClose = () => {

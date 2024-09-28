@@ -13,8 +13,8 @@ import Draggable from 'react-draggable';
 
 const useStyles = makeStyles((theme) => ({
 	popup: {
-		paddingTop: `5px !important`,
-		maxHeight: `750px !important`,
+		paddingTop: `2px !important`,
+		maxHeight: `450px !important`,
 	},
 }));
 
@@ -49,7 +49,7 @@ export default ({
 	children,
 }) => {
 	const classes = useStyles();
-	const mdtOpen = !useSelector((state) => state.laptop.hidden);
+	const laptopOpen = !useSelector((state) => state.laptop.hidden);
 
 	return (
 		<Dialog
@@ -57,7 +57,7 @@ export default ({
 			fullWidth
 			PaperComponent={PaperComponent}
 			scroll="paper"
-			open={open && mdtOpen}
+			open={open && laptopOpen}
 			onClose={onClose}
 		>
 			{Boolean(onSubmit) ? (

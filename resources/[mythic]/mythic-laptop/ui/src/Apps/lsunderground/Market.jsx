@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles, withStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@mui/styles';
 import {
 	Fab,
 	IconButton,
@@ -12,10 +10,9 @@ import {
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import ChopItem from './component/ChopItem';
 import { Loader, Modal } from '../../components';
-import Moment from 'react-moment';
 import Nui from '../../util/Nui';
+import { useAlert } from '../../hooks';
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -31,12 +28,20 @@ const useStyles = makeStyles((theme) => ({
 	fab: {
 		position: 'absolute',
 		bottom: 25,
-		right: 25,
+		right: 150,
+	},
+	emptyMsg: {
+		width: '100%',
+		textAlign: 'center',
+		fontSize: 20,
+		fontWeight: 'bold',
+		marginTop: '22%',
 	},
 }));
 
-export default ({ items }) => {
+export default ({ banned, items }) => {
 	const classes = useStyles();
+	const sendAlert = useAlert();
 
 	const [submitting, setSubmitting] = useState(false);
 	const [cart, setCart] = useState(Array());
@@ -44,6 +49,14 @@ export default ({ items }) => {
 
 	const onAdd = (item) => {
 		if (cart.filter((i) => i.id == item.id).length > 0) {
+			if (cart.find((i) => i.id == item.id)?.quantity >= 5) {
+				return sendAlert("Your Cart is Full of That Item");
+			}
+
+			if (cart.find((i) => i.id == item.id)?.quantity >= item.qty && item.qty !== -1) {
+				return sendAlert("Limited Stock Remaining");
+			}
+
 			setCart([
 				...cart.map((i) => {
 					if (i.id == item.id)
@@ -59,6 +72,22 @@ export default ({ items }) => {
 					quantity: 1,
 				},
 			]);
+		}
+	};
+
+	const onRemove = (item) => {
+		if (cart.filter((i) => i.id == item.id).length > 0) {
+			if (cart.find((i) => i.id == item.id)?.quantity > 1) {
+				setCart([
+					...cart.map((i) => {
+						if (i.id == item.id)
+							return { ...i, quantity: i.quantity - 1 };
+						else return i;
+					}),
+				]);
+			} else {
+				setCart(cart.filter((i) => i.id !== item.id));
+			}
 		}
 	};
 
@@ -81,6 +110,12 @@ export default ({ items }) => {
 		}
 	};
 
+	if (banned) {
+		return <div className={classes.wrapper}>
+			<div className={classes.emptyMsg}>Denied...</div>
+		</div>
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<List className={classes.body}>
@@ -89,22 +124,32 @@ export default ({ items }) => {
 						<ListItem key={`market-item-${i}`} divider>
 							<ListItemText
 								primary={item.itemData.label}
-								secondary={`${item.price} $${item.coin}`}
+								secondary={Boolean(item.delayed) ? 'Not For Sale Yet' : `${item.price} $${item.coin}${item.qty > -1 ? ` | ${item.qty} In Stock` : ''}`}
 							/>
 							<ListItemSecondaryAction>
 								{cart.filter((i) => i.id == item.id).length >
 									0 && (
-									<span>
-										{
-											cart.filter(
-												(i) => i.id == item.id,
-											)[0].quantity
-										}
-									</span>
+										<span>
+											{
+												cart.filter(
+													(i) => i.id == item.id,
+												)[0].quantity
+											}
+										</span>
+									)}
+								{cart.filter((i) => i.id == item.id).length > 0 && (
+									<IconButton
+										disabled={submitting}
+										onClick={() => onRemove(item)}
+										color="error"
+									>
+										<FontAwesomeIcon icon={['fas', 'minus']} />
+									</IconButton>
 								)}
 								<IconButton
-									disabled={submitting}
+									disabled={submitting || (item.qty <= 0 && item.qty != -1)}
 									onClick={() => onAdd(item)}
+									color="success"
 								>
 									<FontAwesomeIcon icon={['fas', 'plus']} />
 								</IconButton>
@@ -131,7 +176,7 @@ export default ({ items }) => {
 						title="Purchase Items"
 						closeLang="Cancel"
 						closeColor="error"
-						acceptLang={`Checkout: `}
+						acceptLang={`Checkout`}
 						acceptColor="success"
 						maxWidth="xs"
 						onClose={!submitting ? () => setCheckout(false) : null}
@@ -146,13 +191,10 @@ export default ({ items }) => {
 									<ListItem key={`checkout-${item.id}`}>
 										<ListItemText
 											primary={item.itemData.label}
-											secondary={`${
-												item.price * item.quantity
-											} $${item.coin} | (${
-												item.quantity
-											} at ${item.price} $${
-												item.coin
-											}/each)`}
+											secondary={`${item.price * item.quantity
+												} $${item.coin} | (${item.quantity
+												} at ${item.price} $${item.coin
+												}/each)`}
 										/>
 									</ListItem>
 								);

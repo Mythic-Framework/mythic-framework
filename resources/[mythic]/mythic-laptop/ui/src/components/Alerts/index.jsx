@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: 10,
 		borderRadius: 5,
 		position: 'absolute',
-		bottom: '25%',
+		bottom: '10%',
 		left: 0,
 		right: 0,
 		margin: 'auto',

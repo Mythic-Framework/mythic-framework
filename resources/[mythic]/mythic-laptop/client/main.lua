@@ -36,7 +36,13 @@ function RetrieveComponents()
 	Vehicles = exports["mythic-base"]:FetchComponent("Vehicles")
 	Progress = exports["mythic-base"]:FetchComponent("Progress")
 	Jobs = exports["mythic-base"]:FetchComponent("Jobs")
+	Utils = exports["mythic-base"]:FetchComponent("Utils")
+	Minigame = exports["mythic-base"]:FetchComponent("Minigame")
+	PedInteraction = exports["mythic-base"]:FetchComponent("PedInteraction")
 	Laptop = exports["mythic-base"]:FetchComponent("Laptop")
+	Properties = exports["mythic-base"]:FetchComponent("Properties")
+	Admin = exports["mythic-base"]:FetchComponent("Admin")
+	Animations = exports["mythic-base"]:FetchComponent("Animations")
 end
 
 AddEventHandler("Core:Shared:Ready", function()
@@ -62,20 +68,46 @@ AddEventHandler("Core:Shared:Ready", function()
 		"Vehicles",
 		"Progress",
 		"Jobs",
+		"Utils",
+		"Minigame",
+		"PedInteraction",
+		"Properties",
+		"Admin",
 		"Laptop",
+		"Animations",
 	}, function(error)
 		if #error > 0 then
 			return
 		end -- Do something to handle if not all dependencies loaded
 		RetrieveComponents()
+
+		Keybinds:Add("laptop_open", "", "keyboard", "Laptop - Open", function()
+			OpenLaptop()
+		end)
+
+		RegisterBoostingCallbacks()
 	end)
 end)
+
+function OpenLaptop()
+	if
+		_loggedIn
+		and not Hud:IsDisabled()
+		and not Jail:IsJailed()
+		and hasValue(LocalPlayer.state.Character:GetData("States"), "LAPTOP")
+		and not LocalPlayer.state.laptopOpen
+	then
+		Laptop:Open()
+	end
+end
+
+RegisterNetEvent("Laptop:Client:Open", OpenLaptop)
 
 AddEventHandler("Inventory:Client:ItemsLoaded", function()
 	while Laptop == nil do
 		Wait(10)
 	end
-	Laptop.Data:Set('items', Inventory.items:GetData())
+	Laptop.Data:Set("items", Inventory.Items:GetData())
 end)
 
 AddEventHandler("Characters:Client:Updated", function(key)
@@ -90,8 +122,12 @@ AddEventHandler("Characters:Client:Updated", function(key)
 		and LocalPlayer.state.laptopOpen
 		and (not hasValue(LocalPlayer.state.Character:GetData("States"), "LAPTOP"))
 	then
-		Laptop:Close()
+		Laptop:Close(true)
 	end
+end)
+
+AddEventHandler("Ped:Client:Died", function()
+	Laptop:Close(true)
 end)
 
 RegisterNetEvent("Job:Client:DutyChanged", function(state)
@@ -107,7 +143,7 @@ RegisterNetEvent("UI:Client:Reset", function(manual)
 
 	if manual then
 		TriggerServerEvent("Laptop:Server:UIReset")
-		if LocalPlayer.state.tabletOpen then
+		if LocalPlayer.state.laptopOpen then
 			Laptop:Close()
 		end
 	end
@@ -136,13 +172,6 @@ end)
 AddEventHandler("Characters:Client:Spawn", function()
 	_loggedIn = true
 
-	if LocalPlayer.state.Character then
-		local settings = LocalPlayer.state.Character:GetData("LaptopSettings")
-		if settings then
-			Laptop:SetExpanded(settings.Expanded)
-		end
-	end
-
 	CreateThread(function()
 		while _loggedIn do
 			SendNUIMessage({
@@ -167,10 +196,6 @@ function hasValue(tbl, value)
 	return false
 end
 
-RegisterNUICallback("UpdateAlias", function(data, cb)
-	Callbacks:ServerCallback("Laptop:UpdateAlias", data, cb)
-end)
-
 RegisterNUICallback("AcceptPopup", function(data, cb)
 	cb("OK")
 	if data.data ~= nil and data.data.server then
@@ -187,4 +212,9 @@ RegisterNUICallback("CancelPopup", function(data, cb)
 	else
 		TriggerEvent(data.event, data.data)
 	end
+end)
+
+RegisterNUICallback("CDExpired", function(data, cb)
+	cb("OK")
+	_openCd = false
 end)

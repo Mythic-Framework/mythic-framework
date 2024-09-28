@@ -1,16 +1,3 @@
-GLOBAL_VEH = nil
-
-IsInAnimation = false
-
-_isPointing = false
-_isCrouched = false
-
-walkStyle = 'default'
-facialExpression = 'default'
-emoteBinds = {}
-
-_doingStateAnimation = false
-
 AddEventHandler('Animations:Shared:DependencyUpdate', RetrieveComponents)
 function RetrieveComponents()
     Callbacks = exports['mythic-base']:FetchComponent('Callbacks')
@@ -28,6 +15,20 @@ function RetrieveComponents()
     Input = exports['mythic-base']:FetchComponent('Input')
     Sounds = exports['mythic-base']:FetchComponent('Sounds')
 end
+
+GLOBAL_VEH = nil
+
+IsInAnimation = false
+
+_isPointing = false
+_isCrouched = false
+
+walkStyle = 'default'
+facialExpression = 'default'
+emoteBinds = {}
+
+_doingStateAnimation = false
+
 
 AddEventHandler('Core:Shared:Ready', function()
     exports['mythic-base']:RequestDependencies('Animations', {
@@ -120,6 +121,25 @@ AddEventHandler('Animations:Client:RecieveStoredAnimSettings', function(data)
         Animations.PedFeatures:RequestFeaturesUpdate()
     end
 end)
+
+AddEventHandler('Animations:Shared:DependencyUpdate', RetrieveComponents)
+function RetrieveComponents()
+    Callbacks = exports['mythic-base']:FetchComponent('Callbacks')
+    Utils = exports['mythic-base']:FetchComponent('Utils')
+    Notification = exports['mythic-base']:FetchComponent('Notification')
+    Menu = exports['mythic-base']:FetchComponent('Menu')
+    Damage = exports['mythic-base']:FetchComponent('Damage')
+    Keybinds = exports['mythic-base']:FetchComponent('Keybinds')
+    Animations = exports['mythic-base']:FetchComponent('Animations')
+    Targeting = exports['mythic-base']:FetchComponent('Targeting')
+    Interaction = exports['mythic-base']:FetchComponent('Interaction')
+    Hud = exports['mythic-base']:FetchComponent('Hud')
+    Weapons = exports['mythic-base']:FetchComponent('Weapons')
+    ListMenu = exports['mythic-base']:FetchComponent('ListMenu')
+    Input = exports['mythic-base']:FetchComponent('Input')
+    Sounds = exports['mythic-base']:FetchComponent('Sounds')
+    Admin = exports['mythic-base']:FetchComponent('Admin')
+end
 
 
 function RegisterKeybinds()

@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles, withStyles } from '@mui/styles';
-import { useHistory } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { throttle } from 'lodash';
 
-import ChopList from './ChopList';
 import Reputations from './Reputations';
 import { useReputation } from '../../hooks';
 import Nui from '../../util/Nui';
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	tabPanel: {
 		top: 0,
-		height: '94.5%',
+		height: '92.25%',
 	},
 	list: {
 		height: '100%',
@@ -84,11 +82,13 @@ export default (props) => {
 	const classes = useStyles();
 
 	const [loading, setLoading] = useState(false);
+	const visible = useSelector((state) => state.laptop.visible);
 	const [tab, setTab] = useState(0);
 
-	const [chops, setChops] = useState(Array());
 	const [reps, setReps] = useState(Array());
 	const [items, setItems] = useState(Array());
+	const [banned, setBanned] = useState(null);
+	const [canBoost, setCanBoost] = useState(false);
 
 	const fetch = useMemo(
 		() =>
@@ -98,17 +98,18 @@ export default (props) => {
 				try {
 					let res = await (await Nui.send('GetLSUDetails')).json();
 					if (res) {
-						setChops(res.chopList);
 						setReps(res.reputations);
 						setItems(res.items);
+						setBanned(res.banned);
+						setCanBoost(res.canBoost);
 					} else {
-						setChops(Array());
 						setReps(Array());
 						setItems(Array());
+						setBanned(null);
+						setCanBoost(false);
 					}
 				} catch (err) {
 					console.log(err);
-					setChops(Array());
 					setReps(Array());
 					setItems([
 						{
@@ -120,8 +121,11 @@ export default (props) => {
 							},
 							coin: 'PLEB',
 							price: 10,
+							qty: 3,
 						},
 					]);
+					//setBanned(["Boosting"])
+					setCanBoost(true);
 				}
 				setLoading(false);
 			}, 1000),
@@ -131,6 +135,12 @@ export default (props) => {
 	useEffect(() => {
 		fetch();
 	}, []);
+
+	useEffect(() => {
+		if (visible) {
+			fetch();
+		}
+	}, [visible]);
 
 	const handleTabChange = (event, tab) => {
 		setTab(tab);
@@ -145,7 +155,7 @@ export default (props) => {
 					hidden={tab !== 0}
 					id="boosting"
 				>
-					{tab === 0 && <Boosting />}
+					{tab === 0 && <Boosting canBoost={canBoost} banned={banned} reputations={reps} />}
 				</div>
 
 				<div
@@ -154,16 +164,7 @@ export default (props) => {
 					hidden={tab !== 1}
 					id="boosting_market"
 				>
-					{tab === 1 && <BoostingMarket />}
-				</div>
-
-				<div
-					className={classes.tabPanel}
-					role="tabpanel"
-					hidden={tab !== 2}
-					id="latest"
-				>
-					{tab === 2 && <ChopList chopList={chops} />}
+					{tab === 1 && <BoostingMarket banned={banned} />}
 				</div>
 
 				<div
@@ -172,7 +173,7 @@ export default (props) => {
 					hidden={tab !== 3}
 					id="market"
 				>
-					{tab === 3 && <Market items={items} />}
+					{tab === 3 && <Market banned={banned} items={items} />}
 				</div>
 
 				<div
@@ -195,13 +196,15 @@ export default (props) => {
 							icon={<FontAwesomeIcon icon={['fab', 'nimblr']} />}
 						/>
 						<YPTab
+							disabled
 							icon={
 								<FontAwesomeIcon
 									icon={['fas', 'file-contract']}
 								/>
 							}
 						/>
-						<YPTab
+						<YPTab // shitty chopping
+							disabled
 							icon={
 								<FontAwesomeIcon
 									icon={['fas', 'screwdriver-wrench']}
@@ -209,12 +212,12 @@ export default (props) => {
 							}
 						/>
 						<YPTab
-							icon={<FontAwesomeIcon icon={['fas', 'gavel']} />}
+							icon={<FontAwesomeIcon icon={['fas', 'cart-shopping']} />}
 						/>
 						<YPTab
 							icon={
 								<FontAwesomeIcon
-									icon={['fas', 'list-timeline']}
+									icon={['fas', 'list']}
 								/>
 							}
 						/>

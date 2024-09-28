@@ -1,4 +1,4 @@
- _aptData = {
+_aptData = {
 	{
 		name = "Boring Tower",
 		invEntity = 13,
