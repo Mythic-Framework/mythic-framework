@@ -29,7 +29,7 @@
 ## Information
 
 # 🚧DISCLAIMER🚧
-We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework and allowing Treyyyy (Vegeta) and team To Maintain it. You can Alzars orignal repo here [original repository](https://github.com/Alzar/mythic-framework) 
+We do not own this framework, and we am simply trying to give it the support it deserves. The framework was originally built by Alzar & Dr Nick. Alzar has taken the liberty of releasing the framework and allowing Treyyyy (Vegeta) and team To Maintain it. You can find Alzars orignal repo here [original repository](https://github.com/Alzar/mythic-framework) 
 
 # Requirements 
 | Packages          | Link                                                                |
