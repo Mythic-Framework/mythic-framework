@@ -20,7 +20,7 @@
 - Treyyyy - Maintainer & Community Owner
 - Yarn - Maintainer & Community Owner
 - Tyh - Maintainer & Community Owner
-- Nex - Maintainer
+- Van Man (DrBooly) - Maintainer
 
 
 ## Credits
