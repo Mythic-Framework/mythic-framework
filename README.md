@@ -14,7 +14,7 @@
 - [Discord Link](https://discord.gg/N2JARAe8Rp) - Offical Discord for Mythic Framework community-driven support forum!
 
 ## Get Started
-- [mythic-framework](http://repos.mythic-framework.org/Mythic-Framework/mythic-framework) - Get started with the official repository!
+- [mythic-framework](https://github.com/Mythic-Framework/mythic-framework) - Get started with the official repository!
 
 ## Project Maintainers
 - Treyyyy - Maintainer & Community Owner
