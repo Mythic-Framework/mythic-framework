@@ -1,4 +1,4 @@
-![Logo](https://i.ibb.co/ZgkHWR6/uv0El0Z.jpg)
+<div align=center><img src="https://i.ibb.co/ZgkHWR6/uv0El0Z.jpg"></div>
 
 # Mythic Framework [![Awesome](https://cdn.jsdelivr.net/gh/sindresorhus/awesome@d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome#readme)
 > A curated list of credits, links, and community information related to the framework.
