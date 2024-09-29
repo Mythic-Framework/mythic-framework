@@ -743,7 +743,7 @@ Config.PlayerMenu = {
 			}
 		},
 		isEnabled = function(data, target)
-			return GetPedDrawableVariation(target.entity, 1) ~= -1
+			return GetPedDrawableVariation(target.entity, 1) ~= -1 and GetPedDrawableVariation(target.entity, 1) ~= 0
 		end,
 	},
 	{
