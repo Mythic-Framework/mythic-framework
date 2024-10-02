@@ -36,25 +36,25 @@ RegisterNetEvent('FleetDealers:Server:Purchase', function(shop, vehicle, livery)
                         },
                         function(success, vehicle)
                             if success and vehicle then
-                                Execute:Client(src, 'Notification', 'Success', string.format('Fleet Vehicle Purchase of a %s %s was Successful.<br><br>VIN: %s<br>Plate: %s', chosenVehicle.make, chosenVehicle.model, vehicle.VIN, vehicle.RegisteredPlate), 5000, 'cars')
+                                Execute:Client(src, 'Notification', 'Success', string.format('Fleet Vehicle Purchase of a %s %s was Successful.<br><br>VIN: %s<br>Plate: %s', chosenVehicle.make, chosenVehicle.model, vehicle.VIN, vehicle.RegisteredPlate), 5000, 'car')
                             else
                                 Logger:Error('Dealerships', string.format('Purchase of Fleet Vehicle Failed After Taking %s Cash from Bank Account: %s', chosenVehicle.price, purchaseBankAccount.Account))
-                                Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'cars')
+                                Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'car')
                             end
                         end,
                         properties,
                         chosenVehicle.qaul or false
                     )
                 else
-                    Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed - Not Enough Money in the Bank', 5000, 'cars')
+                    Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed - Not Enough Money in the Bank', 5000, 'car')
                 end
             else
-                Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'cars')
+                Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'car')
             end
         else
-            Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed - Invalid Vehicle', 5000, 'cars')
+            Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed - Invalid Vehicle', 5000, 'car')
         end
     else
-        Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'cars')
+        Execute:Client(src, 'Notification', 'Error', 'Fleet Vehicle Purchase Failed', 5000, 'car')
     end
 end)

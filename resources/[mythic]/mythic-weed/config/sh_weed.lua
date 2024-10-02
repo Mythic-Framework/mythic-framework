@@ -163,7 +163,7 @@ Plants = {
 				end,
 			},
 			{
-				icon = "sack",
+				icon = "money-bill",
 				text = "Harvest",
 				event = "Weed:Client:Harvest",
 				data = {},
@@ -203,7 +203,7 @@ Plants = {
 				end,
 			},
 			{
-				icon = "sack",
+				icon = "money-bill",
 				text = "Harvest",
 				event = "Weed:Client:Harvest",
 				data = {},
@@ -243,7 +243,7 @@ Plants = {
 				end,
 			},
 			{
-				icon = "sack",
+				icon = "money-bill",
 				text = "Harvest",
 				event = "Weed:Client:Harvest",
 				data = {},

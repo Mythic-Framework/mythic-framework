@@ -52,7 +52,7 @@ table.insert(Config.Restaurants, {
             label = "Pizza Oven",
             targeting = {
                 actionString = "Cooking",
-                icon = "pizza",
+                icon = "pizza-slice",
                 poly = {
                     coords = vector3(813.97, -752.85, 26.78),
                     w = 2.0,
@@ -101,7 +101,7 @@ table.insert(Config.Restaurants, {
             label = "Food",
             targeting = {
                 actionString = "Cooking",
-                icon = "pizza",
+                icon = "pizza-slice",
                 poly = {
                     coords = vector3(808.69, -761.17, 26.78),
                     w = 3.0,

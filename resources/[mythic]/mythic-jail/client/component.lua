@@ -110,7 +110,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		Targeting.Zones:AddBox(
 			"prison-food",
-			"fork-knife",
+			"bowl-food",
 			Config.Cafeteria.Food.coords,
 			Config.Cafeteria.Food.length,
 			Config.Cafeteria.Food.width,
@@ -127,7 +127,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		Targeting.Zones:AddBox(
 			"prison-drink",
-			"cup-straw-swoosh",
+			"mug-hot",
 			Config.Cafeteria.Drink.coords,
 			Config.Cafeteria.Drink.length,
 			Config.Cafeteria.Drink.width,

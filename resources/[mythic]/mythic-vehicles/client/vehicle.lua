@@ -137,7 +137,7 @@ VEHICLE = {
         Off = function(self, customMessage)
             local vehEnt = Entity(VEHICLE_INSIDE)
             Vehicles.Engine:Force(VEHICLE_INSIDE, false)
-            Notification:Info(customMessage and customMessage or 'Engine Turned Off', 1500, 'engine')
+            Notification:Info(customMessage and customMessage or 'Engine Turned Off', 1500, 'car')
 
             if Vehicles.Keys:Has(vehEnt.state.VIN, vehEnt.state.GroupKeys) then
                 Action:Show('{keybind}toggle_engine{/keybind} Turn Engine On')
@@ -149,7 +149,7 @@ VEHICLE = {
 
             if Vehicles.Keys:Has(vehEnt.state.VIN, vehEnt.state.GroupKeys) then
                 Vehicles.Engine:Force(VEHICLE_INSIDE, true)
-				Notification:Info('Engine Turned On', 1500, 'engine')
+				Notification:Info('Engine Turned On', 1500, 'car')
             else
                 Notification:Error('You Don\'t Have Keys For This Vehicle', 3000, 'key')
             end

@@ -47,7 +47,7 @@ CreateThread(function()
 					{
 						color = "#247919",
 						label = "Los Santos Tow",
-						icon = "truck-tow",
+						icon = "truck-pickup",
 					},
 					{},
 					nil

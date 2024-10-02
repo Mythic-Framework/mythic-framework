@@ -87,7 +87,7 @@ export default ({ notification }) => {
             case 'warning':
                 return ['fas', 'triangle-exclamation'];
             case 'error':
-                return ['fas', 'circle-x'];
+                return ['fas', 'circle-xmark'];
             default:
                 return ['fas', 'circle-info'];
         }

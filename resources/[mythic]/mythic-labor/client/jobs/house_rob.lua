@@ -66,7 +66,7 @@ AddEventHandler("Labor:Client:Setup", function()
         EmergencyAlerts:CreateIfReported(40.0, "bane", true)
 	end)
 
-	Interaction:RegisterMenu("house-robbery", "Enter House", "window-frame-open", function(data)
+	Interaction:RegisterMenu("house-robbery", "Enter House", "door-open", function(data)
 		Interaction:Hide()
 		EnterHouse(data)
 	end, function()
@@ -80,7 +80,7 @@ AddEventHandler("Labor:Client:Setup", function()
         return false
 	end)
 
-	Interaction:RegisterMenu("house-robbery-exit", "Exit House", "door-open", function(data)
+	Interaction:RegisterMenu("house-robbery-exit", "Exit House", "door-closed", function(data)
 		Interaction:Hide()
 		ExitHouse()
 	end, function()

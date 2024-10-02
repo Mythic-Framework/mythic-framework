@@ -75,7 +75,7 @@ function RegisterVehicleSaleCallbacks()
                                                             newQuantity = removeSuccess,
                                                         })
             
-                                                        Execute:Client(source, 'Notification', 'Success', 'Completed Sales Process - The Customer Received their Vehicle', 7500, 'car-building')
+                                                        Execute:Client(source, 'Notification', 'Success', 'Completed Sales Process - The Customer Received their Vehicle', 7500, 'car')
                                                         SendCompletedCashSaleEmail({
                                                             SID = targetCharacter:GetData('SID'),
                                                             First = targetCharacter:GetData('First'),
@@ -99,16 +99,16 @@ function RegisterVehicleSaleCallbacks()
                                                             Loans.Credit:Increase(targetCharacter:GetData('SID'), creditIncrease)
                                                         end
                                                     else
-                                                        Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
-                                                        Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
+                                                        Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
+                                                        Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
                                                     end
                                                 end, false, dealerData.storage)
                                             else
-                                                Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
-                                                Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
+                                                Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
+                                                Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
                                             end
                                         else
-                                            Execute:Client(source, 'Notification', 'Error', 'Payment Failed', 5000, 'car-building')
+                                            Execute:Client(source, 'Notification', 'Error', 'Payment Failed', 5000, 'car')
                                         end
                                     end)
 
@@ -138,7 +138,7 @@ function RegisterVehicleSaleCallbacks()
                                                         Last = targetCharacter:GetData('Last'),
                                                         Source = targetSrc,
                                                     }, dealerData, saleVehicleData.data, downPaymentPercent, downPayment, loanWeeks, perWeek, salePriceAfterDown, function()
-                                                        Execute:Client(source, 'Notification', 'Info', 'The Loan Terms Were Accepted by the Customer', 5000, 'car-building')
+                                                        Execute:Client(source, 'Notification', 'Info', 'The Loan Terms Were Accepted by the Customer', 5000, 'car')
                                                         Billing:Create(
                                                             targetSrc, 
                                                             dealerData.name, 
@@ -189,7 +189,7 @@ function RegisterVehicleSaleCallbacks()
                                                                                     newQuantity = removeSuccess,
                                                                                 })
                 
-                                                                                Execute:Client(source, 'Notification', 'Success', 'Completed Sales Process - The Customer Received their Vehicle', 7500, 'car-building')
+                                                                                Execute:Client(source, 'Notification', 'Success', 'Completed Sales Process - The Customer Received their Vehicle', 7500, 'car')
                                                                                 SendCompletedLoanSaleEmail({
                                                                                     SID = targetCharacter:GetData('SID'),
                                                                                     First = targetCharacter:GetData('First'),
@@ -204,13 +204,13 @@ function RegisterVehicleSaleCallbacks()
                                                                                     Source = targetSrc,
                                                                                 })
                                                                             else
-                                                                                Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
-                                                                                Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car-building')
+                                                                                Execute:Client(source, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
+                                                                                Execute:Client(targetSrc, 'Notification', 'Error', 'Error Completing Vehicle Sale', 5000, 'car')
                                                                             end
                                                                         end, false, dealerData.storage, preGenerateVIN)
                                                                     end
                                                                 else
-                                                                    Execute:Client(source, 'Notification', 'Error', 'Loan Downpayment Failed', 5000, 'car-building')
+                                                                    Execute:Client(source, 'Notification', 'Error', 'Loan Downpayment Failed', 5000, 'car')
                                                                 end
                                                             end
                                                         )
