@@ -3,12 +3,12 @@ local attemptingImpoundOnVehicle = false
 AddEventHandler('Vehicles:Client:StartUp', function()
     PedInteraction:Add('veh_impound', `ig_floyd`, vector3(-193.282, -1162.433, 22.7), 270.4, 10.0, {
 		{
-			icon = "truck-tow",
+			icon = "truck-pickup",
 			text = "Impound Release Request",
 			event = "Vehicles:Client:TowReleaseMenu",
 		},
 		{
-			icon = "truck-tow",
+			icon = "truck-pickup",
 			text = "Request Tow Job",
 			event = "Tow:Client:RequestJob",
 			isEnabled = function(data, entityData)
@@ -51,7 +51,7 @@ AddEventHandler('Vehicles:Client:StartUp', function()
 				},
 			},
 		},
-	}, 'truck-tow', 'WORLD_HUMAN_CLIPBOARD')
+	}, 'truck-pickup', 'WORLD_HUMAN_CLIPBOARD')
 end)
 
 AddEventHandler('Vehicles:Client:CharacterLogin', function()
