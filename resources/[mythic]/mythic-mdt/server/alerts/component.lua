@@ -16,7 +16,7 @@ _alertValidTypes = {
 		"lifeflight",
 	},
 	tow = {
-		"truck-tow",
+		"truck-pickup",
 	},
 }
 
