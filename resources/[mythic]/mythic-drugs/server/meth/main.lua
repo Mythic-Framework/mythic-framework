@@ -87,7 +87,7 @@ AddEventHandler("Drugs:Server:Startup", function()
         coords = vector3(1532.717, 6331.944, 23.273),
         heading = 205.563,
         scenario = "WORLD_HUMAN_GARDENER_LEAF_BLOWER"
-    }, _toolsForSale, "badge-dollar", "View Offers")
+    }, _toolsForSale, "badge-sign", "View Offers")
 
     local tables = MySQL.query.await('SELECT * FROM placed_meth_tables WHERE expires > ?', { os.time() })
     for k, v in ipairs(tables) do
