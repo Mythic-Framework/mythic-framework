@@ -114,7 +114,7 @@ VEHICLE = {
 
             if state and GetVehicleEngineHealth(veh) <= -2000.0 then
                 state = false
-                Notification:Error('Vehicle Engine Damaged', 2500, 'engine-warning')
+                Notification:Error('Vehicle Engine Damaged', 2500, 'car')
             end
             
             if state then
