@@ -264,7 +264,7 @@ function Startup()
 			},
         },
 		{
-			icon = "bowling-pins",
+			icon = "bowling-ball",
 			text = "Reset All Lanes",
 			event = "Bowling:Client:ResetAll",
 			data = { job = 'bowling' },
@@ -276,7 +276,7 @@ function Startup()
 			},
 		},
 		{
-            icon = "bowling-pins",
+            icon = "bowling-ball",
             text = "Clear Pins",
             event = "Bowling:Client:ClearPins",
 			jobPerms = {
