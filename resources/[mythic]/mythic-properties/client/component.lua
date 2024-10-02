@@ -214,7 +214,7 @@ AddEventHandler("Core:Shared:Ready", function()
 end)
 
 function CreatePropertyDoor(isBackdoor)
-	Interaction:RegisterMenu(isBackdoor and "property-backdoor" or "property", isBackdoor and "Property Backdoor" or "Property", isBackdoor and "house-window" or "house", function(data)
+	Interaction:RegisterMenu(isBackdoor and "property-backdoor" or "property", isBackdoor and "Property Backdoor" or "Property", isBackdoor and "door-open" or "house", function(data)
 		local pMenu = {
 			{
 				icon = "door-open",

@@ -263,7 +263,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "gauge-circle-plus",
+						icon = "gauge-simple",
 						label = "Check Nitrous Levels",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
@@ -286,7 +286,7 @@ AddEventHandler("Core:Shared:Ready", function()
 						end,
 					},
 					{
-						icon = "gauge-circle-minus",
+						icon = "trash-can",
 						label = "Remove Nitrous",
 						shouldShow = function()
 							if VEHICLE_INSIDE then
