@@ -178,12 +178,12 @@ AddEventHandler("Core:Shared:Ready", function()
 				animDict = "mp_fbi_heist",
 				anim = "loop",
 			},
-		}, _heistTools, "badge-dollar", "View Offers", false, 1)
+		}, _heistTools, "dollar-sign", "View Offers", false, 1)
 
 		Vendor:Create("HeistShit", "ped", "Rob Tools", GetHashKey("CS_NervousRon"), {
 			coords = vector3(pos.x, pos.y, pos.z),
 			heading = pos.w,
-		}, _toolsForSale, "badge-dollar", "View Offers", 1)
+		}, _toolsForSale, "dollar-sign", "View Offers", 1)
 
 		Crypto.Coin:Create("HEIST", "HEIST", 100, false, false)
 
