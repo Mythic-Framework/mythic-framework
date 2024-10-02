@@ -214,7 +214,7 @@ function UpdateVOIPIndicatorStatus()
 		fillPercent = (100 / #VOIP_CONFIG.Modes) * CURRENT_VOICE_MODE
 
 		if USING_MEGAPHONE then
-			indicatorIcon = "megaphone"
+			indicatorIcon = "bullhorn"
 			fillPercent = 100
 		end
 
