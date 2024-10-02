@@ -5,7 +5,7 @@ local oxygenTank = nil
 local oxygenMask = nil
 
 AddEventHandler("Characters:Client:Spawn", function()
-    Hud:RegisterStatus("oxygen", 100, 100, "lungs", "#457F88", true, false, {
+    Hud:RegisterStatus("mask-ventilator", 100, 100, "lungs", "#457F88", true, false, {
         hideHigh = true,
     })
 
@@ -132,7 +132,7 @@ function RegisterOxygenCallbacks()
                 if not cancelled then
                     oxygenDepletionRate = 0.05
 
-                    Hud:RegisterStatus("oxygen", 100, 100, "mask-snorkel", "#457F88", true, true, {
+                    Hud:RegisterStatus("oxygen", 100, 100, "mask-ventilator", "#457F88", true, true, {
                         hideHigh = false,
                     })
 
