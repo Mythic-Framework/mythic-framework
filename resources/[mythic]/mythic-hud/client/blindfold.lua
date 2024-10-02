@@ -27,15 +27,16 @@ RegisterNetEvent("Characters:Client:Logout", function()
 end)
 
 AddEventHandler("HUD:Client:RemoveBlindfold", function(entity, data)
-    Callbacks:ServerCallback("HUD:RemoveBlindfold", entity.serverId, function(s)
-
-    end)
+    if type(entity) == "table" and entity.serverId then
+        Callbacks:ServerCallback("HUD:RemoveBlindfold", entity.serverId, function(s)
+        end)
+	end
 end)
 
 local blindfoldObject = nil
 function SetupBlindfold()
 	local ped = PlayerPedId()
-	local model = GetHashKey("prop_head_bag")
+	local model = GetHashKey("prop_money_bag_01")
 
 	if not IsModelValid(model) then
 		return
@@ -68,17 +69,17 @@ function SetupBlindfold()
 		blindfoldObject,
 		ped,
 		boneid,
-		-0.01,
-		0.045,
-		1.9081958235745e-16,
-		223.0,
-		-94.0,
-		-52.0,
+		0.2,
+		0.04,
+		0.0,
+		0.0,
+		270.0,
+		60.0,
 		1,
 		1,
 		0,
 		1,
-		0,
+		1,
 		1
 	)
 	SetFollowPedCamViewMode(4)
