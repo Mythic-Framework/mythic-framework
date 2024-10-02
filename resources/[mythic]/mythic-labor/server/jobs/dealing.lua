@@ -24,7 +24,7 @@ local _toolsForSale = {
 }
 
 AddEventHandler("Labor:Server:Startup", function()
-    Vendor:Create("CornerDealer", false, "Unknown", false, {}, _toolsForSale, "badge-dollar", "View Offers")
+    Vendor:Create("CornerDealer", false, "Unknown", false, {}, _toolsForSale, "dollar-sign", "View Offers")
 
 	Callbacks:RegisterServerCallback("CornerDealing:Enable", function(source, data, cb)
 		local char = Fetch:Source(source):GetData("Character")
