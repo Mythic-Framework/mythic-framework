@@ -150,7 +150,7 @@ export default (props) => {
 							type="submit"
 							className={classes.headerAction}
 						>
-							<FontAwesomeIcon icon={['fas', 'floppy-disks']} />
+							<FontAwesomeIcon icon={['fas', 'floppy-disk']} />
 						</IconButton>
 					</Grid>
 				</Grid>
