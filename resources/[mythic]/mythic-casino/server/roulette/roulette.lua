@@ -95,9 +95,10 @@ function CheckRouletteWinners(tableId, bets, winningIndex)
             totalsLost[v.Source] = 0
         end
 
+        -- All payouts are 1x higher due to player paying for the bet initially
         if (winningIndex == "0" and betId == "37") or (winningIndex == "00" and betId == "38") then
             -- 12 to 1
-            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 12)
+            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 13)
         elseif 
             (betId == "39" and _rouletteGroups.Red[winningIndex]) or
             (betId == "40" and _rouletteGroups.Black[winningIndex]) or
@@ -107,10 +108,10 @@ function CheckRouletteWinners(tableId, bets, winningIndex)
             (betId == "44" and _rouletteGroups.High[winningIndex])
         then
             -- 1 to 1
-            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount)
+            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 2)
         elseif tonumber(betId) >= 1 and tonumber(betId) <= 36 and tonumber(betId) == tonumber(winningIndex) then
             -- 10 to 1
-            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 10)
+            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 11)
         elseif 
             (betId == "45" and _rouletteGroups.First12[winningIndex]) or
             (betId == "46" and _rouletteGroups.Second12[winningIndex]) or
@@ -120,7 +121,7 @@ function CheckRouletteWinners(tableId, bets, winningIndex)
             (betId == "50" and _rouletteGroups.TwoToOne3[winningIndex])
         then
             -- 2 to 1
-            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 2)
+            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 3)
         elseif 
             (betId == "51" and _rouletteGroups.Row1[winningIndex]) or
             (betId == "52" and _rouletteGroups.Row2[winningIndex]) or
@@ -136,7 +137,7 @@ function CheckRouletteWinners(tableId, bets, winningIndex)
             (betId == "62" and _rouletteGroups.Row12[winningIndex])
         then
             -- 5 to 1
-            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 5)
+            totalsWon[v.Source] = math.floor(totalsWon[v.Source] + v.Amount * 6)
         else
             totalsLost[v.Source] = math.floor(totalsLost[v.Source] + v.Amount)
         end
