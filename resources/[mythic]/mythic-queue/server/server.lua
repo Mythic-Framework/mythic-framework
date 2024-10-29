@@ -15,8 +15,6 @@ local privPlayerJoining = false
 local _dbReadyTime = 0
 local _dbReady = false
 
-_QueueJoinDelay = GetGameTimer() + Config.Settings.QueueDelay * (1000 * 60) and Config.Settings.QueueDelay * (1000 * 60) or 0
-
 local Data = {
 	Total = 0,
 	Session = {
@@ -249,8 +247,6 @@ QUEUE.Connect = function(self, source, playerName, setKickReason, deferrals)
 		end
 
 		if GlobalState.IsProduction then
-	
-			if _QueueJoinDelay >= GetGameTimer() then return end
 
 			while GetGameTimer() < (_dbReadyTime + (Config.Settings.QueueDelay * (1000 * 60))) do
 				local min = math.floor(((math.floor(_dbReadyTime / 1000) + (Config.Settings.QueueDelay * 60)) - math.floor(GetGameTimer() / 1000)) / 60)
