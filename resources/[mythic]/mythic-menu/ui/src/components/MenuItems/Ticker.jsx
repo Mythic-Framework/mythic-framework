@@ -79,7 +79,12 @@ const Ticker = props => {
         Nui.send('FrontEndSound', { sound: 'UPDOWN' });
         Nui.send('Selected', {
             id: props.data.id,
-            data: { value: value === 0 ? props.data.options.max : value - 1 },
+            data: { 
+                value: 
+                    value === props.data.options.min 
+                        ? props.data.options.max 
+                        : value - 1,
+            },
         });
     };
 
