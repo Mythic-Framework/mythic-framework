@@ -224,6 +224,7 @@ _pdAlerts = {
 		ids = ids + 1
 
 		local areaBlip = {}
+
 		if blip then
 			blip.id = string.format("emrg-%s", _blipCount)
 
@@ -265,7 +266,7 @@ _pdAlerts = {
 				Sounds.Play:Distance(15, "alert_normal.ogg", 0.5)
 			end
 
-			if blip ~= nil and location ~= nil then
+			if blip and location ~= nil then
 				local eB = Blips:Add(
 					blip.id,
 					blip.title,
