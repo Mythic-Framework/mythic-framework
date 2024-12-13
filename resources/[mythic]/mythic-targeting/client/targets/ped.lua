@@ -1,4 +1,5 @@
 InteractablePeds = {}
+InteractableGlobalPeds = {}
 InteractableModels = {}
 
 TARGETING.AddPed = function(self, entityId, icon, menuArray, proximity)
@@ -17,6 +18,28 @@ end
 
 TARGETING.RemovePed = function(self, entityId)
     InteractablePeds[entityId] = nil
+end
+
+TARGETING.AddGlobalPed = function(self, menuArray)
+    if type(menuArray) ~= 'table' then return end
+    
+    if Utils:GetTableLength(InteractableGlobalPeds) > 0 then
+        table.insert(InteractableGlobalPeds.menu, menuArray)
+        return Utils:GetTableLength(InteractableGlobalPeds.menu) -- Returns index so you can remove it
+    else
+        InteractableGlobalPeds = {
+            type = 'ped',
+            icon = "user",
+            menu = menuArray,
+            proximity = 3.0,
+        }
+    end
+end
+
+TARGETING.RemoveGlobalPed = function(self, menuIndex)
+    if #InteractableGlobalPeds > 0 then
+        InteractableGlobalPeds.menu[menuIndex] = nil
+    end
 end
 
 TARGETING.AddPedModel = function(self, modelId, icon, menuArray, proximity)
