@@ -65,7 +65,7 @@ AddEventHandler("Core:Shared:Ready", function()
 			return LocalPlayer.state.onDuty == "ems" and LocalPlayer.state.onDuty and LocalPlayer.state.isDead
 		end)
 
-		Interaction:RegisterMenu("ems-utils", "EMS Utilities", "tablet-rugged", function(data)
+		Interaction:RegisterMenu("ems-utils", "EMS Utilities", "tablet", function(data)
 			Interaction:ShowMenu({
 				{
 					icon = "tablet-screen-button",
