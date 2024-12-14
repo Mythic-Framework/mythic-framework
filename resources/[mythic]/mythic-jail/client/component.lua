@@ -60,7 +60,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		Targeting.Zones:AddBox(
 			string.format("bb-retreive", aptId),
-			"hands-holding",
+			"hands-holding-hand",
 			Config.Retreival.coords,
 			Config.Retreival.length,
 			Config.Retreival.width,
@@ -81,7 +81,7 @@ AddEventHandler("Core:Shared:Ready", function()
 
 		Targeting.Zones:AddBox(
 			"prison-check",
-			"police-box",
+			"box",
 			Config.Payphone.coords,
 			Config.Payphone.length,
 			Config.Payphone.width,
@@ -176,7 +176,7 @@ AddEventHandler("Core:Shared:Ready", function()
 				tempjob = "Prison",
 				data = {},
 			},
-		}, 'user-helmet-safety', 'WORLD_HUMAN_JANITOR')
+		}, 'helmet-safety', 'WORLD_HUMAN_JANITOR')
 
 		Callbacks:RegisterClientCallback("Jail:DoMugshot", function(data, cb)
 			_disabled = true
