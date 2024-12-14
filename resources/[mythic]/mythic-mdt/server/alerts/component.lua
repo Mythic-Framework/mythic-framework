@@ -66,7 +66,7 @@ emergencyAlertsData = {}
 emergencyAlertsUnits = {}
 
 _pdAlerts = {
-	Create = function(self, code, title, type, location, description, isPanic, blip, styleOverride, isArea, camera)
+	Create = function(self, code, title, type, location, description, isPanic, blip, styleOverride, isArea, camera, metadata)
 		for k, v in pairs(emergencyAlertsData) do
 			if v.AlertPermissions[_alertsPermMap[type]] then
 				TriggerClientEvent(
@@ -81,7 +81,8 @@ _pdAlerts = {
 					blip,
 					styleOverride,
 					isArea or false,
-					camera or false
+					camera or false,
+					metadata or false
 				)
 			end
 		end

@@ -132,6 +132,55 @@ export default ({ alert }) => {
 								<b>{alert.description.details}</b>
 							</div>
 						)}
+						{Boolean(alert.metadata) && (
+							<Grid className={classes.minor} container spacing={2}>
+								{alert.metadata.map((data, index) => {
+									switch (data.type) {
+										case 'colour':
+											return (
+												<Grid item xs={4} key={index}>
+													<FontAwesomeIcon
+														style={{ color: data.colour }}
+														className={classes.icon}
+														icon={['fas', data.icon]}
+													/>
+													<b>{data.label}</b>
+												</Grid>
+											);
+										case 'plate':
+											return (
+												<Grid item xs={4} key={index}>
+													<FontAwesomeIcon
+														className={classes.icon}
+														icon={['fas', data.icon]}
+													/>
+													<b>{data.label}</b>
+												</Grid>
+											);
+										case 'class':
+											return (
+												<Grid item xs={4} key={index}>
+													<FontAwesomeIcon
+														className={classes.icon}
+														icon={['fas', data.icon]}
+													/>
+													<b>Class: {data.label}</b>
+												</Grid>
+											);
+										default:
+											return (
+												<Grid item xs={4} key={index}>
+													<FontAwesomeIcon
+														className={classes.icon}
+														icon={['fas', data.icon]}
+													/>
+													<b>{data.label}</b>
+												</Grid>
+											);
+									}
+								})}
+							</Grid>
+						)}
 						{Boolean(alert.location) ? (
 							<div className={classes.minor}>
 								<FontAwesomeIcon className={classes.icon} icon={['fas', 'location']} />
