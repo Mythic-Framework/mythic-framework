@@ -256,7 +256,7 @@ _pdAlerts = {
 			blip = blip,
 			style = styleOverride or type,
 			camera = camera or false,
-			metadata or false
+			metadata = metadata or false
 		}
 
 		local duty = LocalPlayer.state.onDuty

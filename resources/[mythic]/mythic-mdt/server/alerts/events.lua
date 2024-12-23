@@ -320,6 +320,7 @@ RegisterNetEvent("EmergencyAlerts:Server:DoPredefined", function(type, descripti
 			data.blip or false,
 			data.styleOverride,
 			false,
+			false,
 			description and description.metadata or false
 		)
 	else
@@ -343,6 +344,7 @@ RegisterNetEvent("EmergencyAlerts:Server:DoPredefined", function(type, descripti
 				data.blip or false,
 				data.styleOverride,
 				data.isArea or false,
+				false,
 				description and description.metadata or false
 			)
 		end)
