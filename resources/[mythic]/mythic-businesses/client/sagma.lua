@@ -293,7 +293,7 @@ AddEventHandler("Businesses:Client:SAGMA:OpenJewelryCrafting", function(e, data)
 end)
 
 RegisterNetEvent("Businesses:Client:SAGMA:ViewGem", function(tableId, gemProps, quality, item)
-    ActivateTable(tableId, gemProps.color, quality, item)
+    ActivateTable(tableId, gemProps.prop, quality, item)
 end)
 
 local _threading = false
@@ -324,48 +324,51 @@ function RunTableThread()
 	end)
 end
 
-function ActivateTable(tableId, color, quality, item)
-	RequestModel("mythicgem")
-	while not HasModelLoaded("mythicgem") do
-		Wait(0)
-	end
+function ActivateTable(tableId, prop, quality, item)
+    RequestModel(prop)
+    while not HasModelLoaded(prop) do
+        Wait(0)
+    end
 
     LocalPlayer.state:set("inGemTable", true, true)
 
-    if _gemObj ~= 0 then
+    if _gemObj ~= nil and DoesEntityExist(_gemObj) then
         DeleteEntity(_gemObj)
     end
 
-	local obj = -1
-	local loopcount = 0
-	while loopcount < 5 do
-		obj = GetClosestVehicle(GetEntityCoords(LocalPlayer.state.ped), 10.0, `mythicgem`, 0)
-		loopcount = loopcount + 1
-		DeleteEntity(obj)
-	end
-	DoScreenFadeOut(1000)
-	FreezeEntityPosition(LocalPlayer.state.ped, true)
-	Wait(1000)
-	local dirtLevel = (15 - math.floor(quality / 6.66)) + 0.0
+    local obj = -1
+    local loopcount = 0
+    while loopcount < 5 do
+        obj = GetClosestObjectOfType(GetEntityCoords(LocalPlayer.state.ped), 10.0, prop, false, false, false)
+        if DoesEntityExist(obj) then
+            DeleteEntity(obj)
+        end
+        loopcount = loopcount + 1
+    end
+
+    DoScreenFadeOut(1000)
+    FreezeEntityPosition(LocalPlayer.state.ped, true)
+    Wait(1000)
+
+    local dirtLevel = (15 - math.floor(quality / 6.66)) + 0.0
 
     HUD.GemTable:Open(quality)
     Inventory.StaticTooltip:Open(item)
 
-	_gemObj = CreateVehicle(`mythicgem`, _tableConfig[tableId].createCoords, 0, 0)
-	FreezeEntityPosition(_gemObj, true)
-	SetEntityCollision(_gemObj, false, false)
-	SetVehicleDirtLevel(_gemObj, dirtLevel)
-	SetVehicleColours(_gemObj, color, 0)
-	SetVehicleExtraColours(_gemObj, 0, false)
-	_tableCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
-	SetCamCoord(_tableCam, GetOffsetFromEntityInWorldCoords(_gemObj, 0.45, 0.0, 0.12))
-    
-	SetCamRot(_tableCam, -20.0, 0.0, _tableConfig[tableId].createCoords[4] + 90.0, 2)
-	SetCamFov(_tableCam, 50.0)
-	RenderScriptCams(true, false, 0, 1, 0)
-	Wait(200)
-	DoScreenFadeIn(1000)
-	RunTableThread()
+    _gemObj = CreateObject(prop, _tableConfig[tableId].createCoords.x, _tableConfig[tableId].createCoords.y, _tableConfig[tableId].createCoords.z, true, true, false)
+    FreezeEntityPosition(_gemObj, true)
+    SetEntityCollision(_gemObj, false, false)
+    SetEntityProofs(_gemObj, true, true, true, true, true, true, true, true)
+
+    _tableCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+    SetCamCoord(_tableCam, GetOffsetFromEntityInWorldCoords(_gemObj, 0.45, 0.0, 0.25))
+    SetCamRot(_tableCam, -20.0, 0.0, _tableConfig[tableId].createCoords.w + 90.0, 2)
+    SetCamFov(_tableCam, 90.0) -- 50.0
+    RenderScriptCams(true, false, 0, 1, 0)
+
+    Wait(200)
+    DoScreenFadeIn(1000)
+    RunTableThread()
 end
 
 function CleanupTable()
