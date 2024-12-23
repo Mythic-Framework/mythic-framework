@@ -4,7 +4,7 @@ function RegisterBallisticsCallbacks()
 		if player and data and data.slotNum and data.serial then
 			local char = player:GetData('Character')
 			if char then
-				local charId = char:GetData('ID')
+				local charId = char:GetData('SID')
 				-- Files a Gun So Evidence Can Be Found
 		
 				local item = Inventory:GetSlot(charId, data.slotNum, 1)
