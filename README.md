@@ -17,11 +17,10 @@
 - [mythic-framework](https://github.com/Mythic-Framework/mythic-framework) - Get started with the official repository!
 
 ## Project Maintainers
-- Treyyyy - Maintainer & Community Owner
-- Yarn - Maintainer & Community Owner
-- Tyh - Maintainer & Community Owner
-- Van Man (DrBooly) - Maintainer
-
+- Treyyyy - Community Owner
+- Tyh - Community Owner
+- Van Man (DrBooly) - Community Owner
+- akaLucifer - Maintainer
 
 ## Credits
 - Alzar & Dr Nick - Original Maintainers and Creators
