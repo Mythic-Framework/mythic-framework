@@ -1,26 +1,28 @@
 
 export const initialState = process.env.NODE_ENV === 'production' ? {
 	player: {
-		size: 4,
+		loaded: false,
+		size: 0,
 		invType: 1,
-		name: null,
+		name: 'Player',
 		inventory: [],
 		disabled: {},
 		owner: 0,
-		capacity: 0,
+		capacity: 100,
 		isWeaponEligble: false,
 	},
 	equipment: {
 		inventory: [],
 	},
 	secondary: {
-		size: 4,
-		name: null,
+		loaded: false,
+		size: 0,
+		name: 'Dropzone',
 		invType: 2,
 		inventory: [],
 		disabled: {},
 		owner: 0,
-		capacity: 0,
+		capacity: 100,
 	},
 	showSecondary: false,
 	hover: false,
@@ -38,91 +40,106 @@ export const initialState = process.env.NODE_ENV === 'production' ? {
 		name: 'Player Storage',
 		isWeaponEligble: true,
 		capacity: 100,
-		disabled: Object(),
-		inventory: {
-			1: {
+		disabled: Object({
+			2: true,
+		}),
+		loaded: true,
+		inventory: [
+			{
 				Name: 'WEAPON_ADVANCEDRIFLE',
 				Slot: 1,
 				Count: 1,
+				CreateDate: Date.now() / 1000,
 				MetaData: {
-					CreateDate: Date.now() / 1000,
+					SerialNumber: '123-456',
 				},
 			},
-			2: {
+			{
 				Name: 'WEAPON_ADVANCEDRIFLE',
 				Slot: 2,
 				Count: 1,
+				CreateDate: 1625461797,
 				MetaData: {
-					CreateDate: 1625461797,
+					SerialNumber: '123-456',
 				},
 			},
-			3: {
+			{
 				Name: 'WEAPON_ADVANCEDRIFLE',
 				Slot: 3,
 				Count: 1,
+				CreateDate: Date.now() / 1000 - 80000,
 				MetaData: {
-					CreateDate: Date.now() / 1000 - 80000,
+					SerialNumber: '123-456',
 				},
 			},
-			4: {
+			{
 				Name: 'WEAPON_ADVANCEDRIFLE',
 				Slot: 4,
 				Count: 1,
+				CreateDate: 1225441797,
 				MetaData: {
-					CreateDate: 1225441797,
+					SerialNumber: '123-456',
 				},
 			},
-			5: {
-				Name: 'burger',
+			{
+				Name: 'bread',
 				Slot: 5,
 				Count: 10,
+				CreateDate: 1225441797,
 			},
-			6: {
+			{
 				Name: 'water',
 				Slot: 6,
 				Count: 10,
+				CreateDate: 1225441797,
 			},
-			7: {
-				Name: 'goldbar',
-				Slot: 7,
-				Count: 35,
-			},
-		},
+		],
 		owner: '12214124',
 	},
 	equipment: {
 		inventory: [],
 	},
 	secondary: {
-		size: 40,
-		name: 'Second Storage',
+		size: 1,
+		name: 'Gallery Gem Table',
 		invType: 11,
 		capacity: 100,
 		disabled: Object(),
-		inventory: {
-			1: {
+		shop: true,
+		loaded: true,
+		action: {
+			icon: 'gem',
+			text: 'Appraise',
+			event: 'Test:Event:Thing',
+		},
+		inventory: [
+			{
 				Name: 'water',
 				Slot: 1,
 				Count: 10,
+				CreateDate: 1225441797,
 			},
-			2: {
+			{
 				Name: 'water',
 				Slot: 2,
 				Count: 10,
 				Price: 25,
+				CreateDate: 1225441797,
 			},
-			3: {
-				Name: 'burger',
+			{
+				Name: 'bread',
 				Slot: 3,
 				Count: 10,
 				Price: 25,
+				CreateDate: 1225441797,
 			},
-			4: {
+			{
 				Name: 'WEAPON_ADVANCEDRIFLE',
 				Slot: 4,
 				Count: 1,
+				CreateDate: 1225441797,
 			},
-		},
+		],
 		owner: '346346346',
 	},
 	showSecondary: true,
@@ -132,8 +149,9 @@ export const initialState = process.env.NODE_ENV === 'production' ? {
 	splitItem: null,
 	inUse: false,
 	items: {
-		burger: {
-			label: 'Burger',
+		bread: {
+			name: 'bread',
+			label: 'Bread',
 			price: 0,
 			isUsable: true,
 			isRemoved: true,
@@ -144,6 +162,7 @@ export const initialState = process.env.NODE_ENV === 'production' ? {
 			weight: 1,
 		},
 		water: {
+			name: 'water',
 			label: 'Water',
 			price: 0,
 			isUsable: true,
@@ -154,18 +173,8 @@ export const initialState = process.env.NODE_ENV === 'production' ? {
 			metalic: false,
 			weight: 1,
 		},
-		goldbar: {
-			label: 'Gold Bar',
-			price: 0,
-			isUsable: false,
-			isRemoved: true,
-			isStackable: 100,
-			type: 1,
-			rarity: 2,
-			metalic: false,
-			weight: 1,
-		},
 		WEAPON_ADVANCEDRIFLE: {
+			name: 'WEAPON_ADVANCEDRIFLE',
 			label: 'Advanced Rifle',
 			requiresLicense: true,
 			price: 15000,
@@ -178,23 +187,27 @@ export const initialState = process.env.NODE_ENV === 'production' ? {
 			weight: 1,
 			durability: 86400,
 		},
-		heavy_glue: {
-			label: 'Heavy Duty Glue',
-			price: 200,
-			isUsable: false,
-			isRemoved: true,
-			isStackable: 100,
-			type: 4,
-			rarity: 3,
-			metalic: false,
-			weight: 50,
-		},
 	},
 	itemsLoaded: true,
+
+	staticTooltip: {
+		Name: 'WEAPON_ADVANCEDRIFLE',
+		Slot: 1,
+		Count: 1,
+		CreateDate: Date.now() / 1000,
+		MetaData: {
+			SerialNumber: '123-456',
+		},
+	},
 }
 
 const appReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case 'SET_DRAGGING_AMOUNT':
+			return {
+				...state,
+				draggingAmount: action.payload.amount
+			}
 		case 'UNLOAD_ITEMS':
 			return {
 				...state,

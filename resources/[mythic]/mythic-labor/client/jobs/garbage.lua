@@ -60,6 +60,7 @@ loadAnimDict = function(dict)
 		Wait(10)
 	end
 end
+
 AddEventHandler("Labor:Client:Setup", function()
 	PedInteraction:Add("GarbageJob", GetHashKey("s_m_y_garbage"), vector3(-348.940, -1570.224, 24.228), 340.561, 25.0, {
 		{
@@ -129,7 +130,7 @@ AddEventHandler("Labor:Client:Setup", function()
 				TaskPlayAnim(ped, "missfbi4prepp1", "_bag_throw_garbage_man", 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
 				SetEntityHeading(ped, GetEntityHeading(GarbageVehicle))
 
-				SetTimeout(1250, function()
+				Citizen.SetTimeout(1250, function()
 					DetachEntity(GarbageObject, 1, false)
 					DeleteObject(GarbageObject)
 					TaskPlayAnim(ped, "missfbi4prepp1", "exit", 8.0, 8.0, 1100, 48, 0.0, 0, 0, 0)
@@ -147,37 +148,38 @@ RegisterNetEvent("Garbage:Client:OnDuty", function(joiner, time)
 
 	_blip = Blips:Add("GarbageStart", "Sanitation Foreman", { x = -348.940, y = -1570.224, z = 0 }, 480, 2, 1.4)
 
-	eventHandlers["startup"] = RegisterNetEvent(string.format("Garbage:Client:%s:Startup", joiner), function()
-		_working = true
-		_state = 1
-		for k, v in ipairs(trashBins) do
-			Targeting:AddObject(v, "trash", {
-				{
-					icon = "trash",
-					text = "Grab Trash",
-					event = "Garbage:Client:TrashGrab",
-					data = "Garbage",
-					isEnabled = function(data, entity)
-						return not _entities[ObjToNet(entity.entity)] and LocalPlayer.state.inGarbagbeZone and GarbageObject == nil
-					end,
-				},
-			}, 3.0)
-		end
+    eventHandlers["startup"] = RegisterNetEvent(string.format("Garbage:Client:%s:Startup", joiner), function()
+        _working = true
+        _state = 1
 
-		CreateThread(function()
-			while _working do
-				if _route ~= nil then
-					local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(_route.coords.x, _route.coords.y, _route.coords.z))
-					if dist <= (_route.radius / 2) then
-						LocalPlayer.state.inGarbagbeZone = true
-					else
-						LocalPlayer.state.inGarbagbeZone = false
-					end
-				end
-				Wait(1000)
-			end
-		end)
-	end)
+        for k, v in ipairs(trashBins) do
+            Targeting:AddObject(v, "trash", {
+                {
+                    icon = "trash",
+                    text = "Grab Trash",
+                    event = "Garbage:Client:TrashGrab",
+                    data = "Garbage",
+                    isEnabled = function(data, entity)
+                        return not _entities[ObjToNet(entity.entity)] and LocalPlayer.state.inGarbageZone and GarbageObject == nil
+                    end,
+                },
+            }, 3.0)
+        end
+
+        CreateThread(function()
+            while _working do
+                if _route ~= nil then
+                    local dist = #(vector3(LocalPlayer.state.position.x, LocalPlayer.state.position.y, LocalPlayer.state.position.z) - vector3(_route.coords.x, _route.coords.y, _route.coords.z))
+                    if dist <= (_route.radius / 2) then
+                        LocalPlayer.state.inGarbageZone = true
+                    else
+                        LocalPlayer.state.inGarbageZone = false
+                    end
+                end
+                Wait(1000)
+            end
+        end)
+    end)
 
 	eventHandlers["new-route"] = RegisterNetEvent(string.format("Garbage:Client:%s:NewRoute", joiner), function(r)
 		_state = 2
@@ -207,28 +209,53 @@ RegisterNetEvent("Garbage:Client:OnDuty", function(joiner, time)
 			RemoveBlip(_blip)
 			_blip = nil
 		end
+
+		for k, v in ipairs(trashBins) do
+			Targeting:RemoveObject(v)
+		end
+
+		LocalPlayer.state.inGarbageZone = false
 		_blip = Blips:Add("GarbageStart", "Sanitation Foreman", { x = -348.940, y = -1570.224, z = 0 }, 480, 2, 1.4)
 		_state = 3
 	end)
 
-	eventHandlers["gabrage-grab"] = AddEventHandler("Garbage:Client:TrashGrab", function(entity, data)
+	eventHandlers["garbage-grab"] = AddEventHandler("Garbage:Client:TrashGrab", function(entity, data)
+		local entityId = entity.entity
+
+		if not entityId or not DoesEntityExist(entityId) then
+			return
+		end
+
+		if not NetworkGetEntityIsNetworked(entityId) then
+			NetworkRegisterEntityAsNetworked(entityId)
+			Wait(0)
+		end
+
+		local netId = NetworkGetNetworkIdFromEntity(entityId)
+		if not netId or netId == 0 then
+			return
+		end
+
 		if GarbageObject ~= nil then
 			DetachEntity(GarbageObject, 1, false)
 			DeleteObject(GarbageObject)
 			GarbageObject = nil
 		end
-		
-		Callbacks:ServerCallback("Garbage:TrashGrab", ObjToNet(entity.entity), function(s)
-			if s then
-				LocalPlayer.state.carryingGarbabge = true
+
+		Callbacks:ServerCallback("Garbage:TrashGrab", netId, function(success)
+			if success then
+				LocalPlayer.state.carryingGarbage = true
+				_entities[netId] = true
+
+				Targeting:RemoveObject(entityId)
 			end
 		end)
 	end)
 
-	eventHandlers["toss-gabrage"] = AddEventHandler("Garbage:Client:TossBag", function()
+	eventHandlers["toss-garbage"] = AddEventHandler("Garbage:Client:TossBag", function()
 		Callbacks:ServerCallback("Garbage:TrashPutIn", {}, function(s)
 			if s then
-				LocalPlayer.state.carryingGarbabge = false
+				LocalPlayer.state.carryingGarbage = false
 			end
 		end)
 	end)

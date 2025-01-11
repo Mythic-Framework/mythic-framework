@@ -31,7 +31,7 @@ AddEventHandler("Labor:Client:Setup", function()
 		vector2(2379.1826171875, 3104.9187011719),
 		vector2(2387.0463867188, 3126.4077148438)
 	}, {
-		name="scrap",
+		name = "scrap",
 		--debugPoly=true,
 		--minZ = 50.28173828125,
 		--maxZ = 51.348690032959
@@ -86,31 +86,39 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 
 		eventHandlers["enter-poly"] = AddEventHandler("Polyzone:Enter", function(id, testedPoint, insideZones, data)
 			if id ~= _POLYID or _count >= 15 then return end
-
-			for k, v in ipairs(_models) do
-				Targeting:RemoveObject(v)
-				Targeting:AddObject(v, "car", {
-					{
-						icon = "engine",
-						text = "Scrap",
-						event = "Salvaging:Client:ScrapCar",
-						tempjob = "Salvaging",
-						data = {},
-						isEnabled = function(s, s2)
-							return (_working and _inPoly and (_nodes ~= nil and not _nodes[NetworkGetNetworkIdFromEntity(s2.entity)]))
-						end,
-					}
-				}, 3.0)
+			local entity = data and data.entity or nil
+			if not entity or not DoesEntityExist(entity) then
+				return
 			end
 
-			_inPoly = true
+			local model = GetEntityModel(entity)
+			if not model or not tableHasValue(_models, model) then
+				return
+			end
+
+			Targeting:RemoveObject(entity)
+			Targeting:AddObject(entity, "car", {
+				{
+					icon = "oil-can",
+					text = "Scrap",
+					event = "Salvaging:Client:ScrapCar",
+					tempjob = "Salvaging",
+					data = { entity = entity },
+					isEnabled = function()
+						local netId = NetworkGetNetworkIdFromEntity(entity)
+						return (_working and _inPoly and (_nodes ~= nil and not _nodes[netId]))
+					end,
+				}
+			}, 3.0)
 		end)
 
 		eventHandlers["enter-exit"] = AddEventHandler("Polyzone:Exit", function(id, testedPoint, insideZones, data)
 			if id ~= _POLYID then return end
 			_inPoly = false
-			for k, v in ipairs(_models) do
-				Targeting:RemoveObject(v)
+
+			local entity = data and data.entity or nil
+			if entity and DoesEntityExist(entity) then
+				Targeting:RemoveObject(entity)
 			end
 		end)
 
@@ -138,36 +146,38 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 		end
 	end)
 
-	eventHandlers["update-state"] = RegisterNetEvent(string.format("Salvaging:Client:%s:EndScrapping", joiner), function()
-		_state = 2
-		if _blip ~= nil then
-			RemoveBlip(_blip)
-		end
-	
-		for k, v in ipairs(_models) do
-			Targeting:RemoveObject(v)
-		end
-	end)
+	eventHandlers["update-state"] = RegisterNetEvent(string.format("Salvaging:Client:%s:EndScrapping", joiner),
+		function()
+			_state = 2
+			if _blip ~= nil then
+				RemoveBlip(_blip)
+			end
 
-	eventHandlers["delivery"] = RegisterNetEvent(string.format("Salvaging:Client:%s:StartDelivery", joiner), function(point)
-		_state = 3
-		DeleteWaypoint()
-		SetNewWaypoint(point.coords.x, point.coords.y)
+			for k, v in ipairs(_models) do
+				Targeting:RemoveObject(v)
+			end
+		end)
 
-		_blip = Blips:Add("SalvDelivery", "Deliver Goods", point.coords, 478, 2, 1.4)
+	eventHandlers["delivery"] = RegisterNetEvent(string.format("Salvaging:Client:%s:StartDelivery", joiner),
+		function(point)
+			_state = 3
+			DeleteWaypoint()
+			SetNewWaypoint(point.coords.x, point.coords.y)
 
-		PedInteraction:Add("SalvagingDelivery", `mp_m_waremech_01`, point.coords, point.heading, 25.0, {
-			{
-				icon = "box-circle-check",
-				text = "Deliver Goods",
-				event = "Salvaging:Client:EndDelivery",
-				tempjob = "Salvaging",
-				isEnabled = function()
-					return _working and _state == 3
-				end,
-			},
-		}, 'box-circle-check')
-	end)
+			_blip = Blips:Add("SalvDelivery", "Deliver Goods", point.coords, 478, 2, 1.4)
+
+			PedInteraction:Add("SalvagingDelivery", `mp_m_waremech_01`, point.coords, point.heading, 25.0, {
+				{
+					icon = "box-circle-check",
+					text = "Deliver Goods",
+					event = "Salvaging:Client:EndDelivery",
+					tempjob = "Salvaging",
+					isEnabled = function()
+						return _working and _state == 3
+					end,
+				},
+			}, 'box-circle-check')
+		end)
 
 	eventHandlers["actions"] = RegisterNetEvent(string.format("Salvaging:Client:%s:Action", joiner), function(netid)
 		if _nodes then
@@ -188,6 +198,24 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 end)
 
 AddEventHandler("Salvaging:Client:ScrapCar", function(s, s2)
+	local entity = s.entity
+
+	if not entity or not DoesEntityExist(entity) then
+		return
+	end
+
+	if not NetworkGetEntityIsNetworked(entity) then
+		NetworkRegisterEntityAsNetworked(entity)
+		Wait(0)
+	end
+
+	local netId = NetworkGetNetworkIdFromEntity(entity)
+	if not netId then
+		return
+	end
+
+	_nodes[netId] = true
+
 	Progress:Progress({
 		name = 'salvaging_action',
 		duration = (math.random(15) + 25) * 1000,
@@ -207,26 +235,26 @@ AddEventHandler("Salvaging:Client:ScrapCar", function(s, s2)
 		}
 	}, function(cancelled)
 		if not cancelled then
-			Callbacks:ServerCallback('Salvaging:SalvageCar', NetworkGetNetworkIdFromEntity(s.entity))
+			Callbacks:ServerCallback('Salvaging:SalvageCar', netId)
 		end
 	end)
 end)
 
 AddEventHandler("Salvaging:Client:TriggerDelivery", function()
-    Callbacks:ServerCallback('Salvaging:TriggerDelivery', _joiner)
+	Callbacks:ServerCallback('Salvaging:TriggerDelivery', _joiner)
 end)
 
 AddEventHandler("Salvaging:Client:EndDelivery", function()
-    Callbacks:ServerCallback('Salvaging:EndDelivery', _joiner)
+	Callbacks:ServerCallback('Salvaging:EndDelivery', _joiner)
 	PedInteraction:Remove("SalvagingDelivery")
 end)
 
 AddEventHandler("Salvaging:Client:StartJob", function()
-    Callbacks:ServerCallback('Salvaging:StartJob', _joiner, function(state)
+	Callbacks:ServerCallback('Salvaging:StartJob', _joiner, function(state)
 		if not state then
 			Notification:Error("Unable To Start Job")
 		end
-    end)
+	end)
 end)
 
 RegisterNetEvent("Salvaging:Client:OffDuty", function(time)

@@ -121,7 +121,7 @@ Config.VehicleMenu = {
 		data = {},
 		minDist = 5.0,
 		isEnabled = function(data, entityData)
-			return LocalPlayer.state.carryingGarbabge and LocalPlayer.state.inGarbagbeZone and IsNearTrunk(entityData.entity, 4.0, true)
+			return LocalPlayer.state.carryingGarbage and LocalPlayer.state.inGarbageZone and IsNearTrunk(entityData.entity, 4.0, true)
 		end
 	},
 	{

@@ -66,7 +66,7 @@ local _GarbageRoutes = {
 	{
 		id = 6,
 		coords = vector3(-766.331, -281.512, 53.999),
-		location = "RockFord Hills",
+		location = "Rockford Hills",
 		radius = 550,
 		count = 0,
 		truckRental = false,
@@ -75,7 +75,7 @@ local _GarbageRoutes = {
 	{
 		id = 7,
 		coords = vector3(1815.581, 3697.691, 33.997),
-		location = "SandyShores",
+		location = "Sandy Shores",
 		radius = 1050,
 		count = 0,
 		truckRental = false,
@@ -93,11 +93,11 @@ local _jewelryPrices = {
 }
 
 local _jewelryItems = {
-	{ item = 'rolex', ratio = 0.5 },
-	{ item = 'watch', ratio = 0.5 },
-	{ item = 'chain', ratio = 0.5 },
-	{ item = 'earrings', ratio = 0.5 },
-	{ item = 'ring', ratio = 0.5 },
+	{ item = 'rolex',     ratio = 0.5 },
+	{ item = 'watch',     ratio = 0.5 },
+	{ item = 'chain',     ratio = 0.5 },
+	{ item = 'earrings',  ratio = 0.5 },
+	{ item = 'ring',      ratio = 0.5 },
 	{ item = 'goldcoins', ratio = 0.5 },
 }
 
@@ -131,7 +131,8 @@ AddEventHandler("Labor:Server:Startup", function()
 				table.remove(availRoutes, randRoute)
 				_Garbage[_joiners[source]].routes = availRoutes
 				_Garbage[_joiners[source]].state = 2
-				TriggerClientEvent(string.format("Garbage:Client:%s:NewRoute", _joiners[source]), -1, _Garbage[_joiners[source]].route)
+				TriggerClientEvent(string.format("Garbage:Client:%s:NewRoute", _joiners[source]), -1,
+					_Garbage[_joiners[source]].route)
 				Labor.Offers:Start(
 					_joiners[source],
 					_JOB,
@@ -190,7 +191,8 @@ AddEventHandler("Labor:Server:Startup", function()
 				if _Garbage[_joiners[source]].tasks < 3 then
 					_Garbage[_joiners[source]].tasks = _Garbage[_joiners[source]].tasks + 1
 					local randRoute = math.random(#_Garbage[_joiners[source]].routes)
-					_Garbage[_joiners[source]].route = deepcopy(_GarbageRoutes[_Garbage[_joiners[source]].routes[randRoute]])
+					_Garbage[_joiners[source]].route = deepcopy(_GarbageRoutes
+					[_Garbage[_joiners[source]].routes[randRoute]])
 					table.remove(_Garbage[_joiners[source]].routes, randRoute)
 					Labor.Offers:Start(
 						_joiners[source],
@@ -198,7 +200,8 @@ AddEventHandler("Labor:Server:Startup", function()
 						string.format("Collect Garbage In %s", _Garbage[_joiners[source]].route.location),
 						15
 					)
-					TriggerClientEvent(string.format("Garbage:Client:%s:NewRoute", _joiners[source]), -1, _Garbage[_joiners[source]].route)
+					TriggerClientEvent(string.format("Garbage:Client:%s:NewRoute", _joiners[source]), -1,
+						_Garbage[_joiners[source]].route)
 				else
 					_Garbage[_joiners[source]].state = 3
 					TriggerClientEvent(string.format("Garbage:Client:%s:EndRoutes", _joiners[source]), -1)
@@ -241,7 +244,7 @@ AddEventHandler("Labor:Server:Startup", function()
 					end
 				end
 			end
-	
+
 			if money > 0 then
 				Wallet:Modify(source, money)
 			else
@@ -271,7 +274,7 @@ AddEventHandler("Labor:Server:Startup", function()
 	-- 		if _pawnItems[data.index] and _pawnItems[data.index].qty > 0 then
 	-- 			if Crypto.Exchange:Remove(_pawnItems[data.index].coin, char:GetData("SID"), _pawnItems[data.index].price) then
 	-- 				_pawnItems[data.index].qty = _pawnItems[data.index].qty - 1
-					
+
 	-- 				Phone.Notification:Add(
 	-- 					source,
 	-- 					"Crypto Purchase",

@@ -389,26 +389,54 @@ function RegisterCommands()
 	}, 2)
 
 	Chat:RegisterAdminCommand("clearinventory", function(source, args, rawCommand)
-		local player = exports["mythic-base"]:FetchComponent("Fetch"):SID(tonumber(args[1]))
-		if player == nil then
-			Execute:Client(source, "Notification", "Error", "This player is not online")
+		if not args[1] or not tonumber(args[1]) then
+			if source == 0 then
+				print("You must provide a valid SID.")
+			else
+				Execute:Client(source, "Notification", "Error", "You must provide a valid SID.")
+			end
 			return
 		end
-		local char = player:GetData("Character")
-		MySQL.query.await("DELETE FROM inventory WHERE name = ?", { string.format("%s-%s", char:GetData("SID"), 1) })
-		Execute:Client(
-			char:GetData("Source"),
-			"Notification",
-			"Error",
-			"Your inventory was cleared by " .. tostring(Fetch:Source(source):GetData("Character"):GetData("SID"))
-		)
-		Execute:Client(
-			source,
-			"Notification",
-			"Success",
-			"You cleared the inventory of " .. tostring(char:GetData("SID"))
-		)
-		refreshShit(char:GetData("SID"), true)
+
+		local sid = tonumber(args[1])
+		local name = string.format("%s-%s", sid, 1)
+
+		local query = "DELETE FROM inventory WHERE name = ?"
+
+		local queryResult = MySQL.query.await(query, { name })
+		if not queryResult then
+			if source == 0 then
+			else
+				Execute:Client(source, "Notification", "Error", "Failed to clear the inventory. Database error.")
+			end
+			return
+		end
+
+		if source == 0 then
+		else
+			Execute:Client(
+				source,
+				"Notification",
+				"Success",
+				"You cleared the inventory of SID: " .. tostring(sid)
+			)
+		end
+
+		local player = exports["mythic-base"]:FetchComponent("Fetch"):SID(sid)
+		if player then
+			local char = player:GetData("Character")
+			if char then
+				Execute:Client(
+					char:GetData("Source"),
+					"Notification",
+					"Error",
+					"Your inventory has been cleared"
+				)
+				if itemsDatabase then
+					refreshShit(sid, true)
+				end
+			end
+		end
 	end, {
 		help = "Clear Player Inventory",
 		params = {
@@ -446,20 +474,30 @@ function RegisterCommands()
 	}, 2)
 
 	Chat:RegisterAdminCommand("giveitem", function(source, args, rawCommand)
-		local player = exports["mythic-base"]:FetchComponent("Fetch"):Source(source)
+		local targetSID
+		if args[1] == "me" then
+			targetSID = Fetch:Source(source):GetData("Character"):GetData("SID")
+		else
+			targetSID = tonumber(args[1])
+		end
+
+		local player = targetSID and Fetch:SID(targetSID)
+
+		if player == nil then
+			Execute:Client(source, "Notification", "Error", "This player is not online")
+			return
+		end
+
 		local char = player:GetData("Character")
-		if tostring(args[1]) ~= nil and tonumber(args[2]) ~= nil then
-			local itemExist = itemsDatabase[args[1]]
+
+		if tostring(args[2]) ~= nil and tonumber(args[3]) ~= nil then
+			local itemExist = itemsDatabase[args[2]]
 			if itemExist then
 				if itemExist.type ~= 2 then
-					Inventory:AddItem(char:GetData("SID"), args[1], tonumber(args[2]), {}, 1)
+					Inventory:AddItem(char:GetData("SID"), args[2], tonumber(args[3]), {}, 1)
+					Execute:Client(source, "Notification", "Success", "You gave " .. args[3] .. "x " .. args[2] .. " to " .. tostring(char:GetData("SID")))
 				else
-					Execute:Client(
-						source,
-						"Notification",
-						"Error",
-						"You can only give items with this command, try /giveweapon"
-					)
+					Execute:Client(source, "Notification", "Error", "You can only give items with this command, try /giveweapon")
 				end
 			else
 				Execute:Client(source, "Notification", "Error", "Item not located")
@@ -469,6 +507,10 @@ function RegisterCommands()
 		help = "Give Item",
 		params = {
 			{
+				name = "SID",
+				help = "SID of the Player or 'me' to give to yourself",
+			},
+			{
 				name = "Item Name",
 				help = "The name of the Item",
 			},
@@ -477,39 +519,49 @@ function RegisterCommands()
 				help = "The count of the Item",
 			},
 		},
-	}, 2)
+	}, 3)
 
 	Chat:RegisterAdminCommand("giveweapon", function(source, args, rawCommand)
-		local player = exports["mythic-base"]:FetchComponent("Fetch"):Source(source)
+		local targetSID
+		if args[1] == "me" then
+			targetSID = Fetch:Source(source):GetData("Character"):GetData("SID")
+		else
+			targetSID = tonumber(args[1])
+		end
+
+		local player = targetSID and Fetch:SID(targetSID)
+
+		if player == nil then
+			Execute:Client(source, "Notification", "Error", "This player is not online")
+			return
+		end
+
 		local char = player:GetData("Character")
-		if tostring(args[1]) ~= nil then
-			local weapon = string.upper(args[1])
+
+		if tostring(args[2]) ~= nil then
+			local weapon = string.upper(args[2])
 			local itemExist = itemsDatabase[weapon]
 			if itemExist then
 				if itemExist.type == 2 then
 					if itemExist.isThrowable then
-						Inventory:AddItem(char:GetData("SID"), weapon, tonumber(args[2]), { ammo = 1, clip = 0 }, 1)
+						Inventory:AddItem(char:GetData("SID"), weapon, tonumber(args[3]), { ammo = 1, clip = 0 }, 1)
 					else
 						local ammo = 0
-						if args[2] ~= nil then
-							ammo = tonumber(args[2])
+						if args[3] ~= nil then
+							ammo = tonumber(args[3])
 						end
 
 						Inventory:AddItem(
 							char:GetData("SID"),
 							weapon,
 							1,
-							{ ammo = ammo, clip = 0, Scratched = args[3] == "1" or nil },
+							{ ammo = ammo, clip = 0, Scratched = args[4] == "1" or nil },
 							1
 						)
 					end
+					Execute:Client(source, "Notification", "Success", "You gave weapon " .. weapon .. " to " .. tostring(char:GetData("SID")))
 				else
-					Execute:Client(
-						source,
-						"Notification",
-						"Error",
-						"You can only give weapons with this command, try /giveitem"
-					)
+					Execute:Client(source, "Notification", "Error", "You can only give weapons with this command, try /giveitem")
 				end
 			else
 				Execute:Client(source, "Notification", "Error", "Weapon not located")
@@ -519,19 +571,23 @@ function RegisterCommands()
 		help = "Give Weapon",
 		params = {
 			{
+				name = "SID",
+				help = "SID of the Player or 'me' to give to yourself",
+			},
+			{
 				name = "Weapon Name",
 				help = "The name of the Weapon",
 			},
 			{
 				name = "Ammo",
-				help = "[Optional] The amount of ammo with the weapon.",
+				help = "The amount of ammo with the weapon.",
 			},
 			{
 				name = "Is Scratched?",
 				help = "Whether to spawn with a normal serial number registered to you, or a scratched serial number (1 = true, 0 = false).",
 			},
 		},
-	}, 3)
+	}, 4)
 
 	Chat:RegisterAdminCommand("vanityitem", function(source, args, rawCommand)
 		local label, image, amount, text, action = args[1], args[2], tonumber(args[3]), args[4], args[5]
