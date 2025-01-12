@@ -859,8 +859,8 @@ RegisterNUICallback("MoveSlot", function(data, cb)
 	data.model = SecondInventory.model
 	data.inventory = SecondInventory
 
-	Callbacks:ServerCallback("Inventory:MoveItem", data, function(success)
-		if success and success.success then
+	Callbacks:ServerCallback("Inventory:MoveItem", data, function(returnData)
+		if returnData and returnData.success then
 			if SecondInventory.netId then
 				local veh = NetToVeh(SecondInventory.netId)
 				if veh then
@@ -874,8 +874,8 @@ RegisterNUICallback("MoveSlot", function(data, cb)
 				dropAnim(data.invTypeTo == 10)
 			end
 		else
-			if success and success.reason then
-				Notification:Error(success.reason, 3600)
+			if returnData and returnData.reason then
+				Notification:Error(returnData.reason, 3600)
 			end
 		end
 	end)
