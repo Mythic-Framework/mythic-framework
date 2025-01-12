@@ -96,6 +96,7 @@ RegisterNetEvent("Salvaging:Client:OnDuty", function(joiner, time)
 				return
 			end
 
+			_inPoly = true
 			Targeting:RemoveObject(entity)
 			Targeting:AddObject(entity, "car", {
 				{
