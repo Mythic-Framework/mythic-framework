@@ -183,13 +183,13 @@ export default ({ alert }) => {
 						)}
 						{Boolean(alert.location) ? (
 							<div className={classes.minor}>
-								<FontAwesomeIcon className={classes.icon} icon={['fas', 'location']} />
+								<FontAwesomeIcon className={classes.icon} icon={['fas', 'location-dot']} />
 								{alert.location.street1} {alert.location.street2 && `/ ${alert.location.street2} `}|{' '}
 								{alert.location.area}
 							</div>
 						) : (
 							<div className={classes.minor}>
-								<FontAwesomeIcon className={classes.icon} icon={['fas', 'location']} />
+								<FontAwesomeIcon className={classes.icon} icon={['fas', 'location-dot']} />
 								Unknown Location
 							</div>
 						)}
@@ -202,12 +202,12 @@ export default ({ alert }) => {
 						<Grid item xs={1} style={{ textAlign: 'right' }}>
 							{Boolean(alert.location) && (
 								<IconButton onClick={onRoute}>
-									<FontAwesomeIcon icon={['fas', 'location-question']} />
+									<FontAwesomeIcon icon={['fas', 'location-dot']} />
 								</IconButton>
 							)}
 							{Boolean(alert.camera) && (
 								<IconButton onClick={onCamera}>
-									<FontAwesomeIcon icon={['fas', 'camera-cctv']} />
+									<FontAwesomeIcon icon={['fas', 'camera']} />
 								</IconButton>
 							)}
 						</Grid>
