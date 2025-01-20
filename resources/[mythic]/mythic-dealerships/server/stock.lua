@@ -170,7 +170,35 @@ DEALERSHIPS.Stock = {
                 return false
             end
         end
-        return false 
+        return false
+    end,
+    Update = function(self, dealerId, vehModel, setting)
+        if _dealerships[dealerId] and vehModel and type(setting) == "table" then
+            local isStocked = Dealerships.Stock:FetchDealerVehicle(dealerId, vehModel)
+            if isStocked then
+                local p = promise.new()
+                Database.Game:updateOne({
+                    collection = 'dealer_stock',
+                    query = {
+                        dealership = dealerId,
+                        vehicle = vehModel,
+                    },
+                    update = {
+                        ['$set'] = setting
+                    }
+                }, function(success, result)
+                    if success and result > 0 then
+                        p:resolve({ success = true })
+                    else
+                        p:resolve(false)
+                    end
+                end)
+                return Citizen.Await(p)
+            else
+                return false
+            end
+        end
+        return false
     end,
     Ensure = function(self, dealerId, vehModel, quantity, vehData)
         if _dealerships[dealerId] and vehModel then

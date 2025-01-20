@@ -260,6 +260,40 @@ AddEventHandler('Core:Shared:Ready', function()
             },
         }, 3)
 
+        Chat:RegisterAdminCommand("setstockcategory", function(source, args, rawCommand)
+            local dealership, vehicle, category = table.unpack(args)
+
+            if category then
+                local res = Dealerships.Stock:Update(dealership, vehicle, {
+                    ["data.category"] = category
+                })
+
+                if res and res.success then
+                    Chat.Send.System:Single(source, "Successfully Set Category to " .. category)
+                else
+                    Chat.Send.System:Single(source, "Not In Stock")
+                end
+            else
+                Chat.Send.System:Single(source, "Invalid Arguments")
+            end
+        end, {
+            help = "[Admin] Set category for specific vehicle at Dealership.",
+            params = {
+                {
+                    name = "Dealership ID",
+                    help = "ID of the Dealership e.g pdm or tuna",
+                },
+                {
+                    name = "Vehicle ID",
+                    help = "ID of the Vehicle e.g faggio",
+                },
+                {
+                    name = "Category",
+                    help = "The updated category",
+                },
+            },
+        }, 3)
+
         local allStock = Dealerships.Stock:FetchAll()
         if allStock and #allStock > 0 then
             for k, v in ipairs(allStock) do
