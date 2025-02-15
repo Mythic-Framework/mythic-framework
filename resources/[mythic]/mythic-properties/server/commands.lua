@@ -10,6 +10,9 @@ function RegisterChatCommands()
         }
 
         Properties.Manage:Add(source, args[1], args[2], tonumber(args[3]), args[4], pos)
+
+        TriggerEvent("Properties:RefreshProperties")
+
     end, {
         help = 'Add New Property To Database (Enter Is Where You\'re At)',
         params = {
