@@ -42,3 +42,21 @@ function Startup()
 
 	_ran = true
 end
+
+RegisterNetEvent("Properties:RefreshProperties", function()
+    Database.Game:find({
+        collection = "properties",
+    }, function(success, results)
+        if not success then
+            return
+        end
+        Logger:Warn("Properties", "Loaded ^2" .. #results .. "^7 Properties", { console = true })
+
+        for k, v in ipairs(results) do
+            local p = doPropertyThings(v)
+            _properties[v._id] = p
+        end
+        TriggerLatentClientEvent("Properties:Client:Load", -1, 800000, _properties)
+
+    end)
+end)
