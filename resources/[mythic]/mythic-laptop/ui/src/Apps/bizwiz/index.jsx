@@ -1,21 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles, withStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import loadable from '@loadable/component';
-import {
-	AppBar,
-	Grid,
-	Tooltip,
-	IconButton,
-	List,
-	Tab,
-	Tabs,
-} from '@mui/material';
+import { Grid } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Navigation from './components/Navigation';
 import TitleBar from './components/TitleBar';
-
 import { useJobPermissions } from '../../hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,16 +37,14 @@ const useStyles = makeStyles((theme) => ({
 		top: 0,
 		height: '93.25%',
 	},
-	list: {
+	navColumn: {
+		display: 'flex',
+		flexDirection: 'column',
 		height: '100%',
-		overflow: 'auto',
 	},
-	emptyMsg: {
-		width: '100%',
-		textAlign: 'center',
-		fontSize: 20,
-		fontWeight: 'bold',
-		marginTop: '18%',
+	scrollableNav: {
+		flex: 1,
+		overflowY: 'auto',
 	},
 }));
 
@@ -71,7 +60,7 @@ export default (props) => {
 
 	const onNav = async (id, data) => {
 		// TODO: Check Permissions to View Page
-		if (pages && pages.find((p) => p.id == id)) {
+		if (pages && pages.find((p) => p.id === id)) {
 			setCurrentData(data);
 			setCurrentPage(id);
 		} else {
@@ -82,7 +71,6 @@ export default (props) => {
 
 	const getCurrentPage = () => {
 		const Component = loadable(() => import(`./pages/${currentPage}`));
-
 		return <Component onNav={onNav} data={currentData} />;
 	};
 
@@ -111,18 +99,16 @@ export default (props) => {
 
 	return (
 		<div className={classes.wrapper}>
-			<Grid
-				container
-				direction="row"
-				style={{ height: '100%', overflow: 'hidden' }}
-			>
-				<Grid item xs={2}>
+			<Grid container direction="row" style={{ height: '100%' }}>
+				<Grid item xs={2} className={classes.navColumn}>
 					<TitleBar />
-					<Navigation
-						current={currentPage}
-						items={pages}
-						onNavSelect={onNav}
-					/>
+					<div className={classes.scrollableNav}>
+						<Navigation
+							current={currentPage}
+							items={pages}
+							onNavSelect={onNav}
+						/>
+					</div>
 				</Grid>
 				<Grid item xs={10}>
 					{pageComponent}

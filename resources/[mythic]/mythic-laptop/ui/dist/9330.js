@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkmythic_laptop=self.webpackChunkmythic_laptop||[]).push([[9330],{39330:(a,l,e)=>{e.r(l),e.d(l,{gameCatagories:()=>c});var c=[{value:"all",label:"All"},{value:"blackjack",label:"Blackjack"}]}}]);
