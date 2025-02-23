@@ -817,240 +817,188 @@ function DoSwap(source, data, cb)
 end
 
 function DoMove(source, data, cb)
-	CreateThread(function()
-		local player = Fetch:Source(source)
-		local char = player:GetData("Character")
-	
-		local item = itemsDatabase[data.name]
-		local cash = char:GetData("Cash")
-	
-		local entityFrom = LoadedEntitys[tonumber(data.invTypeFrom)]
-		local entityTo = LoadedEntitys[tonumber(data.invTypeTo)]
-	
-		local invWeight = Inventory.Items:GetWeights(data.ownerTo, data.invTypeTo)
-		local totWeight = invWeight + (data.countTo * itemsDatabase[data.name].weight)
-	
-		if data.ownerFrom == nil or data.slotFrom == nil or data.invTypeFrom == nil or data.ownerTo == nil or data.slotTo == nil or data.invTypeTo == nil then
-			cb({ reason = "Invalid Move Data" })
-			sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-			sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-			return
-		end
-	
-		if totWeight > getCapacity(data.invTypeTo, data.vehClassTo, data.vehModelTo, data.capacityOverrideTo) and data.ownerFrom ~= data.ownerTo then
-			cb({ reason = "Inventory Over Weight" })
-			sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-			sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-			return
-		end
-	
-		if data.countTo <= 0 then
-			cb({ reason = "Can't Move 0 - Naughty Boy" })
-			sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-			sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-			return
-		end
-	
-		if entityFrom.shop then
-			local cost = math.ceil((item.price * tonumber(data.countTo)))
-			local paymentType = (cash >= cost and 'cash' or (Banking.Balance:Has(char:GetData("BankAccount"), cost) and 'bank' or nil))
-			if entityFrom.free or paymentType ~= nil then
-				if -- Check if the item is either not a gun, or if it is that they have a Weapons license
-					(item.type ~= 2
-					or (
-						item.type == 2
-						and (not item.requiresLicense or item.requiresLicense and Weapons:IsEligible(source))
-					))
-					and (not item.qualification or hasValue(char:GetData("Qualifications"), item.qualification))
-				then
-					local paid = entityFrom.free
-					if not paid then
-						if paymentType == 'cash' then
-							paid = Wallet:Modify(source, -(math.abs(cost)))
-						else
-							paid = Banking.Balance:Charge(char:GetData("BankAccount"), cost, {
-								type = 'bill',
-								title = 'Store Purchase',
-								description = string.format('Bought x%s %s', data.countTo, item.label),
-								data = {}
-							})
-							Phone.Notification:Add(source, "Bill Payment Successful", string.format('Bought x%s %s', data.countTo, item.label), os.time() * 1000, 3000, "bank", {})
-						end
+    CreateThread(function()
+        local player = Fetch:Source(source)
+        local char = player:GetData("Character")
+        local item = itemsDatabase[data.name]
+        local cash = char:GetData("Cash")
+        local entityFrom = LoadedEntitys[tonumber(data.invTypeFrom)]
+        local entityTo = LoadedEntitys[tonumber(data.invTypeTo)] -- Unused variable - remove it?
+        local targetInvWeigth = Inventory.Items:GetWeights(data.ownerTo, data.invTypeTo) -- Target inventory current weight
+        local targetInvCapacity = getCapacity(data.invTypeTo, data.vehClassTo, data.vehModelTo, data.capacityOverrideTo) -- Target inventory capacity
+        local targetInvFreeCapacity = targetInvCapacity - targetInvWeigth -- Target inventory free capacity
+        local itemWeigth = data.countTo * itemsDatabase[data.name].weight -- Item weight * count
 
-						if paid then
-							pendingShopDeposits[storeBankAccounts[entityFrom.id]] = pendingShopDeposits[storeBankAccounts[entityFrom.id]] or { amount = 0, transactions = 0 }
-							pendingShopDeposits[storeBankAccounts[entityFrom.id]].amount += math.floor( (cost * STORE_SHARE_AMOUNT) )
-							pendingShopDeposits[storeBankAccounts[entityFrom.id]].transactions += 1
-	
-							pendingShopDeposits[_govAccount] = pendingShopDeposits[_govAccount] or { amount = 0, transactions = 0, tax = true }
-							pendingShopDeposits[_govAccount].amount += math.ceil(cost * (1.0 - STORE_SHARE_AMOUNT))
-							pendingShopDeposits[_govAccount].transactions += 1
-						end
-					end
-	
-					if paid then
-						local insData = Inventory:CreateItem(char:GetData("SID"), data.name, data.countTo, data.slotTo, {}, data.invTypeTo, false)
-						CreateStoreLog(data.ownerFrom, data.name, data.countTo or 1, char:GetData("SID"), insData.metadata, insData.id)
-					end
+		-- Refresh the client inventory
+        local function refreshClient()
+            sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
+            sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
+        end
 
-					if data.ownerFrom ~= data.ownerTo and WEAPON_PROPS[item.name] ~= nil then
-						_refreshAttchs[data.ownerFrom] = source
-						_refreshAttchs[data.ownerTo] = source
-					end
-	
-					sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-					sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-					return cb({ success = true })
-				else
-					sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-					sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-					cb({ reason = "Ineligible To Purchase Item" })
-				end
-			else
-				sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-				sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-				cb({ reason = "Not Enough Cash" })
-			end
-		else
-			local slotFrom = Inventory:GetSlot(data.ownerFrom, data.slotFrom, data.invTypeFrom)
-			local slotTo = Inventory:GetSlot(data.ownerTo, data.slotTo, data.invTypeTo)
+        if not data.ownerFrom or not data.slotFrom or not data.invTypeFrom or not data.ownerTo or not data.slotTo or not data.invTypeTo then
+            refreshClient()
+            return cb({ reason = "Invalid Move Data" })
+        end
 
-			if slotFrom == nil then
-				cb({ reason = "Item No Longer In That Slot" })
-				sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-				sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
-				return
-			end
+        if targetInvFreeCapacity < itemWeigth and data.ownerFrom ~= data.ownerTo then
+            refreshClient()
+            return cb({ reason = "Inventory Over Weight" })
+        end
 
-			if data.isSplit then
-				local itemIds = MySQL.query.await('SELECT id FROM inventory WHERE name = ? AND slot = ? AND item_id = ? ORDER BY id ASC LIMIT ?', {
-					string.format("%s-%s", data.ownerFrom, data.invTypeFrom),
-					data.slotFrom,
-					data.name,
-					data.countTo
-				})
+        if data.countTo <= 0 then
+            refreshClient()
+            return cb({ reason = "Can't Move 0 - Naughty Boy" })
+        end
 
-				local params = {}
-				for k, v in ipairs(itemIds) do
-					table.insert(params, v.id)
-				end
-				
-				MySQL.query.await(string.format('UPDATE inventory SET slot = ?, name = ?, dropped = ? WHERE id IN (%s)', table.concat(params, ',')), {
-					data.slotTo,
-					string.format("%s-%s", data.ownerTo, data.invTypeTo),
-					data.invTypeTo == 10 and 1 or 0
-				})
-			else
-				MySQL.query.await('UPDATE inventory SET slot = ?, name = ?, dropped = ? WHERE name = ? AND slot = "?" AND item_id = ?', {
-					data.slotTo,
-					string.format("%s-%s", data.ownerTo, data.invTypeTo),
-					(data.invTypeTo == 10 and 1 or 0),
-					string.format("%s-%s", data.ownerFrom, data.invTypeFrom),
-					data.slotFrom,
-					data.name,
-				})
-			end
-			
-			if data.ownerFrom ~= data.ownerTo then
-				if data.invTypeFrom == 1 then
-					local plyr = Fetch:SID(data.ownerFrom)
-	
-					if data.ownerFrom == data.ownerTo then
-						if item.type == 2 then
-							if (not item.isStackable and item.isStackable ~= -1) or data.countTo == slotFrom.Count then
-								TriggerClientEvent(
-									"Weapons:Client:Move",
-									plyr:GetData("Source"),
-									data.slotFrom,
-									data.slotTo
-								)
-							end
-							
-							if item.isThrowable then
-								TriggerClientEvent(
-									"Weapons:Client:UpdateCount",
-									plyr:GetData("Source"),
-									data.slotFrom,
-									(slotFrom.Count - data.countTo)
-								)
-								TriggerClientEvent(
-									"Weapons:Client:UpdateCount",
-									plyr:GetData("Source"),
-									data.slotTo,
-									((slotTo?.Count or 0) + data.countTo)
-								)
-							end
-						elseif item.type == 10 then
-							TriggerClientEvent(
-								"Inventory:Container:Move",
-								plyr:GetData("Source"),
-								data.slotFrom,
-								data.slotTo
-							)
-						end
-					else
-						if not item.isStackable or data.countTo == slotFrom.Count then
-							if item.type == 2 then
-								TriggerClientEvent(
-									"Weapons:Client:Remove",
-									plyr:GetData("Source"),
-									slotFrom,
-									data.slotFrom,
-									{
-										owner = data.ownerTo,
-										type = data.invTypeTo,
-										slot = data.slotTo,
-									}
-								)
-							elseif item.type == 10 then
-								TriggerClientEvent(
-									"Inventory:Container:Remove",
-									plyr:GetData("Source"),
-									slotFrom,
-									data.slotFrom
-								)
-							end
-						else
-							if item.isThrowable then
-								TriggerClientEvent(
-									"Weapons:Client:UpdateCount",
-									plyr:GetData("Source"),
-									data.slotFrom,
-									(slotFrom.Count - data.countTo)
-								)
-							end
-						end
-					end
-				end
-		
-				if data.invTypeTo == 1 then
-					local plyr = Fetch:SID(data.ownerTo)
-					if item.isThrowable then
-						TriggerClientEvent(
-							"Weapons:Client:UpdateCount",
-							plyr:GetData("Source"),
-							data.slotTo,
-							((slotTo?.Count or 0) + data.countTo)
-						)
-					end
-				end
+        if entityFrom.shop then
+            local cost = math.ceil(item.price * tonumber(data.countTo))
+            local paymentType = (cash >= cost and 'cash' or (Banking.Balance:Has(char:GetData("BankAccount"), cost) and 'bank' or nil))
 
-				if data.inventory.position ~= nil then
-					CreateDZIfNotExist(source, data.inventory.position)
-				end
-			end
+            if entityFrom.free or paymentType then
+                local function handlePayment()
+                    local paid = entityFrom.free
+                    if not paid then
+                        if paymentType == 'cash' then
+                            paid = Wallet:Modify(source, -math.abs(cost))
+                        else
+                            paid = Banking.Balance:Charge(char:GetData("BankAccount"), cost, {
+                                type = 'bill',
+                                title = 'Store Purchase',
+                                description = string.format('Bought x%s %s', data.countTo, item.label),
+                                data = {}
+                            })
+                            Phone.Notification:Add(source, "Bill Payment Successful", string.format('Bought x%s %s', data.countTo, item.label), os.time() * 1000, 3000, "bank", {})
+                        end
 
-			if data.ownerFrom ~= data.ownerTo and WEAPON_PROPS[item.name] ~= nil then
-				_refreshAttchs[data.ownerFrom] = source
-				_refreshAttchs[data.ownerTo] = source
-			end
-		
-			sendRefreshForClient(source, data.ownerFrom, data.invTypeFrom, data.slotFrom)
-			sendRefreshForClient(source, data.ownerTo, data.invTypeTo, data.slotTo)
+                        if paid then
+                            pendingShopDeposits[storeBankAccounts[entityFrom.id]] = pendingShopDeposits[storeBankAccounts[entityFrom.id]] or { amount = 0, transactions = 0 }
+                            pendingShopDeposits[storeBankAccounts[entityFrom.id]].amount = pendingShopDeposits[storeBankAccounts[entityFrom.id]].amount + math.floor(cost * STORE_SHARE_AMOUNT)
+                            pendingShopDeposits[storeBankAccounts[entityFrom.id]].transactions = pendingShopDeposits[storeBankAccounts[entityFrom.id]].transactions + 1
 
-			return cb({ success = true })
-		end
-	end)
+                            pendingShopDeposits[_govAccount] = pendingShopDeposits[_govAccount] or { amount = 0, transactions = 0, tax = true }
+                            pendingShopDeposits[_govAccount].amount = pendingShopDeposits[_govAccount].amount + math.ceil(cost * (1.0 - STORE_SHARE_AMOUNT))
+                            pendingShopDeposits[_govAccount].transactions = pendingShopDeposits[_govAccount].transactions + 1
+                        end
+                    end
+
+                    if paid then
+                        local insData = Inventory:CreateItem(char:GetData("SID"), data.name, data.countTo, data.slotTo, {}, data.invTypeTo, false)
+                        CreateStoreLog(data.ownerFrom, data.name, data.countTo or 1, char:GetData("SID"), insData.metadata, insData.id)
+
+                        if data.ownerFrom ~= data.ownerTo and WEAPON_PROPS[item.name] then
+                            _refreshAttchs[data.ownerFrom] = source
+                            _refreshAttchs[data.ownerTo] = source
+                        end
+
+                        refreshClient()
+                        return cb({ success = true })
+                    else
+                        refreshClient()
+                        return cb({ reason = "Not Enough Cash" })
+                    end
+                end
+
+                if (item.type ~= 2 or (item.type == 2 and (not item.requiresLicense or (item.requiresLicense and Weapons:IsEligible(source))))) and (not item.qualification or hasValue(char:GetData("Qualifications"), item.qualification)) then
+                    return handlePayment()
+                else
+                    refreshClient()
+                    return cb({ reason = "Ineligible To Purchase Item" })
+                end
+            else
+                refreshClient()
+                return cb({ reason = "Not Enough Cash" })
+            end
+        else
+            local slotFrom = Inventory:GetSlot(data.ownerFrom, data.slotFrom, data.invTypeFrom)
+            local slotTo = Inventory:GetSlot(data.ownerTo, data.slotTo, data.invTypeTo)
+
+            if not slotFrom then
+                refreshClient()
+                return cb({ reason = "Item No Longer In That Slot" })
+            end
+
+            if data.isSplit then
+                local itemIds = MySQL.query.await('SELECT id FROM inventory WHERE name = ? AND slot = ? AND item_id = ? ORDER BY id ASC LIMIT ?', {
+                    string.format("%s-%s", data.ownerFrom, data.invTypeFrom),
+                    data.slotFrom,
+                    data.name,
+                    data.countTo
+                })
+
+                local params = {}
+                for _, v in ipairs(itemIds) do
+                    table.insert(params, v.id)
+                end
+
+                MySQL.query.await(string.format('UPDATE inventory SET slot = ?, name = ?, dropped = ? WHERE id IN (%s)', table.concat(params, ',')), {
+                    data.slotTo,
+                    string.format("%s-%s", data.ownerTo, data.invTypeTo),
+                    data.invTypeTo == 10 and 1 or 0
+                })
+            else
+                MySQL.query.await('UPDATE inventory SET slot = ?, name = ?, dropped = ? WHERE name = ? AND slot = ? AND item_id = ?', {
+                    data.slotTo,
+                    string.format("%s-%s", data.ownerTo, data.invTypeTo),
+                    data.invTypeTo == 10 and 1 or 0,
+                    string.format("%s-%s", data.ownerFrom, data.invTypeFrom),
+                    data.slotFrom,
+                    data.name
+                })
+            end
+
+            if data.ownerFrom ~= data.ownerTo then
+                if data.invTypeFrom == 1 then
+                    local plyr = Fetch:SID(data.ownerFrom)
+
+                    if data.ownerFrom == data.ownerTo then
+                        if item.type == 2 then
+                            if (not item.isStackable and item.isStackable ~= -1) or data.countTo == slotFrom.Count then
+                                TriggerClientEvent("Weapons:Client:Move", plyr:GetData("Source"), data.slotFrom, data.slotTo)
+                            end
+
+                            if item.isThrowable then
+                                TriggerClientEvent("Weapons:Client:UpdateCount", plyr:GetData("Source"), data.slotFrom, slotFrom.Count - data.countTo)
+                                TriggerClientEvent("Weapons:Client:UpdateCount", plyr:GetData("Source"), data.slotTo, (slotTo and slotTo.Count or 0) + data.countTo)
+                            end
+                        elseif item.type == 10 then
+                            TriggerClientEvent("Inventory:Container:Move", plyr:GetData("Source"), data.slotFrom, data.slotTo)
+                        end
+                    else
+                        if not item.isStackable or data.countTo == slotFrom.Count then
+                            if item.type == 2 then
+                                TriggerClientEvent("Weapons:Client:Remove", plyr:GetData("Source"), slotFrom, data.slotFrom, { owner = data.ownerTo, type = data.invTypeTo, slot = data.slotTo })
+                            elseif item.type == 10 then
+                                TriggerClientEvent("Inventory:Container:Remove", plyr:GetData("Source"), slotFrom, data.slotFrom)
+                            end
+                        else
+                            if item.isThrowable then
+                                TriggerClientEvent("Weapons:Client:UpdateCount", plyr:GetData("Source"), data.slotFrom, slotFrom.Count - data.countTo)
+                            end
+                        end
+                    end
+                end
+
+                if data.invTypeTo == 1 then
+                    local plyr = Fetch:SID(data.ownerTo)
+                    if item.isThrowable then
+                        TriggerClientEvent("Weapons:Client:UpdateCount", plyr:GetData("Source"), data.slotTo, (slotTo and slotTo.Count or 0) + data.countTo)
+                    end
+                end
+
+                if data.inventory.position then
+                    CreateDZIfNotExist(source, data.inventory.position)
+                end
+            end
+
+            if data.ownerFrom ~= data.ownerTo and WEAPON_PROPS[item.name] then
+                _refreshAttchs[data.ownerFrom] = source
+                _refreshAttchs[data.ownerTo] = source
+            end
+
+            refreshClient()
+            return cb({ success = true })
+        end
+    end)
 end
 
 function CreateDZIfNotExist(source, coords)
