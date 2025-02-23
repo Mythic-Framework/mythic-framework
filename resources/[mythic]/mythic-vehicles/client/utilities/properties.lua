@@ -141,6 +141,10 @@ function SetVehicleProperties(vehicle, props)
             SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex)
         end
 
+        if props.customPlate then
+			SetVehicleNumberPlateText(vehicle, props.customPlate)
+		end
+
         if props.color1 then
             ClearVehicleCustomPrimaryColour(vehicle)
             SetVehicleCustomPrimaryColour(vehicle, props.color1.r, props.color1.g, props.color1.b)
